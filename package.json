@@ -1,0 +1,28 @@
+{
+	"name": "owc-openzaak",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"dev": "webpack --watch --mode=development",
+		"prod": "webpack --mode=production"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"devDependencies": {
+		"@babel/core": "^7.14.0",
+		"@babel/preset-env": "^7.14.2",
+		"@babel/preset-react": "^7.13.13",
+		"@wordpress/element": "^3.0.0",
+		"babel-loader": "^8.2.2",
+		"path": "^0.12.7",
+		"webpack": "^5.37.0",
+		"webpack-cli": "^4.7.0"
+	},
+	"dependencies": {
+		"@wordpress/blocks": "^11.5.1",
+		"@wordpress/server-side-render": "^3.4.1",
+		"react-select": "^4.3.1"
+	}
+}
