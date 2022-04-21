@@ -33,12 +33,12 @@ abstract class BaseRepository
         }
 
         $body = json_decode($request['body'], true);
-        
-        if (json_last_error() !== JSON_ERROR_NONE || empty($body['results'])) {
+
+        if (json_last_error() !== JSON_ERROR_NONE || empty($body)) {
             return [];
         }
 
-        return $body['results'] ?? [];
+        return is_array($body) && !empty($body) ? $body : [];
     }
 
     abstract protected function makeURL();

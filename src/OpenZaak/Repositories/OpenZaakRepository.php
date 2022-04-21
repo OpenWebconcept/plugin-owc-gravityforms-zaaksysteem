@@ -17,17 +17,66 @@ class OpenZaakRepository extends BaseRepository
     {
         $result = $this->request($this->makeURL());
 
-        if (empty($result)) {
+        if (empty($result['results'])) {
             return [];
         }
 
         return array_map(function ($zaak) {
-            return new OpenZaakModel($zaak);
-        }, $result);
+            $model = new OpenZaakModel($zaak);
+
+            if (empty($model->getStatusURL())) {
+                return $model;
+            }
+
+            return $this->complementZaak($model);
+        }, $result['results']);
     }
 
     protected function makeURL(): string
     {
         return sprintf('%s/%s', $this->baseURL, $this->restURI);
+    }
+
+    /**
+     * Add data from other requests to OpenZaak object.
+     */
+    protected function complementZaak(OpenZaakModel $model): OpenZaakModel
+    {
+        $status = $this->getStatus($model);
+
+        if (empty($status)) {
+            return $model;
+        }
+
+        try {
+            $model->setDateStatusAssigned($status['datumStatusGezet'] ?? '');
+            $model->setStatusTypeURL($status['statustype'] ?? '');
+        } catch (\Exception | \TypeError $e) {
+            return $model;
+        }
+
+        $detailedStatus = $this->getDetailedStatus($model);
+
+        if (empty($detailedStatus)) {
+            return $model;
+        }
+        
+        try {
+            $model->setStatusDesc($detailedStatus['omschrijving'] ?? '');
+        } catch (\Exception | \TypeError $e) {
+            return $model;
+        }
+            
+        return $model;
+    }
+
+    protected function getStatus(OpenZaakModel $model): array
+    {
+        return $this->request($model->getStatusURL());
+    }
+
+    protected function getDetailedStatus(OpenZaakModel $model): array
+    {
+        return $this->request($model->getStatusTypeURL());
     }
 }

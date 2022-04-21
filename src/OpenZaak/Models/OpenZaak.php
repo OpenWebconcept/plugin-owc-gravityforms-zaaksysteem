@@ -9,6 +9,58 @@ class OpenZaak
         $this->data = $data;
     }
 
+    public function getURL(): string
+    {
+        return $this->data['url'] ?? '';
+    }
+
+    public function getStatusURL()
+    {
+        return $this->data['status'] ?? '';
+    }
+
+    public function getDateStatusAssigned(): string
+    {
+        $date = $this->data['datumStatusGezet'] ?? '';
+
+        if (empty($date)) {
+            return '';
+        }
+
+        return (new \DateTime($date))->format('d-m-Y');
+    }
+
+    public function setDateStatusAssigned(string $date = ''): self
+    {
+        $this->data['datumStatusGezet'] = $date;
+
+        return $this;
+    }
+
+    public function getStatusTypeURL(): string
+    {
+        return $this->data['statusTypeURL'] ?? '';
+    }
+
+    public function setStatusTypeURL(string $url = ''): self
+    {
+        $this->data['statusTypeURL'] = $url;
+
+        return $this;
+    }
+
+    public function getStatusDesc(): string
+    {
+        return $this->data['omschrijving'] ?? 'Niet beschikbaar';
+    }
+
+    public function setStatusDesc(string $desc = ''): self
+    {
+        $this->data['omschrijving'] = $desc;
+
+        return $this;
+    }
+
     public function getIdentification(): string
     {
         return $this->data['identificatie'] ?? '';
@@ -16,7 +68,13 @@ class OpenZaak
 
     public function getStartDate(): string
     {
-        return $this->data['startdatum'] ?? '';
+        $date = $this->data['startdatum'] ?? '';
+
+        if (empty($date)) {
+            return '';
+        }
+
+        return (new \DateTime($date))->format('d-m-Y');
     }
 
     public function getRegistrationDate(): string
