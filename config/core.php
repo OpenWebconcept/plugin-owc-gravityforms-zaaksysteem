@@ -1,12 +1,13 @@
 <?php declare(strict_types=1);
 
 return [
-
     // Service Providers.
     'providers'    => [
         // Global providers.
         OWC\OpenZaak\GravityForms\GravityFormsServiceProvider::class,
-        OWC\OpenZaak\Blocks\BlocksServiceProvider::class
+        OWC\OpenZaak\Blocks\BlocksServiceProvider::class,
+        OWC\OpenZaak\Templating\TemplatingServiceProvider::class,
+        OWC\OpenZaak\Validation\ValidationServiceProvider::class
     ],
 
     /**

@@ -24,7 +24,7 @@ class BlocksServiceProvider extends ServiceProvider
 
     protected function loadHooks(): void
     {
-        add_action('enqueue_block_editor_assets', [$this, 'blockAssets'], 10, 0);
+        \add_action('enqueue_block_editor_assets', [$this, 'blockAssets'], 10, 0);
     }
 
     public function blockAssets(): void
