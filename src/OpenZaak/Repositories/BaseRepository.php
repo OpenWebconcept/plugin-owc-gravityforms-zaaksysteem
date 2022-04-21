@@ -4,22 +4,24 @@ namespace OWC\OpenZaak\Repositories;
 
 use Firebase\JWT\JWT;
 
-class BaseRepository
+abstract class BaseRepository
 {
     public function __construct()
     {
-        $this->url = $_ENV['OPEN_ZAAK_URL'];
+        $this->baseURL = $_ENV['OPEN_ZAAK_URL'];
         $this->clientID = $_ENV['OPEN_ZAAK_CLIENT_ID'];
         $this->clientSecret = $_ENV['OPEN_ZAAK_CLIENT_SECRET'];
     }
 
-    public function request(string $url = ''): ?array
+    public function request(string $url = '', string $method = 'GET'): array
     {
         if (empty($url)) {
-            $url = $this->url;
+            return [];
         }
         
-        $request = \wp_remote_get($url, [
+        // Nog uitbreiden voor een post request met args.
+        $request = \wp_remote_request($url, [
+            'method' => $method,
             'headers' => [
                 'Accept-Crs' => 'EPSG:4326',
                 'Authorization' => sprintf('Bearer %s', $this->generateToken())
@@ -27,17 +29,19 @@ class BaseRepository
         ]);
 
         if (\is_wp_error($request) || 200 !== $request['response']['code']) {
-            return null;
+            return [];
         }
 
         $body = json_decode($request['body'], true);
         
         if (json_last_error() !== JSON_ERROR_NONE || empty($body['results'])) {
-            return null;
+            return [];
         }
 
         return $body['results'] ?? [];
     }
+
+    abstract protected function makeURL();
 
     protected function generateToken(): string
     {
