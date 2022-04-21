@@ -49,14 +49,19 @@ class OpenZaak
         return $this;
     }
 
+    public function getDesc(): string
+    {
+        return $this->data['omschrijving'] ?? '';
+    }
+
     public function getStatusDesc(): string
     {
-        return $this->data['omschrijving'] ?? 'Niet beschikbaar';
+        return $this->data['status_omschrijving'] ?? 'Niet beschikbaar';
     }
 
     public function setStatusDesc(string $desc = ''): self
     {
-        $this->data['omschrijving'] = $desc;
+        $this->data['status_omschrijving'] = $desc;
 
         return $this;
     }

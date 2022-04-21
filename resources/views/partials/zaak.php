@@ -9,7 +9,7 @@ use function OWC\OpenZaak\Foundation\Helpers\view;
 <div class="zaak">
     <?php
     echo view('partials/zaak-collapse-button.php', [
-        'title' => $zaak->getIdentification(),
+        'title' => sprintf('%s, %s', $zaak->getDesc(), $zaak->getRegistrationDate()),
         'id' => $zaak->getIdentification(),
     ]);
     ?>
