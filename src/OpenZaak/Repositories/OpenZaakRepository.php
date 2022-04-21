@@ -29,11 +29,6 @@ class OpenZaakRepository extends BaseRepository
         }, $result['results']);
     }
 
-    protected function makeURL(string $uri = ''): string
-    {
-        return sprintf('%s/%s', $this->baseURL, $uri);
-    }
-
     /**
      * Add data from other requests to OpenZaak object.
      */

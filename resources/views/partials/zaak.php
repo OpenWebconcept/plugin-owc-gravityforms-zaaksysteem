@@ -13,7 +13,8 @@ use function OWC\OpenZaak\Foundation\Helpers\view;
         'id' => $zaak->getIdentification(),
     ]);
     ?>
-    <div class="collapse" id="collapse-<?php echo $zaak->getIdentification(); ?>">
+    <div class="collapse"
+        id="collapse-<?php echo $zaak->getIdentification(); ?>">
         <div class="zaak-content">
             <?php
             echo view('partials/zaak-meta.php', [

@@ -13,22 +13,17 @@ abstract class BaseRepository
         $this->clientSecret = $_ENV['OPEN_ZAAK_CLIENT_SECRET'];
     }
 
-    public function request(string $url = '', string $method = 'GET'): array
+    public function request(string $url = '', string $method = 'GET', array $args = []): array
     {
         if (empty($url)) {
             return [];
         }
+    
+        $request = \wp_remote_request($url, $this->getRequestArgs($method, $args));
         
-        // Nog uitbreiden voor een post request met args.
-        $request = \wp_remote_request($url, [
-            'method' => $method,
-            'headers' => [
-                'Accept-Crs' => 'EPSG:4326',
-                'Authorization' => sprintf('Bearer %s', $this->generateToken())
-            ]
-        ]);
+        $httpSuccessCodes = [200, 201];
 
-        if (\is_wp_error($request) || 200 !== $request['response']['code']) {
+        if (\is_wp_error($request) || !in_array($request['response']['code'], $httpSuccessCodes)) {
             return [];
         }
 
@@ -41,7 +36,30 @@ abstract class BaseRepository
         return is_array($body) && !empty($body) ? $body : [];
     }
 
-    abstract protected function makeURL();
+    protected function getRequestArgs(string $method, array $args = [])
+    {
+        $requestArgs = [
+            'method' => $method,
+            'headers' => [
+                'Accept-Crs' => 'EPSG:4326',
+                'Content-Crs' => 'EPSG:4326',
+                'Content-Type' => 'application/json',
+                'Authorization' => sprintf('Bearer %s', $this->generateToken())
+            ]
+        ];
+
+
+        if ('POST' === $method && !empty($args)) {
+            $requestArgs = array_merge($requestArgs, ['body' => json_encode($args, JSON_UNESCAPED_SLASHES)]);
+        }
+
+        return $requestArgs;
+    }
+
+    protected function makeURL(string $uri = ''): string
+    {
+        return sprintf('%s/%s', $this->baseURL, $uri);
+    }
 
     protected function generateToken(): string
     {
