@@ -25,6 +25,7 @@ class BlocksServiceProvider extends ServiceProvider
     protected function loadHooks(): void
     {
         \add_action('enqueue_block_editor_assets', [$this, 'blockAssets'], 10, 0);
+        \add_action('wp_enqueue_scripts', [$this, 'blockStyles'], 10, 0);
     }
 
     public function blockAssets(): void
@@ -33,6 +34,16 @@ class BlocksServiceProvider extends ServiceProvider
             'theme-blocks',
             Plugin::getInstance()->resourceUrl('editor.js', 'dist/build'),
             ['wp-blocks', 'wp-element', 'wp-edit-post', 'wp-dom-ready'],
+            time(),
+        );
+    }
+
+    public function blockStyles(): void
+    {
+        \wp_enqueue_style(
+            'zaak-styles',
+            Plugin::getInstance()->resourceUrl('zaak-styles.css', 'dist/build'),
+            [],
             time(),
         );
     }

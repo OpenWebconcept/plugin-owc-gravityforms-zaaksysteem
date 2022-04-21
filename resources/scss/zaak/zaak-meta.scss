@@ -1,0 +1,32 @@
+$meta: 'zaak-meta';
+
+.#{$meta} {
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
+
+.#{$meta}-item {
+  display: flex;
+  text-align: center;
+  flex-direction: column;
+  flex-basis: 50%;
+  align-items: center;
+  line-height:  var(--zaak-meta-item-line-height, 1.5);
+
+  @media screen and (min-width: 576px) {
+    flex-basis: 25%;
+  }
+
+  &__icon {
+    $size: 40px;
+    width: $size;
+    height: $size;
+    margin-bottom: 0.75rem;
+  }
+
+  &__value {
+    font-weight: var(--zaak-meta-item-value-font-weight, 700);
+  }
+}

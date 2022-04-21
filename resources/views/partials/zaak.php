@@ -14,7 +14,7 @@ use function OWC\OpenZaak\Foundation\Helpers\view;
     ]);
     ?>
     <div class="collapse" id="collapse-<?php echo $zaak->getIdentification(); ?>">
-        <div class="zaak-collapse-content">
+        <div class="zaak-content">
             <?php
             echo view('partials/zaak-meta.php', [
                 'zaak' => $zaak,

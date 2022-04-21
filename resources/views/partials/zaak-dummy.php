@@ -49,7 +49,7 @@ $steps = [
 ?>
 
 <div class="collapse" id="collapse-melding-geluidoverlast">
-    <div class="zaak-collapse-content">
+    <div class="zaak-content">
         <div class="zaak-meta">
             <?php echo view('partials/zaak-meta-item.php', [
                 'label' => 'Zaaknummer',

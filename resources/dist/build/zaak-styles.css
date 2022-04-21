@@ -1,0 +1,66 @@
+/*!********************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./resources/scss/style.scss ***!
+  \********************************************************************************************************************/
+.zaak-collapse-button {
+  border: 0;
+  display: flex;
+  margin-bottom: 0.75rem;
+  align-items: center;
+  width: 100%;
+  background-color: transparent;
+  text-align: left;
+  padding: 1rem 1rem;
+  transition: 0.15s ease all;
+  background-color: var(--zaak-collapse-button-background-color, #f2f2f2); }
+  .zaak-collapse-button[aria-expanded="true"], .zaak-collapse-button:hover {
+    background-color: var(--zaak-collapse-button-background-color-hover, #d41422);
+    color: var(--zaak-collapse-button-color-hover, #fff); }
+    .zaak-collapse-button[aria-expanded="true"] .zaak-collapse-button__folder-icon, .zaak-collapse-button:hover .zaak-collapse-button__folder-icon {
+      fill: var(--zaak-collapse-button-color-hover, #fff); }
+    .zaak-collapse-button[aria-expanded="true"] .zaak-collapse-button__chevron-icon, .zaak-collapse-button:hover .zaak-collapse-button__chevron-icon {
+      fill: var(--zaak-collapse-button-color-hover, #fff); }
+  .zaak-collapse-button[aria-expanded="true"] .zaak-collapse-button__chevron-icon {
+    transform: rotate(180deg); }
+  .zaak-collapse-button__folder-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 1rem;
+    transition: 0.15s ease all; }
+  .zaak-collapse-button__chevron-icon {
+    width: 20px;
+    height: 20px;
+    margin-left: auto;
+    transition: 0.15s ease all; }
+
+.zaak-content {
+  padding: 2rem 0; }
+
+.zaak-documents {
+  margin-top: 3rem; }
+
+.zaak-meta {
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  justify-content: space-evenly; }
+
+.zaak-meta-item {
+  display: flex;
+  text-align: center;
+  flex-direction: column;
+  flex-basis: 50%;
+  align-items: center;
+  line-height: var(--zaak-meta-item-line-height, 1.5); }
+  @media screen and (min-width: 576px) {
+    .zaak-meta-item {
+      flex-basis: 25%; } }
+  .zaak-meta-item__icon {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 0.75rem; }
+  .zaak-meta-item__value {
+    font-weight: var(--zaak-meta-item-value-font-weight, 700); }
+
+.zaak-process {
+  margin-top: 3rem; }
+
