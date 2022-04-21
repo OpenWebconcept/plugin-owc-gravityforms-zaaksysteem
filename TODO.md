@@ -4,3 +4,4 @@
 - Translations.
 - When creating a Zaak, via form submission, add extra fields.
 - Retrieve 'ZaakTypen' dynamically and use it in form settings. Used
+- Map form fields values to args used in request for creating zaak.
