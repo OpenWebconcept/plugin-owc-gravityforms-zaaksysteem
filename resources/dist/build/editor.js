@@ -1,26 +1,32 @@
+/*
+ * ATTENTION: The "eval" devtool has been used (maybe by default in mode: "development").
+ * This devtool is neither made for production nor for readable output files.
+ * It uses "eval()" calls to create a separate source file in the browser devtools.
+ * If you are trying to read the output file, select a different devtool (https://webpack.js.org/configuration/devtool/)
+ * or disable the default devtool with "devtool: false".
+ * If you are looking for production-ready output files, see mode: "production" (https://webpack.js.org/configuration/mode/).
+ */
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 571:
+/***/ "./resources/js/editor/index.js":
+/*!**************************************!*\
+  !*** ./resources/js/editor/index.js ***!
+  \**************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _register_blocks__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./register-blocks */ \"./resources/js/editor/register-blocks.js\");\n/* harmony import */ var _register_blocks__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_register_blocks__WEBPACK_IMPORTED_MODULE_0__);\n\n\n//# sourceURL=webpack://owc-openzaak/./resources/js/editor/index.js?");
+
+/***/ }),
+
+/***/ "./resources/js/editor/register-blocks.js":
+/*!************************************************!*\
+  !*** ./resources/js/editor/register-blocks.js ***!
+  \************************************************/
 /***/ (() => {
 
-var registerBlockType = wp.blocks.registerBlockType;
-var _wp = wp,
-    ServerSideRender = _wp.serverSideRender;
-registerBlockType("owc/open-zaak", {
-  title: "Zaken",
-  category: "theme",
-  edit: function edit() {
-    return /*#__PURE__*/React.createElement(ServerSideRender, {
-      block: "owc/open-zaak"
-    });
-  },
-  save: function save() {
-    return function () {
-      return null;
-    };
-  }
-});
+eval("var registerBlockType = wp.blocks.registerBlockType;\nvar _wp = wp,\n    ServerSideRender = _wp.serverSideRender;\nregisterBlockType(\"owc/open-zaak\", {\n  title: \"Zaken\",\n  category: \"theme\",\n  edit: function edit() {\n    return /*#__PURE__*/React.createElement(ServerSideRender, {\n      block: \"owc/open-zaak\"\n    });\n  },\n  save: function save() {\n    return function () {\n      return null;\n    };\n  }\n});\n\n//# sourceURL=webpack://owc-openzaak/./resources/js/editor/register-blocks.js?");
 
 /***/ })
 
@@ -80,15 +86,23 @@ registerBlockType("owc/open-zaak", {
 /******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
 /******/ 	})();
 /******/ 	
+/******/ 	/* webpack/runtime/make namespace object */
+/******/ 	(() => {
+/******/ 		// define __esModule on exports
+/******/ 		__webpack_require__.r = (exports) => {
+/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 			}
+/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 		};
+/******/ 	})();
+/******/ 	
 /************************************************************************/
-var __webpack_exports__ = {};
-// This entry need to be wrapped in an IIFE because it need to be in strict mode.
-(() => {
-"use strict";
-/* harmony import */ var _register_blocks__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(571);
-/* harmony import */ var _register_blocks__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_register_blocks__WEBPACK_IMPORTED_MODULE_0__);
-
-})();
-
+/******/ 	
+/******/ 	// startup
+/******/ 	// Load entry module and return exports
+/******/ 	// This entry module can't be inlined because the eval devtool is used.
+/******/ 	var __webpack_exports__ = __webpack_require__("./resources/js/editor/index.js");
+/******/ 	
 /******/ })()
 ;
