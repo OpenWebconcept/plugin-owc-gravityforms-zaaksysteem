@@ -4,7 +4,8 @@ const path = require("path");
 
 module.exports = {
 	entry: { 
-        "editor": "./resources/js/index.js",
+        "zaak-frontend": "./resources/js/frontend/index.js",
+        "editor": "./resources/js/editor/index.js",
         "zaak-styles": "./resources/scss/style.scss"
     },
 	output: {

@@ -29,6 +29,7 @@
 	"dependencies": {
 		"@wordpress/blocks": "^11.5.1",
 		"@wordpress/server-side-render": "^3.4.1",
+		"bootstrap": "^5.1.3",
 		"react-select": "^4.3.1"
 	}
 }

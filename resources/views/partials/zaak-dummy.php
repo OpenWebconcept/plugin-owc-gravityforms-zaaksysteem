@@ -4,11 +4,6 @@ declare(strict_types=1);
 
 use function OWC\OpenZaak\Foundation\Helpers\view;
 
-echo view('partials/zaak-collapse-button.php', [
-    'title' => 'Melding geluidoverlast (dummy)',
-    'id' => 'melding-geluidoverlast',
-]);
-
 $steps = [
     [
         'title' => 'Deelname aan geluidsonderzoek',
@@ -45,6 +40,12 @@ $steps = [
         'title' => 'Maatregelen zijn uitgevoerd',
     ]
 ];
+
+
+echo view('partials/zaak-collapse-button.php', [
+    'title' => 'Melding geluidoverlast (dummy)',
+    'id' => 'melding-geluidoverlast',
+]);
 
 ?>
 
