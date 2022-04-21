@@ -18,4 +18,15 @@ class OpenZaak
     {
         return $this->data['startdatum'] ?? '';
     }
+
+    public function getRegistrationDate(): string
+    {
+        $registrationDate = $this->data['registratiedatum'] ?? '';
+
+        if (empty($registrationDate)) {
+            return '';
+        }
+
+        return (new \DateTime($registrationDate))->format('d-m-Y');
+    }
 }

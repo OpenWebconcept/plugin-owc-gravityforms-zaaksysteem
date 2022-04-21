@@ -5,4 +5,7 @@
     <div>
         <?php echo $zaak->getStartDate(); ?>
     </div>
+    <div>
+        <?php echo $zaak->getRegistrationDate(); ?>
+    </div>
 </div>

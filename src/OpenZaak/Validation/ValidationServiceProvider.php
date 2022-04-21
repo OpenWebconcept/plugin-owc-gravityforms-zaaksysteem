@@ -20,7 +20,8 @@ class ValidationServiceProvider extends ServiceProvider
     protected function loadHooks(): void
     {
         /**
-         * Add template from this plugin to page attribute template section.
+         * Validate private pages on template.
+         * Check if BSN is present in current user session.
          */
         \add_action('template_include', function ($template) {
             $templateName = str_replace(['.blade.php', '.php'], '', basename($template));
