@@ -3,10 +3,12 @@
 namespace OWC\OpenZaak\Repositories;
 
 use OWC\OpenZaak\Models\OpenZaak as OpenZaakModel;
+use OWC\OpenZaak\Models\StatusType as StatusTypeModel;
 
 class OpenZaakRepository extends BaseRepository
 {
-    protected string $restURI = 'zaken/api/v1/zaken';
+    protected string $zakenURI = 'zaken/api/v1/zaken';
+    protected string $catalogiURI = 'catalogi/api/v1/statustypen';
 
     public function __construct()
     {
@@ -15,26 +17,21 @@ class OpenZaakRepository extends BaseRepository
 
     public function getZaken(): array
     {
-        $result = $this->request($this->makeURL());
+        $result = $this->request($this->makeURL($this->zakenURI));
 
         if (empty($result['results'])) {
             return [];
         }
 
         return array_map(function ($zaak) {
-            $model = new OpenZaakModel($zaak);
-
-            if (empty($model->getStatusURL())) {
-                return $model;
-            }
-
+            $model = new OpenZaakModel($zaak); // makeFrom
             return $this->complementZaak($model);
         }, $result['results']);
     }
 
-    protected function makeURL(): string
+    protected function makeURL(string $uri = ''): string
     {
-        return sprintf('%s/%s', $this->baseURL, $this->restURI);
+        return sprintf('%s/%s', $this->baseURL, $uri);
     }
 
     /**
@@ -42,6 +39,7 @@ class OpenZaakRepository extends BaseRepository
      */
     protected function complementZaak(OpenZaakModel $model): OpenZaakModel
     {
+        $model->setStatusTypes($this->getStatusTypes($model));
         $status = $this->getStatus($model);
 
         if (empty($status)) {
@@ -68,6 +66,29 @@ class OpenZaakRepository extends BaseRepository
         }
             
         return $model;
+    }
+
+    protected function getStatusTypes(OpenZaakModel $model): array
+    {
+        $types = $this->request($this->makeURL($this->catalogiURI));
+
+        if (empty($types['results']) || !is_array($types['results'])) {
+            return [];
+        }
+
+        $types = array_map(function ($type) {
+            return new StatusTypeModel($type);
+        }, $types['results']);
+
+        $types = array_filter($types, function ($type) use ($model) {
+            return $model->getTypeURL() === $type->getType();
+        });
+
+        usort($types, function ($type, $type2) {
+            return $type->getNumber() <=> $type2->getNumber();
+        });
+
+        return $types;
     }
 
     protected function getStatus(OpenZaakModel $model): array

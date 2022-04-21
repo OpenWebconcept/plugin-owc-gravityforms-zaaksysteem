@@ -61,9 +61,26 @@ class OpenZaak
         return $this;
     }
 
+    public function getStatusTypes(): array
+    {
+        return $this->data['statusTypes'] ?? [];
+    }
+
+    public function setStatusTypes(array $types): self
+    {
+        $this->data['statusTypes'] = $types;
+
+        return $this;
+    }
+
     public function getIdentification(): string
     {
         return $this->data['identificatie'] ?? '';
+    }
+
+    public function getTypeURL(): string
+    {
+        return $this->data['zaaktype'] ?? '';
     }
 
     public function getStartDate(): string
