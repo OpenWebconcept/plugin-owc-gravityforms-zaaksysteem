@@ -1,6 +1,10 @@
 $button: 'zaak-collapse-button';
 
 .#{$button} {
+  --zaak-collapse-button-background-color: #f2f2f2;
+  --zaak-collapse-button-background-color-hover: #d41422;
+  --zaak-collapse-button-color-hover: #fff;
+
   border: 0;
   display: flex;
   margin-bottom: 0.75rem;
@@ -10,20 +14,20 @@ $button: 'zaak-collapse-button';
   text-align: left;
   padding: 1rem 1rem;
   transition: 0.15s ease all;
-  background-color: var(--zaak-collapse-button-background-color, #f2f2f2);
+  background-color: var(--zaak-collapse-button-background-color);
 
 
   &[aria-expanded="true"],
   &:hover {
-    background-color: var(--zaak-collapse-button-background-color-hover, #d41422);
-    color: var(--zaak-collapse-button-color-hover, #fff);
+    background-color: var(--zaak-collapse-button-background-color-hover);
+    color: var(--zaak-collapse-button-color-hover);
 
     .#{$button}__folder-icon {
-      fill: var(--zaak-collapse-button-color-hover, #fff);
+      fill: var(--zaak-collapse-button-color-hover);
     }
 
     .#{$button}__chevron-icon {
-      fill: var(--zaak-collapse-button-color-hover, #fff);
+      fill: var(--zaak-collapse-button-color-hover);
     }
   }
 
