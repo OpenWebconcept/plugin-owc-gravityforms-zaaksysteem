@@ -19,6 +19,18 @@ class StatusType
         return $this->data['omschrijving'] ?? '';
     }
 
+    public function setIsPast(bool $value): self
+    {
+        $this->data['isPast'] = $value;
+
+        return $this;
+    }
+
+    public function isPast(): bool
+    {
+        return $this->data['isPast'] ?? false;
+    }
+
     public function getGenericDesc(): string
     {
         return $this->data['omschrijvingGeneriek'] ?? '';

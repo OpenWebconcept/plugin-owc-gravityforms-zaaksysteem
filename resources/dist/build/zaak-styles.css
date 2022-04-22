@@ -64,3 +64,50 @@
 .zaak-process {
   margin-top: 3rem; }
 
+.zaak-process-steps {
+  --zaak-process-steps-border-width: 2px;
+  --zaak-process-steps-color: #f2f2f2;
+  --zaak-process-steps-color-succes: #0d8228;
+  --zaak-process-steps-spacer: 1.75rem;
+  list-style: none;
+  padding-left: 0.75rem; }
+  .zaak-process-steps__step {
+    position: relative;
+    margin-bottom: var(--zaak-process-steps-spacer);
+    font-weight: 700; }
+    .zaak-process-steps__step:first-child .zaak-process-steps__step-marker::before {
+      content: none; }
+  .zaak-process-steps__step-marker {
+    position: relative;
+    width: 30px;
+    height: 30px;
+    margin-right: 1rem;
+    display: inline-block;
+    text-align: center;
+    border-radius: 50%;
+    border: var(--zaak-process-steps-border-width) solid var(--zaak-process-steps-color);
+    background-color: var(--zaak-process-steps-color); }
+    .zaak-process-steps__step-marker::before {
+      position: absolute;
+      bottom: calc(100% + var(--zaak-process-steps-border-width));
+      left: calc(50% - var(--zaak-process-steps-border-width) / 2);
+      height: var(--zaak-process-steps-spacer);
+      width: var(--zaak-process-steps-border-width);
+      content: "";
+      background-color: var(--zaak-process-steps-color); }
+    .zaak-process-steps__step-marker svg {
+      fill: var(--zaak-process-steps-color-succes);
+      transform: scale(0.6);
+      padding-bottom: 0.2rem; }
+  .zaak-process-steps__step--past .zaak-process-steps__step-marker {
+    border-color: var(--zaak-process-steps-color-succes);
+    color: var(--zaak-process-steps-color-succes); }
+  .zaak-process-steps__step--current {
+    color: var(--zaak-process-steps-color-succes); }
+    .zaak-process-steps__step--current .zaak-process-steps__step-marker {
+      border-color: var(--zaak-process-steps-color-succes);
+      background-color: var(--zaak-process-steps-color-succes);
+      color: #fff; }
+  .zaak-process-steps__step--past .zaak-process-steps__step-marker::before, .zaak-process-steps__step--current .zaak-process-steps__step-marker::before {
+    background-color: var(--zaak-process-steps-color-succes); }
+

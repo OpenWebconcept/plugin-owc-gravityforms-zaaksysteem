@@ -1,7 +1,81 @@
 $process: 'zaak-process';
+$process-steps: 'zaak-process-steps';
 
 .#{$process}{
   margin-top: 3rem;
 }
 
+.#{$process-steps}{
+  --zaak-process-steps-border-width: 2px; 
+  --zaak-process-steps-color: #f2f2f2;
+  --zaak-process-steps-color-succes: #0d8228;
+  --zaak-process-steps-spacer: 1.75rem; 
 
+  list-style: none;
+  padding-left: 0.75rem; 
+
+  &__step {
+    position: relative;
+    margin-bottom: var(--zaak-process-steps-spacer);
+    font-weight: 700;
+
+    &:first-child {
+      .#{$process-steps}__step-marker::before {
+        content: none; 
+      }
+    }
+  }
+
+  &__step-marker {
+    position: relative;
+    $size: 30px;
+    width: $size;
+    height: $size;
+    margin-right: 1rem;
+    display: inline-block;
+    text-align: center;
+    border-radius: 50%;
+    border: var(--zaak-process-steps-border-width) solid var(--zaak-process-steps-color);
+    background-color: var(--zaak-process-steps-color);
+
+    &::before {
+      position: absolute;
+      bottom: calc(100% + #{var(--zaak-process-steps-border-width)});
+      left: calc(50% - #{var(--zaak-process-steps-border-width)} / 2);
+      height: var(--zaak-process-steps-spacer);
+      width: var(--zaak-process-steps-border-width);
+      content: "";
+      background-color: var(--zaak-process-steps-color);
+    }
+
+    svg {
+      fill: var(--zaak-process-steps-color-succes); 
+      transform: scale(0.6);
+      padding-bottom: 0.2rem;
+    }
+  }
+
+  &__step--past {
+    .#{$process-steps}__step-marker {
+      border-color: var(--zaak-process-steps-color-succes);
+      color: var(--zaak-process-steps-color-succes);
+    }
+  }
+
+  &__step--current {
+    color: var(--zaak-process-steps-color-succes); 
+
+    .#{$process-steps}__step-marker {
+      border-color: var(--zaak-process-steps-color-succes);
+      background-color: var(--zaak-process-steps-color-succes);
+      color: #fff;
+    }
+  }
+
+  &__step--past,
+  &__step--current{
+    .#{$process-steps}__step-marker::before {
+      background-color: var(--zaak-process-steps-color-succes);
+    }
+  }
+}

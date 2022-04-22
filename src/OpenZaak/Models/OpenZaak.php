@@ -66,9 +66,61 @@ class OpenZaak
         return $this;
     }
 
+    protected function getCurrentStatusTypeNumber(array $types): int
+    {
+        $currentStatus = $this->getStatusDesc();
+
+        $volgnummer = array_filter($types, function ($type) use ($currentStatus) {
+            return $type->getDesc() === $currentStatus;
+        });
+
+        if (empty($volgnummer)) {
+            return 0;
+        }
+
+        $type = reset($volgnummer);
+
+        return $type->getNumber();
+    }
+
     public function getStatusTypes(): array
     {
-        return $this->data['statusTypes'] ?? [];
+        $types = $this->data['statusTypes'] ?? [];
+
+        if (empty($types)) {
+            return [];
+        }
+
+        $volgnummer = $this->getCurrentStatusTypeNumber($types);
+
+        if (!$volgnummer) {
+            return $types;
+        }
+
+        return array_map(function ($type) use ($volgnummer) {
+            if ($type->getNumber() >= $volgnummer) {
+                return $type;
+            }
+
+            $type->setIsPast(true);
+            return $type;
+        }, $types);
+    }
+
+    public function getFilteredStatusTypes()
+    {
+        $currentStatus = $this->getStatusDesc();
+        $volgnummer = array_filter($this->getStatusTypes(), function ($type) use ($currentStatus) {
+            return $type->getDesc() === $currentStatus;
+        });
+        
+        $test = $volgnummer[2]->getNumber();
+
+        $types = array_filter($this->getStatusTypes(), function ($type) use ($test) {
+            return $type->getNumber() >= $test;
+        });
+
+        return $types;
     }
 
     public function setStatusTypes(array $types): self

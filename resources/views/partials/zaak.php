@@ -22,7 +22,9 @@ use function OWC\OpenZaak\Foundation\Helpers\view;
             ]);
 
             echo view('partials/zaak-process-steps.php', [
-                'steps' => [],
+                'steps' => $zaak->getStatusTypes(),
+                'currentStep' => $zaak->getStatusDesc(),
+                'hasNoStatus' => $zaak->getStatusDesc() === 'Niet beschikbaar',
             ]);
 
             echo view('partials/zaak-documents.php', [
