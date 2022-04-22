@@ -59,6 +59,7 @@ $process-steps: 'zaak-process-steps';
     .#{$process-steps}__step-marker {
       border-color: var(--zaak-process-steps-color-succes);
       color: var(--zaak-process-steps-color-succes);
+      background-color: #fff;
     }
   }
 
