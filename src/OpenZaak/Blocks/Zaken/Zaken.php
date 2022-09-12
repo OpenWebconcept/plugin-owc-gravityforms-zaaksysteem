@@ -13,7 +13,7 @@ class Zaken extends AbstractBlock
     {
         $this->register('owc/open-zaak', [
             'attributes' => [],
-            'render_callback' => ['OWC\OpenZaak\Blocks\Zaken\Block', 'render'],
+            'render_callback' => [new Block, 'render'],
         ]);
     }
 }
