@@ -19,6 +19,7 @@ class GravityForms
             'identificatie' => rgar($entry, '3'),
             'zaaktype' => rgar($entry, '4'),
             'startdatum' => rgar($entry, '5'),
+            'omschrijving' => rgar($entry, '7'),
         ];
 
         $result = (new CreateOpenZaakRepository())->createOpenZaak($args);
