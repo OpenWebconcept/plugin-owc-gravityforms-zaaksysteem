@@ -1,8 +1,11 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace OWC\OpenZaak\Validation;
 
 use OWC\OpenZaak\Foundation\ServiceProvider;
+
 use function Yard\DigiD\Foundation\Helpers\resolve;
 
 class ValidationServiceProvider extends ServiceProvider
@@ -26,7 +29,7 @@ class ValidationServiceProvider extends ServiceProvider
         \add_action('template_include', function ($template) {
             $templateName = str_replace(['.blade.php', '.php'], '', basename($template));
             $templateToValidate = 'template-pip';
-            
+
             if ($templateName !== $templateToValidate) {
                 return $template;
             }

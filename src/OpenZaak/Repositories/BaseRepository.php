@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace OWC\OpenZaak\Repositories;
 
@@ -9,6 +11,7 @@ abstract class BaseRepository
     public function __construct()
     {
         $this->baseURL = $_ENV['OPEN_ZAAK_URL'];
+        $this->appUuid = $_ENV['OPEN_ZAAK_APP_UUID'];
         $this->clientID = $_ENV['OPEN_ZAAK_CLIENT_ID'];
         $this->clientSecret = $_ENV['OPEN_ZAAK_CLIENT_SECRET'];
     }
@@ -18,9 +21,9 @@ abstract class BaseRepository
         if (empty($url)) {
             return [];
         }
-    
+
         $request = \wp_remote_request($url, $this->getRequestArgs($method, $args));
-        
+
         $httpSuccessCodes = [200, 201];
 
         if (\is_wp_error($request) || !in_array($request['response']['code'], $httpSuccessCodes)) {
@@ -67,8 +70,8 @@ abstract class BaseRepository
             'iss' => $this->clientID,
             'iat' => time(),
             'client_id' => $this->clientID,
-            'user_id' => '8d2646a6-0404-450b-b2b3-0fc64eadccab',
-            'user_representation' => '8d2646a6-0404-450b-b2b3-0fc64eadccab',
+            'user_id' => $this->appUuid,
+            'user_representation' => $this->appUuid,
         ];
 
         return JWT::encode($payload, $this->clientSecret, 'HS256');

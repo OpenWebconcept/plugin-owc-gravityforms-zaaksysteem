@@ -1,23 +1,39 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace OWC\OpenZaak\Repositories;
 
 use OWC\OpenZaak\Models\OpenZaak as OpenZaakModel;
 use OWC\OpenZaak\Models\StatusType as StatusTypeModel;
 
+use function Yard\DigiD\Foundation\Helpers\decrypt;
+use function Yard\DigiD\Foundation\Helpers\resolve;
+
 class OpenZaakRepository extends BaseRepository
 {
     protected string $zakenURI = 'zaken/api/v1/zaken';
-    protected string $catalogiURI = 'catalogi/api/v1/statustypen';
+    protected string $catalogiStatusTypen = 'catalogi/api/v1/statustypen';
 
     public function __construct()
     {
         parent::__construct();
     }
 
+    public function getBsn(): string
+    {
+        $resolvedBSN = resolve('session')->getSegment('digid')->get('bsn');
+
+        return decrypt($resolvedBSN);
+    }
+
     public function getZaken(): array
     {
-        $result = $this->request($this->makeURL($this->zakenURI));
+        if (empty($this->getBsn())) {
+            return [];
+        }
+
+        $result = $this->request($this->makeURL($this->zakenURI . '?rol__betrokkeneIdentificatie__natuurlijkPersoon__inpBsn=' . $this->getBsn()));
 
         if (empty($result['results'])) {
             return [];
@@ -53,19 +69,19 @@ class OpenZaakRepository extends BaseRepository
         if (empty($detailedStatus)) {
             return $model;
         }
-        
+
         try {
             $model->setStatusDesc($detailedStatus['omschrijving'] ?? '');
         } catch (\Exception | \TypeError $e) {
             return $model;
         }
-            
+
         return $model;
     }
 
     protected function getStatusTypes(OpenZaakModel $model): array
     {
-        $types = $this->request($this->makeURL($this->catalogiURI));
+        $types = $this->request($this->makeURL($this->catalogiStatusTypen));
 
         if (empty($types['results']) || !is_array($types['results'])) {
             return [];

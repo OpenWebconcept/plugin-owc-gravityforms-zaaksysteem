@@ -15,6 +15,6 @@ class GravityFormsServiceProvider extends ServiceProvider
 
     protected function loadHooks(): void
     {
-        $this->plugin->loader->addFilter('gform_after_submission', new GravityForms, 'afterSubmission', 10, 2);
+        $this->plugin->loader->addFilter('gform_after_submission', new GravityForms(), 'afterSubmission', 10, 2);
     }
 }
