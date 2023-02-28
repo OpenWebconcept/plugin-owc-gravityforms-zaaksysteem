@@ -1,10 +1,12 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 /**
  * Plugin Name:       Yard | OWC OpenZaak
  * Plugin URI:        https://www.openwebconcept.nl/
  * Description:       Implement the OpenZaak API.
- * Version:           1.0.2
+ * Version:           1.0.3
  * Author:            Yard | Digital Agency
  * Author URI:        https://www.yard.nl/
  * License:           GPL-3.0
@@ -20,7 +22,7 @@ if (!defined('WPINC')) {
     die;
 }
 
-define('OZ_VERSION', '1.0.2');
+define('OZ_VERSION', '1.0.3');
 define('OZ_DIR', basename(__DIR__));
 define('OZ_ROOT_PATH', __DIR__);
 define('OZ_PLUGIN_SLUG', 'openzaak');

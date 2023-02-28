@@ -1,11 +1,14 @@
 # Changelog
 
+## v1.0.3
+
+- Change: namespace for consistency
+- Add: fetch 'zaken' by bsn
+
 ## v1.0.2
 
-### Feat
--   Add 'omschrijving' arg when creating a openzaak
+- Add: 'omschrijving' arg when creating a openzaak
 
 ## v1.0.1
 
-### Refactor
--   Zaken block render method should not be called statically
+- Change: zaken block render method should not be called statically
