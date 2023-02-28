@@ -1,5 +1,5 @@
 {
-	"name": "plugin/owc-openzaak",
+	"name": "plugin/openzaak",
 	"description": "Implement the OpenZaak API",
 	"authors": [
 		{

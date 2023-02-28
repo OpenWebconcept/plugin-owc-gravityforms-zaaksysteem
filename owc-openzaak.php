@@ -9,7 +9,7 @@
  * Author URI:        https://www.yard.nl/
  * License:           GPL-3.0
  * License URI:       http://www.gnu.org/licenses/gpl-3.0.txt
- * Text Domain:       owc-openzaak
+ * Text Domain:       openzaak
  * Domain Path:       /languages
  */
 
@@ -23,7 +23,7 @@ if (!defined('WPINC')) {
 define('OZ_VERSION', '1.0.2');
 define('OZ_DIR', basename(__DIR__));
 define('OZ_ROOT_PATH', __DIR__);
-define('OZ_PLUGIN_SLUG', 'owc-openzaak');
+define('OZ_PLUGIN_SLUG', 'openzaak');
 
 /**
  * Manual loaded file: the autoloader.

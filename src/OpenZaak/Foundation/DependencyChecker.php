@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace OWC\OpenZaak\Foundation;
 
@@ -65,8 +67,8 @@ class DependencyChecker
     {
         add_action('admin_notices', function () {
             $list = '<p>' . __(
-                'The following plugins are required for the usage of the the Yard | OWC OpenZaak plugin:',
-                'owc-openzaak'
+                'The following plugins are required for the usage of the the Yard | OpenZaak plugin:',
+                'openzaak'
             ) . '</p><ol>';
 
             foreach ($this->failed as $dependency) {
@@ -105,7 +107,7 @@ class DependencyChecker
     private function checkClass(array $dependency)
     {
         if (!class_exists($dependency['name'])) {
-            $this->markFailed($dependency, __('Class does not exist', 'owc-openzaak'));
+            $this->markFailed($dependency, __('Class does not exist', 'openzaak'));
 
             return;
         }
@@ -125,7 +127,7 @@ class DependencyChecker
         }
 
         if (!is_plugin_active($dependency['file'])) {
-            $this->markFailed($dependency, __('Inactive', 'owc-openzaak'));
+            $this->markFailed($dependency, __('Inactive', 'openzaak'));
 
             return;
         }
@@ -133,7 +135,7 @@ class DependencyChecker
         // If there is a version lock set on the dependency...
         if (isset($dependency['version'])) {
             if (!$this->checkVersion($dependency)) {
-                $this->markFailed($dependency, __('Minimal version:', 'owc-openzaak') . ' <b>' . $dependency['version'] . '</b>');
+                $this->markFailed($dependency, __('Minimal version:', 'openzaak') . ' <b>' . $dependency['version'] . '</b>');
             }
         }
     }

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace OWC\OpenZaak\Foundation;
 
@@ -14,7 +16,7 @@ class Plugin
      *
      * @var string
      */
-    const NAME = 'owc-openzaak';
+    public const NAME = 'openzaak';
 
     /**
      * Version of the plugin.
@@ -22,7 +24,7 @@ class Plugin
      *
      * @var string VERSION
      */
-    const VERSION = \OZ_VERSION;
+    public const VERSION = \OZ_VERSION;
 
     /**
      * Path to the root of the plugin.
