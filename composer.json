@@ -1,5 +1,5 @@
 {
-	"name": "plugin/openzaak",
+	"name": "plugin/owc-gravityforms-openzaak",
 	"description": "Implement the OpenZaak API",
 	"authors": [
 		{

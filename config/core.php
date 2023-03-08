@@ -10,6 +10,8 @@ return [
         OWC\OpenZaak\Validation\ValidationServiceProvider::class
     ],
 
+    'text_domain' => 'owc-gravityforms-openzaak',
+
     /**
      * Dependencies upon which the plugin relies.
      *

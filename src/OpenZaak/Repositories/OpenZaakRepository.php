@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace OWC\OpenZaak\Repositories;
 
-use OWC\OpenZaak\Models\OpenZaak as OpenZaakModel;
-use OWC\OpenZaak\Models\StatusType as StatusTypeModel;
-
 use function Yard\DigiD\Foundation\Helpers\decrypt;
 use function Yard\DigiD\Foundation\Helpers\resolve;
+
+use OWC\OpenZaak\Models\OpenZaak as OpenZaakModel;
+use OWC\OpenZaak\Models\StatusType as StatusTypeModel;
 
 class OpenZaakRepository extends BaseRepository
 {
@@ -83,7 +83,7 @@ class OpenZaakRepository extends BaseRepository
     {
         $types = $this->request($this->makeURL($this->catalogiStatusTypen));
 
-        if (empty($types['results']) || !is_array($types['results'])) {
+        if (empty($types['results']) || ! is_array($types['results'])) {
             return [];
         }
 

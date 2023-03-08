@@ -10,7 +10,19 @@ class GravityFormsServiceProvider extends ServiceProvider
 {
     public function boot(): void
     {
+        $this->registerSettingsAddon();
         $this->loadHooks();
+    }
+
+    protected function registerSettingsAddon(): void
+    {
+        if (! method_exists('\GFForms', 'include_addon_framework')) {
+            return;
+        }
+
+        \GFForms::include_addon_framework();
+        \GFAddOn::register(GravityFormsAddOnSettings::class);
+        GravityFormsAddOnSettings::get_instance();
     }
 
     protected function loadHooks(): void

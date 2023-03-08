@@ -5,15 +5,21 @@ declare(strict_types=1);
 namespace OWC\OpenZaak\Repositories;
 
 use Firebase\JWT\JWT;
+use OWC\OpenZaak\GravityForms\GravityFormsSettings;
 
 abstract class BaseRepository
 {
+    protected string $baseURL;
+    protected string $appUuid;
+    protected string $clientID;
+    protected string $clientSecret;
+
     public function __construct()
     {
-        $this->baseURL = $_ENV['OPEN_ZAAK_URL'];
-        $this->appUuid = $_ENV['OPEN_ZAAK_APP_UUID'];
-        $this->clientID = $_ENV['OPEN_ZAAK_CLIENT_ID'];
-        $this->clientSecret = $_ENV['OPEN_ZAAK_CLIENT_SECRET'];
+        $this->baseURL = GravityFormsSettings::make()->get('base-url');
+        $this->appUuid = GravityFormsSettings::make()->get('app-uuid');
+        $this->clientID = GravityFormsSettings::make()->get('client-id');
+        $this->clientSecret = GravityFormsSettings::make()->get('client-secret');
     }
 
     public function request(string $url = '', string $method = 'GET', array $args = []): array
@@ -26,7 +32,7 @@ abstract class BaseRepository
 
         $httpSuccessCodes = [200, 201];
 
-        if (\is_wp_error($request) || !in_array($request['response']['code'], $httpSuccessCodes)) {
+        if (\is_wp_error($request) || ! in_array($request['response']['code'], $httpSuccessCodes)) {
             return [];
         }
 
@@ -36,7 +42,7 @@ abstract class BaseRepository
             return [];
         }
 
-        return is_array($body) && !empty($body) ? $body : [];
+        return is_array($body) && ! empty($body) ? $body : [];
     }
 
     protected function getRequestArgs(string $method, array $args = [])
@@ -51,8 +57,7 @@ abstract class BaseRepository
             ]
         ];
 
-
-        if ('POST' === $method && !empty($args)) {
+        if ('POST' === $method && ! empty($args)) {
             $requestArgs = array_merge($requestArgs, ['body' => json_encode($args, JSON_UNESCAPED_SLASHES)]);
         }
 
@@ -64,6 +69,10 @@ abstract class BaseRepository
         return sprintf('%s/%s', $this->baseURL, $uri);
     }
 
+    /**
+     * TODO: Decos uses another payload for generating a token.
+     * https://zgw-ztc-api-acc.decosasp.com/swagger/index.html#/Token/Token_Token
+     */
     protected function generateToken(): string
     {
         $payload = [
