@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace OWC\OpenZaak\GravityForms;
 
 use function OWC\OpenZaak\Foundation\Helpers\config;
+use function OWC\OpenZaak\Foundation\Helpers\get_supplier;
 use GFAddOn;
 
 class GravityFormsAddOnSettings extends GFAddOn
@@ -51,6 +52,8 @@ class GravityFormsAddOnSettings extends GFAddOn
      */
     private static $_instance = null;
 
+    private string $settingsPrefix = 'owc-openzaak-';
+
     /**
      * Singleton loader.
      */
@@ -70,7 +73,13 @@ class GravityFormsAddOnSettings extends GFAddOn
      */
     public function plugin_settings_fields()
     {
-        $prefix = "owc-openzaak-";
+        $settings = sprintf('%sSettings', get_supplier()); // Compose method name based on supplier name.
+        
+        return $this->$settings();
+    }
+
+    protected function MaykinMediaSettings(): array
+    {
         return [
             [
                 'title'  => esc_html__('Settings', config('core.text_domain')),
@@ -79,45 +88,90 @@ class GravityFormsAddOnSettings extends GFAddOn
                         'label'             => esc_html__('Base URL', config('core.text_domain')),
                         'type'              => 'text',
                         'class'             => 'medium',
-                        'name'              => "{$prefix}base-url",
+                        'name'              => "{$this->settingsPrefix}maykin-base-url",
                         'required'          => true
                     ],
                     [
                         'label'             => esc_html__('App UUID', config('core.text_domain')),
                         'type'              => 'text',
                         'class'             => 'medium',
-                        'name'              => "{$prefix}app-uuid",
+                        'name'              => "{$this->settingsPrefix}maykin-app-uuid",
                         'required'          => true
                     ],
                     [
                         'label'             => esc_html__('Client ID', config('core.text_domain')),
                         'type'              => 'text',
                         'class'             => 'medium',
-                        'name'              => "{$prefix}client-id",
+                        'name'              => "{$this->settingsPrefix}maykin-client-id",
                         'required'          => true
                     ],
                     [
                         'label'             => esc_html__('Client Secret', config('core.text_domain')),
                         'type'              => 'text',
                         'class'             => 'medium',
-                        'name'              => "{$prefix}client-secret",
+                        'name'              => "{$this->settingsPrefix}maykin-client-secret",
                         'required'          => true
                     ]
                 ],
             ],
+            $this->RSIN()
+        ];
+    }
+
+    protected function DecosSettings(): array
+    {
+        return [
             [
-                'title'  => esc_html__('Organization', config('core.text_domain')),
+                'title'  => esc_html__('Settings', config('core.text_domain')),
                 'fields' => [
                     [
-                        'label'             => esc_html__('RSIN', config('core.text_domain')),
+                        'label'             => esc_html__('Base URL', config('core.text_domain')),
                         'type'              => 'text',
                         'class'             => 'medium',
-                        'name'              => "{$prefix}rsin",
-                        'required'          => true,
-                        'description'       => 'Registration number for non-natural persons, also known as the counterpart of the citizen service number (BSN).'
+                        'name'              => "{$this->settingsPrefix}decos-base-url",
+                        'required'          => true
+                    ],
+                    [
+                        'label'             => esc_html__('Token URL', config('core.text_domain')),
+                        'type'              => 'text',
+                        'class'             => 'medium',
+                        'name'              => "{$this->settingsPrefix}decos-token-url",
+                        'required'          => true
+                    ],
+                    [
+                        'label'             => esc_html__('Client ID', config('core.text_domain')),
+                        'type'              => 'text',
+                        'class'             => 'medium',
+                        'name'              => "{$this->settingsPrefix}decos-client-id",
+                        'required'          => true
+                    ],
+                    [
+                        'label'             => esc_html__('Client Secret', config('core.text_domain')),
+                        'type'              => 'text',
+                        'class'             => 'medium',
+                        'name'              => "{$this->settingsPrefix}decos-client-secret",
+                        'required'          => true
                     ]
                 ],
-            ]
+            ],
+            $this->RSIN()
+        ];
+    }
+
+    protected function RSIN(): array
+    {
+        return [
+            'title'  => \esc_html__('Organization', config('core.text_domain')),
+            'fields' => [
+                [
+                    'label'             => \esc_html__('RSIN', config('core.text_domain')),
+                    'type'              => 'text',
+                    'class'             => 'medium',
+                    'name'              => "{$this->settingsPrefix}rsin",
+                    'required'          => true,
+                    'description'       => 'Registration number for non-natural persons, also known as the counterpart of the citizen service number (BSN).'
+                ]
+            ],
         ];
     }
 }

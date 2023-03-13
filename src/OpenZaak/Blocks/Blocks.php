@@ -5,9 +5,7 @@ namespace OWC\OpenZaak\Blocks;
 class Blocks
 {
     /**
-     * Get all the blocks.
-     *
-     * @return array
+     * Get all the blocks inside a nested directory inside the 'Zaken' directory.
      */
     public function getFiles(): array
     {
@@ -16,8 +14,6 @@ class Blocks
 
     /**
      * Get defined classes.
-     *
-     * @return array
      */
     public function getClasses(): array
     {

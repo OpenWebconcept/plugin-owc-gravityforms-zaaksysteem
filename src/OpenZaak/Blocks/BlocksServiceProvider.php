@@ -7,6 +7,8 @@ use OWC\OpenZaak\Foundation\ServiceProvider;
 
 class BlocksServiceProvider extends ServiceProvider
 {
+    protected Blocks $blocks;
+    
     public function __construct($plugin)
     {
         parent::__construct($plugin);

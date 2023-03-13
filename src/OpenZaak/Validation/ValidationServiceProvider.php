@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace OWC\OpenZaak\Validation;
 
-use OWC\OpenZaak\Foundation\ServiceProvider;
-
 use function Yard\DigiD\Foundation\Helpers\resolve;
+
+use OWC\OpenZaak\Foundation\ServiceProvider;
 
 class ValidationServiceProvider extends ServiceProvider
 {
+    protected object $session;
+    
     public function __construct()
     {
         $this->session = resolve('session')->getSegment('digid');
@@ -28,7 +30,7 @@ class ValidationServiceProvider extends ServiceProvider
          */
         \add_action('template_include', function ($template) {
             $templateName = str_replace(['.blade.php', '.php'], '', basename($template));
-            $templateToValidate = 'template-pip';
+            $templateToValidate = 'template-openzaak';
 
             if ($templateName !== $templateToValidate) {
                 return $template;
@@ -48,9 +50,9 @@ class ValidationServiceProvider extends ServiceProvider
         $wp_query->set_403();
         status_header(403);
 
-        if (method_exists('\App\Traits\SEO', 'setDocumentTitle')) {
-            $this->setDocumentTitle('Geen toegang');
-        }
+        \add_filter('pre_get_document_title', function (string $title) {
+            return 'Geen toegang';
+        }, 10, 1);
 
         return sprintf('%s/%s', OZ_ROOT_PATH, 'resources/views/403.php');
     }

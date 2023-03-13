@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace OWC\OpenZaak\Repositories;
+namespace OWC\OpenZaak\Repositories\MaykinMedia;
 
-use function Yard\DigiD\Foundation\Helpers\decrypt;
-use function Yard\DigiD\Foundation\Helpers\resolve;
+use function OWC\OpenZaak\Foundation\Helpers\decrypt;
+use function OWC\OpenZaak\Foundation\Helpers\resolve;
 
 use OWC\OpenZaak\Models\OpenZaak as OpenZaakModel;
 use OWC\OpenZaak\Models\StatusType as StatusTypeModel;

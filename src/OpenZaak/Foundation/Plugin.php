@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace OWC\OpenZaak\Foundation;
 
+use \DI\Container;
+use \DI\ContainerBuilder;
 use function OWC\OpenZaak\Foundation\Helpers\resolve;
 
 /**
@@ -13,44 +15,31 @@ class Plugin
 {
     /**
      * Name of the plugin.
-     *
-     * @var string
      */
     public const NAME = 'openzaak';
 
     /**
      * Version of the plugin.
      * Used for setting versions of enqueue scripts and styles.
-     *
-     * @var string VERSION
      */
     public const VERSION = \OZ_VERSION;
 
     /**
      * Path to the root of the plugin.
-     *
-     * @var string $rootPath
      */
-    protected $rootPath;
+    protected string $rootPath;
 
     /**
      * Instance of the configuration repository.
-     *
-     * @var Config
      */
-    public $config;
+    public Config $config;
 
     /**
      * Instance of the Hook loader.
-     *
-     * @var Loader
      */
-    public $loader;
+    public Loader $loader;
 
-    /**
-     * @var \DI\Container
-     */
-    protected $container;
+    protected Container $container;
 
     /**
      * @var Plugin
@@ -59,25 +48,17 @@ class Plugin
 
     /**
      * Constructor of the BasePlugin
-     *
-     * @param string $rootPath
-     *
-     * @return void
      */
     public function __construct(string $rootPath)
     {
         $this->rootPath = $rootPath;
         require_once __DIR__ . '/Helpers.php';
         $this->buildContainer();
-        load_plugin_textdomain($this->getName(), false, $this->getName() . '/languages/');
+        \load_plugin_textdomain($this->getName(), false, $this->getName() . '/languages/');
     }
 
     /**
      * Return the Plugin instance
-     *
-     * @param string $rootPath
-     *
-     * @return self
      */
     public static function getInstance($rootPath = ''): self
     {
@@ -88,12 +69,9 @@ class Plugin
         return static::$instance;
     }
 
-    /**
-     * @return \DI\Container
-     */
-    protected function buildContainer()
+    protected function buildContainer(): void
     {
-        $builder = new \DI\ContainerBuilder();
+        $builder = new ContainerBuilder();
         $builder->addDefinitions([
             'app'         => $this,
             'config'   => function () {
@@ -105,21 +83,11 @@ class Plugin
         $this->container = $builder->build();
     }
 
-    /**
-     * Return container
-     *
-     * @return \DI\Container
-     */
-    public function getContainer(): \DI\Container
+    public function getContainer(): Container
     {
         return $this->container;
     }
 
-    /**
-     * Boot the plugin.
-     *
-     * @return bool
-     */
     public function boot(): bool
     {
         $this->config = resolve('config');
@@ -129,7 +97,7 @@ class Plugin
 
         if ($dependencyChecker->failed()) {
             $dependencyChecker->notify();
-            deactivate_plugins(plugin_basename($this->rootPath . '/' . $this->getName() . '.php'));
+            \deactivate_plugins(\plugin_basename($this->rootPath . '/' . $this->getName() . '.php'));
 
             return false;
         }
@@ -144,29 +112,19 @@ class Plugin
 
     /**
      * Get the path to a particular resource.
-     *
-     * @var string $file
-     * @var string $directory
-     *
-     * @return string
      */
     public function resourceUrl(string $file, string $directory = ''): string
     {
-        $directory = !empty($directory) ? $directory . '/' : '';
-        return plugins_url("resources/{$directory}/{$file}", OZ_PLUGIN_SLUG . '/plugin.php');
+        $directory = ! empty($directory) ? $directory . '/' : '';
+        return \plugins_url("resources/{$directory}/{$file}", OZ_PLUGIN_SLUG . '/plugin.php');
     }
 
     /**
      * Call method on service providers.
      *
-     * @param string $method
-     * @param string $key
-     *
-     * @return void
-     *
      * @throws \Exception
      */
-    public function callServiceProviders($method, $key = '')
+    public function callServiceProviders(string $method, string $key = ''): void
     {
         $offset = $key ? "core.providers.{$key}" : 'core.providers';
         $services = $this->config->get($offset);
@@ -190,28 +148,22 @@ class Plugin
 
     /**
      * Get the name of the plugin.
-     *
-     * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return static::NAME;
     }
 
     /**
      * Get the version of the plugin.
-     *
-     * @return string
      */
-    public function getVersion()
+    public function getVersion(): string
     {
         return static::VERSION;
     }
 
     /**
      * Return root path of plugin.
-     *
-     * @return string
      */
     public function getRootPath(): string
     {

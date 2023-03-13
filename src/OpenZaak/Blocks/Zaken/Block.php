@@ -2,14 +2,16 @@
 
 namespace OWC\OpenZaak\Blocks\Zaken;
 
+use function OWC\OpenZaak\Foundation\Helpers\get_supplier;
 use function OWC\OpenZaak\Foundation\Helpers\view;
-use OWC\OpenZaak\Repositories\OpenZaakRepository;
 
 class Block
 {
     public function render()
     {
-        $zaken = (new OpenZaakRepository())->getZaken();
+        $repository = sprintf('OWC\OpenZaak\Repositories\%s\OpenZaakRepository', get_supplier());
+        $zaken = (new $repository())->getZaken();
+
         return view('overview-zaken.php', ['zaken' => $zaken]);
     }
 }

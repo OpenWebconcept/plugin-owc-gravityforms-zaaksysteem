@@ -11,24 +11,30 @@ abstract class AbstractBlock
     {
         $attributes = $this->hydrateAttributes($attributes, $blockName);
 
-        add_action('init', function () use ($blockName, $attributes) {
-            // var_dump($blockName, $attributes);
-            // die;
+        \add_action('init', function () use ($blockName, $attributes) {
             \register_block_type($blockName, $attributes);
         });
     }
 
     public function hydrateAttributes(array $attributes = []): array
     {
-        if (isset($attributes['render_callback'])) {
+        if (! empty($attributes['render_callback'])) {
             return $attributes;
         }
 
         $attributes['render_callback'] = [
-            sprintf('Yard\Blocks\Blocks\%s\Entities\Block', $this->getClassName()),
+            sprintf('OWC\OpenZaak\Blocks\%s\Block', $this->getClassName()),
             'render'
         ];
 
         return $attributes;
+    }
+
+    /**
+     * Return the class of the block.
+     */
+    public function getClassName(): string
+    {
+        return (new \ReflectionClass($this))->getShortName();
     }
 }

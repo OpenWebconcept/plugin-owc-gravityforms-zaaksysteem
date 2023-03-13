@@ -9,17 +9,11 @@ abstract class ServiceProvider
 {
     /**
      * Instance of the plugin.
-     *
-     * @var Plugin
      */
-    protected $plugin;
+    protected Plugin $plugin;
 
     /**
      * Construction of the service provider.
-     *
-     * @param Plugin $plugin
-     *
-     * @return void
      */
     public function __construct(Plugin $plugin)
     {

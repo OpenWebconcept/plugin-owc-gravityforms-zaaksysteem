@@ -1,6 +1,6 @@
 // External
-import 'bootstrap/js/dist/collapse';
+import "bootstrap/js/dist/collapse";
 
 const app = () => {};
 
-document.addEventListener( 'DOMContentLoaded', app );
+document.addEventListener("DOMContentLoaded", app);

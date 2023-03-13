@@ -9,24 +9,18 @@ class Config
 {
     /**
      * Directory where config files are located.
-     *
-     * @var string $path
      */
-    protected $path;
+    protected string $path;
 
     /**
      * Array with names of protected nodes in the config-items.
-     *
-     * @var array $protectNodes
      */
-    protected $protectedNodes = [];
+    protected array $protectedNodes = [];
 
     /**
      * Array with all the config values.
-     *
-     * @var array $items
      */
-    protected $items = [];
+    protected array $items = [];
 
     /**
      * Config repository constructor.
@@ -39,7 +33,7 @@ class Config
      *
      * @return void
      */
-    public function __construct($path, array $items = [])
+    public function __construct(string $path, array $items = [])
     {
         $this->path = $path;
         $this->items = $items;
@@ -48,10 +42,8 @@ class Config
 
     /**
      * Boot up the configuration repository.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         $this->scanDirectory($this->getPath());
     }
