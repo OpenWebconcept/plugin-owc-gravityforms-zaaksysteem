@@ -10,6 +10,9 @@ use function Yard\DigiD\Foundation\Helpers\resolve;
 
 class ValidationServiceProvider extends ServiceProvider
 {
+    /** @var Segment */
+    protected $session;
+
     public function __construct()
     {
         $this->session = resolve('session')->getSegment('digid');
@@ -28,7 +31,7 @@ class ValidationServiceProvider extends ServiceProvider
          */
         \add_action('template_include', function ($template) {
             $templateName = str_replace(['.blade.php', '.php'], '', basename($template));
-            $templateToValidate = 'template-pip';
+            $templateToValidate = 'template-openzaak';
 
             if ($templateName !== $templateToValidate) {
                 return $template;
@@ -42,6 +45,11 @@ class ValidationServiceProvider extends ServiceProvider
         }, 10, 1);
     }
 
+    /**
+     * Return a 403 forbidden page if the user has no access rights.
+     *
+     * @since 1.0.0
+     */
     private function returnForbidden(): string
     {
         global $wp_query;

@@ -19,7 +19,7 @@ class TemplatingServiceProvider extends ServiceProvider
          * Add template from this plugin to page attribute template section.
          */
         \add_filter('theme_page_templates', function ($post_templates, $wp_theme, $post, $post_type) {
-            $post_templates['template-pip.php'] = __('PIP');
+            $post_templates['template-openzaak.php'] = __('OpenZaak');
 
             return $post_templates;
         }, 10, 4);
@@ -28,8 +28,8 @@ class TemplatingServiceProvider extends ServiceProvider
          * Load template from this plugin when selected in page attribute template section.
          */
         \add_filter('page_template', function ($page_template) {
-            if (\get_page_template_slug() === 'template-pip.php') {
-                $page_template = sprintf('%s/%s', OZ_ROOT_PATH, 'resources/views/template-pip.php');
+            if (\get_page_template_slug() === 'template-openzaak.php') {
+                $page_template = sprintf('%s/%s', OZ_ROOT_PATH, 'resources/views/template-openzaak.php');
             }
 
             return $page_template;

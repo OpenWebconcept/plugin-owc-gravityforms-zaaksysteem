@@ -3,10 +3,11 @@ get_header(); ?>
 <main id="main" class="template-openzaak">
     <div class="container">
         <div class="container-inner">
+            <?php while (have_posts()) : the_post(); ?>
 
             <header>
                 <h1>
-                    Er ging iets fout!
+                    <?php echo get_the_title() ?>
                 </h1>
                 <div id="readspeaker_button1" class="rs_skip rsbtn rs_preserve">
                     <a rel="nofollow" class="rsbtn_play" accesskey="L"
@@ -21,10 +22,11 @@ get_header(); ?>
             
             <div class="content">
                 <div id="readspeaker">
-                    Het aanmaken van uw zaak is mislukt.
+                    <?php the_content(); ?>
                 </div>
             </div>
 
+            <?php endwhile; ?>
         </div>
     </div>
 </main>

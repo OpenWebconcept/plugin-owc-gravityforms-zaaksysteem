@@ -18,9 +18,9 @@ class GravityForms
         }
 
         $args = [
-            'bronorganisatie' => $_ENV['OPEN_ZAAK_RSIN_ORGANIZATION'],
-            'verantwoordelijkeOrganisatie' => $_ENV['OPEN_ZAAK_RSIN_ORGANIZATION'],
-            //'identificatie' => rgar($entry, '3'), // TODO: not a requirement?
+            'bronorganisatie' => rgar($entry, '1.1'),
+            'verantwoordelijkeOrganisatie' => rgar($entry, '1.1'),
+            //'identificatie' => rgar($entry, '3'),
             'zaaktype' => rgar($entry, '4'),
             'startdatum' => rgar($entry, '5'),
             'omschrijving' => rgar($entry, '7'),
@@ -28,7 +28,6 @@ class GravityForms
 
         $instance = new CreateOpenZaakRepository();
         $result = ($instance)->createOpenZaak($args);
-
         ($instance)->createSubmitter($result['url'], rgar($entry, '1.1'));
 
         if (empty($result)) {

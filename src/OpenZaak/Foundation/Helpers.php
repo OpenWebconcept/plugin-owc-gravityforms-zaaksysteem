@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace OWC\OpenZaak\Foundation\Helpers;
 
@@ -11,7 +13,7 @@ function app(): Plugin
 
 function make($name, $container)
 {
-    return \Yard\DigiD\Foundation\Plugin::getInstance()->getContainer()->set($name, $container);
+    return \OWC\OpenZaak\Foundation\Plugin::getInstance()->getContainer()->set($name, $container);
 }
 
 function storage_path(string $path = ''): string
@@ -25,6 +27,29 @@ function resolve($container, $arguments = [])
 }
 
 /**
+ * Encrypt a string.
+ *
+ * @param string $string
+ * @return string
+ */
+function encrypt($string): string
+{
+    return resolve(\OWC\OpenZaak\Foundation\Cryptor::class)->encrypt($string);
+}
+/**
+ * Decrypt a string.
+ *
+ * @param string $string
+ * @return string|boolean
+ */
+function decrypt($string): string
+{
+    return resolve(\OWC\OpenZaak\Foundation\Cryptor::class)->decrypt($string);
+}
+
+/**
+ * Get a config entry.
+ *
  * @param string $setting
  * @param string $default
  *
@@ -35,6 +60,13 @@ function config(string $setting, string $default = ''): ?string
     return resolve('config')->get($setting, $default);
 }
 
+/**
+ * Return a view.
+ *
+ * @param string $template
+ * @param array $vars
+ * @return string
+ */
 function view(string $template, array $vars = []): string
 {
     return resolve(\OWC\OpenZaak\Foundation\View::class)->render($template, $vars);

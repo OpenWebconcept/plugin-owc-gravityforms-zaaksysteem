@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace OWC\OpenZaak\Blocks;
 
@@ -12,8 +14,6 @@ abstract class AbstractBlock
         $attributes = $this->hydrateAttributes($attributes, $blockName);
 
         add_action('init', function () use ($blockName, $attributes) {
-            // var_dump($blockName, $attributes);
-            // die;
             \register_block_type($blockName, $attributes);
         });
     }

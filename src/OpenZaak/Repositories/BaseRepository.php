@@ -5,15 +5,15 @@ declare(strict_types=1);
 namespace OWC\OpenZaak\Repositories;
 
 use Firebase\JWT\JWT;
+use OWC\OpenZaak\GravityForms\GravityFormsSettings;
 
 abstract class BaseRepository
 {
     public function __construct()
     {
-        $this->baseURL = $_ENV['OPEN_ZAAK_URL'];
-        $this->appUuid = $_ENV['OPEN_ZAAK_APP_UUID'];
-        $this->clientID = $_ENV['OPEN_ZAAK_CLIENT_ID'];
-        $this->clientSecret = $_ENV['OPEN_ZAAK_CLIENT_SECRET'];
+        $this->baseURL = GravityFormsSettings::make()->get('sp-url');
+        $this->clientID = GravityFormsSettings::make()->get('sp-client-id');
+        $this->clientSecret = GravityFormsSettings::make()->get('sp-client-secret');
     }
 
     public function request(string $url = '', string $method = 'GET', array $args = []): array
@@ -70,8 +70,8 @@ abstract class BaseRepository
             'iss' => $this->clientID,
             'iat' => time(),
             'client_id' => $this->clientID,
-            'user_id' => $this->appUuid,
-            'user_representation' => $this->appUuid,
+            'user_id' => $this->clientID,
+            'user_representation' => $this->clientID,
         ];
 
         return JWT::encode($payload, $this->clientSecret, 'HS256');
