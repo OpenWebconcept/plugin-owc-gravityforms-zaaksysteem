@@ -40,7 +40,7 @@ function encrypt($string): string
  * Decrypt a string.
  *
  * @param string $string
- * @return string|boolean
+ * @return string
  */
 function decrypt($string): string
 {

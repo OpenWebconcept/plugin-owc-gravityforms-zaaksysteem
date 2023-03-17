@@ -7,7 +7,6 @@ namespace OWC\OpenZaak\Repositories;
 use OWC\OpenZaak\Models\OpenZaak as OpenZaakModel;
 use OWC\OpenZaak\Models\StatusType as StatusTypeModel;
 
-use function OWC\OpenZaak\Foundation\Helpers\decrypt;
 use function Yard\DigiD\Foundation\Helpers\resolve;
 
 class OpenZaakRepository extends BaseRepository
@@ -20,10 +19,9 @@ class OpenZaakRepository extends BaseRepository
         parent::__construct();
     }
 
-    public function getBsn(): string
+    public function getBsn(): int
     {
-        $resolvedBSN = resolve('session')->getSegment('digid')->get('bsn');
-        return decrypt($resolvedBSN);
+        return resolve('session')->getSegment('digid')->get('bsn');
     }
 
     public function getZaken(): array
