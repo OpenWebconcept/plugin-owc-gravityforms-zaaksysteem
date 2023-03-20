@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace OWC\OpenZaak\Foundation;
 
+use function OWC\OpenZaak\Foundation\Helpers\config;
+
 /**
  * Checks if dependencies are valid.
  */
@@ -107,7 +109,7 @@ class DependencyChecker
     private function checkClass(array $dependency)
     {
         if (!class_exists($dependency['name'])) {
-            $this->markFailed($dependency, __('Class does not exist', 'openzaak'));
+            $this->markFailed($dependency, esc_html__('Class does not exist', config('core.text_domain')));
 
             return;
         }
@@ -127,7 +129,7 @@ class DependencyChecker
         }
 
         if (!is_plugin_active($dependency['file'])) {
-            $this->markFailed($dependency, __('Inactive', 'openzaak'));
+            $this->markFailed($dependency, esc_html__('Inactive', config('core.text_domain')));
 
             return;
         }
@@ -135,7 +137,7 @@ class DependencyChecker
         // If there is a version lock set on the dependency...
         if (isset($dependency['version'])) {
             if (!$this->checkVersion($dependency)) {
-                $this->markFailed($dependency, __('Minimal version:', 'openzaak') . ' <b>' . $dependency['version'] . '</b>');
+                $this->markFailed($dependency, esc_html__('Minimal version:', config('core.text_domain')) . ' <b>' . $dependency['version'] . '</b>');
             }
         }
     }
