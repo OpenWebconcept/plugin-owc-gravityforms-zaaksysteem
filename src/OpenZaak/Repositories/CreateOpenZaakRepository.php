@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace OWC\OpenZaak\Repositories;
 
-use function Yard\DigiD\Foundation\Helpers\decrypt;
+use function OWC\OpenZaak\Foundation\Helpers\decrypt;
 
 class CreateOpenZaakRepository extends BaseRepository
 {

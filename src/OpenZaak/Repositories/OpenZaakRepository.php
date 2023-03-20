@@ -22,9 +22,8 @@ class OpenZaakRepository extends BaseRepository
 
     public function getBsn(): string
     {
-        $resolvedBSN = resolve('session')->getSegment('digid')->get('bsn');
-
-        return decrypt($resolvedBSN);
+        $bsn = resolve('session')->getSegment('digid')->get('bsn');
+        return decrypt($bsn);
     }
 
     public function getZaken(): array

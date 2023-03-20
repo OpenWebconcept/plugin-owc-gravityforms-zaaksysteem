@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace OWC\OpenZaak\Blocks\Zaken;
 
@@ -13,7 +15,7 @@ class Zaken extends AbstractBlock
     {
         $this->register('owc/open-zaak', [
             'attributes' => [],
-            'render_callback' => [new Block, 'render'],
+            'render_callback' => [new Block(), 'render'],
         ]);
     }
 }
