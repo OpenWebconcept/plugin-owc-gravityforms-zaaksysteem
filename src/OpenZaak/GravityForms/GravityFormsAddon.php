@@ -7,7 +7,6 @@ namespace OWC\OpenZaak\GravityForms;
 use GFAddOn;
 
 use function OWC\OpenZaak\Foundation\Helpers\config;
-use function OWC\OpenZaak\Foundation\Helpers\get_supplier;
 
 class GravityFormsAddon extends GFAddOn
 {
@@ -79,80 +78,83 @@ class GravityFormsAddon extends GFAddOn
      */
     public function plugin_settings_fields()
     {
-        $settings = sprintf('%sSettings', get_supplier()); // Compose method name based on supplier name.
-
-        return $this->$settings();
+        return [
+            $this->settingsGeneral(),
+            $this->settingsMaykin(),
+            $this->settingsDecos(),
+            $this->RSIN()
+        ];
     }
 
-    protected function MaykinMediaSettings(): array
+    protected function settingsGeneral(): array
     {
         return [
-            [
-                'title'  => esc_html__('Settings', config('core.text_domain')),
-                'fields' => [
-                    [
-                        'label'             => esc_html__('Base URL', config('core.text_domain')),
-                        'type'              => 'text',
-                        'class'             => 'medium',
-                        'name'              => "{$this->settingsPrefix}maykin-url",
-                        'required'          => true
-                    ],
-                    [
-                        'label'             => esc_html__('Client ID', config('core.text_domain')),
-                        'type'              => 'text',
-                        'class'             => 'medium',
-                        'name'              => "{$this->settingsPrefix}maykin-client-id",
-                        'required'          => true
-                    ],
-                    [
-                        'label'             => esc_html__('Client Secret', config('core.text_domain')),
-                        'type'              => 'text',
-                        'class'             => 'medium',
-                        'name'              => "{$this->settingsPrefix}maykin-client-secret",
-                        'required'          => true
-                    ]
+            'title'  => esc_html__('Description', config('core.text_domain')),
+            'description' => esc_html__(' Enter the details of the suppliers you would like to use.', config('core.text_domain')),
+            'fields' => [[]],
+        ];
+    }
+
+    protected function settingsMaykin(): array
+    {
+        return [
+            'title'  => esc_html__('Maykin Media', config('core.text_domain')),
+            'fields' => [
+                [
+                    'label'             => esc_html__('Base URL', config('core.text_domain')),
+                    'type'              => 'text',
+                    'class'             => 'medium',
+                    'name'              => "{$this->settingsPrefix}maykin-url",
                 ],
+                [
+                    'label'             => esc_html__('Client ID', config('core.text_domain')),
+                    'type'              => 'text',
+                    'class'             => 'medium',
+                    'name'              => "{$this->settingsPrefix}maykin-client-id",
+                ],
+                [
+                    'label'             => esc_html__('Client Secret', config('core.text_domain')),
+                    'type'              => 'text',
+                    'class'             => 'medium',
+                    'name'              => "{$this->settingsPrefix}maykin-client-secret",
+                ]
             ],
         ];
     }
 
-    protected function DecosSettings(): array
+    protected function settingsDecos(): array
     {
         return [
-            [
-                'title'  => esc_html__('Settings', config('core.text_domain')),
+
+                'title'  => esc_html__('Decos JOIN', config('core.text_domain')),
                 'fields' => [
                     [
                         'label'             => esc_html__('Base URL', config('core.text_domain')),
                         'type'              => 'text',
                         'class'             => 'medium',
                         'name'              => "{$this->settingsPrefix}decos-url",
-                        'required'          => true
                     ],
                     [
                         'label'             => esc_html__('Token URL', config('core.text_domain')),
                         'type'              => 'text',
                         'class'             => 'medium',
                         'name'              => "{$this->settingsPrefix}decos-token-url",
-                        'required'          => true
                     ],
                     [
                         'label'             => esc_html__('Client ID', config('core.text_domain')),
                         'type'              => 'text',
                         'class'             => 'medium',
                         'name'              => "{$this->settingsPrefix}decos-client-id",
-                        'required'          => true
                     ],
                     [
                         'label'             => esc_html__('Client Secret', config('core.text_domain')),
                         'type'              => 'text',
                         'class'             => 'medium',
                         'name'              => "{$this->settingsPrefix}decos-client-secret",
-                        'required'          => true
                     ]
                 ],
-            ],
-            $this->RSIN()
+
+
         ];
     }
 
@@ -166,7 +168,6 @@ class GravityFormsAddon extends GFAddOn
                     'type'              => 'text',
                     'class'             => 'medium',
                     'name'              => "{$this->settingsPrefix}rsin",
-                    'required'          => true,
                     'description'       => 'Registration number for non-natural persons, also known as the counterpart of the citizen service number (BSN).'
                 ]
             ],
