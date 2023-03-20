@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace OWC\OpenZaak\GravityForms;
 
+use GFAddOn;
+use GFForms;
+
 use OWC\OpenZaak\Foundation\ServiceProvider;
 
 class GravityFormsServiceProvider extends ServiceProvider
@@ -25,8 +28,8 @@ class GravityFormsServiceProvider extends ServiceProvider
             return;
         }
 
-        \GFForms::include_addon_framework();
-        \GFAddOn::register(GravityFormsAddon::class);
+        GFForms::include_addon_framework();
+        GFAddOn::register(GravityFormsAddon::class);
         GravityFormsAddon::get_instance();
     }
 }

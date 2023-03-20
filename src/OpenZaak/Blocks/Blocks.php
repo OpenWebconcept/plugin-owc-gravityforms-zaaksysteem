@@ -1,13 +1,15 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace OWC\OpenZaak\Blocks;
 
 class Blocks
 {
+    protected Blocks $blocks;
+
     /**
-     * Get all the blocks.
-     *
-     * @return array
+     * Get all the blocks inside a nested directory inside the 'Zaken' directory.
      */
     public function getFiles(): array
     {
@@ -16,8 +18,6 @@ class Blocks
 
     /**
      * Get defined classes.
-     *
-     * @return array
      */
     public function getClasses(): array
     {
