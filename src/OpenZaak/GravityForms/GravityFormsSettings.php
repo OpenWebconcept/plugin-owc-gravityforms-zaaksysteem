@@ -4,14 +4,11 @@ namespace OWC\OpenZaak\GravityForms;
 
 class GravityFormsSettings
 {
-    /** @var string */
-    protected $prefix = 'owc-openzaak-';
+    protected string $prefix = 'owc-openzaak-';
 
-    /** @var string */
-    protected $name = 'gravityformsaddon_owc-openzaak_settings';
+    protected string $name = 'gravityformsaddon_owc-openzaak_settings';
 
-    /** @var array */
-    protected $options = [];
+    protected array $options = [];
 
     final private function __construct()
     {
@@ -19,9 +16,7 @@ class GravityFormsSettings
     }
 
     /**
-     * Static constructor
-     *
-     * @return self
+     * Static constructor.
      */
     public static function make(): self
     {
@@ -30,9 +25,6 @@ class GravityFormsSettings
 
     /**
      * Get the value from the database.
-     *
-     * @param string $key
-     * @return string
      */
     public function get(string $key): string
     {

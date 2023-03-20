@@ -6,8 +6,8 @@ namespace OWC\OpenZaak\Blocks;
 
 abstract class AbstractBlock
 {
-    /*
-     * Register block serverside.
+    /**
+     * Register block server side.
      */
     public function register($blockName, $attributes): void
     {
@@ -20,15 +20,23 @@ abstract class AbstractBlock
 
     public function hydrateAttributes(array $attributes = []): array
     {
-        if (isset($attributes['render_callback'])) {
+        if (! empty($attributes['render_callback'])) {
             return $attributes;
         }
 
         $attributes['render_callback'] = [
-            sprintf('Yard\Blocks\Blocks\%s\Entities\Block', $this->getClassName()),
+            sprintf('OWC\OpenZaak\Blocks\%s\Block', $this->getClassName()),
             'render'
         ];
 
         return $attributes;
+    }
+
+    /**
+     * Return the class of the block.
+     */
+    public function getClassName(): string
+    {
+        return (new \ReflectionClass($this))->getShortName();
     }
 }

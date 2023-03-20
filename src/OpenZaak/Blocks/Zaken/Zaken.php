@@ -8,8 +8,8 @@ use OWC\OpenZaak\Blocks\AbstractBlock;
 
 class Zaken extends AbstractBlock
 {
-    /*
-     * Register block serverside
+    /**
+     * Register block server side.
      */
     public function __construct()
     {

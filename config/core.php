@@ -36,5 +36,7 @@ return [
             'version' => '>=1.0.15',
             'file'    => 'owc-gravityforms-digid/plugin.php',
         ]
-    ]
+    ],
+
+    'text_domain' => 'owc-gravityforms-openzaak',
 ];
