@@ -6,6 +6,8 @@ namespace OWC\OpenZaak\Templating;
 
 use OWC\OpenZaak\Foundation\ServiceProvider;
 
+use function OWC\OpenZaak\Foundation\Helpers\config;
+
 class TemplatingServiceProvider extends ServiceProvider
 {
     public function boot(): void
@@ -19,7 +21,7 @@ class TemplatingServiceProvider extends ServiceProvider
          * Add template from this plugin to page attributes template section.
          */
         add_filter('theme_page_templates', function ($postTemplates) {
-            $postTemplates['template-openzaak.php'] = __('OpenZaak');
+            $postTemplates['template-openzaak.php'] = esc_html__('OpenZaak', config('core.text_domain'));
 
             return $postTemplates;
         }, 10, 4);

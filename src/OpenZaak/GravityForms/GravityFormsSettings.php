@@ -12,7 +12,7 @@ class GravityFormsSettings
 
     final private function __construct()
     {
-        $this->options = \get_option($this->name, []);
+        $this->options = get_option($this->name, []);
     }
 
     /**
