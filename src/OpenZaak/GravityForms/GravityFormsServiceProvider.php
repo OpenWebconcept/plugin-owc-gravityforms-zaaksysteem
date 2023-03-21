@@ -19,12 +19,18 @@ class GravityFormsServiceProvider extends ServiceProvider
 
     protected function loadHooks(): void
     {
+        if (!class_exists('GFForms')) {
+            return;
+        }
+
         $this->plugin->loader->addFilter('gform_after_submission', new GravityForms(), 'afterSubmission', 10, 2);
+        $this->plugin->loader->addAction('gform_field_standard_settings', new GravityFormsFieldSettings(), 'addSelect', 10, 2);
+        $this->plugin->loader->addFilter('gform_form_settings_fields', new GravityFormsFormSettings(), 'addFormSettings', 10, 2);
     }
 
     private function registerSettingsAddon(): void
     {
-        if (!method_exists('\GFForms', 'include_addon_framework')) {
+        if (!method_exists('GFForms', 'include_addon_framework')) {
             return;
         }
 
