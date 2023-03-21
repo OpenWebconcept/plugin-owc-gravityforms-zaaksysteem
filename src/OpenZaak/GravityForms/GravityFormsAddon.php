@@ -50,7 +50,7 @@ class GravityFormsAddon extends GFAddOn
     /**
      * Field prefix in Gravity Forms.
      */
-    private string $settingsPrefix = 'owc-openzaak-';
+    private string $prefix = 'owc-openzaak-';
 
     /**
      * Instance object
@@ -104,19 +104,19 @@ class GravityFormsAddon extends GFAddOn
                     'label'             => esc_html__('Base URL', config('core.text_domain')),
                     'type'              => 'text',
                     'class'             => 'medium',
-                    'name'              => "{$this->settingsPrefix}maykin-url",
+                    'name'              => "{$this->prefix}maykin-url",
                 ],
                 [
                     'label'             => esc_html__('Client ID', config('core.text_domain')),
                     'type'              => 'text',
                     'class'             => 'medium',
-                    'name'              => "{$this->settingsPrefix}maykin-client-id",
+                    'name'              => "{$this->prefix}maykin-client-id",
                 ],
                 [
                     'label'             => esc_html__('Client Secret', config('core.text_domain')),
                     'type'              => 'text',
                     'class'             => 'medium',
-                    'name'              => "{$this->settingsPrefix}maykin-client-secret",
+                    'name'              => "{$this->prefix}maykin-client-secret",
                 ]
             ],
         ];
@@ -132,25 +132,25 @@ class GravityFormsAddon extends GFAddOn
                         'label'             => esc_html__('Base URL', config('core.text_domain')),
                         'type'              => 'text',
                         'class'             => 'medium',
-                        'name'              => "{$this->settingsPrefix}decos-url",
+                        'name'              => "{$this->prefix}decos-url",
                     ],
                     [
                         'label'             => esc_html__('Token URL', config('core.text_domain')),
                         'type'              => 'text',
                         'class'             => 'medium',
-                        'name'              => "{$this->settingsPrefix}decos-token-url",
+                        'name'              => "{$this->prefix}decos-token-url",
                     ],
                     [
                         'label'             => esc_html__('Client ID', config('core.text_domain')),
                         'type'              => 'text',
                         'class'             => 'medium',
-                        'name'              => "{$this->settingsPrefix}decos-client-id",
+                        'name'              => "{$this->prefix}decos-client-id",
                     ],
                     [
                         'label'             => esc_html__('Client Secret', config('core.text_domain')),
                         'type'              => 'text',
                         'class'             => 'medium',
-                        'name'              => "{$this->settingsPrefix}decos-client-secret",
+                        'name'              => "{$this->prefix}decos-client-secret",
                     ]
                 ],
 
@@ -167,7 +167,7 @@ class GravityFormsAddon extends GFAddOn
                     'label'             => esc_html__('RSIN', config('core.text_domain')),
                     'type'              => 'text',
                     'class'             => 'medium',
-                    'name'              => "{$this->settingsPrefix}rsin",
+                    'name'              => "{$this->prefix}rsin",
                     'description'       => 'Registration number for non-natural persons, also known as the counterpart of the citizen service number (BSN).'
                 ]
             ],
