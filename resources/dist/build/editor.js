@@ -16,7 +16,7 @@
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _register_blocks__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./register-blocks */ \"./resources/js/editor/register-blocks.js\");\n/* harmony import */ var _register_blocks__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_register_blocks__WEBPACK_IMPORTED_MODULE_0__);\n\n\n//# sourceURL=webpack://owc-openzaak/./resources/js/editor/index.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _register_blocks__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./register-blocks */ \"./resources/js/editor/register-blocks.js\");\n/* harmony import */ var _register_blocks__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_register_blocks__WEBPACK_IMPORTED_MODULE_0__);\n\n\n//# sourceURL=webpack://owc-gravityforms-zaaksysteem/./resources/js/editor/index.js?");
 
 /***/ }),
 
@@ -26,7 +26,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _reg
   \************************************************/
 /***/ (() => {
 
-eval("var registerBlockType = wp.blocks.registerBlockType;\nvar _wp = wp,\n    ServerSideRender = _wp.serverSideRender;\nregisterBlockType(\"owc/open-zaak\", {\n  title: \"Zaken\",\n  category: \"theme\",\n  edit: function edit() {\n    return /*#__PURE__*/React.createElement(ServerSideRender, {\n      block: \"owc/open-zaak\"\n    });\n  },\n  save: function save() {\n    return function () {\n      return null;\n    };\n  }\n});\n\n//# sourceURL=webpack://owc-openzaak/./resources/js/editor/register-blocks.js?");
+eval("var registerBlockType = wp.blocks.registerBlockType;\nvar _wp = wp,\n    ServerSideRender = _wp.serverSideRender;\nregisterBlockType(\"owc/gravityforms-zaaksysteem\", {\n  title: \"Zaken\",\n  category: \"theme\",\n  edit: function edit() {\n    return /*#__PURE__*/React.createElement(ServerSideRender, {\n      block: \"owc/gravityforms-zaaksysteem\"\n    });\n  },\n  save: function save() {\n    return function () {\n      return null;\n    };\n  }\n});\n\n//# sourceURL=webpack://owc-gravityforms-zaaksysteem/./resources/js/editor/register-blocks.js?");
 
 /***/ })
 

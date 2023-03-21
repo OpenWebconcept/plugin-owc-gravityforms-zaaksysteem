@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 return [
     'providers'    => [
-        OWC\OpenZaak\Blocks\BlocksServiceProvider::class,
-        OWC\OpenZaak\GravityForms\GravityFormsServiceProvider::class,
-        OWC\OpenZaak\Templating\TemplatingServiceProvider::class,
-        OWC\OpenZaak\Validation\ValidationServiceProvider::class
+        OWC\Zaaksysteem\Blocks\BlocksServiceProvider::class,
+        OWC\Zaaksysteem\GravityForms\GravityFormsServiceProvider::class,
+        OWC\Zaaksysteem\Templating\TemplatingServiceProvider::class,
+        OWC\Zaaksysteem\Validation\ValidationServiceProvider::class
     ],
 
     /**
@@ -38,5 +38,5 @@ return [
         ]
     ],
 
-    'text_domain' => 'owc-gravityforms-openzaak',
+    'text_domain' => OZ_PLUGIN_SLUG,
 ];
