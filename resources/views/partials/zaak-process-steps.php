@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use function OWC\OpenZaak\Foundation\Helpers\view;
+use function OWC\Zaaksysteem\Foundation\Helpers\view;
 
 ?>
 

@@ -6,7 +6,7 @@
 - Retrieve 'ZaakTypen' dynamically and use it in form settings.
 - Map form fields values to args used in request for creating zaak.
 
-## Decos
+## Decos Join
 
 This plugin should also support an implementation of Decos for creating 'zaken'
 
@@ -14,4 +14,4 @@ This plugin should also support an implementation of Decos for creating 'zaken'
 - Compare the current proces of creating 'zaken' -> https://stufsuite-jzd-acc.decosasp.com/zrcui/swaggerui/index#!/Zaken/Zaken_CreateAsync_0
 - Compare the current proces of retrieving 'zaken' -> https://stufsuite-jzd-acc.decosasp.com/zrcui/swaggerui/index#!/Zaken/Zaken_ListAsync_0
 
-It's possible that it is required to isolate the code of the 'zaken' by provider. So isolated code for the Maykin Media implementation and the same for Decos.
+It's possible that it is required to isolate the code of the 'zaken' by provider. So isolated code for the OpenZaak implementation and the same for Decos Join.

@@ -1,6 +1,8 @@
-<?php declare(strict_types=1);
+<?php
 
-namespace OWC\OpenZaak;
+declare(strict_types=1);
+
+namespace OWC\Zaaksysteem;
 
 class Autoloader
 {
@@ -11,11 +13,11 @@ class Autoloader
     public function __construct()
     {
         spl_autoload_register(function ($className) {
-            $baseDir = __DIR__ . '/src/OpenZaak/';
+            $baseDir = __DIR__ . '/src/Zaaksysteem/';
             $namespace = str_replace('\\', '/', __NAMESPACE__);
             $className = str_replace('\\', '/', $className);
             $class = $baseDir.(empty($namespace) ? '' : $namespace.'/').$className.'.php';
-            $class = str_replace('/OWC/OpenZaak/OWC/OpenZaak/', '/', $class);
+            $class = str_replace('/OWC/Zaaksysteem/OWC/Zaaksysteem/', '/', $class);
             if (file_exists($class)) {
                 require_once $class;
             }

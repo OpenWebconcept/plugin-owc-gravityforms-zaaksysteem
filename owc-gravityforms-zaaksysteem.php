@@ -1,0 +1,47 @@
+<?php
+
+declare(strict_types=1);
+
+/**
+ * Plugin Name:       OWC GravityForms Zaaksysteem
+ * Plugin URI:        https://www.openwebconcept.nl/
+ * Description:       Combine one or more 'zaaksystemen' with Gravity Forms and WordPress
+ * Version:           1.0.3
+ * Author:            Yard | Digital Agency
+ * Author URI:        https://www.yard.nl/
+ * License:           GPL-3.0
+ * License URI:       http://www.gnu.org/licenses/gpl-3.0.txt
+ * Text Domain:       owc-gravityforms-zaaksysteem
+ * Domain Path:       /languages
+ */
+
+/**
+ * If this file is called directly, abort.
+ */
+if (!defined('WPINC')) {
+    die;
+}
+
+define('OZ_DIR', basename(__DIR__));
+define('OZ_NAME', 'OWC GravityForms Zaaksysteem');
+define('OZ_SHORT_NAME', 'OWC Zaaksysteem');
+define('OZ_PLUGIN_SLUG', 'owc-gravityforms-zaaksysteem');
+define('OZ_ROOT_PATH', __DIR__);
+define('OZ_VERSION', '1.0.3');
+
+/**
+ * Manual loaded file: the autoloader.
+ */
+require_once __DIR__ . '/autoloader.php';
+$autoloader = new OWC\Zaaksysteem\Autoloader();
+
+/**
+ * Begin execution of the plugin
+ *
+ * This hook is called once any activated plugins have been loaded. Is generally used for immediate filter setup, or
+ * plugin overrides. The plugins_loaded action hook fires early, and precedes the setup_theme, after_setup_theme, init
+ * and wp_loaded action hooks.
+ */
+\add_action('plugins_loaded', function () {
+    $plugin = \OWC\Zaaksysteem\Foundation\Plugin::getInstance(__DIR__)->boot();
+}, 10);

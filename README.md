@@ -1,4 +1,4 @@
-# plugin-openzaak
+# plugin-owc-gravityforms-zaaksysteem
 
 This repo is a POC and is not meant to be used in production as-is.
 
