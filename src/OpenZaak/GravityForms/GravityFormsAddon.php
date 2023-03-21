@@ -126,7 +126,7 @@ class GravityFormsAddon extends GFAddOn
     {
         return [
 
-                'title'  => esc_html__('Decos JOIN', config('core.text_domain')),
+                'title'  => esc_html__('Decos', config('core.text_domain')),
                 'fields' => [
                     [
                         'label'             => esc_html__('Base URL', config('core.text_domain')),
