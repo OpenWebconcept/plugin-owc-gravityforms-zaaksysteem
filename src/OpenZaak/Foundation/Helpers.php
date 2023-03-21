@@ -71,16 +71,15 @@ function view(string $template, array $vars = []): string
 }
 
 /**
- * Support multiple ZGW suppliers.
- * Use the filter inside this method to determine which supplier is enabled for this website.
+ * Get the current selected supplier on a per form basis.
  */
-function get_supplier(): string
+function get_supplier(array $form): string
 {
-    $allowed = ['MaykinMedia', 'Decos'];
-    $supplier = apply_filters('owc_openzaak_gf_addon_supplier', 'MaykinMedia');
+    $allowed = ['maykin-media', 'decos', 'none'];
+    $supplier = $form['owc-openzaak-gf-form-setting-supplier'];
 
-    if (! in_array($supplier, $allowed)) {
-        return 'MaykinMedia';
+    if (!in_array($supplier, $allowed)) {
+        return 'none';
     }
 
     return $supplier;
