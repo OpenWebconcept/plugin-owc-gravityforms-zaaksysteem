@@ -2,12 +2,55 @@
 
 namespace OWC\Zaaksysteem\GravityForms;
 
+use OWC\Zaaksysteem\Repositories\OpenZaak\ZaakRepository;
+
 use function OWC\Zaaksysteem\Foundation\Helpers\config;
 
 class GravityFormsFormSettings
 {
     protected string $prefix = OZ_PLUGIN_SLUG;
 
+    /**
+     * Get a list of related 'zaaktypen' from Open Zaak.
+     */
+    public function getOpenZaakTypes(): array
+    {
+        $data = (new ZaakRepository())->getZaakTypes();
+        $collect = [];
+
+        if ($data && $data['results']) {
+            foreach ($data['results'] as $result) {
+                $collect[] = [
+                    'name' => $result['identificatie'],
+                    'label' => "{$result['omschrijving']} ({$result['identificatie']})",
+                    'value' => $result['identificatie']
+                ];
+            }
+
+            return $collect;
+        }
+
+        return [];
+    }
+
+    /**
+     * Get a list of related 'zaaktypen' from Decos Join.
+     *
+     * TODO: implement api
+     */
+    public function getDecosJoinTypes(): array
+    {
+        return [
+            [
+                'name' => 'Todo',
+                'label' => 'Todo',
+            ]
+        ];
+    }
+
+    /**
+     * Add form based settings.
+     */
     public function addFormSettings(array $fields): array
     {
         $fields[] = [
@@ -15,6 +58,7 @@ class GravityFormsFormSettings
             'fields' => [
                 [
                     'name'    => "{$this->prefix}-form-setting-supplier",
+                    'default_value' => "{$this->prefix}-form-setting-supplier-none",
                     'tooltip' => '<h6>' . __('Select a supplier', config('core.text_domain')) . '</h6>' . __('Choose the Zaaksysteem supplier. Please note that you\'ll also need to configure the credentials in the Gravity Forms main settings.', config('core.text_domain')),
                     'type'    => 'select',
                     'label'   => esc_html__('Select a supplier', config('core.text_domain')),
@@ -36,6 +80,37 @@ class GravityFormsFormSettings
                         ],
                     ],
                 ],
+                // TODO: verify if there is a way to actively get the selected value without a save and without custom JS.
+                [
+                    'name'    => "{$this->prefix}-form-setting-openzaak-identifier",
+                    'type'    => 'select',
+                    'label'   => esc_html__('OpenZaak identifier', config('core.text_domain')),
+                    'dependency' => [
+                        'live'   => true,
+                        'fields' => [
+                            [
+                                'field' => "{$this->prefix}-form-setting-supplier",
+                                'values' => ['openzaak'],
+                            ],
+                        ],
+                    ],
+                    'choices' => $this->getOpenZaakTypes(),
+                ],
+                [
+                    'name'    => "{$this->prefix}-form-setting-decos-join-identifier",
+                    'type'    => 'select',
+                    'label'   => esc_html__('Decos Join identifier', config('core.text_domain')),
+                    'dependency' => [
+                        'live'   => true,
+                        'fields' => [
+                            [
+                                'field' => "{$this->prefix}-form-setting-supplier",
+                                'values' => ['decos-join'],
+                            ],
+                        ],
+                    ],
+                    'choices' => $this->getDecosJoinTypes('decos-join'),
+                ]
             ],
         ];
 
