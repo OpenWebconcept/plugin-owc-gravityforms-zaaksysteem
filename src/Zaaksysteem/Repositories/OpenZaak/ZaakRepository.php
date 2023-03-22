@@ -14,6 +14,7 @@ class ZaakRepository extends BaseRepository
 {
     protected string $zakenURI = 'zaken/api/v1/zaken';
     protected string $catalogiStatusTypen = 'catalogi/api/v1/statustypen';
+    protected string $zaakTypesURI = 'catalogi/api/v1/zaaktypen';
 
     public function __construct()
     {
@@ -24,6 +25,16 @@ class ZaakRepository extends BaseRepository
     {
         $bsn = resolve('session')->getSegment('digid')->get('bsn');
         return decrypt($bsn);
+    }
+
+    /**
+     * Get the available 'zaaktypen'.
+     */
+    public function getZaakTypes(): array
+    {
+        $result = $this->request($this->makeURL($this->zaakTypesURI));
+
+        return $result;
     }
 
     public function getZaken(): array
