@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace OWC\Zaaksysteem\GravityForms;
 
-use GFAddOn;
-
 use function OWC\Zaaksysteem\Foundation\Helpers\config;
+
+use GFAddOn;
 
 class GravityFormsAddon extends GFAddOn
 {
@@ -30,7 +30,7 @@ class GravityFormsAddon extends GFAddOn
     /**
      * Relative path to the plugin from the plugins folder.
      */
-    protected $_path = OZ_ROOT_PATH . '/plugin.php';
+    protected $_path = OZ_ROOT_PATH . '/owc-gravityforms-zaaksysteem.php';
 
     /**
      * The physical path to the main plugin file.
@@ -82,6 +82,7 @@ class GravityFormsAddon extends GFAddOn
             $this->settingsGeneral(),
             $this->settingsOpenZaak(),
             $this->settingsDecosJoin(),
+            $this->settingsEnableU(),
             $this->RSIN()
         ];
     }
@@ -125,7 +126,6 @@ class GravityFormsAddon extends GFAddOn
     protected function settingsDecosJoin(): array
     {
         return [
-
                 'title'  => esc_html__('Decos Join', config('core.text_domain')),
                 'fields' => [
                     [
@@ -151,6 +151,23 @@ class GravityFormsAddon extends GFAddOn
                         'type'              => 'text',
                         'class'             => 'medium',
                         'name'              => "{$this->prefix}-decos-join-client-secret",
+                    ]
+                ],
+
+
+        ];
+    }
+
+    protected function settingsEnableU(): array
+    {
+        return [
+                'title'  => esc_html__('Enabe U', config('core.text_domain')),
+                'fields' => [
+                    [
+                        'label'             => esc_html__('Base URL', config('core.text_domain')),
+                        'type'              => 'text',
+                        'class'             => 'medium',
+                        'name'              => "{$this->prefix}-enable-u-url",
                     ]
                 ],
 

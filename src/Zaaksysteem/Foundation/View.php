@@ -4,17 +4,9 @@ namespace OWC\Zaaksysteem\Foundation;
 
 class View
 {
-    /** @var string */
-    protected $templateDirectory = OZ_ROOT_PATH . '/resources/views/';
-
-    /** @var array */
-    protected $vars = [];
-
-    /**
-     * @var array Associative array of variables that will be accessible from
-     * the template.
-     */
-    protected $bindings = [];
+    protected string $templateDirectory = OZ_ROOT_PATH . '/resources/views/';
+    protected array $vars = [];
+    protected array $bindings = []; // Associative array of variables that will be accessible from the template.
 
     public function __construct($templateDirectory = null)
     {
@@ -24,15 +16,20 @@ class View
         }
     }
 
+    public function exists(string $templateFile = ''): bool
+    {
+        return is_file($this->templateDirectory . $templateFile);
+    }
+
     /**
      * Render the view
-     *
-     * @param string $templateFile
-     *
-     * @return string
      */
     public function render(string $templateFile = '', array $vars = []): string
     {
+        if (! is_file($this->templateDirectory . $templateFile)) {
+            return '';
+        }
+        
         $this->bindAll($vars);
         ob_start();
         include($this->templateDirectory . $templateFile);
@@ -43,11 +40,6 @@ class View
     /**
      * Search and replace of variables.
      * Searching for {{VARIABLE}}.
-     *
-     * @param string $templateFile
-     * @param array $bindings
-     *
-     * @return string
      */
     protected function parseTemplate(string $template, array $bindings = []): string
     {
@@ -63,11 +55,8 @@ class View
 
     /**
      * Bind a single variable that will be accessible when the view is rendered.
-     *
-     * @param string $parameter
-     * @param mixed $value
      */
-    public function bind($parameter, $value)
+    public function bind(string $parameter, $value)
     {
         $this->bindings[$parameter] = $value;
     }

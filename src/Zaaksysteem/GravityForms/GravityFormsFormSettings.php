@@ -2,9 +2,9 @@
 
 namespace OWC\Zaaksysteem\GravityForms;
 
-use OWC\Zaaksysteem\Repositories\OpenZaak\ZaakRepository;
-
 use function OWC\Zaaksysteem\Foundation\Helpers\config;
+
+use OWC\Zaaksysteem\Repositories\OpenZaak\ZaakRepository;
 
 class GravityFormsFormSettings
 {
@@ -13,7 +13,7 @@ class GravityFormsFormSettings
     /**
      * Get a list of related 'zaaktypen' from Open Zaak.
      */
-    public function getOpenZaakTypes(): array
+    public function getTypesOpenZaak(): array
     {
         $data = (new ZaakRepository())->getZaakTypes();
         $collect = [];
@@ -38,7 +38,22 @@ class GravityFormsFormSettings
      *
      * TODO: implement api
      */
-    public function getDecosJoinTypes(): array
+    public function getTypesDecosJoin(): array
+    {
+        return [
+            [
+                'name' => 'Todo',
+                'label' => 'Todo',
+            ]
+        ];
+    }
+
+    /**
+     * Get a list of related 'zaaktypen' from Enable U.
+     *
+     * TODO: endpoint for retrieving types is not production ready.
+     */
+    public function getTypesEnableU(): array
     {
         return [
             [
@@ -74,6 +89,11 @@ class GravityFormsFormSettings
                             'value' => 'openzaak',
                         ],
                         [
+                            'name'  => "{$this->prefix}-form-setting-supplier-openzaak",
+                            'label' => __('EnableU', config('core.text_domain')),
+                            'value' => 'enable-u',
+                        ],
+                        [
                             'name'  => "{$this->prefix}-form-setting-supplier-decos-join",
                             'label' => __('Decos Join', config('core.text_domain')),
                             'value' => 'decos-join',
@@ -94,7 +114,7 @@ class GravityFormsFormSettings
                             ],
                         ],
                     ],
-                    'choices' => $this->getOpenZaakTypes(),
+                    'choices' => $this->getTypesOpenZaak(),
                 ],
                 [
                     'name'    => "{$this->prefix}-form-setting-decos-join-identifier",
@@ -109,7 +129,22 @@ class GravityFormsFormSettings
                             ],
                         ],
                     ],
-                    'choices' => $this->getDecosJoinTypes('decos-join'),
+                    'choices' => $this->getTypesDecosJoin(),
+                ],
+                [
+                    'name'    => "{$this->prefix}-form-setting-enable-u-identifier",
+                    'type'    => 'select',
+                    'label'   => esc_html__('EnableU identifier', config('core.text_domain')),
+                    'dependency' => [
+                        'live'   => true,
+                        'fields' => [
+                            [
+                                'field' => "{$this->prefix}-form-setting-supplier",
+                                'values' => ['enable-u'],
+                            ],
+                        ],
+                    ],
+                    'choices' => $this->getTypesEnableU(),
                 ]
             ],
         ];

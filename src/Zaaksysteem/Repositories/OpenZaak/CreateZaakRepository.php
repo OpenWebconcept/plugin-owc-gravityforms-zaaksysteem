@@ -9,9 +9,7 @@ use function OWC\Zaaksysteem\Foundation\Helpers\decrypt;
 class CreateZaakRepository extends BaseRepository
 {
     protected string $zakenURI = 'zaken/api/v1/zaken';
-
     protected string $zakenRolURI = 'zaken/api/v1/rollen';
-
     protected string $catalogiRolTypenURI = 'catalogi/api/v1/roltypen';
 
     public function __construct()
@@ -48,10 +46,10 @@ class CreateZaakRepository extends BaseRepository
             }
 
             $data = [
-                'zaak'              => $zaakUrl,
-                'betrokkeneType'    => 'natuurlijk_persoon',
-                'roltype'           => $roleType['url'],
-                'roltoelichting'    => 'De indiener van de zaak.',
+                'zaak' => $zaakUrl,
+                'betrokkeneType' => 'natuurlijk_persoon',
+                'roltype' => $roleType['url'],
+                'roltoelichting' => 'De indiener van de zaak.',
                 'betrokkeneIdentificatie' => [
                     'inpBsn' => decrypt($bsn)
                 ]
