@@ -12,14 +12,14 @@ class GravityFormsFieldSettings
      */
     public function addSelect($position, $formId): void
     {
-        if (!class_exists('\GFAPI')) {
+        if (! class_exists('\GFAPI')) {
             return;
         }
 
         $form = \GFAPI::get_form($formId);
-        $supplier = get_supplier($form);
+        $supplier = get_supplier($form, true);
 
-        if ($position !== 0 || $supplier === 'none') {
+        if ($position !== 0 || empty($supplier)) {
             return;
         }
 

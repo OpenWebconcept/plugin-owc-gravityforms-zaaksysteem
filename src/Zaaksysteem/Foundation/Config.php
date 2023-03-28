@@ -60,14 +60,10 @@ class Config
 
     /**
      * Retrieve a specific config value from the configuration repository.
-     *
-     * @param $setting
-     *
-     * @return array|mixed
      */
-    public function get($setting)
+    public function get(string $setting, $default = null)
     {
-        if (!$setting) {
+        if (! $setting) {
             return $this->all();
         }
 
@@ -79,7 +75,7 @@ class Config
             $current = $current[$part];
         }
 
-        return $current;
+        return $current ?: $default;
     }
 
     /**

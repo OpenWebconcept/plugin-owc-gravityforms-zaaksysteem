@@ -57,7 +57,7 @@ function decrypt($string): string
 /**
  * Get a config entry.
  */
-function config(string $setting, string $default = ''): ?string
+function config(string $setting = '', $default = '')
 {
     return resolve('config')->get($setting, $default);
 }
@@ -67,20 +67,35 @@ function config(string $setting, string $default = ''): ?string
  */
 function view(string $template, array $vars = []): string
 {
-    return resolve(\OWC\Zaaksysteem\Foundation\View::class)->render($template, $vars);
+    $view = resolve(\OWC\Zaaksysteem\Foundation\View::class);
+
+    if (! $view->exists($template)) {
+        return '';
+    }
+
+    return $view->render($template, $vars);
 }
 
 /**
  * Get the current selected supplier on a per form basis.
+ * Returns label as default, use parameter $getKey to return the key from the config array.
  */
-function get_supplier(array $form): string
+function get_supplier(array $form, bool $getKey = false): string
 {
-    $allowed = ['openzaak', 'decos-join', 'none'];
-    $supplier = $form[OZ_PLUGIN_SLUG . '-form-setting-supplier'];
+    $allowed = config('suppliers', []);
+    $supplier = $form[sprintf('%s-form-setting-supplier', OZ_PLUGIN_SLUG)] ?? '';
 
-    if (!in_array($supplier, $allowed)) {
-        return 'none';
+    if (! is_array($allowed) || empty($allowed) || empty($supplier)) {
+        return '';
     }
 
-    return $supplier;
+    if (! in_array($supplier, array_keys($allowed))) {
+        return '';
+    }
+
+    if ($getKey) {
+        return $supplier;
+    }
+
+    return $allowed[$supplier] ?? '';
 }

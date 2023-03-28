@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace OWC\Zaaksysteem\Repositories\Decos;
+namespace OWC\Zaaksysteem\Repositories\DecosJoin;
 
 use function OWC\Zaaksysteem\Foundation\Helpers\decrypt;
 

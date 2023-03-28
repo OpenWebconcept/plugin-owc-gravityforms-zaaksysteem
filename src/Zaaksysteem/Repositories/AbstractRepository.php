@@ -10,6 +10,8 @@ abstract class AbstractRepository
             return [];
         }
 
+        $this->shouldDisableSSL();
+
         $request = \wp_remote_request($url, $this->getRequestArgs($method, $args));
 
         $httpSuccessCodes = [200, 201];
@@ -25,6 +27,24 @@ abstract class AbstractRepository
         }
 
         return is_array($body) && ! empty($body) ? $body : [];
+    }
+
+    /**
+     * Disable sslverify on all environments except on production.
+     */
+    protected function shouldDisableSSL(): void
+    {
+        $environment = $_ENV['APP_ENV'] ?? 'production';
+
+        if ($environment === 'production') {
+            return;
+        }
+        
+        \add_filter('http_request_args', function ($args, $url) {
+            $args['sslverify'] = false;
+            
+            return $args;
+        }, 10, 2);
     }
 
     abstract protected function getRequestArgs(string $method, array $args = []): array;

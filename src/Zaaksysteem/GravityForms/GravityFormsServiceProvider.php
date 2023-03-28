@@ -6,7 +6,6 @@ namespace OWC\Zaaksysteem\GravityForms;
 
 use GFAddOn;
 use GFForms;
-
 use OWC\Zaaksysteem\Foundation\ServiceProvider;
 
 class GravityFormsServiceProvider extends ServiceProvider
@@ -19,7 +18,7 @@ class GravityFormsServiceProvider extends ServiceProvider
 
     protected function loadHooks(): void
     {
-        if (!class_exists('GFForms')) {
+        if (! class_exists('GFForms')) {
             return;
         }
 
@@ -30,7 +29,7 @@ class GravityFormsServiceProvider extends ServiceProvider
 
     private function registerSettingsAddon(): void
     {
-        if (!method_exists('GFForms', 'include_addon_framework')) {
+        if (! method_exists('GFForms', 'include_addon_framework')) {
             return;
         }
 

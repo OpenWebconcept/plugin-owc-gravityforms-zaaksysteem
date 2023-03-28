@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace OWC\Zaaksysteem\Repositories\Decos;
+namespace OWC\Zaaksysteem\Repositories\DecosJoin;
 
 use OWC\Zaaksysteem\GravityForms\GravityFormsSettings;
 use OWC\Zaaksysteem\Repositories\AbstractRepository;
@@ -55,8 +55,6 @@ class BaseRepository extends AbstractRepository
         ];
 
         $response = $this->request($this->tokenURL, 'POST', $args); // TODO: calls a loop
-        var_dump($response);
-        die;
 
         return $response['token'] ?? '';
     }
