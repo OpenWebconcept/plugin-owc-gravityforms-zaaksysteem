@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace OWC\Zaaksysteem\Repositories\EnableU;
 
+use function Yard\ConfigExpander\Foundation\Helpers\value;
 use OWC\Zaaksysteem\GravityForms\GravityFormsSettings;
+
 use OWC\Zaaksysteem\Repositories\AbstractRepository;
 
 class BaseRepository extends AbstractRepository
@@ -22,7 +24,8 @@ class BaseRepository extends AbstractRepository
             'method' => $method,
             'headers' => [
                 'Content-Type' => 'application/json',
-            ]
+            ],
+            'timeout' => 60,
         ];
 
         if ('POST' === $method && ! empty($args)) {

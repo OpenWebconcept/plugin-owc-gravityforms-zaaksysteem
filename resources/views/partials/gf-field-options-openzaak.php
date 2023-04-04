@@ -4,10 +4,10 @@ use function OWC\Zaaksysteem\Foundation\Helpers\config;
 // TODO: check if we can get this list from the OZ api.
 ?>
 <li class="label_setting field_setting">
-    <label for="linkedField" class="section_label">
+    <label for="linkedFieldZGW" class="section_label">
         <?php _e('Zaaksysteem mapping', config('core.text_domain')) ?>
     </label>
-    <select id="linkedField" onchange="SetFieldProperty('linkedFieldValue', this.value);">
+    <select id="linkedFieldZGW" onchange="SetFieldProperty('linkedFieldValueZGW', this.value);">
         <option value=""><?php _e('Kies veldnaam OpenZaak', config('core.text_domain')) ?></option>
         <option value="bronorganisatie"><?php _e('Bronorganisatie', config('core.text_domain')) ?></option>
         <option value="zaaktype"><?php _e('Zaaktype', config('core.text_domain')) ?></option>

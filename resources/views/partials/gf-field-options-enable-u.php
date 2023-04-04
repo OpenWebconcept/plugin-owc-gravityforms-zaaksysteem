@@ -3,10 +3,10 @@ use function OWC\Zaaksysteem\Foundation\Helpers\config;
 
 ?>
 <li class="label_setting field_setting">
-    <label for="linkedField" class="section_label">
+    <label for="linkedFieldZGW" class="section_label">
         <?php _e('Zaaksysteem mapping', config('core.text_domain')) ?>
     </label>
-    <select id="linkedField" onchange="SetFieldProperty('linkedFieldValue', this.value);">
+    <select id="linkedFieldZGW" onchange="SetFieldProperty('linkedFieldValueZGW', this.value);">
         <option value=""><?php _e('Kies veldnaam Enable U', config('core.text_domain')) ?></option>
         <option value="bronorganisatie"><?php _e('Bronorganisatie', config('core.text_domain')) ?></option>
         <option value="zaaktype"><?php _e('Zaaktype', config('core.text_domain')) ?></option>
@@ -15,6 +15,7 @@ use function OWC\Zaaksysteem\Foundation\Helpers\config;
         <option value="registratiedatum"><?php _e('Registratiedatum', config('core.text_domain')) ?></option>
         <option value="verantwoordelijkeOrganisatie"><?php _e('Verantwoordelijke organisatie', config('core.text_domain')) ?></option>
         <option value="startdatum"><?php _e('Startdatum', config('core.text_domain')) ?></option>
+        <option value="informatieobject"><?php _e('Informatieobject', config('core.text_domain')) ?></option>
         <option value="any"><?php _e('any', config('core.text_domain')) ?></option>
     </select>
 </li>
