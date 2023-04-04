@@ -8,7 +8,17 @@ use function OWC\Zaaksysteem\Foundation\Helpers\view;
 class GravityFormsFieldSettings
 {
     /**
-     * Add extra option to Gravity Form fields.
+     * Add script to the editor of a form.
+     * Script adds chosen value from custom select to field object which can be used after the form submission.
+     */
+    public function addSelectScript(): void
+    {
+        echo view('scriptSelect.php');
+    }
+    
+    /**
+     * Add custom select to Gravity Form fields.
+     * Used for mapping a field to a supplier setting.
      */
     public function addSelect($position, $formId): void
     {

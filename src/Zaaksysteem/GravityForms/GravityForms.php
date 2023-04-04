@@ -6,6 +6,7 @@ namespace OWC\Zaaksysteem\GravityForms;
 
 use function OWC\Zaaksysteem\Foundation\Helpers\get_supplier;
 use function OWC\Zaaksysteem\Foundation\Helpers\view;
+use OWC\Zaaksysteem\Repositories\AbstractRepository;
 
 class GravityForms
 {
@@ -50,22 +51,13 @@ class GravityForms
 
     protected function handleOpenZaak(array $entry, array $form): array
     {
-        $args = [
-            'bronorganisatie' => GravityFormsSettings::make()->get('-rsin'),
-            'verantwoordelijkeOrganisatie' => GravityFormsSettings::make()->get('-rsin'),
-            'zaaktype' => '',
-            'registratiedatum' => date('Y-m-d'),
-            'startdatum' => '',
-            'omschrijving' => '',
-        ];
-        
-        $args = $this->mapArgs($args, $form['fields'], $entry);
-
         try {
             $instance = $this->getCreateRepository();
         } catch(\Exception $e) {
             return [];
         }
+
+        $args = $this->handleArgs($instance, $form['fields'], $entry);
 
         $result = $instance->createOpenZaak($args);
         $instance->createSubmitter($result['url'], rgar($entry, '1.1'));
@@ -75,22 +67,13 @@ class GravityForms
 
     protected function handleDecosJoin(array $entry, array $form): array
     {
-        $args = [
-            'bronorganisatie' => GravityFormsSettings::make()->get('-rsin'),
-            'verantwoordelijkeOrganisatie' => GravityFormsSettings::make()->get('-rsin'),
-            'zaaktype' => '',
-            'registratiedatum' => date('Y-m-d'),
-            'startdatum' => '',
-            'omschrijving' => '',
-        ];
-        
-        $args = $this->mapArgs($args, $form['fields'], $entry);
-
         try {
             $instance = $this->getCreateRepository();
         } catch(\Exception $e) {
             return [];
         }
+
+        $args = $this->handleArgs($instance, $form['fields'], $entry);
 
         $result = $instance->createOpenZaak($args);
         $instance->createSubmitter($result['url'], rgar($entry, '1.1'));
@@ -100,53 +83,18 @@ class GravityForms
 
     protected function handleEnableU(array $entry, array $form): array
     {
-        $args = [
-            'bronorganisatie' => GravityFormsSettings::make()->get('-rsin'),
-            'verantwoordelijkeOrganisatie' => GravityFormsSettings::make()->get('-rsin'),
-            'zaaktype' => '',
-            'registratiedatum' => date('Y-m-d'),
-            'startdatum' => '',
-            'omschrijving' => '',
-        ];
-        
-        $args = $this->mapArgs($args, $form['fields'], $entry);
-
         try {
             $instance = $this->getCreateRepository();
         } catch(\Exception $e) {
             return [];
         }
 
+        $args = $this->handleArgs($instance, $form['fields'], $entry);
+
         $result = $instance->createOpenZaak($args);
+        $instance->addInformationObjectToZaak($args);
 
         return $result;
-    }
-
-    /**
-     * Add form field values to arguments required for creating a 'Zaak'.
-     * Mapping is done by the relation between arguments keys and form fields linkedFieldValues.
-     */
-    protected function mapArgs(array $args, array $fields, array $entry): array
-    {
-        foreach ($fields as $field) {
-            if (empty($field->linkedFieldValue) || ! isset($args[$field->linkedFieldValue])) {
-                continue;
-            }
-
-            $property = rgar($entry, (string)$field->id);
-
-            if (empty($property)) {
-                continue;
-            }
-
-            if ($field->type === 'date') {
-                $property = (new \DateTime($property))->format('Y-m-d');
-            }
-
-            $args[$field->linkedFieldValue] = $property;
-        }
-
-        return $args;
     }
 
     protected function getCreateRepository(): object
@@ -158,5 +106,20 @@ class GravityForms
         }
 
         return new $createRepository();
+    }
+
+    protected function handleArgs(AbstractRepository $instance, array $fields, array $entry)
+    {
+        $args = [
+            'bronorganisatie' => GravityFormsSettings::make()->get('-rsin'),
+            'verantwoordelijkeOrganisatie' => GravityFormsSettings::make()->get('-rsin'),
+            'zaaktype' => '',
+            'registratiedatum' => date('Y-m-d'),
+            'startdatum' => '',
+            'omschrijving' => '',
+            'informatieobject' => ''
+        ];
+
+        return $instance->mapArgs($args, $fields, $entry);
     }
 }

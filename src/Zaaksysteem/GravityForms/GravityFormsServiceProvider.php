@@ -7,6 +7,7 @@ namespace OWC\Zaaksysteem\GravityForms;
 use GFAddOn;
 use GFForms;
 use OWC\Zaaksysteem\Foundation\ServiceProvider;
+use OWC\Zaaksysteem\GravityForms\GravityFormsFieldSettings;
 
 class GravityFormsServiceProvider extends ServiceProvider
 {
@@ -22,8 +23,11 @@ class GravityFormsServiceProvider extends ServiceProvider
             return;
         }
 
+        $gravityFormsFieldSettings = new GravityFormsFieldSettings;
+
         $this->plugin->loader->addFilter('gform_after_submission', new GravityForms(), 'afterSubmission', 10, 2);
-        $this->plugin->loader->addAction('gform_field_standard_settings', new GravityFormsFieldSettings(), 'addSelect', 10, 2);
+        $this->plugin->loader->addAction('gform_field_standard_settings', $gravityFormsFieldSettings, 'addSelect', 10, 2);
+        $this->plugin->loader->addAction('gform_editor_js', $gravityFormsFieldSettings, 'addSelectScript', 10, 0);
         $this->plugin->loader->addFilter('gform_form_settings_fields', new GravityFormsFormSettings(), 'addFormSettings', 10, 2);
     }
 
