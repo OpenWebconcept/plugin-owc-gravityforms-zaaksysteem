@@ -91,10 +91,11 @@ class GravityForms
 
         $args = $this->handleArgs($instance, $form['fields'], $entry);
 
-        $result = $instance->createOpenZaak($args);
-        $instance->addInformationObjectToZaak($args);
+        $zaakResult = $instance->createOpenZaak($args);
+        $informationObjectResult = $instance->addInformationObjectToZaak($args);
+        $connectionResult = $instance->connectZaakToInformationObject($zaakResult, $informationObjectResult);
 
-        return $result;
+        return $connectionResult;
     }
 
     protected function getCreateRepository(): object
