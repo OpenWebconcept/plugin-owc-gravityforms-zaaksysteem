@@ -11,9 +11,15 @@ trait InformationObject
         return $file ? base64_encode($file) : '';
     }
 
+    /**
+     * Format the title based on a URL.
+     * Replaces soft hyphens on the go.
+     */
     public function getInformationObjectTitle(string $url = ''): string
     {
-        return basename($url);
+        $basename = htmlentities(basename($url));
+
+        return str_replace('&shy;', '-', $basename);
     }
 
     public function getContentLength(string $url): string
@@ -34,6 +40,10 @@ trait InformationObject
 
     protected function getHeaders(string $url): array
     {
+        if (empty($url)) {
+            return [];
+        }
+        
         $response = get_headers($url, 1, $this->streamContext());
     
         return $response ?: [];

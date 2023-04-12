@@ -11,6 +11,7 @@ use OWC\Zaaksysteem\Repositories\AbstractRepository;
 class GravityForms
 {
     protected string $supplier;
+    protected bool $hasInformationObject = false;
     
     protected function setSupplier(array $form)
     {
@@ -91,10 +92,18 @@ class GravityForms
 
         $args = $this->handleArgs($instance, $form['fields'], $entry);
 
-        $result = $instance->createOpenZaak($args);
-        $instance->addInformationObjectToZaak($args);
+        if (! empty($args['informatieobject'])) {
+            $this->hasInformationObject = true;
+        }
 
-        return $result;
+        $zaakResult = $instance->createOpenZaak($args);
+
+        if ($this->hasInformationObject) {
+            $informationObjectResult = $instance->addInformationObjectToZaak($args);
+            $connectionResult = $instance->connectZaakToInformationObject($zaakResult, $informationObjectResult);
+        }
+
+        return isset($connectionResult) ? $connectionResult : $zaakResult;
     }
 
     protected function getCreateRepository(): object
