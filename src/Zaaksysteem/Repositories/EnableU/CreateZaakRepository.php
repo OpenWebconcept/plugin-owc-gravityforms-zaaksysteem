@@ -12,6 +12,7 @@ class CreateZaakRepository extends BaseRepository
 
     protected string $zakenURI = 'zaken/api/v1/zaken';
     protected string $informationObjectsURI = 'documenten/api/v1/enkelvoudiginformatieobjecten';
+    protected string $zaakConnectioninformationObject = 'documenten/api/v1/zaakinformatieobjecten';
 
     public function __construct()
     {
@@ -23,7 +24,6 @@ class CreateZaakRepository extends BaseRepository
         if (! empty($args['informatieobject'])) {
             unset($args['informatieobject']);
         } else {
-            // Loggen?
             return [];
         }
         
@@ -73,7 +73,7 @@ class CreateZaakRepository extends BaseRepository
         return $preparedArgs;
     }
 
-    protected function handleInformationObjectArgs(array $args)
+    protected function handleInformationObjectArgs(array $args): array
     {
         $object = $args['informatieobject'];
         unset($args['informatieobject']);
@@ -90,5 +90,17 @@ class CreateZaakRepository extends BaseRepository
         $args['informatieobjecttype'] = 'https://digikoppeling-test.gemeentehw.nl/opentunnel/00000001825766096000/openzaak/zaakdms/catalogi/api/v1/informatieobjecttypen/3beec26e-e43f-4fd2-ba09-94d47316d877';
 
         return $args;
+    }
+
+    public function connectZaakToInformationObject(array $zaak, array $informationObject): array
+    {
+        $args = [
+            'informatieobject' => $informationObject['url'] ?? '',
+            'zaak' => $zaak['url'] ?? '',
+            'titel' => $informationObject['titel'] ?? '',
+            'status' => 'concept'
+        ];
+
+        return $this->request($this->makeURL($this->zaakConnectioninformationObject), 'POST', $args);
     }
 }

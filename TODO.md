@@ -15,3 +15,16 @@ This plugin should also support an implementation of Decos for creating 'zaken'
 - Compare the current proces of retrieving 'zaken' -> https://stufsuite-jzd-acc.decosasp.com/zrcui/swaggerui/index#!/Zaken/Zaken_ListAsync_0
 
 It's possible that it is required to isolate the code of the 'zaken' by provider. So isolated code for the OpenZaak implementation and the same for Decos Join.
+
+## Enable-u
+
+- Add BSN to request
+- Add logging when errors occure.
+
+/src/Zaaksysteem/Repositories/EnableU/CreateZaakRepository.php:88
+
+- Author should be fetched dynamically
+
+/src/Zaaksysteem/Repositories/EnableU/CreateZaakRepository.php:91
+
+- informatieobjecttype should be fetched dynamically someday.
