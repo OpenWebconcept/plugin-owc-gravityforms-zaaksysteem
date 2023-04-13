@@ -5,9 +5,6 @@ namespace OWC\Zaaksysteem\Endpoint\Filter;
 use DateTimeInterface;
 use OWC\Zaaksysteem\Entities\Zaaktype;
 
-use function Yard\DigiD\Foundation\Helpers\resolve;
-use function OWC\Zaaksysteem\Foundation\Helpers\decrypt;
-
 class ZakenFilter extends AbstractFilter
 {
 // identificatie
@@ -33,13 +30,11 @@ class ZakenFilter extends AbstractFilter
         return $this->add('zaaktype', $zaaktype->url);
     }
 
-    public function byCurrentBsn()
+    public function byBsn(string $bsn)
     {
-        $bsn = resolve('session')->getSegment('digid')->get('bsn');
-
         return $this->add(
             'rol__betrokkeneIdentificatie__natuurlijkPersoon__inpBsn',
-            decrypt($bsn)
+            $bsn
         );
     }
 
