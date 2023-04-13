@@ -9,7 +9,11 @@ Check out `config/container.php` and adjust variables as needed.
 ```php
 namespace OWC\Zaaksysteem;
 
-$client = container()->get('api.client');
+use function OWC\Zaaksysteem\Foundation\Helpers\resolve;
+
+// $client is an instance of \OWC\Zaaksysteem\Client\Client 
+// and is (currently!) configured in /config/container.php.
+$client = resolve('api.client');
 
 // Optionally check if the client supports a given Endpoint:
 if ($client->supports('zaken') && $client->supports('zaakobjecten') {
