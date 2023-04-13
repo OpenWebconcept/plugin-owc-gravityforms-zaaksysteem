@@ -7,7 +7,7 @@ use function OWC\Zaaksysteem\Foundation\Helpers\view;
 ?>
 
 <?php foreach ($vars['zaken'] as $zaak) : ?>
-    <div class="zaak">
+    <div class="zaak" data-identifier="<?= $zaak->uuid; ?>">
         <?php
             echo view('mijn-zaken/zaak-collapse-button.php', [
                 'title' => $zaak->title(),
@@ -22,6 +22,7 @@ use function OWC\Zaaksysteem\Foundation\Helpers\view;
 
                     echo view('mijn-zaken/zaak-process-steps.php', [
                         'steps' => $zaak->zaaktype->statustypen->sortByAttribute('volgnummer'),
+                        'status_history' => $zaak->statussen,
                         'currentStep' => $zaak->status->statustoelichting,
                         'hasNoStatus' => $zaak->status->statustoelichting === 'Niet beschikbaar',
                     ]);
