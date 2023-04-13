@@ -9,3 +9,12 @@ registerBlockType("owc/gravityforms-zaaksysteem", {
 	},
 	save: () => () => null,
 });
+
+registerBlockType("owc/mijn-zaken", {
+    title: "Mijn Zaken",
+    category: "common",
+    edit: () => {
+        return <ServerSideRender block="owc/mijn-zaken" />;
+    },
+    save: () => () => null,
+});

@@ -7,7 +7,8 @@ return [
         OWC\Zaaksysteem\Blocks\BlocksServiceProvider::class,
         OWC\Zaaksysteem\GravityForms\GravityFormsServiceProvider::class,
         OWC\Zaaksysteem\Templating\TemplatingServiceProvider::class,
-        OWC\Zaaksysteem\Validation\ValidationServiceProvider::class
+        OWC\Zaaksysteem\Validation\ValidationServiceProvider::class,
+        OWC\Zaaksysteem\Providers\MijnZakenProvider::class,
     ],
 
     /**

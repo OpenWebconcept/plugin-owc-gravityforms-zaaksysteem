@@ -43,4 +43,13 @@ class Zaak extends Entity
         'resultaat' => Casts\Lazy\Resultaat::class,
         // 'opdrachtgevendeOrganisatie'    => SomeClass::class,
     ];
+
+    public function title(): string
+    {
+        return sprintf(
+            '%s, %s',
+            $this->omschrijving,
+            $this->registratiedatum ? $this->registratiedatum->format('d-m-Y') : ''
+        );
+    }
 }
