@@ -14,6 +14,7 @@ class Stack
         $stack->push(new UnauthenticatedHandler(), 'unauthenticated');
         $stack->push(new ResourceNotFoundHandler(), 'notfound');
         $stack->push(new BadRequestHandler(), 'badrequest');
+        $stack->push(new ServerErrorHandler(), 'servererror');
 
         return $stack;
     }
