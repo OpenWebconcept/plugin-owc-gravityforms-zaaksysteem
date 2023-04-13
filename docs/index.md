@@ -1,10 +1,9 @@
-
-# OpenZaak API
+# Usage
 
 ## Configuration
 Check out `config/container.php` and adjust variables as needed. 
 
-## Accessing an Endpoint
+## Endpoint usage
 
 ```php
 namespace OWC\Zaaksysteem;
@@ -30,9 +29,9 @@ $zaak = $zakenEndpoint->find($zaakUuid);
 
 All single objects returned from an Endpoint are an instance of the `OWC\Zaaksysteem\Entities\Entity` class. This class allows easy access to properties, while also allowing properties to be cast to certain types. Additionally, helper methods are implemented to cast the model to an array or json.
 
-When a method returns a list of entities, an instance of `OWC\Zaaksysteem\Support\Collection` is returned. This class functions like an array, but also has helper methods like `map()`, `isEmpty()` and `filter()`. It also allows sorting through `sort()`, `asort()` and `sortByAttribute()`.
+When a method returns a list of entities, an instance of `OWC\Zaaksysteem\Support\Collection` is returned. This class functions like an array, but also has helper methods like `map()`, `isEmpty()` and `filter()`. It also allows sorting the collection with methods like `sort()`, `asort()` and `sortByAttribute()`.
 
-Most endpoints return a `PagedCollection` which extends the default `Collection`. It add access to pagination variables through the `pageMeta()` method.
+Most endpoints return a `PagedCollection` which extends the default `Collection`. It adds access to pagination variables through the `pageMeta()` method.
 ```php
 // Get all zaken. Returns a \OWC\Zaaksysteem\Support\PagedCollection instance
 $zaken = $zakenEndpoint->all();
@@ -60,6 +59,33 @@ $filter-add('attribute', 'value');
 // Returns a \OWC\Zaaksysteem\Support\PagedCollection instance.
 $zaken = $zakenEndpoint->filter($filter);
 ```
+
+## Entities
+
+All entities are derived from the `\OWC\Zaaksysteem\Entities\Entity` class. This class stores all properties in an internal array and makes them accessible through the magic `__get()` and `__set()` methods. 
+
+All properties can be made 'castable'. This means that any value on the Entity can be cast (changed, updated) when setting, getting or serializing that value on the Entity. For example: all date related properties on a `\OWC\Zaaksysteem\Entities\Zaak` model (e.g. registratiedatum, startdatum, einddatum) are automatically cast to a `DateTimeImmutable` instance. This allows easy formatting when displaying the value or comparing it to other `DateTimeInterface` instances.
+
+All casts are defined on the Entity class by adding it to the `$cast` property. A cast should be an implementation of the `\OWC\Zaaksysteem\Entities\Casts\CastsAttributes` interface or should extend the `\OWC\Zaaksysteem\Entities\Casts\AbstractCast` class.
+
+For example: in the `Zaak` entity, a `Casts\NullableDate` caster has been defined for the `registratiedatum` property. 
+
+```php
+<?php
+
+// Code omitted for clarity
+
+class Zaak extends Entity
+{
+    protected array $casts = [
+        'registratiedatum' => Casts\NullableDate::class,
+    ];
+
+    //...
+}
+```
+
+The `NullableDate` makes sure the value is cast to a `DateTimeImmutable` instance whenever it is accessed: `$zaak->registratiedatum->format('Y-m-d');`.
 
 ## Lazy loadable resources
 
