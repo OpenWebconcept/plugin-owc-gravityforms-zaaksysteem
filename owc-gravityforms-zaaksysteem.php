@@ -15,6 +15,8 @@ declare(strict_types=1);
  * Domain Path:       /languages
  */
 
+namespace OWC\Zaaksysteem;
+
 /**
  * If this file is called directly, abort.
  */
@@ -30,10 +32,18 @@ define('OZ_ROOT_PATH', __DIR__);
 define('OZ_VERSION', '1.0.3');
 
 /**
- * Manual loaded file: the autoloader.
+ * Not all the members of the OpenWebconcept are using composer in the root of their project.
+ * Therefore they are required to run a composer install inside this plugin directory.
+ * In this case the composer autoload file needs to be required.
  */
-require_once __DIR__ . '/autoloader.php';
-$autoloader = new OWC\Zaaksysteem\Autoloader();
+$composerAutoload = __DIR__ . '/vendor/autoload.php';
+
+if (file_exists($composerAutoload)) {
+    require_once $composerAutoload;
+} else {
+    require_once __DIR__ . '/autoloader.php';
+    $autoloader = new Autoloader();
+}
 
 /**
  * Begin execution of the plugin
@@ -43,5 +53,5 @@ $autoloader = new OWC\Zaaksysteem\Autoloader();
  * and wp_loaded action hooks.
  */
 \add_action('plugins_loaded', function () {
-    $plugin = \OWC\Zaaksysteem\Foundation\Plugin::getInstance(__DIR__)->boot();
+    $plugin = Foundation\Plugin::getInstance(__DIR__)->boot();
 }, 10);

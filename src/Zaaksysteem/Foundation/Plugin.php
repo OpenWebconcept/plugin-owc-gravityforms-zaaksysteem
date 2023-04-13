@@ -76,13 +76,15 @@ class Plugin
     {
         $builder = new ContainerBuilder();
         $builder->addDefinitions([
-            'app'         => $this,
-            'config'   => function () {
+            'app'       => $this,
+            self::class => $this,
+            'config'    => function () {
                 return new Config($this->rootPath . '/config');
             },
-            'loader' => Loader::getInstance(),
+            'loader'    => Loader::getInstance(),
 
         ]);
+        $builder->addDefinitions($this->rootPath . '/config/container.php');
         $this->container = $builder->build();
     }
 
@@ -137,7 +139,7 @@ class Plugin
                 continue;
             }
 
-            $service = new $service($this);
+            $service = $this->container->get($service);
 
             if (!$service instanceof ServiceProvider) {
                 throw new \Exception('Provider must be an instance of ServiceProvider.');
