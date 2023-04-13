@@ -6,12 +6,12 @@ namespace OWC\Zaaksysteem\Entities\Casts\Lazy;
 
 use OWC\Zaaksysteem\Entities\Statustype;
 
-use function OWC\Zaaksysteem\tap;
+use function OWC\Zaaksysteem\Foundation\Helpers\resolve;
 
 class StatustypenCollection extends ResourceCollection
 {
     protected function resolveResource(string $uuid): ?Statustype
     {
-        return tap('api.client')->statustypen()->get($uuid);
+        return resolve('api.client')->statustypen()->get($uuid);
     }
 }

@@ -6,12 +6,12 @@ namespace OWC\Zaaksysteem\Entities\Casts\Lazy;
 
 use OWC\Zaaksysteem\Entities\Resultaat as ResultaatEntity;
 
-use function OWC\Zaaksysteem\tap;
+use function OWC\Zaaksysteem\Foundation\Helpers\resolve;
 
 class Resultaat extends Resource
 {
     protected function resolveResource(string $uuid): ?ResultaatEntity
     {
-        return tap('api.client')->resultaten()->get($uuid);
+        return resolve('api.client')->resultaten()->get($uuid);
     }
 }

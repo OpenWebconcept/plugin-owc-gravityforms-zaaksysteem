@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace OWC\Zaaksysteem\Foundation\Helpers;
 
 use OWC\Zaaksysteem\Foundation\Plugin;
+use OWC\Zaaksysteem\Foundation\Cryptor;
 
 function app(): Plugin
 {
@@ -13,7 +14,7 @@ function app(): Plugin
 
 function make(string $name, $container)
 {
-    return \OWC\Zaaksysteem\Foundation\Plugin::getInstance()->getContainer()->set($name, $container);
+    return Plugin::getInstance()->getContainer()->set($name, $container);
 }
 
 function storage_path(string $path = ''): string
@@ -23,7 +24,7 @@ function storage_path(string $path = ''): string
 
 function resolve($container, $arguments = [])
 {
-    return \OWC\Zaaksysteem\Foundation\Plugin::getInstance()->getContainer()->get($container, $arguments);
+    return Plugin::getInstance()->getContainer()->get($container, $arguments);
 }
 
 /**
@@ -32,8 +33,8 @@ function resolve($container, $arguments = [])
 function encrypt($string): string
 {
     try {
-        $encrypted = resolve(\OWC\Zaaksysteem\Foundation\Cryptor::class)->encrypt($string);
-    } catch(\Exception $e) {
+        $encrypted = resolve(Cryptor::class)->encrypt($string);
+    } catch (\Exception $e) {
         $encrypted = '';
     }
 
@@ -46,8 +47,8 @@ function encrypt($string): string
 function decrypt($string): string
 {
     try {
-        $decrypted = resolve(\OWC\Zaaksysteem\Foundation\Cryptor::class)->decrypt($string);
-    } catch(\Exception $e) {
+        $decrypted = resolve(Cryptor::class)->decrypt($string);
+    } catch (\Exception $e) {
         $decrypted = '';
     }
 
