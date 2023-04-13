@@ -6,12 +6,12 @@ namespace OWC\Zaaksysteem\Entities\Casts\Lazy;
 
 use OWC\Zaaksysteem\Entities\Roltype;
 
-use function OWC\Zaaksysteem\tap;
+use function OWC\Zaaksysteem\Foundation\Helpers\resolve;
 
 class RoltypenCollection extends ResourceCollection
 {
     protected function resolveResource(string $uuid): ?Roltype
     {
-        return tap('api.client')->roltypen()->get($uuid);
+        return resolve('api.client')->roltypen()->get($uuid);
     }
 }
