@@ -36,13 +36,15 @@ class Zaak extends Entity
         // 'relevanteAndereZaken'  => SomeClass::class,
         // 'eigenschappen' => SomeClass::class,
         'status' => Casts\Lazy\Status::class,
-        'statussen' => Casts\Related\Statussen::class,
         // 'kenmerken' => SomeClass::class,
         // 'archiefnominatie'  => SomeClass::class,
         // 'archiefstatus' => SomeClass::class,
         'archiefactiedatum' => Casts\NullableDate::class,
         'resultaat' => Casts\Lazy\Resultaat::class,
         // 'opdrachtgevendeOrganisatie'    => SomeClass::class,
+
+        'statussen' => Casts\Related\Statussen::class,
+        'zaakinformatieobjecten' => Casts\Related\Zaakinformatieobjecten::class,
     ];
 
     public function title(): string

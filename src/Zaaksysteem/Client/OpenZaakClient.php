@@ -8,7 +8,8 @@ use OWC\Zaaksysteem\Endpoint\ {
     ZakenEndpoint, RollenEndpoint, RoltypenEndpoint, StatussenEndpoint,
     ZaaktypenEndpoint, ResultatenEndpoint, StatustypenEndpoint,
     CatalogussenEndpoint, ZaakobjectenEndpoint, ResultaattypenEndpoint,
-    ObjectinformatieEndpoint, ZaakinformatieobjectenEndpoint
+    ObjectinformatieEndpoint, ZaakinformatieobjectenEndpoint,
+    InformatieobjecttypenEndpoint, EnkelvoudiginformatieobjectenEndpoint
 };
 use OWC\Zaaksysteem\Http\RequestClientInterface;
 use OWC\Zaaksysteem\Http\Authentication\TokenAuthenticator;
@@ -36,21 +37,21 @@ class OpenZaakClient extends Client
         'roltypen'          => RoltypenEndpoint::class,
         'catalogussen'      => CatalogussenEndpoint::class,
         'resultaattypen'    => ResultaattypenEndpoint::class,
+        'informatieobjecttypen' => InformatieobjecttypenEndpoint::class,
 
         /**
          * Not yet implemented
          */
         // 'besluittypen' => Endpoint::class,
         // 'eigenschappen' => Endpoint::class,
-        // 'informatieobjecttypen' => Endpoint::class,
         // 'zaaktype-informatieobjecttypen' => Endpoint::class,
 
         // Documenten API
         'objectinformatieobjecten' => ObjectinformatieEndpoint::class,
+        'enkelvoudiginformatieobjecten' => EnkelvoudiginformatieobjectenEndpoint::class,
         /**
          * Not yet implemented
          */
-        // 'enkelvoudiginformatieobjecten' => Endpoint::class,
         // 'gebruiksrechten' => Endpoint::class,
         // 'objectinformatieobjecten' => Endpoint::class,
         // 'bestandsdelen' => Endpoint::class,

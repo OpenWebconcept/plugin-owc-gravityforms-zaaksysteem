@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace OWC\Zaaksysteem\Endpoint;
 
-use OWC\Zaaksysteem\Entities\Objectinformatie;
+use OWC\Zaaksysteem\Entities\Informatieobjecttype;
 use OWC\Zaaksysteem\Support\PagedCollection;
 
-class ObjectinformatieEndpoint extends Endpoint
+class InformatieobjecttypenEndpoint extends Endpoint
 {
-    protected string $apiType = 'documenten';
-    protected string $endpoint = 'objectinformatieobjecten';
-    protected string $entityClass = Objectinformatie::class;
+    protected string $apiType = 'catalogi';
+    protected string $endpoint = 'informatieobjecttypen';
+    protected string $entityClass = Informatieobjecttype::class;
 
     public function all(): PagedCollection
     {
@@ -23,7 +23,7 @@ class ObjectinformatieEndpoint extends Endpoint
         return $this->getPagedCollection($this->handleResponse($response));
     }
 
-    public function get(string $identifier): ?Objectinformatie
+    public function get(string $identifier): ?Informatieobjecttype
     {
         $response = $this->client->get(
             $this->buildUri($this->endpoint . '/' . $identifier),
@@ -33,7 +33,7 @@ class ObjectinformatieEndpoint extends Endpoint
         return $this->getSingleEntity($this->handleResponse($response));
     }
 
-    public function filter(Filter\ObjectinformatieobjectenFilter $filter): PagedCollection
+    public function filter(Filter\InformatieobjecttypenFilter $filter): PagedCollection
     {
         $response = $this->client->get(
             $this->buildUri($this->endpoint, $filter),

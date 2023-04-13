@@ -1,13 +1,20 @@
 <div class="zaak-documents">
     <h3>Documenten</h3>
-    <?php if (empty($vars['documents'])): ?>
+    <?php if (empty($vars['documents'])) : ?>
         <p>Er zijn geen documenten gevonden.</p>
-    <?php else: ?>
+    <?php else : ?>
         <ul>
-            <?php foreach ($vars['documents'] as $document): ?>
+            <?php foreach ($vars['documents'] as $document) : ?>
                 <li>
-                    <a href="<?php echo $document->getUrl(); ?>">
-                        <?php echo $document->getTitle(); ?>
+                    <?php
+
+                    /**
+                     * @todo build proxy to download files
+                     */
+
+                    ?>
+                    <a href="#">
+                        <?= $document->titel; ?> (<?= $document->informatieobject->formaat; ?>)
                     </a>
                 </li>
             <?php endforeach; ?>

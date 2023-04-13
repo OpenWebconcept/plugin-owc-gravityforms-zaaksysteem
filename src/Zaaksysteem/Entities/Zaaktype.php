@@ -35,7 +35,7 @@ class Zaaktype extends Entity
         'statustypen' => Casts\Lazy\StatustypenCollection::class,
         // 'resultaattypen' => SomeClass::class,
         // 'eigenschappen' => SomeClass::class,
-        // 'informatieobjecttypen' => SomeClass::class,
+        'informatieobjecttypen' => Casts\Lazy\InformatieobjecttypenCollection::class,
         'roltypen' => Casts\Lazy\RoltypenCollection::class,
         // 'besluittypen' => SomeClass::class,
         'deelzaaktypen' => Casts\Lazy\ZaaktypenCollection::class,

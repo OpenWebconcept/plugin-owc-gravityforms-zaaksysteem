@@ -10,6 +10,7 @@ use OWC\Zaaksysteem\Http\RequestOptions;
 use OWC\Zaaksysteem\Support\PagedCollection;
 use OWC\Zaaksysteem\Http\RequestClientInterface;
 use OWC\Zaaksysteem\Http\Authentication\TokenAuthenticator;
+use OWC\Zaaksysteem\Support\Collection;
 
 abstract class Endpoint
 {
@@ -65,18 +66,26 @@ abstract class Endpoint
 
     protected function getPagedCollection(Response $response): PagedCollection
     {
+        $data = $response->getParsedJson();
+
         return new PagedCollection(
-            $this->mapEntities($response),
+            $this->mapEntities($data['results'] ?? []),
             PageMeta::fromResponse($response)
         );
     }
 
-    protected function mapEntities(Response $response): array
+    protected function getCollection(Response $response): Collection
     {
-        $data = $response->getParsedJson();
+        return new Collection(
+            $this->mapEntities($response->getParsedJson()),
+            PageMeta::fromResponse($response)
+        );
+    }
 
+    protected function mapEntities(array $data): array
+    {
         return array_map(function ($item) {
             return new $this->entityClass($item);
-        }, $data['results'] ?? []);
+        }, $data);
     }
 }
