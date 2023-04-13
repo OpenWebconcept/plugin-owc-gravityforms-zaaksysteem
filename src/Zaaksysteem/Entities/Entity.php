@@ -18,7 +18,6 @@ abstract class Entity implements
 
     protected array $data;
     protected array $casts = [];
-    protected array $serializes = [];
 
     public function __construct(array $itemData = [])
     {

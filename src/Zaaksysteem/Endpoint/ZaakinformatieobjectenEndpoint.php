@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace OWC\Zaaksysteem\Endpoint;
 
+use OWC\Zaaksysteem\Support\Collection;
 use OWC\Zaaksysteem\Entities\Zaakinformatieobject;
-use OWC\Zaaksysteem\Support\PagedCollection;
 
 class ZaakinformatieobjectenEndpoint extends Endpoint
 {
@@ -13,11 +13,15 @@ class ZaakinformatieobjectenEndpoint extends Endpoint
     protected string $endpoint = 'zaakinformatieobjecten';
     protected string $entityClass = Zaakinformatieobject::class;
 
-    // public function all(): PagedCollection
-    // {
-    //     This Endpoint has no all() method, as the zaak and
-    //     informatieobject URI are mandatory parameters.
-    // }
+    public function all(): Collection
+    {
+        $response = $this->client->get(
+            $this->buildUri($this->endpoint),
+            $this->buildRequestOptions()
+        );
+
+        return $this->getCollection($this->handleResponse($response));
+    }
 
     public function get(string $identifier): ?Zaakinformatieobject
     {
@@ -29,13 +33,13 @@ class ZaakinformatieobjectenEndpoint extends Endpoint
         return $this->getSingleEntity($this->handleResponse($response));
     }
 
-    public function filter(Filter\ZaakinformatieobjectenFilter $filter): PagedCollection
+    public function filter(Filter\ZaakinformatieobjectenFilter $filter): Collection
     {
         $response = $this->client->get(
             $this->buildUri($this->endpoint, $filter),
             $this->buildRequestOptions($filter)
         );
 
-        return $this->getPagedCollection($this->handleResponse($response));
+        return $this->getCollection($this->handleResponse($response));
     }
 }

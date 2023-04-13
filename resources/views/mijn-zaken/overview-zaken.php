@@ -27,7 +27,11 @@ use function OWC\Zaaksysteem\Foundation\Helpers\view;
                         'hasNoStatus' => $zaak->status->statustoelichting === 'Niet beschikbaar',
                     ]);
 
-                    echo view('mijn-zaken/zaak-documents.php', ['documents' => []]);
+                if ($zaak->zaakinformatieobjecten->count() > 0) {
+                    echo view('mijn-zaken/zaak-documents.php', [
+                        'documents' => $zaak->zaakinformatieobjecten
+                    ]);
+                }
                 ?>
             </div>
         </div>
