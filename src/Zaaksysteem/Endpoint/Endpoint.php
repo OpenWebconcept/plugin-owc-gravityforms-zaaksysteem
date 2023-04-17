@@ -5,12 +5,12 @@ namespace OWC\Zaaksysteem\Endpoint;
 use OWC\Zaaksysteem\Http\PageMeta;
 use OWC\Zaaksysteem\Http\Response;
 use OWC\Zaaksysteem\Entities\Entity;
+use OWC\Zaaksysteem\Support\Collection;
 use OWC\Zaaksysteem\Http\Handlers\Stack;
 use OWC\Zaaksysteem\Http\RequestOptions;
 use OWC\Zaaksysteem\Support\PagedCollection;
 use OWC\Zaaksysteem\Http\RequestClientInterface;
 use OWC\Zaaksysteem\Http\Authentication\TokenAuthenticator;
-use OWC\Zaaksysteem\Support\Collection;
 
 abstract class Endpoint
 {

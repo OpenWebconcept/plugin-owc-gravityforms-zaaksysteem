@@ -39,7 +39,7 @@ abstract class AbstractFilter
         return $this;
     }
 
-    public function remove(string $name)
+    public function remove(string $name): void
     {
         unset($this->parameters[$name]);
     }
@@ -71,7 +71,7 @@ abstract class AbstractFilter
         return $this->add($fieldName, $date->format($dateFormat));
     }
 
-    protected function isSupportedOperator(string $operator)
+    protected function isSupportedOperator(string $operator): bool
     {
         $supported = [
             self::OPERATOR_EQUALS, self::OPERATOR_IS_NULL, self::OPERATOR_GT,

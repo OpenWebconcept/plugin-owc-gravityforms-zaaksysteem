@@ -2,20 +2,14 @@
 
 namespace OWC\Zaaksysteem\Endpoint\Filter;
 
+use OWC\Zaaksysteem\Entities\Catalogus;
+
 class ZaaktypenFilter extends AbstractFilter
 {
-    // Described as: URL-referentie naar de CATALOGUS waartoe dit ZAAKTYPE behoort.
-    // public function byCatalogus(Catalogus $catalogus)
-    // {
-    //     return $this->add('catalogus', $catalogus->url);
-    // }
-
-    // Described as: Unieke identificatie van het ZAAKTYPE binnen
-    // de CATALOGUS waarin het ZAAKTYPE voorkomt.
-    // public function byIdentifier(string $identifier)
-    // {
-        // return $this->add('identificatie', $identifier);
-    // }
+    public function byCatalogus(Catalogus $catalogus)
+    {
+        return $this->add('catalogus', $catalogus->url);
+    }
 
     // Does not seem to work?
     public function byKeywords(array $keywords)
