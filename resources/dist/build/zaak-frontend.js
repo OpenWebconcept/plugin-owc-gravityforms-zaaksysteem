@@ -1,82 +1,1467 @@
-/*
- * ATTENTION: The "eval" devtool has been used (maybe by default in mode: "development").
- * This devtool is neither made for production nor for readable output files.
- * It uses "eval()" calls to create a separate source file in the browser devtools.
- * If you are trying to read the output file, select a different devtool (https://webpack.js.org/configuration/devtool/)
- * or disable the default devtool with "devtool: false".
- * If you are looking for production-ready output files, see mode: "production" (https://webpack.js.org/configuration/mode/).
- */
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./node_modules/bootstrap/js/dist/base-component.js":
-/*!**********************************************************!*\
-  !*** ./node_modules/bootstrap/js/dist/base-component.js ***!
-  \**********************************************************/
+/***/ 86:
 /***/ (function(module, exports, __webpack_require__) {
 
-eval("var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nfunction _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }\n\nfunction _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, \"prototype\", { writable: false }); return Constructor; }\n\nfunction _typeof(obj) { \"@babel/helpers - typeof\"; return _typeof = \"function\" == typeof Symbol && \"symbol\" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && \"function\" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? \"symbol\" : typeof obj; }, _typeof(obj); }\n\n/*!\n  * Bootstrap base-component.js v5.1.3 (https://getbootstrap.com/)\n  * Copyright 2011-2021 The Bootstrap Authors (https://github.com/twbs/bootstrap/graphs/contributors)\n  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)\n  */\n(function (global, factory) {\n  ( false ? 0 : _typeof(exports)) === 'object' && \"object\" !== 'undefined' ? module.exports = factory(__webpack_require__(/*! ./dom/data.js */ \"./node_modules/bootstrap/js/dist/dom/data.js\"), __webpack_require__(/*! ./dom/event-handler.js */ \"./node_modules/bootstrap/js/dist/dom/event-handler.js\")) :  true ? !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! ./dom/data */ \"./node_modules/bootstrap/js/dist/dom/data.js\"), __webpack_require__(/*! ./dom/event-handler */ \"./node_modules/bootstrap/js/dist/dom/event-handler.js\")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),\n\t\t__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?\n\t\t(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),\n\t\t__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)) : (0);\n})(this, function (Data, EventHandler) {\n  'use strict';\n\n  var _interopDefaultLegacy = function _interopDefaultLegacy(e) {\n    return e && _typeof(e) === 'object' && 'default' in e ? e : {\n      \"default\": e\n    };\n  };\n\n  var Data__default = /*#__PURE__*/_interopDefaultLegacy(Data);\n\n  var EventHandler__default = /*#__PURE__*/_interopDefaultLegacy(EventHandler);\n  /**\n   * --------------------------------------------------------------------------\n   * Bootstrap (v5.1.3): util/index.js\n   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)\n   * --------------------------------------------------------------------------\n   */\n\n\n  var MILLISECONDS_MULTIPLIER = 1000;\n  var TRANSITION_END = 'transitionend'; // Shoutout AngusCroll (https://goo.gl/pxwQGp)\n\n  var getTransitionDurationFromElement = function getTransitionDurationFromElement(element) {\n    if (!element) {\n      return 0;\n    } // Get transition-duration of the element\n\n\n    var _window$getComputedSt = window.getComputedStyle(element),\n        transitionDuration = _window$getComputedSt.transitionDuration,\n        transitionDelay = _window$getComputedSt.transitionDelay;\n\n    var floatTransitionDuration = Number.parseFloat(transitionDuration);\n    var floatTransitionDelay = Number.parseFloat(transitionDelay); // Return 0 if element or transition duration is not found\n\n    if (!floatTransitionDuration && !floatTransitionDelay) {\n      return 0;\n    } // If multiple durations are defined, take the first\n\n\n    transitionDuration = transitionDuration.split(',')[0];\n    transitionDelay = transitionDelay.split(',')[0];\n    return (Number.parseFloat(transitionDuration) + Number.parseFloat(transitionDelay)) * MILLISECONDS_MULTIPLIER;\n  };\n\n  var triggerTransitionEnd = function triggerTransitionEnd(element) {\n    element.dispatchEvent(new Event(TRANSITION_END));\n  };\n\n  var isElement = function isElement(obj) {\n    if (!obj || _typeof(obj) !== 'object') {\n      return false;\n    }\n\n    if (typeof obj.jquery !== 'undefined') {\n      obj = obj[0];\n    }\n\n    return typeof obj.nodeType !== 'undefined';\n  };\n\n  var getElement = function getElement(obj) {\n    if (isElement(obj)) {\n      // it's a jQuery object or a node element\n      return obj.jquery ? obj[0] : obj;\n    }\n\n    if (typeof obj === 'string' && obj.length > 0) {\n      return document.querySelector(obj);\n    }\n\n    return null;\n  };\n\n  var execute = function execute(callback) {\n    if (typeof callback === 'function') {\n      callback();\n    }\n  };\n\n  var executeAfterTransition = function executeAfterTransition(callback, transitionElement) {\n    var waitForTransition = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;\n\n    if (!waitForTransition) {\n      execute(callback);\n      return;\n    }\n\n    var durationPadding = 5;\n    var emulatedDuration = getTransitionDurationFromElement(transitionElement) + durationPadding;\n    var called = false;\n\n    var handler = function handler(_ref) {\n      var target = _ref.target;\n\n      if (target !== transitionElement) {\n        return;\n      }\n\n      called = true;\n      transitionElement.removeEventListener(TRANSITION_END, handler);\n      execute(callback);\n    };\n\n    transitionElement.addEventListener(TRANSITION_END, handler);\n    setTimeout(function () {\n      if (!called) {\n        triggerTransitionEnd(transitionElement);\n      }\n    }, emulatedDuration);\n  };\n  /**\n   * --------------------------------------------------------------------------\n   * Bootstrap (v5.1.3): base-component.js\n   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)\n   * --------------------------------------------------------------------------\n   */\n\n  /**\n   * ------------------------------------------------------------------------\n   * Constants\n   * ------------------------------------------------------------------------\n   */\n\n\n  var VERSION = '5.1.3';\n\n  var BaseComponent = /*#__PURE__*/function () {\n    function BaseComponent(element) {\n      _classCallCheck(this, BaseComponent);\n\n      element = getElement(element);\n\n      if (!element) {\n        return;\n      }\n\n      this._element = element;\n      Data__default[\"default\"].set(this._element, this.constructor.DATA_KEY, this);\n    }\n\n    _createClass(BaseComponent, [{\n      key: \"dispose\",\n      value: function dispose() {\n        var _this = this;\n\n        Data__default[\"default\"].remove(this._element, this.constructor.DATA_KEY);\n        EventHandler__default[\"default\"].off(this._element, this.constructor.EVENT_KEY);\n        Object.getOwnPropertyNames(this).forEach(function (propertyName) {\n          _this[propertyName] = null;\n        });\n      }\n    }, {\n      key: \"_queueCallback\",\n      value: function _queueCallback(callback, element) {\n        var isAnimated = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;\n        executeAfterTransition(callback, element, isAnimated);\n      }\n      /** Static */\n\n    }], [{\n      key: \"getInstance\",\n      value: function getInstance(element) {\n        return Data__default[\"default\"].get(getElement(element), this.DATA_KEY);\n      }\n    }, {\n      key: \"getOrCreateInstance\",\n      value: function getOrCreateInstance(element) {\n        var config = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};\n        return this.getInstance(element) || new this(element, _typeof(config) === 'object' ? config : null);\n      }\n    }, {\n      key: \"VERSION\",\n      get: function get() {\n        return VERSION;\n      }\n    }, {\n      key: \"NAME\",\n      get: function get() {\n        throw new Error('You have to implement the static method \"NAME\", for each component!');\n      }\n    }, {\n      key: \"DATA_KEY\",\n      get: function get() {\n        return \"bs.\".concat(this.NAME);\n      }\n    }, {\n      key: \"EVENT_KEY\",\n      get: function get() {\n        return \".\".concat(this.DATA_KEY);\n      }\n    }]);\n\n    return BaseComponent;\n  }();\n\n  return BaseComponent;\n});\n\n//# sourceURL=webpack://owc-gravityforms-zaaksysteem/./node_modules/bootstrap/js/dist/base-component.js?");
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+
+/*!
+  * Bootstrap base-component.js v5.1.3 (https://getbootstrap.com/)
+  * Copyright 2011-2021 The Bootstrap Authors (https://github.com/twbs/bootstrap/graphs/contributors)
+  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
+  */
+(function (global, factory) {
+  ( false ? 0 : _typeof(exports)) === 'object' && "object" !== 'undefined' ? module.exports = factory(__webpack_require__(110), __webpack_require__(789)) :  true ? !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(110), __webpack_require__(789)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+		__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+		(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)) : (0);
+})(this, function (Data, EventHandler) {
+  'use strict';
+
+  var _interopDefaultLegacy = function _interopDefaultLegacy(e) {
+    return e && _typeof(e) === 'object' && 'default' in e ? e : {
+      "default": e
+    };
+  };
+
+  var Data__default = /*#__PURE__*/_interopDefaultLegacy(Data);
+
+  var EventHandler__default = /*#__PURE__*/_interopDefaultLegacy(EventHandler);
+  /**
+   * --------------------------------------------------------------------------
+   * Bootstrap (v5.1.3): util/index.js
+   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
+   * --------------------------------------------------------------------------
+   */
+
+
+  var MILLISECONDS_MULTIPLIER = 1000;
+  var TRANSITION_END = 'transitionend'; // Shoutout AngusCroll (https://goo.gl/pxwQGp)
+
+  var getTransitionDurationFromElement = function getTransitionDurationFromElement(element) {
+    if (!element) {
+      return 0;
+    } // Get transition-duration of the element
+
+
+    var _window$getComputedSt = window.getComputedStyle(element),
+        transitionDuration = _window$getComputedSt.transitionDuration,
+        transitionDelay = _window$getComputedSt.transitionDelay;
+
+    var floatTransitionDuration = Number.parseFloat(transitionDuration);
+    var floatTransitionDelay = Number.parseFloat(transitionDelay); // Return 0 if element or transition duration is not found
+
+    if (!floatTransitionDuration && !floatTransitionDelay) {
+      return 0;
+    } // If multiple durations are defined, take the first
+
+
+    transitionDuration = transitionDuration.split(',')[0];
+    transitionDelay = transitionDelay.split(',')[0];
+    return (Number.parseFloat(transitionDuration) + Number.parseFloat(transitionDelay)) * MILLISECONDS_MULTIPLIER;
+  };
+
+  var triggerTransitionEnd = function triggerTransitionEnd(element) {
+    element.dispatchEvent(new Event(TRANSITION_END));
+  };
+
+  var isElement = function isElement(obj) {
+    if (!obj || _typeof(obj) !== 'object') {
+      return false;
+    }
+
+    if (typeof obj.jquery !== 'undefined') {
+      obj = obj[0];
+    }
+
+    return typeof obj.nodeType !== 'undefined';
+  };
+
+  var getElement = function getElement(obj) {
+    if (isElement(obj)) {
+      // it's a jQuery object or a node element
+      return obj.jquery ? obj[0] : obj;
+    }
+
+    if (typeof obj === 'string' && obj.length > 0) {
+      return document.querySelector(obj);
+    }
+
+    return null;
+  };
+
+  var execute = function execute(callback) {
+    if (typeof callback === 'function') {
+      callback();
+    }
+  };
+
+  var executeAfterTransition = function executeAfterTransition(callback, transitionElement) {
+    var waitForTransition = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
+
+    if (!waitForTransition) {
+      execute(callback);
+      return;
+    }
+
+    var durationPadding = 5;
+    var emulatedDuration = getTransitionDurationFromElement(transitionElement) + durationPadding;
+    var called = false;
+
+    var handler = function handler(_ref) {
+      var target = _ref.target;
+
+      if (target !== transitionElement) {
+        return;
+      }
+
+      called = true;
+      transitionElement.removeEventListener(TRANSITION_END, handler);
+      execute(callback);
+    };
+
+    transitionElement.addEventListener(TRANSITION_END, handler);
+    setTimeout(function () {
+      if (!called) {
+        triggerTransitionEnd(transitionElement);
+      }
+    }, emulatedDuration);
+  };
+  /**
+   * --------------------------------------------------------------------------
+   * Bootstrap (v5.1.3): base-component.js
+   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
+   * --------------------------------------------------------------------------
+   */
+
+  /**
+   * ------------------------------------------------------------------------
+   * Constants
+   * ------------------------------------------------------------------------
+   */
+
+
+  var VERSION = '5.1.3';
+
+  var BaseComponent = /*#__PURE__*/function () {
+    function BaseComponent(element) {
+      _classCallCheck(this, BaseComponent);
+
+      element = getElement(element);
+
+      if (!element) {
+        return;
+      }
+
+      this._element = element;
+      Data__default["default"].set(this._element, this.constructor.DATA_KEY, this);
+    }
+
+    _createClass(BaseComponent, [{
+      key: "dispose",
+      value: function dispose() {
+        var _this = this;
+
+        Data__default["default"].remove(this._element, this.constructor.DATA_KEY);
+        EventHandler__default["default"].off(this._element, this.constructor.EVENT_KEY);
+        Object.getOwnPropertyNames(this).forEach(function (propertyName) {
+          _this[propertyName] = null;
+        });
+      }
+    }, {
+      key: "_queueCallback",
+      value: function _queueCallback(callback, element) {
+        var isAnimated = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
+        executeAfterTransition(callback, element, isAnimated);
+      }
+      /** Static */
+
+    }], [{
+      key: "getInstance",
+      value: function getInstance(element) {
+        return Data__default["default"].get(getElement(element), this.DATA_KEY);
+      }
+    }, {
+      key: "getOrCreateInstance",
+      value: function getOrCreateInstance(element) {
+        var config = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+        return this.getInstance(element) || new this(element, _typeof(config) === 'object' ? config : null);
+      }
+    }, {
+      key: "VERSION",
+      get: function get() {
+        return VERSION;
+      }
+    }, {
+      key: "NAME",
+      get: function get() {
+        throw new Error('You have to implement the static method "NAME", for each component!');
+      }
+    }, {
+      key: "DATA_KEY",
+      get: function get() {
+        return "bs.".concat(this.NAME);
+      }
+    }, {
+      key: "EVENT_KEY",
+      get: function get() {
+        return ".".concat(this.DATA_KEY);
+      }
+    }]);
+
+    return BaseComponent;
+  }();
+
+  return BaseComponent;
+});
 
 /***/ }),
 
-/***/ "./node_modules/bootstrap/js/dist/collapse.js":
-/*!****************************************************!*\
-  !*** ./node_modules/bootstrap/js/dist/collapse.js ***!
-  \****************************************************/
+/***/ 62:
 /***/ (function(module, exports, __webpack_require__) {
 
-eval("var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }\n\nfunction _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }\n\nfunction _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }\n\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nfunction _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }\n\nfunction _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, \"prototype\", { writable: false }); return Constructor; }\n\nfunction _inherits(subClass, superClass) { if (typeof superClass !== \"function\" && superClass !== null) { throw new TypeError(\"Super expression must either be null or a function\"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, \"prototype\", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }\n\nfunction _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }\n\nfunction _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }\n\nfunction _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === \"object\" || typeof call === \"function\")) { return call; } else if (call !== void 0) { throw new TypeError(\"Derived constructors may only return object or undefined\"); } return _assertThisInitialized(self); }\n\nfunction _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError(\"this hasn't been initialised - super() hasn't been called\"); } return self; }\n\nfunction _isNativeReflectConstruct() { if (typeof Reflect === \"undefined\" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === \"function\") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }\n\nfunction _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }\n\nfunction _typeof(obj) { \"@babel/helpers - typeof\"; return _typeof = \"function\" == typeof Symbol && \"symbol\" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && \"function\" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? \"symbol\" : typeof obj; }, _typeof(obj); }\n\n/*!\n  * Bootstrap collapse.js v5.1.3 (https://getbootstrap.com/)\n  * Copyright 2011-2021 The Bootstrap Authors (https://github.com/twbs/bootstrap/graphs/contributors)\n  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)\n  */\n(function (global, factory) {\n  ( false ? 0 : _typeof(exports)) === 'object' && \"object\" !== 'undefined' ? module.exports = factory(__webpack_require__(/*! ./dom/data.js */ \"./node_modules/bootstrap/js/dist/dom/data.js\"), __webpack_require__(/*! ./dom/event-handler.js */ \"./node_modules/bootstrap/js/dist/dom/event-handler.js\"), __webpack_require__(/*! ./dom/manipulator.js */ \"./node_modules/bootstrap/js/dist/dom/manipulator.js\"), __webpack_require__(/*! ./dom/selector-engine.js */ \"./node_modules/bootstrap/js/dist/dom/selector-engine.js\"), __webpack_require__(/*! ./base-component.js */ \"./node_modules/bootstrap/js/dist/base-component.js\")) :  true ? !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! ./dom/data */ \"./node_modules/bootstrap/js/dist/dom/data.js\"), __webpack_require__(/*! ./dom/event-handler */ \"./node_modules/bootstrap/js/dist/dom/event-handler.js\"), __webpack_require__(/*! ./dom/manipulator */ \"./node_modules/bootstrap/js/dist/dom/manipulator.js\"), __webpack_require__(/*! ./dom/selector-engine */ \"./node_modules/bootstrap/js/dist/dom/selector-engine.js\"), __webpack_require__(/*! ./base-component */ \"./node_modules/bootstrap/js/dist/base-component.js\")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),\n\t\t__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?\n\t\t(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),\n\t\t__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)) : (0);\n})(this, function (Data, EventHandler, Manipulator, SelectorEngine, BaseComponent) {\n  'use strict';\n\n  var _interopDefaultLegacy = function _interopDefaultLegacy(e) {\n    return e && _typeof(e) === 'object' && 'default' in e ? e : {\n      \"default\": e\n    };\n  };\n\n  var Data__default = /*#__PURE__*/_interopDefaultLegacy(Data);\n\n  var EventHandler__default = /*#__PURE__*/_interopDefaultLegacy(EventHandler);\n\n  var Manipulator__default = /*#__PURE__*/_interopDefaultLegacy(Manipulator);\n\n  var SelectorEngine__default = /*#__PURE__*/_interopDefaultLegacy(SelectorEngine);\n\n  var BaseComponent__default = /*#__PURE__*/_interopDefaultLegacy(BaseComponent);\n  /**\n   * --------------------------------------------------------------------------\n   * Bootstrap (v5.1.3): util/index.js\n   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)\n   * --------------------------------------------------------------------------\n   */\n\n\n  var toType = function toType(obj) {\n    if (obj === null || obj === undefined) {\n      return \"\".concat(obj);\n    }\n\n    return {}.toString.call(obj).match(/\\s([a-z]+)/i)[1].toLowerCase();\n  };\n\n  var getSelector = function getSelector(element) {\n    var selector = element.getAttribute('data-bs-target');\n\n    if (!selector || selector === '#') {\n      var hrefAttr = element.getAttribute('href'); // The only valid content that could double as a selector are IDs or classes,\n      // so everything starting with `#` or `.`. If a \"real\" URL is used as the selector,\n      // `document.querySelector` will rightfully complain it is invalid.\n      // See https://github.com/twbs/bootstrap/issues/32273\n\n      if (!hrefAttr || !hrefAttr.includes('#') && !hrefAttr.startsWith('.')) {\n        return null;\n      } // Just in case some CMS puts out a full URL with the anchor appended\n\n\n      if (hrefAttr.includes('#') && !hrefAttr.startsWith('#')) {\n        hrefAttr = \"#\".concat(hrefAttr.split('#')[1]);\n      }\n\n      selector = hrefAttr && hrefAttr !== '#' ? hrefAttr.trim() : null;\n    }\n\n    return selector;\n  };\n\n  var getSelectorFromElement = function getSelectorFromElement(element) {\n    var selector = getSelector(element);\n\n    if (selector) {\n      return document.querySelector(selector) ? selector : null;\n    }\n\n    return null;\n  };\n\n  var getElementFromSelector = function getElementFromSelector(element) {\n    var selector = getSelector(element);\n    return selector ? document.querySelector(selector) : null;\n  };\n\n  var isElement = function isElement(obj) {\n    if (!obj || _typeof(obj) !== 'object') {\n      return false;\n    }\n\n    if (typeof obj.jquery !== 'undefined') {\n      obj = obj[0];\n    }\n\n    return typeof obj.nodeType !== 'undefined';\n  };\n\n  var getElement = function getElement(obj) {\n    if (isElement(obj)) {\n      // it's a jQuery object or a node element\n      return obj.jquery ? obj[0] : obj;\n    }\n\n    if (typeof obj === 'string' && obj.length > 0) {\n      return document.querySelector(obj);\n    }\n\n    return null;\n  };\n\n  var typeCheckConfig = function typeCheckConfig(componentName, config, configTypes) {\n    Object.keys(configTypes).forEach(function (property) {\n      var expectedTypes = configTypes[property];\n      var value = config[property];\n      var valueType = value && isElement(value) ? 'element' : toType(value);\n\n      if (!new RegExp(expectedTypes).test(valueType)) {\n        throw new TypeError(\"\".concat(componentName.toUpperCase(), \": Option \\\"\").concat(property, \"\\\" provided type \\\"\").concat(valueType, \"\\\" but expected type \\\"\").concat(expectedTypes, \"\\\".\"));\n      }\n    });\n  };\n  /**\n   * Trick to restart an element's animation\n   *\n   * @param {HTMLElement} element\n   * @return void\n   *\n   * @see https://www.charistheo.io/blog/2021/02/restart-a-css-animation-with-javascript/#restarting-a-css-animation\n   */\n\n\n  var reflow = function reflow(element) {\n    // eslint-disable-next-line no-unused-expressions\n    element.offsetHeight;\n  };\n\n  var getjQuery = function getjQuery() {\n    var _window = window,\n        jQuery = _window.jQuery;\n\n    if (jQuery && !document.body.hasAttribute('data-bs-no-jquery')) {\n      return jQuery;\n    }\n\n    return null;\n  };\n\n  var DOMContentLoadedCallbacks = [];\n\n  var onDOMContentLoaded = function onDOMContentLoaded(callback) {\n    if (document.readyState === 'loading') {\n      // add listener on the first call when the document is in loading state\n      if (!DOMContentLoadedCallbacks.length) {\n        document.addEventListener('DOMContentLoaded', function () {\n          DOMContentLoadedCallbacks.forEach(function (callback) {\n            return callback();\n          });\n        });\n      }\n\n      DOMContentLoadedCallbacks.push(callback);\n    } else {\n      callback();\n    }\n  };\n\n  var defineJQueryPlugin = function defineJQueryPlugin(plugin) {\n    onDOMContentLoaded(function () {\n      var $ = getjQuery();\n      /* istanbul ignore if */\n\n      if ($) {\n        var name = plugin.NAME;\n        var JQUERY_NO_CONFLICT = $.fn[name];\n        $.fn[name] = plugin.jQueryInterface;\n        $.fn[name].Constructor = plugin;\n\n        $.fn[name].noConflict = function () {\n          $.fn[name] = JQUERY_NO_CONFLICT;\n          return plugin.jQueryInterface;\n        };\n      }\n    });\n  };\n  /**\n   * --------------------------------------------------------------------------\n   * Bootstrap (v5.1.3): collapse.js\n   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)\n   * --------------------------------------------------------------------------\n   */\n\n  /**\n   * ------------------------------------------------------------------------\n   * Constants\n   * ------------------------------------------------------------------------\n   */\n\n\n  var NAME = 'collapse';\n  var DATA_KEY = 'bs.collapse';\n  var EVENT_KEY = \".\".concat(DATA_KEY);\n  var DATA_API_KEY = '.data-api';\n  var Default = {\n    toggle: true,\n    parent: null\n  };\n  var DefaultType = {\n    toggle: 'boolean',\n    parent: '(null|element)'\n  };\n  var EVENT_SHOW = \"show\".concat(EVENT_KEY);\n  var EVENT_SHOWN = \"shown\".concat(EVENT_KEY);\n  var EVENT_HIDE = \"hide\".concat(EVENT_KEY);\n  var EVENT_HIDDEN = \"hidden\".concat(EVENT_KEY);\n  var EVENT_CLICK_DATA_API = \"click\".concat(EVENT_KEY).concat(DATA_API_KEY);\n  var CLASS_NAME_SHOW = 'show';\n  var CLASS_NAME_COLLAPSE = 'collapse';\n  var CLASS_NAME_COLLAPSING = 'collapsing';\n  var CLASS_NAME_COLLAPSED = 'collapsed';\n  var CLASS_NAME_DEEPER_CHILDREN = \":scope .\".concat(CLASS_NAME_COLLAPSE, \" .\").concat(CLASS_NAME_COLLAPSE);\n  var CLASS_NAME_HORIZONTAL = 'collapse-horizontal';\n  var WIDTH = 'width';\n  var HEIGHT = 'height';\n  var SELECTOR_ACTIVES = '.collapse.show, .collapse.collapsing';\n  var SELECTOR_DATA_TOGGLE = '[data-bs-toggle=\"collapse\"]';\n  /**\n   * ------------------------------------------------------------------------\n   * Class Definition\n   * ------------------------------------------------------------------------\n   */\n\n  var Collapse = /*#__PURE__*/function (_BaseComponent__defau) {\n    _inherits(Collapse, _BaseComponent__defau);\n\n    var _super = _createSuper(Collapse);\n\n    function Collapse(element, config) {\n      var _this;\n\n      _classCallCheck(this, Collapse);\n\n      _this = _super.call(this, element);\n      _this._isTransitioning = false;\n      _this._config = _this._getConfig(config);\n      _this._triggerArray = [];\n      var toggleList = SelectorEngine__default[\"default\"].find(SELECTOR_DATA_TOGGLE);\n\n      for (var i = 0, len = toggleList.length; i < len; i++) {\n        var elem = toggleList[i];\n        var selector = getSelectorFromElement(elem);\n        var filterElement = SelectorEngine__default[\"default\"].find(selector).filter(function (foundElem) {\n          return foundElem === _this._element;\n        });\n\n        if (selector !== null && filterElement.length) {\n          _this._selector = selector;\n\n          _this._triggerArray.push(elem);\n        }\n      }\n\n      _this._initializeChildren();\n\n      if (!_this._config.parent) {\n        _this._addAriaAndCollapsedClass(_this._triggerArray, _this._isShown());\n      }\n\n      if (_this._config.toggle) {\n        _this.toggle();\n      }\n\n      return _this;\n    } // Getters\n\n\n    _createClass(Collapse, [{\n      key: \"toggle\",\n      value: // Public\n      function toggle() {\n        if (this._isShown()) {\n          this.hide();\n        } else {\n          this.show();\n        }\n      }\n    }, {\n      key: \"show\",\n      value: function show() {\n        var _this2 = this;\n\n        if (this._isTransitioning || this._isShown()) {\n          return;\n        }\n\n        var actives = [];\n        var activesData;\n\n        if (this._config.parent) {\n          var children = SelectorEngine__default[\"default\"].find(CLASS_NAME_DEEPER_CHILDREN, this._config.parent);\n          actives = SelectorEngine__default[\"default\"].find(SELECTOR_ACTIVES, this._config.parent).filter(function (elem) {\n            return !children.includes(elem);\n          }); // remove children if greater depth\n        }\n\n        var container = SelectorEngine__default[\"default\"].findOne(this._selector);\n\n        if (actives.length) {\n          var tempActiveData = actives.find(function (elem) {\n            return container !== elem;\n          });\n          activesData = tempActiveData ? Collapse.getInstance(tempActiveData) : null;\n\n          if (activesData && activesData._isTransitioning) {\n            return;\n          }\n        }\n\n        var startEvent = EventHandler__default[\"default\"].trigger(this._element, EVENT_SHOW);\n\n        if (startEvent.defaultPrevented) {\n          return;\n        }\n\n        actives.forEach(function (elemActive) {\n          if (container !== elemActive) {\n            Collapse.getOrCreateInstance(elemActive, {\n              toggle: false\n            }).hide();\n          }\n\n          if (!activesData) {\n            Data__default[\"default\"].set(elemActive, DATA_KEY, null);\n          }\n        });\n\n        var dimension = this._getDimension();\n\n        this._element.classList.remove(CLASS_NAME_COLLAPSE);\n\n        this._element.classList.add(CLASS_NAME_COLLAPSING);\n\n        this._element.style[dimension] = 0;\n\n        this._addAriaAndCollapsedClass(this._triggerArray, true);\n\n        this._isTransitioning = true;\n\n        var complete = function complete() {\n          _this2._isTransitioning = false;\n\n          _this2._element.classList.remove(CLASS_NAME_COLLAPSING);\n\n          _this2._element.classList.add(CLASS_NAME_COLLAPSE, CLASS_NAME_SHOW);\n\n          _this2._element.style[dimension] = '';\n          EventHandler__default[\"default\"].trigger(_this2._element, EVENT_SHOWN);\n        };\n\n        var capitalizedDimension = dimension[0].toUpperCase() + dimension.slice(1);\n        var scrollSize = \"scroll\".concat(capitalizedDimension);\n\n        this._queueCallback(complete, this._element, true);\n\n        this._element.style[dimension] = \"\".concat(this._element[scrollSize], \"px\");\n      }\n    }, {\n      key: \"hide\",\n      value: function hide() {\n        var _this3 = this;\n\n        if (this._isTransitioning || !this._isShown()) {\n          return;\n        }\n\n        var startEvent = EventHandler__default[\"default\"].trigger(this._element, EVENT_HIDE);\n\n        if (startEvent.defaultPrevented) {\n          return;\n        }\n\n        var dimension = this._getDimension();\n\n        this._element.style[dimension] = \"\".concat(this._element.getBoundingClientRect()[dimension], \"px\");\n        reflow(this._element);\n\n        this._element.classList.add(CLASS_NAME_COLLAPSING);\n\n        this._element.classList.remove(CLASS_NAME_COLLAPSE, CLASS_NAME_SHOW);\n\n        var triggerArrayLength = this._triggerArray.length;\n\n        for (var i = 0; i < triggerArrayLength; i++) {\n          var trigger = this._triggerArray[i];\n          var elem = getElementFromSelector(trigger);\n\n          if (elem && !this._isShown(elem)) {\n            this._addAriaAndCollapsedClass([trigger], false);\n          }\n        }\n\n        this._isTransitioning = true;\n\n        var complete = function complete() {\n          _this3._isTransitioning = false;\n\n          _this3._element.classList.remove(CLASS_NAME_COLLAPSING);\n\n          _this3._element.classList.add(CLASS_NAME_COLLAPSE);\n\n          EventHandler__default[\"default\"].trigger(_this3._element, EVENT_HIDDEN);\n        };\n\n        this._element.style[dimension] = '';\n\n        this._queueCallback(complete, this._element, true);\n      }\n    }, {\n      key: \"_isShown\",\n      value: function _isShown() {\n        var element = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this._element;\n        return element.classList.contains(CLASS_NAME_SHOW);\n      } // Private\n\n    }, {\n      key: \"_getConfig\",\n      value: function _getConfig(config) {\n        config = _objectSpread(_objectSpread(_objectSpread({}, Default), Manipulator__default[\"default\"].getDataAttributes(this._element)), config);\n        config.toggle = Boolean(config.toggle); // Coerce string values\n\n        config.parent = getElement(config.parent);\n        typeCheckConfig(NAME, config, DefaultType);\n        return config;\n      }\n    }, {\n      key: \"_getDimension\",\n      value: function _getDimension() {\n        return this._element.classList.contains(CLASS_NAME_HORIZONTAL) ? WIDTH : HEIGHT;\n      }\n    }, {\n      key: \"_initializeChildren\",\n      value: function _initializeChildren() {\n        var _this4 = this;\n\n        if (!this._config.parent) {\n          return;\n        }\n\n        var children = SelectorEngine__default[\"default\"].find(CLASS_NAME_DEEPER_CHILDREN, this._config.parent);\n        SelectorEngine__default[\"default\"].find(SELECTOR_DATA_TOGGLE, this._config.parent).filter(function (elem) {\n          return !children.includes(elem);\n        }).forEach(function (element) {\n          var selected = getElementFromSelector(element);\n\n          if (selected) {\n            _this4._addAriaAndCollapsedClass([element], _this4._isShown(selected));\n          }\n        });\n      }\n    }, {\n      key: \"_addAriaAndCollapsedClass\",\n      value: function _addAriaAndCollapsedClass(triggerArray, isOpen) {\n        if (!triggerArray.length) {\n          return;\n        }\n\n        triggerArray.forEach(function (elem) {\n          if (isOpen) {\n            elem.classList.remove(CLASS_NAME_COLLAPSED);\n          } else {\n            elem.classList.add(CLASS_NAME_COLLAPSED);\n          }\n\n          elem.setAttribute('aria-expanded', isOpen);\n        });\n      } // Static\n\n    }], [{\n      key: \"Default\",\n      get: function get() {\n        return Default;\n      }\n    }, {\n      key: \"NAME\",\n      get: function get() {\n        return NAME;\n      }\n    }, {\n      key: \"jQueryInterface\",\n      value: function jQueryInterface(config) {\n        return this.each(function () {\n          var _config = {};\n\n          if (typeof config === 'string' && /show|hide/.test(config)) {\n            _config.toggle = false;\n          }\n\n          var data = Collapse.getOrCreateInstance(this, _config);\n\n          if (typeof config === 'string') {\n            if (typeof data[config] === 'undefined') {\n              throw new TypeError(\"No method named \\\"\".concat(config, \"\\\"\"));\n            }\n\n            data[config]();\n          }\n        });\n      }\n    }]);\n\n    return Collapse;\n  }(BaseComponent__default[\"default\"]);\n  /**\n   * ------------------------------------------------------------------------\n   * Data Api implementation\n   * ------------------------------------------------------------------------\n   */\n\n\n  EventHandler__default[\"default\"].on(document, EVENT_CLICK_DATA_API, SELECTOR_DATA_TOGGLE, function (event) {\n    // preventDefault only for <a> elements (which change the URL) not inside the collapsible element\n    if (event.target.tagName === 'A' || event.delegateTarget && event.delegateTarget.tagName === 'A') {\n      event.preventDefault();\n    }\n\n    var selector = getSelectorFromElement(this);\n    var selectorElements = SelectorEngine__default[\"default\"].find(selector);\n    selectorElements.forEach(function (element) {\n      Collapse.getOrCreateInstance(element, {\n        toggle: false\n      }).toggle();\n    });\n  });\n  /**\n   * ------------------------------------------------------------------------\n   * jQuery\n   * ------------------------------------------------------------------------\n   * add .Collapse to jQuery only if jQuery is present\n   */\n\n  defineJQueryPlugin(Collapse);\n  return Collapse;\n});\n\n//# sourceURL=webpack://owc-gravityforms-zaaksysteem/./node_modules/bootstrap/js/dist/collapse.js?");
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+
+/*!
+  * Bootstrap collapse.js v5.1.3 (https://getbootstrap.com/)
+  * Copyright 2011-2021 The Bootstrap Authors (https://github.com/twbs/bootstrap/graphs/contributors)
+  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
+  */
+(function (global, factory) {
+  ( false ? 0 : _typeof(exports)) === 'object' && "object" !== 'undefined' ? module.exports = factory(__webpack_require__(110), __webpack_require__(789), __webpack_require__(432), __webpack_require__(56), __webpack_require__(86)) :  true ? !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(110), __webpack_require__(789), __webpack_require__(432), __webpack_require__(56), __webpack_require__(86)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+		__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+		(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)) : (0);
+})(this, function (Data, EventHandler, Manipulator, SelectorEngine, BaseComponent) {
+  'use strict';
+
+  var _interopDefaultLegacy = function _interopDefaultLegacy(e) {
+    return e && _typeof(e) === 'object' && 'default' in e ? e : {
+      "default": e
+    };
+  };
+
+  var Data__default = /*#__PURE__*/_interopDefaultLegacy(Data);
+
+  var EventHandler__default = /*#__PURE__*/_interopDefaultLegacy(EventHandler);
+
+  var Manipulator__default = /*#__PURE__*/_interopDefaultLegacy(Manipulator);
+
+  var SelectorEngine__default = /*#__PURE__*/_interopDefaultLegacy(SelectorEngine);
+
+  var BaseComponent__default = /*#__PURE__*/_interopDefaultLegacy(BaseComponent);
+  /**
+   * --------------------------------------------------------------------------
+   * Bootstrap (v5.1.3): util/index.js
+   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
+   * --------------------------------------------------------------------------
+   */
+
+
+  var toType = function toType(obj) {
+    if (obj === null || obj === undefined) {
+      return "".concat(obj);
+    }
+
+    return {}.toString.call(obj).match(/\s([a-z]+)/i)[1].toLowerCase();
+  };
+
+  var getSelector = function getSelector(element) {
+    var selector = element.getAttribute('data-bs-target');
+
+    if (!selector || selector === '#') {
+      var hrefAttr = element.getAttribute('href'); // The only valid content that could double as a selector are IDs or classes,
+      // so everything starting with `#` or `.`. If a "real" URL is used as the selector,
+      // `document.querySelector` will rightfully complain it is invalid.
+      // See https://github.com/twbs/bootstrap/issues/32273
+
+      if (!hrefAttr || !hrefAttr.includes('#') && !hrefAttr.startsWith('.')) {
+        return null;
+      } // Just in case some CMS puts out a full URL with the anchor appended
+
+
+      if (hrefAttr.includes('#') && !hrefAttr.startsWith('#')) {
+        hrefAttr = "#".concat(hrefAttr.split('#')[1]);
+      }
+
+      selector = hrefAttr && hrefAttr !== '#' ? hrefAttr.trim() : null;
+    }
+
+    return selector;
+  };
+
+  var getSelectorFromElement = function getSelectorFromElement(element) {
+    var selector = getSelector(element);
+
+    if (selector) {
+      return document.querySelector(selector) ? selector : null;
+    }
+
+    return null;
+  };
+
+  var getElementFromSelector = function getElementFromSelector(element) {
+    var selector = getSelector(element);
+    return selector ? document.querySelector(selector) : null;
+  };
+
+  var isElement = function isElement(obj) {
+    if (!obj || _typeof(obj) !== 'object') {
+      return false;
+    }
+
+    if (typeof obj.jquery !== 'undefined') {
+      obj = obj[0];
+    }
+
+    return typeof obj.nodeType !== 'undefined';
+  };
+
+  var getElement = function getElement(obj) {
+    if (isElement(obj)) {
+      // it's a jQuery object or a node element
+      return obj.jquery ? obj[0] : obj;
+    }
+
+    if (typeof obj === 'string' && obj.length > 0) {
+      return document.querySelector(obj);
+    }
+
+    return null;
+  };
+
+  var typeCheckConfig = function typeCheckConfig(componentName, config, configTypes) {
+    Object.keys(configTypes).forEach(function (property) {
+      var expectedTypes = configTypes[property];
+      var value = config[property];
+      var valueType = value && isElement(value) ? 'element' : toType(value);
+
+      if (!new RegExp(expectedTypes).test(valueType)) {
+        throw new TypeError("".concat(componentName.toUpperCase(), ": Option \"").concat(property, "\" provided type \"").concat(valueType, "\" but expected type \"").concat(expectedTypes, "\"."));
+      }
+    });
+  };
+  /**
+   * Trick to restart an element's animation
+   *
+   * @param {HTMLElement} element
+   * @return void
+   *
+   * @see https://www.charistheo.io/blog/2021/02/restart-a-css-animation-with-javascript/#restarting-a-css-animation
+   */
+
+
+  var reflow = function reflow(element) {
+    // eslint-disable-next-line no-unused-expressions
+    element.offsetHeight;
+  };
+
+  var getjQuery = function getjQuery() {
+    var _window = window,
+        jQuery = _window.jQuery;
+
+    if (jQuery && !document.body.hasAttribute('data-bs-no-jquery')) {
+      return jQuery;
+    }
+
+    return null;
+  };
+
+  var DOMContentLoadedCallbacks = [];
+
+  var onDOMContentLoaded = function onDOMContentLoaded(callback) {
+    if (document.readyState === 'loading') {
+      // add listener on the first call when the document is in loading state
+      if (!DOMContentLoadedCallbacks.length) {
+        document.addEventListener('DOMContentLoaded', function () {
+          DOMContentLoadedCallbacks.forEach(function (callback) {
+            return callback();
+          });
+        });
+      }
+
+      DOMContentLoadedCallbacks.push(callback);
+    } else {
+      callback();
+    }
+  };
+
+  var defineJQueryPlugin = function defineJQueryPlugin(plugin) {
+    onDOMContentLoaded(function () {
+      var $ = getjQuery();
+      /* istanbul ignore if */
+
+      if ($) {
+        var name = plugin.NAME;
+        var JQUERY_NO_CONFLICT = $.fn[name];
+        $.fn[name] = plugin.jQueryInterface;
+        $.fn[name].Constructor = plugin;
+
+        $.fn[name].noConflict = function () {
+          $.fn[name] = JQUERY_NO_CONFLICT;
+          return plugin.jQueryInterface;
+        };
+      }
+    });
+  };
+  /**
+   * --------------------------------------------------------------------------
+   * Bootstrap (v5.1.3): collapse.js
+   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
+   * --------------------------------------------------------------------------
+   */
+
+  /**
+   * ------------------------------------------------------------------------
+   * Constants
+   * ------------------------------------------------------------------------
+   */
+
+
+  var NAME = 'collapse';
+  var DATA_KEY = 'bs.collapse';
+  var EVENT_KEY = ".".concat(DATA_KEY);
+  var DATA_API_KEY = '.data-api';
+  var Default = {
+    toggle: true,
+    parent: null
+  };
+  var DefaultType = {
+    toggle: 'boolean',
+    parent: '(null|element)'
+  };
+  var EVENT_SHOW = "show".concat(EVENT_KEY);
+  var EVENT_SHOWN = "shown".concat(EVENT_KEY);
+  var EVENT_HIDE = "hide".concat(EVENT_KEY);
+  var EVENT_HIDDEN = "hidden".concat(EVENT_KEY);
+  var EVENT_CLICK_DATA_API = "click".concat(EVENT_KEY).concat(DATA_API_KEY);
+  var CLASS_NAME_SHOW = 'show';
+  var CLASS_NAME_COLLAPSE = 'collapse';
+  var CLASS_NAME_COLLAPSING = 'collapsing';
+  var CLASS_NAME_COLLAPSED = 'collapsed';
+  var CLASS_NAME_DEEPER_CHILDREN = ":scope .".concat(CLASS_NAME_COLLAPSE, " .").concat(CLASS_NAME_COLLAPSE);
+  var CLASS_NAME_HORIZONTAL = 'collapse-horizontal';
+  var WIDTH = 'width';
+  var HEIGHT = 'height';
+  var SELECTOR_ACTIVES = '.collapse.show, .collapse.collapsing';
+  var SELECTOR_DATA_TOGGLE = '[data-bs-toggle="collapse"]';
+  /**
+   * ------------------------------------------------------------------------
+   * Class Definition
+   * ------------------------------------------------------------------------
+   */
+
+  var Collapse = /*#__PURE__*/function (_BaseComponent__defau) {
+    _inherits(Collapse, _BaseComponent__defau);
+
+    var _super = _createSuper(Collapse);
+
+    function Collapse(element, config) {
+      var _this;
+
+      _classCallCheck(this, Collapse);
+
+      _this = _super.call(this, element);
+      _this._isTransitioning = false;
+      _this._config = _this._getConfig(config);
+      _this._triggerArray = [];
+      var toggleList = SelectorEngine__default["default"].find(SELECTOR_DATA_TOGGLE);
+
+      for (var i = 0, len = toggleList.length; i < len; i++) {
+        var elem = toggleList[i];
+        var selector = getSelectorFromElement(elem);
+        var filterElement = SelectorEngine__default["default"].find(selector).filter(function (foundElem) {
+          return foundElem === _this._element;
+        });
+
+        if (selector !== null && filterElement.length) {
+          _this._selector = selector;
+
+          _this._triggerArray.push(elem);
+        }
+      }
+
+      _this._initializeChildren();
+
+      if (!_this._config.parent) {
+        _this._addAriaAndCollapsedClass(_this._triggerArray, _this._isShown());
+      }
+
+      if (_this._config.toggle) {
+        _this.toggle();
+      }
+
+      return _this;
+    } // Getters
+
+
+    _createClass(Collapse, [{
+      key: "toggle",
+      value: // Public
+      function toggle() {
+        if (this._isShown()) {
+          this.hide();
+        } else {
+          this.show();
+        }
+      }
+    }, {
+      key: "show",
+      value: function show() {
+        var _this2 = this;
+
+        if (this._isTransitioning || this._isShown()) {
+          return;
+        }
+
+        var actives = [];
+        var activesData;
+
+        if (this._config.parent) {
+          var children = SelectorEngine__default["default"].find(CLASS_NAME_DEEPER_CHILDREN, this._config.parent);
+          actives = SelectorEngine__default["default"].find(SELECTOR_ACTIVES, this._config.parent).filter(function (elem) {
+            return !children.includes(elem);
+          }); // remove children if greater depth
+        }
+
+        var container = SelectorEngine__default["default"].findOne(this._selector);
+
+        if (actives.length) {
+          var tempActiveData = actives.find(function (elem) {
+            return container !== elem;
+          });
+          activesData = tempActiveData ? Collapse.getInstance(tempActiveData) : null;
+
+          if (activesData && activesData._isTransitioning) {
+            return;
+          }
+        }
+
+        var startEvent = EventHandler__default["default"].trigger(this._element, EVENT_SHOW);
+
+        if (startEvent.defaultPrevented) {
+          return;
+        }
+
+        actives.forEach(function (elemActive) {
+          if (container !== elemActive) {
+            Collapse.getOrCreateInstance(elemActive, {
+              toggle: false
+            }).hide();
+          }
+
+          if (!activesData) {
+            Data__default["default"].set(elemActive, DATA_KEY, null);
+          }
+        });
+
+        var dimension = this._getDimension();
+
+        this._element.classList.remove(CLASS_NAME_COLLAPSE);
+
+        this._element.classList.add(CLASS_NAME_COLLAPSING);
+
+        this._element.style[dimension] = 0;
+
+        this._addAriaAndCollapsedClass(this._triggerArray, true);
+
+        this._isTransitioning = true;
+
+        var complete = function complete() {
+          _this2._isTransitioning = false;
+
+          _this2._element.classList.remove(CLASS_NAME_COLLAPSING);
+
+          _this2._element.classList.add(CLASS_NAME_COLLAPSE, CLASS_NAME_SHOW);
+
+          _this2._element.style[dimension] = '';
+          EventHandler__default["default"].trigger(_this2._element, EVENT_SHOWN);
+        };
+
+        var capitalizedDimension = dimension[0].toUpperCase() + dimension.slice(1);
+        var scrollSize = "scroll".concat(capitalizedDimension);
+
+        this._queueCallback(complete, this._element, true);
+
+        this._element.style[dimension] = "".concat(this._element[scrollSize], "px");
+      }
+    }, {
+      key: "hide",
+      value: function hide() {
+        var _this3 = this;
+
+        if (this._isTransitioning || !this._isShown()) {
+          return;
+        }
+
+        var startEvent = EventHandler__default["default"].trigger(this._element, EVENT_HIDE);
+
+        if (startEvent.defaultPrevented) {
+          return;
+        }
+
+        var dimension = this._getDimension();
+
+        this._element.style[dimension] = "".concat(this._element.getBoundingClientRect()[dimension], "px");
+        reflow(this._element);
+
+        this._element.classList.add(CLASS_NAME_COLLAPSING);
+
+        this._element.classList.remove(CLASS_NAME_COLLAPSE, CLASS_NAME_SHOW);
+
+        var triggerArrayLength = this._triggerArray.length;
+
+        for (var i = 0; i < triggerArrayLength; i++) {
+          var trigger = this._triggerArray[i];
+          var elem = getElementFromSelector(trigger);
+
+          if (elem && !this._isShown(elem)) {
+            this._addAriaAndCollapsedClass([trigger], false);
+          }
+        }
+
+        this._isTransitioning = true;
+
+        var complete = function complete() {
+          _this3._isTransitioning = false;
+
+          _this3._element.classList.remove(CLASS_NAME_COLLAPSING);
+
+          _this3._element.classList.add(CLASS_NAME_COLLAPSE);
+
+          EventHandler__default["default"].trigger(_this3._element, EVENT_HIDDEN);
+        };
+
+        this._element.style[dimension] = '';
+
+        this._queueCallback(complete, this._element, true);
+      }
+    }, {
+      key: "_isShown",
+      value: function _isShown() {
+        var element = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this._element;
+        return element.classList.contains(CLASS_NAME_SHOW);
+      } // Private
+
+    }, {
+      key: "_getConfig",
+      value: function _getConfig(config) {
+        config = _objectSpread(_objectSpread(_objectSpread({}, Default), Manipulator__default["default"].getDataAttributes(this._element)), config);
+        config.toggle = Boolean(config.toggle); // Coerce string values
+
+        config.parent = getElement(config.parent);
+        typeCheckConfig(NAME, config, DefaultType);
+        return config;
+      }
+    }, {
+      key: "_getDimension",
+      value: function _getDimension() {
+        return this._element.classList.contains(CLASS_NAME_HORIZONTAL) ? WIDTH : HEIGHT;
+      }
+    }, {
+      key: "_initializeChildren",
+      value: function _initializeChildren() {
+        var _this4 = this;
+
+        if (!this._config.parent) {
+          return;
+        }
+
+        var children = SelectorEngine__default["default"].find(CLASS_NAME_DEEPER_CHILDREN, this._config.parent);
+        SelectorEngine__default["default"].find(SELECTOR_DATA_TOGGLE, this._config.parent).filter(function (elem) {
+          return !children.includes(elem);
+        }).forEach(function (element) {
+          var selected = getElementFromSelector(element);
+
+          if (selected) {
+            _this4._addAriaAndCollapsedClass([element], _this4._isShown(selected));
+          }
+        });
+      }
+    }, {
+      key: "_addAriaAndCollapsedClass",
+      value: function _addAriaAndCollapsedClass(triggerArray, isOpen) {
+        if (!triggerArray.length) {
+          return;
+        }
+
+        triggerArray.forEach(function (elem) {
+          if (isOpen) {
+            elem.classList.remove(CLASS_NAME_COLLAPSED);
+          } else {
+            elem.classList.add(CLASS_NAME_COLLAPSED);
+          }
+
+          elem.setAttribute('aria-expanded', isOpen);
+        });
+      } // Static
+
+    }], [{
+      key: "Default",
+      get: function get() {
+        return Default;
+      }
+    }, {
+      key: "NAME",
+      get: function get() {
+        return NAME;
+      }
+    }, {
+      key: "jQueryInterface",
+      value: function jQueryInterface(config) {
+        return this.each(function () {
+          var _config = {};
+
+          if (typeof config === 'string' && /show|hide/.test(config)) {
+            _config.toggle = false;
+          }
+
+          var data = Collapse.getOrCreateInstance(this, _config);
+
+          if (typeof config === 'string') {
+            if (typeof data[config] === 'undefined') {
+              throw new TypeError("No method named \"".concat(config, "\""));
+            }
+
+            data[config]();
+          }
+        });
+      }
+    }]);
+
+    return Collapse;
+  }(BaseComponent__default["default"]);
+  /**
+   * ------------------------------------------------------------------------
+   * Data Api implementation
+   * ------------------------------------------------------------------------
+   */
+
+
+  EventHandler__default["default"].on(document, EVENT_CLICK_DATA_API, SELECTOR_DATA_TOGGLE, function (event) {
+    // preventDefault only for <a> elements (which change the URL) not inside the collapsible element
+    if (event.target.tagName === 'A' || event.delegateTarget && event.delegateTarget.tagName === 'A') {
+      event.preventDefault();
+    }
+
+    var selector = getSelectorFromElement(this);
+    var selectorElements = SelectorEngine__default["default"].find(selector);
+    selectorElements.forEach(function (element) {
+      Collapse.getOrCreateInstance(element, {
+        toggle: false
+      }).toggle();
+    });
+  });
+  /**
+   * ------------------------------------------------------------------------
+   * jQuery
+   * ------------------------------------------------------------------------
+   * add .Collapse to jQuery only if jQuery is present
+   */
+
+  defineJQueryPlugin(Collapse);
+  return Collapse;
+});
 
 /***/ }),
 
-/***/ "./node_modules/bootstrap/js/dist/dom/data.js":
-/*!****************************************************!*\
-  !*** ./node_modules/bootstrap/js/dist/dom/data.js ***!
-  \****************************************************/
+/***/ 110:
 /***/ (function(module, exports, __webpack_require__) {
 
-eval("var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;function _typeof(obj) { \"@babel/helpers - typeof\"; return _typeof = \"function\" == typeof Symbol && \"symbol\" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && \"function\" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? \"symbol\" : typeof obj; }, _typeof(obj); }\n\n/*!\n  * Bootstrap data.js v5.1.3 (https://getbootstrap.com/)\n  * Copyright 2011-2021 The Bootstrap Authors (https://github.com/twbs/bootstrap/graphs/contributors)\n  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)\n  */\n(function (global, factory) {\n  ( false ? 0 : _typeof(exports)) === 'object' && \"object\" !== 'undefined' ? module.exports = factory() :  true ? !(__WEBPACK_AMD_DEFINE_FACTORY__ = (factory),\n\t\t__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?\n\t\t(__WEBPACK_AMD_DEFINE_FACTORY__.call(exports, __webpack_require__, exports, module)) :\n\t\t__WEBPACK_AMD_DEFINE_FACTORY__),\n\t\t__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)) : (0);\n})(this, function () {\n  'use strict';\n  /**\n   * --------------------------------------------------------------------------\n   * Bootstrap (v5.1.3): dom/data.js\n   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)\n   * --------------------------------------------------------------------------\n   */\n\n  /**\n   * ------------------------------------------------------------------------\n   * Constants\n   * ------------------------------------------------------------------------\n   */\n\n  var elementMap = new Map();\n  var data = {\n    set: function set(element, key, instance) {\n      if (!elementMap.has(element)) {\n        elementMap.set(element, new Map());\n      }\n\n      var instanceMap = elementMap.get(element); // make it clear we only want one instance per element\n      // can be removed later when multiple key/instances are fine to be used\n\n      if (!instanceMap.has(key) && instanceMap.size !== 0) {\n        // eslint-disable-next-line no-console\n        console.error(\"Bootstrap doesn't allow more than one instance per element. Bound instance: \".concat(Array.from(instanceMap.keys())[0], \".\"));\n        return;\n      }\n\n      instanceMap.set(key, instance);\n    },\n    get: function get(element, key) {\n      if (elementMap.has(element)) {\n        return elementMap.get(element).get(key) || null;\n      }\n\n      return null;\n    },\n    remove: function remove(element, key) {\n      if (!elementMap.has(element)) {\n        return;\n      }\n\n      var instanceMap = elementMap.get(element);\n      instanceMap[\"delete\"](key); // free up element references if there are no instances left for an element\n\n      if (instanceMap.size === 0) {\n        elementMap[\"delete\"](element);\n      }\n    }\n  };\n  return data;\n});\n\n//# sourceURL=webpack://owc-gravityforms-zaaksysteem/./node_modules/bootstrap/js/dist/dom/data.js?");
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+
+/*!
+  * Bootstrap data.js v5.1.3 (https://getbootstrap.com/)
+  * Copyright 2011-2021 The Bootstrap Authors (https://github.com/twbs/bootstrap/graphs/contributors)
+  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
+  */
+(function (global, factory) {
+  ( false ? 0 : _typeof(exports)) === 'object' && "object" !== 'undefined' ? module.exports = factory() :  true ? !(__WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+		__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+		(__WEBPACK_AMD_DEFINE_FACTORY__.call(exports, __webpack_require__, exports, module)) :
+		__WEBPACK_AMD_DEFINE_FACTORY__),
+		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)) : (0);
+})(this, function () {
+  'use strict';
+  /**
+   * --------------------------------------------------------------------------
+   * Bootstrap (v5.1.3): dom/data.js
+   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
+   * --------------------------------------------------------------------------
+   */
+
+  /**
+   * ------------------------------------------------------------------------
+   * Constants
+   * ------------------------------------------------------------------------
+   */
+
+  var elementMap = new Map();
+  var data = {
+    set: function set(element, key, instance) {
+      if (!elementMap.has(element)) {
+        elementMap.set(element, new Map());
+      }
+
+      var instanceMap = elementMap.get(element); // make it clear we only want one instance per element
+      // can be removed later when multiple key/instances are fine to be used
+
+      if (!instanceMap.has(key) && instanceMap.size !== 0) {
+        // eslint-disable-next-line no-console
+        console.error("Bootstrap doesn't allow more than one instance per element. Bound instance: ".concat(Array.from(instanceMap.keys())[0], "."));
+        return;
+      }
+
+      instanceMap.set(key, instance);
+    },
+    get: function get(element, key) {
+      if (elementMap.has(element)) {
+        return elementMap.get(element).get(key) || null;
+      }
+
+      return null;
+    },
+    remove: function remove(element, key) {
+      if (!elementMap.has(element)) {
+        return;
+      }
+
+      var instanceMap = elementMap.get(element);
+      instanceMap["delete"](key); // free up element references if there are no instances left for an element
+
+      if (instanceMap.size === 0) {
+        elementMap["delete"](element);
+      }
+    }
+  };
+  return data;
+});
 
 /***/ }),
 
-/***/ "./node_modules/bootstrap/js/dist/dom/event-handler.js":
-/*!*************************************************************!*\
-  !*** ./node_modules/bootstrap/js/dist/dom/event-handler.js ***!
-  \*************************************************************/
+/***/ 789:
 /***/ (function(module, exports, __webpack_require__) {
 
-eval("var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }\n\nfunction _nonIterableRest() { throw new TypeError(\"Invalid attempt to destructure non-iterable instance.\\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.\"); }\n\nfunction _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === \"string\") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === \"Object\" && o.constructor) n = o.constructor.name; if (n === \"Map\" || n === \"Set\") return Array.from(o); if (n === \"Arguments\" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }\n\nfunction _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }\n\nfunction _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== \"undefined\" && arr[Symbol.iterator] || arr[\"@@iterator\"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i[\"return\"] != null) _i[\"return\"](); } finally { if (_d) throw _e; } } return _arr; }\n\nfunction _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }\n\nfunction _typeof(obj) { \"@babel/helpers - typeof\"; return _typeof = \"function\" == typeof Symbol && \"symbol\" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && \"function\" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? \"symbol\" : typeof obj; }, _typeof(obj); }\n\n/*!\n  * Bootstrap event-handler.js v5.1.3 (https://getbootstrap.com/)\n  * Copyright 2011-2021 The Bootstrap Authors (https://github.com/twbs/bootstrap/graphs/contributors)\n  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)\n  */\n(function (global, factory) {\n  ( false ? 0 : _typeof(exports)) === 'object' && \"object\" !== 'undefined' ? module.exports = factory() :  true ? !(__WEBPACK_AMD_DEFINE_FACTORY__ = (factory),\n\t\t__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?\n\t\t(__WEBPACK_AMD_DEFINE_FACTORY__.call(exports, __webpack_require__, exports, module)) :\n\t\t__WEBPACK_AMD_DEFINE_FACTORY__),\n\t\t__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)) : (0);\n})(this, function () {\n  'use strict';\n  /**\n   * --------------------------------------------------------------------------\n   * Bootstrap (v5.1.3): util/index.js\n   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)\n   * --------------------------------------------------------------------------\n   */\n\n  var getjQuery = function getjQuery() {\n    var _window = window,\n        jQuery = _window.jQuery;\n\n    if (jQuery && !document.body.hasAttribute('data-bs-no-jquery')) {\n      return jQuery;\n    }\n\n    return null;\n  };\n  /**\n   * --------------------------------------------------------------------------\n   * Bootstrap (v5.1.3): dom/event-handler.js\n   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)\n   * --------------------------------------------------------------------------\n   */\n\n  /**\n   * ------------------------------------------------------------------------\n   * Constants\n   * ------------------------------------------------------------------------\n   */\n\n\n  var namespaceRegex = /[^.]*(?=\\..*)\\.|.*/;\n  var stripNameRegex = /\\..*/;\n  var stripUidRegex = /::\\d+$/;\n  var eventRegistry = {}; // Events storage\n\n  var uidEvent = 1;\n  var customEvents = {\n    mouseenter: 'mouseover',\n    mouseleave: 'mouseout'\n  };\n  var customEventsRegex = /^(mouseenter|mouseleave)/i;\n  var nativeEvents = new Set(['click', 'dblclick', 'mouseup', 'mousedown', 'contextmenu', 'mousewheel', 'DOMMouseScroll', 'mouseover', 'mouseout', 'mousemove', 'selectstart', 'selectend', 'keydown', 'keypress', 'keyup', 'orientationchange', 'touchstart', 'touchmove', 'touchend', 'touchcancel', 'pointerdown', 'pointermove', 'pointerup', 'pointerleave', 'pointercancel', 'gesturestart', 'gesturechange', 'gestureend', 'focus', 'blur', 'change', 'reset', 'select', 'submit', 'focusin', 'focusout', 'load', 'unload', 'beforeunload', 'resize', 'move', 'DOMContentLoaded', 'readystatechange', 'error', 'abort', 'scroll']);\n  /**\n   * ------------------------------------------------------------------------\n   * Private methods\n   * ------------------------------------------------------------------------\n   */\n\n  function getUidEvent(element, uid) {\n    return uid && \"\".concat(uid, \"::\").concat(uidEvent++) || element.uidEvent || uidEvent++;\n  }\n\n  function getEvent(element) {\n    var uid = getUidEvent(element);\n    element.uidEvent = uid;\n    eventRegistry[uid] = eventRegistry[uid] || {};\n    return eventRegistry[uid];\n  }\n\n  function bootstrapHandler(element, fn) {\n    return function handler(event) {\n      event.delegateTarget = element;\n\n      if (handler.oneOff) {\n        EventHandler.off(element, event.type, fn);\n      }\n\n      return fn.apply(element, [event]);\n    };\n  }\n\n  function bootstrapDelegationHandler(element, selector, fn) {\n    return function handler(event) {\n      var domElements = element.querySelectorAll(selector);\n\n      for (var target = event.target; target && target !== this; target = target.parentNode) {\n        for (var i = domElements.length; i--;) {\n          if (domElements[i] === target) {\n            event.delegateTarget = target;\n\n            if (handler.oneOff) {\n              EventHandler.off(element, event.type, selector, fn);\n            }\n\n            return fn.apply(target, [event]);\n          }\n        }\n      } // To please ESLint\n\n\n      return null;\n    };\n  }\n\n  function findHandler(events, handler) {\n    var delegationSelector = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;\n    var uidEventList = Object.keys(events);\n\n    for (var i = 0, len = uidEventList.length; i < len; i++) {\n      var event = events[uidEventList[i]];\n\n      if (event.originalHandler === handler && event.delegationSelector === delegationSelector) {\n        return event;\n      }\n    }\n\n    return null;\n  }\n\n  function normalizeParams(originalTypeEvent, handler, delegationFn) {\n    var delegation = typeof handler === 'string';\n    var originalHandler = delegation ? delegationFn : handler;\n    var typeEvent = getTypeEvent(originalTypeEvent);\n    var isNative = nativeEvents.has(typeEvent);\n\n    if (!isNative) {\n      typeEvent = originalTypeEvent;\n    }\n\n    return [delegation, originalHandler, typeEvent];\n  }\n\n  function addHandler(element, originalTypeEvent, handler, delegationFn, oneOff) {\n    if (typeof originalTypeEvent !== 'string' || !element) {\n      return;\n    }\n\n    if (!handler) {\n      handler = delegationFn;\n      delegationFn = null;\n    } // in case of mouseenter or mouseleave wrap the handler within a function that checks for its DOM position\n    // this prevents the handler from being dispatched the same way as mouseover or mouseout does\n\n\n    if (customEventsRegex.test(originalTypeEvent)) {\n      var wrapFn = function wrapFn(fn) {\n        return function (event) {\n          if (!event.relatedTarget || event.relatedTarget !== event.delegateTarget && !event.delegateTarget.contains(event.relatedTarget)) {\n            return fn.call(this, event);\n          }\n        };\n      };\n\n      if (delegationFn) {\n        delegationFn = wrapFn(delegationFn);\n      } else {\n        handler = wrapFn(handler);\n      }\n    }\n\n    var _normalizeParams = normalizeParams(originalTypeEvent, handler, delegationFn),\n        _normalizeParams2 = _slicedToArray(_normalizeParams, 3),\n        delegation = _normalizeParams2[0],\n        originalHandler = _normalizeParams2[1],\n        typeEvent = _normalizeParams2[2];\n\n    var events = getEvent(element);\n    var handlers = events[typeEvent] || (events[typeEvent] = {});\n    var previousFn = findHandler(handlers, originalHandler, delegation ? handler : null);\n\n    if (previousFn) {\n      previousFn.oneOff = previousFn.oneOff && oneOff;\n      return;\n    }\n\n    var uid = getUidEvent(originalHandler, originalTypeEvent.replace(namespaceRegex, ''));\n    var fn = delegation ? bootstrapDelegationHandler(element, handler, delegationFn) : bootstrapHandler(element, handler);\n    fn.delegationSelector = delegation ? handler : null;\n    fn.originalHandler = originalHandler;\n    fn.oneOff = oneOff;\n    fn.uidEvent = uid;\n    handlers[uid] = fn;\n    element.addEventListener(typeEvent, fn, delegation);\n  }\n\n  function removeHandler(element, events, typeEvent, handler, delegationSelector) {\n    var fn = findHandler(events[typeEvent], handler, delegationSelector);\n\n    if (!fn) {\n      return;\n    }\n\n    element.removeEventListener(typeEvent, fn, Boolean(delegationSelector));\n    delete events[typeEvent][fn.uidEvent];\n  }\n\n  function removeNamespacedHandlers(element, events, typeEvent, namespace) {\n    var storeElementEvent = events[typeEvent] || {};\n    Object.keys(storeElementEvent).forEach(function (handlerKey) {\n      if (handlerKey.includes(namespace)) {\n        var event = storeElementEvent[handlerKey];\n        removeHandler(element, events, typeEvent, event.originalHandler, event.delegationSelector);\n      }\n    });\n  }\n\n  function getTypeEvent(event) {\n    // allow to get the native events from namespaced events ('click.bs.button' --> 'click')\n    event = event.replace(stripNameRegex, '');\n    return customEvents[event] || event;\n  }\n\n  var EventHandler = {\n    on: function on(element, event, handler, delegationFn) {\n      addHandler(element, event, handler, delegationFn, false);\n    },\n    one: function one(element, event, handler, delegationFn) {\n      addHandler(element, event, handler, delegationFn, true);\n    },\n    off: function off(element, originalTypeEvent, handler, delegationFn) {\n      if (typeof originalTypeEvent !== 'string' || !element) {\n        return;\n      }\n\n      var _normalizeParams3 = normalizeParams(originalTypeEvent, handler, delegationFn),\n          _normalizeParams4 = _slicedToArray(_normalizeParams3, 3),\n          delegation = _normalizeParams4[0],\n          originalHandler = _normalizeParams4[1],\n          typeEvent = _normalizeParams4[2];\n\n      var inNamespace = typeEvent !== originalTypeEvent;\n      var events = getEvent(element);\n      var isNamespace = originalTypeEvent.startsWith('.');\n\n      if (typeof originalHandler !== 'undefined') {\n        // Simplest case: handler is passed, remove that listener ONLY.\n        if (!events || !events[typeEvent]) {\n          return;\n        }\n\n        removeHandler(element, events, typeEvent, originalHandler, delegation ? handler : null);\n        return;\n      }\n\n      if (isNamespace) {\n        Object.keys(events).forEach(function (elementEvent) {\n          removeNamespacedHandlers(element, events, elementEvent, originalTypeEvent.slice(1));\n        });\n      }\n\n      var storeElementEvent = events[typeEvent] || {};\n      Object.keys(storeElementEvent).forEach(function (keyHandlers) {\n        var handlerKey = keyHandlers.replace(stripUidRegex, '');\n\n        if (!inNamespace || originalTypeEvent.includes(handlerKey)) {\n          var event = storeElementEvent[keyHandlers];\n          removeHandler(element, events, typeEvent, event.originalHandler, event.delegationSelector);\n        }\n      });\n    },\n    trigger: function trigger(element, event, args) {\n      if (typeof event !== 'string' || !element) {\n        return null;\n      }\n\n      var $ = getjQuery();\n      var typeEvent = getTypeEvent(event);\n      var inNamespace = event !== typeEvent;\n      var isNative = nativeEvents.has(typeEvent);\n      var jQueryEvent;\n      var bubbles = true;\n      var nativeDispatch = true;\n      var defaultPrevented = false;\n      var evt = null;\n\n      if (inNamespace && $) {\n        jQueryEvent = $.Event(event, args);\n        $(element).trigger(jQueryEvent);\n        bubbles = !jQueryEvent.isPropagationStopped();\n        nativeDispatch = !jQueryEvent.isImmediatePropagationStopped();\n        defaultPrevented = jQueryEvent.isDefaultPrevented();\n      }\n\n      if (isNative) {\n        evt = document.createEvent('HTMLEvents');\n        evt.initEvent(typeEvent, bubbles, true);\n      } else {\n        evt = new CustomEvent(event, {\n          bubbles: bubbles,\n          cancelable: true\n        });\n      } // merge custom information in our event\n\n\n      if (typeof args !== 'undefined') {\n        Object.keys(args).forEach(function (key) {\n          Object.defineProperty(evt, key, {\n            get: function get() {\n              return args[key];\n            }\n          });\n        });\n      }\n\n      if (defaultPrevented) {\n        evt.preventDefault();\n      }\n\n      if (nativeDispatch) {\n        element.dispatchEvent(evt);\n      }\n\n      if (evt.defaultPrevented && typeof jQueryEvent !== 'undefined') {\n        jQueryEvent.preventDefault();\n      }\n\n      return evt;\n    }\n  };\n  return EventHandler;\n});\n\n//# sourceURL=webpack://owc-gravityforms-zaaksysteem/./node_modules/bootstrap/js/dist/dom/event-handler.js?");
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+
+/*!
+  * Bootstrap event-handler.js v5.1.3 (https://getbootstrap.com/)
+  * Copyright 2011-2021 The Bootstrap Authors (https://github.com/twbs/bootstrap/graphs/contributors)
+  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
+  */
+(function (global, factory) {
+  ( false ? 0 : _typeof(exports)) === 'object' && "object" !== 'undefined' ? module.exports = factory() :  true ? !(__WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+		__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+		(__WEBPACK_AMD_DEFINE_FACTORY__.call(exports, __webpack_require__, exports, module)) :
+		__WEBPACK_AMD_DEFINE_FACTORY__),
+		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)) : (0);
+})(this, function () {
+  'use strict';
+  /**
+   * --------------------------------------------------------------------------
+   * Bootstrap (v5.1.3): util/index.js
+   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
+   * --------------------------------------------------------------------------
+   */
+
+  var getjQuery = function getjQuery() {
+    var _window = window,
+        jQuery = _window.jQuery;
+
+    if (jQuery && !document.body.hasAttribute('data-bs-no-jquery')) {
+      return jQuery;
+    }
+
+    return null;
+  };
+  /**
+   * --------------------------------------------------------------------------
+   * Bootstrap (v5.1.3): dom/event-handler.js
+   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
+   * --------------------------------------------------------------------------
+   */
+
+  /**
+   * ------------------------------------------------------------------------
+   * Constants
+   * ------------------------------------------------------------------------
+   */
+
+
+  var namespaceRegex = /[^.]*(?=\..*)\.|.*/;
+  var stripNameRegex = /\..*/;
+  var stripUidRegex = /::\d+$/;
+  var eventRegistry = {}; // Events storage
+
+  var uidEvent = 1;
+  var customEvents = {
+    mouseenter: 'mouseover',
+    mouseleave: 'mouseout'
+  };
+  var customEventsRegex = /^(mouseenter|mouseleave)/i;
+  var nativeEvents = new Set(['click', 'dblclick', 'mouseup', 'mousedown', 'contextmenu', 'mousewheel', 'DOMMouseScroll', 'mouseover', 'mouseout', 'mousemove', 'selectstart', 'selectend', 'keydown', 'keypress', 'keyup', 'orientationchange', 'touchstart', 'touchmove', 'touchend', 'touchcancel', 'pointerdown', 'pointermove', 'pointerup', 'pointerleave', 'pointercancel', 'gesturestart', 'gesturechange', 'gestureend', 'focus', 'blur', 'change', 'reset', 'select', 'submit', 'focusin', 'focusout', 'load', 'unload', 'beforeunload', 'resize', 'move', 'DOMContentLoaded', 'readystatechange', 'error', 'abort', 'scroll']);
+  /**
+   * ------------------------------------------------------------------------
+   * Private methods
+   * ------------------------------------------------------------------------
+   */
+
+  function getUidEvent(element, uid) {
+    return uid && "".concat(uid, "::").concat(uidEvent++) || element.uidEvent || uidEvent++;
+  }
+
+  function getEvent(element) {
+    var uid = getUidEvent(element);
+    element.uidEvent = uid;
+    eventRegistry[uid] = eventRegistry[uid] || {};
+    return eventRegistry[uid];
+  }
+
+  function bootstrapHandler(element, fn) {
+    return function handler(event) {
+      event.delegateTarget = element;
+
+      if (handler.oneOff) {
+        EventHandler.off(element, event.type, fn);
+      }
+
+      return fn.apply(element, [event]);
+    };
+  }
+
+  function bootstrapDelegationHandler(element, selector, fn) {
+    return function handler(event) {
+      var domElements = element.querySelectorAll(selector);
+
+      for (var target = event.target; target && target !== this; target = target.parentNode) {
+        for (var i = domElements.length; i--;) {
+          if (domElements[i] === target) {
+            event.delegateTarget = target;
+
+            if (handler.oneOff) {
+              EventHandler.off(element, event.type, selector, fn);
+            }
+
+            return fn.apply(target, [event]);
+          }
+        }
+      } // To please ESLint
+
+
+      return null;
+    };
+  }
+
+  function findHandler(events, handler) {
+    var delegationSelector = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
+    var uidEventList = Object.keys(events);
+
+    for (var i = 0, len = uidEventList.length; i < len; i++) {
+      var event = events[uidEventList[i]];
+
+      if (event.originalHandler === handler && event.delegationSelector === delegationSelector) {
+        return event;
+      }
+    }
+
+    return null;
+  }
+
+  function normalizeParams(originalTypeEvent, handler, delegationFn) {
+    var delegation = typeof handler === 'string';
+    var originalHandler = delegation ? delegationFn : handler;
+    var typeEvent = getTypeEvent(originalTypeEvent);
+    var isNative = nativeEvents.has(typeEvent);
+
+    if (!isNative) {
+      typeEvent = originalTypeEvent;
+    }
+
+    return [delegation, originalHandler, typeEvent];
+  }
+
+  function addHandler(element, originalTypeEvent, handler, delegationFn, oneOff) {
+    if (typeof originalTypeEvent !== 'string' || !element) {
+      return;
+    }
+
+    if (!handler) {
+      handler = delegationFn;
+      delegationFn = null;
+    } // in case of mouseenter or mouseleave wrap the handler within a function that checks for its DOM position
+    // this prevents the handler from being dispatched the same way as mouseover or mouseout does
+
+
+    if (customEventsRegex.test(originalTypeEvent)) {
+      var wrapFn = function wrapFn(fn) {
+        return function (event) {
+          if (!event.relatedTarget || event.relatedTarget !== event.delegateTarget && !event.delegateTarget.contains(event.relatedTarget)) {
+            return fn.call(this, event);
+          }
+        };
+      };
+
+      if (delegationFn) {
+        delegationFn = wrapFn(delegationFn);
+      } else {
+        handler = wrapFn(handler);
+      }
+    }
+
+    var _normalizeParams = normalizeParams(originalTypeEvent, handler, delegationFn),
+        _normalizeParams2 = _slicedToArray(_normalizeParams, 3),
+        delegation = _normalizeParams2[0],
+        originalHandler = _normalizeParams2[1],
+        typeEvent = _normalizeParams2[2];
+
+    var events = getEvent(element);
+    var handlers = events[typeEvent] || (events[typeEvent] = {});
+    var previousFn = findHandler(handlers, originalHandler, delegation ? handler : null);
+
+    if (previousFn) {
+      previousFn.oneOff = previousFn.oneOff && oneOff;
+      return;
+    }
+
+    var uid = getUidEvent(originalHandler, originalTypeEvent.replace(namespaceRegex, ''));
+    var fn = delegation ? bootstrapDelegationHandler(element, handler, delegationFn) : bootstrapHandler(element, handler);
+    fn.delegationSelector = delegation ? handler : null;
+    fn.originalHandler = originalHandler;
+    fn.oneOff = oneOff;
+    fn.uidEvent = uid;
+    handlers[uid] = fn;
+    element.addEventListener(typeEvent, fn, delegation);
+  }
+
+  function removeHandler(element, events, typeEvent, handler, delegationSelector) {
+    var fn = findHandler(events[typeEvent], handler, delegationSelector);
+
+    if (!fn) {
+      return;
+    }
+
+    element.removeEventListener(typeEvent, fn, Boolean(delegationSelector));
+    delete events[typeEvent][fn.uidEvent];
+  }
+
+  function removeNamespacedHandlers(element, events, typeEvent, namespace) {
+    var storeElementEvent = events[typeEvent] || {};
+    Object.keys(storeElementEvent).forEach(function (handlerKey) {
+      if (handlerKey.includes(namespace)) {
+        var event = storeElementEvent[handlerKey];
+        removeHandler(element, events, typeEvent, event.originalHandler, event.delegationSelector);
+      }
+    });
+  }
+
+  function getTypeEvent(event) {
+    // allow to get the native events from namespaced events ('click.bs.button' --> 'click')
+    event = event.replace(stripNameRegex, '');
+    return customEvents[event] || event;
+  }
+
+  var EventHandler = {
+    on: function on(element, event, handler, delegationFn) {
+      addHandler(element, event, handler, delegationFn, false);
+    },
+    one: function one(element, event, handler, delegationFn) {
+      addHandler(element, event, handler, delegationFn, true);
+    },
+    off: function off(element, originalTypeEvent, handler, delegationFn) {
+      if (typeof originalTypeEvent !== 'string' || !element) {
+        return;
+      }
+
+      var _normalizeParams3 = normalizeParams(originalTypeEvent, handler, delegationFn),
+          _normalizeParams4 = _slicedToArray(_normalizeParams3, 3),
+          delegation = _normalizeParams4[0],
+          originalHandler = _normalizeParams4[1],
+          typeEvent = _normalizeParams4[2];
+
+      var inNamespace = typeEvent !== originalTypeEvent;
+      var events = getEvent(element);
+      var isNamespace = originalTypeEvent.startsWith('.');
+
+      if (typeof originalHandler !== 'undefined') {
+        // Simplest case: handler is passed, remove that listener ONLY.
+        if (!events || !events[typeEvent]) {
+          return;
+        }
+
+        removeHandler(element, events, typeEvent, originalHandler, delegation ? handler : null);
+        return;
+      }
+
+      if (isNamespace) {
+        Object.keys(events).forEach(function (elementEvent) {
+          removeNamespacedHandlers(element, events, elementEvent, originalTypeEvent.slice(1));
+        });
+      }
+
+      var storeElementEvent = events[typeEvent] || {};
+      Object.keys(storeElementEvent).forEach(function (keyHandlers) {
+        var handlerKey = keyHandlers.replace(stripUidRegex, '');
+
+        if (!inNamespace || originalTypeEvent.includes(handlerKey)) {
+          var event = storeElementEvent[keyHandlers];
+          removeHandler(element, events, typeEvent, event.originalHandler, event.delegationSelector);
+        }
+      });
+    },
+    trigger: function trigger(element, event, args) {
+      if (typeof event !== 'string' || !element) {
+        return null;
+      }
+
+      var $ = getjQuery();
+      var typeEvent = getTypeEvent(event);
+      var inNamespace = event !== typeEvent;
+      var isNative = nativeEvents.has(typeEvent);
+      var jQueryEvent;
+      var bubbles = true;
+      var nativeDispatch = true;
+      var defaultPrevented = false;
+      var evt = null;
+
+      if (inNamespace && $) {
+        jQueryEvent = $.Event(event, args);
+        $(element).trigger(jQueryEvent);
+        bubbles = !jQueryEvent.isPropagationStopped();
+        nativeDispatch = !jQueryEvent.isImmediatePropagationStopped();
+        defaultPrevented = jQueryEvent.isDefaultPrevented();
+      }
+
+      if (isNative) {
+        evt = document.createEvent('HTMLEvents');
+        evt.initEvent(typeEvent, bubbles, true);
+      } else {
+        evt = new CustomEvent(event, {
+          bubbles: bubbles,
+          cancelable: true
+        });
+      } // merge custom information in our event
+
+
+      if (typeof args !== 'undefined') {
+        Object.keys(args).forEach(function (key) {
+          Object.defineProperty(evt, key, {
+            get: function get() {
+              return args[key];
+            }
+          });
+        });
+      }
+
+      if (defaultPrevented) {
+        evt.preventDefault();
+      }
+
+      if (nativeDispatch) {
+        element.dispatchEvent(evt);
+      }
+
+      if (evt.defaultPrevented && typeof jQueryEvent !== 'undefined') {
+        jQueryEvent.preventDefault();
+      }
+
+      return evt;
+    }
+  };
+  return EventHandler;
+});
 
 /***/ }),
 
-/***/ "./node_modules/bootstrap/js/dist/dom/manipulator.js":
-/*!***********************************************************!*\
-  !*** ./node_modules/bootstrap/js/dist/dom/manipulator.js ***!
-  \***********************************************************/
+/***/ 432:
 /***/ (function(module, exports, __webpack_require__) {
 
-eval("var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;function _typeof(obj) { \"@babel/helpers - typeof\"; return _typeof = \"function\" == typeof Symbol && \"symbol\" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && \"function\" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? \"symbol\" : typeof obj; }, _typeof(obj); }\n\n/*!\n  * Bootstrap manipulator.js v5.1.3 (https://getbootstrap.com/)\n  * Copyright 2011-2021 The Bootstrap Authors (https://github.com/twbs/bootstrap/graphs/contributors)\n  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)\n  */\n(function (global, factory) {\n  ( false ? 0 : _typeof(exports)) === 'object' && \"object\" !== 'undefined' ? module.exports = factory() :  true ? !(__WEBPACK_AMD_DEFINE_FACTORY__ = (factory),\n\t\t__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?\n\t\t(__WEBPACK_AMD_DEFINE_FACTORY__.call(exports, __webpack_require__, exports, module)) :\n\t\t__WEBPACK_AMD_DEFINE_FACTORY__),\n\t\t__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)) : (0);\n})(this, function () {\n  'use strict';\n  /**\n   * --------------------------------------------------------------------------\n   * Bootstrap (v5.1.3): dom/manipulator.js\n   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)\n   * --------------------------------------------------------------------------\n   */\n\n  function normalizeData(val) {\n    if (val === 'true') {\n      return true;\n    }\n\n    if (val === 'false') {\n      return false;\n    }\n\n    if (val === Number(val).toString()) {\n      return Number(val);\n    }\n\n    if (val === '' || val === 'null') {\n      return null;\n    }\n\n    return val;\n  }\n\n  function normalizeDataKey(key) {\n    return key.replace(/[A-Z]/g, function (chr) {\n      return \"-\".concat(chr.toLowerCase());\n    });\n  }\n\n  var Manipulator = {\n    setDataAttribute: function setDataAttribute(element, key, value) {\n      element.setAttribute(\"data-bs-\".concat(normalizeDataKey(key)), value);\n    },\n    removeDataAttribute: function removeDataAttribute(element, key) {\n      element.removeAttribute(\"data-bs-\".concat(normalizeDataKey(key)));\n    },\n    getDataAttributes: function getDataAttributes(element) {\n      if (!element) {\n        return {};\n      }\n\n      var attributes = {};\n      Object.keys(element.dataset).filter(function (key) {\n        return key.startsWith('bs');\n      }).forEach(function (key) {\n        var pureKey = key.replace(/^bs/, '');\n        pureKey = pureKey.charAt(0).toLowerCase() + pureKey.slice(1, pureKey.length);\n        attributes[pureKey] = normalizeData(element.dataset[key]);\n      });\n      return attributes;\n    },\n    getDataAttribute: function getDataAttribute(element, key) {\n      return normalizeData(element.getAttribute(\"data-bs-\".concat(normalizeDataKey(key))));\n    },\n    offset: function offset(element) {\n      var rect = element.getBoundingClientRect();\n      return {\n        top: rect.top + window.pageYOffset,\n        left: rect.left + window.pageXOffset\n      };\n    },\n    position: function position(element) {\n      return {\n        top: element.offsetTop,\n        left: element.offsetLeft\n      };\n    }\n  };\n  return Manipulator;\n});\n\n//# sourceURL=webpack://owc-gravityforms-zaaksysteem/./node_modules/bootstrap/js/dist/dom/manipulator.js?");
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+
+/*!
+  * Bootstrap manipulator.js v5.1.3 (https://getbootstrap.com/)
+  * Copyright 2011-2021 The Bootstrap Authors (https://github.com/twbs/bootstrap/graphs/contributors)
+  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
+  */
+(function (global, factory) {
+  ( false ? 0 : _typeof(exports)) === 'object' && "object" !== 'undefined' ? module.exports = factory() :  true ? !(__WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+		__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+		(__WEBPACK_AMD_DEFINE_FACTORY__.call(exports, __webpack_require__, exports, module)) :
+		__WEBPACK_AMD_DEFINE_FACTORY__),
+		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)) : (0);
+})(this, function () {
+  'use strict';
+  /**
+   * --------------------------------------------------------------------------
+   * Bootstrap (v5.1.3): dom/manipulator.js
+   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
+   * --------------------------------------------------------------------------
+   */
+
+  function normalizeData(val) {
+    if (val === 'true') {
+      return true;
+    }
+
+    if (val === 'false') {
+      return false;
+    }
+
+    if (val === Number(val).toString()) {
+      return Number(val);
+    }
+
+    if (val === '' || val === 'null') {
+      return null;
+    }
+
+    return val;
+  }
+
+  function normalizeDataKey(key) {
+    return key.replace(/[A-Z]/g, function (chr) {
+      return "-".concat(chr.toLowerCase());
+    });
+  }
+
+  var Manipulator = {
+    setDataAttribute: function setDataAttribute(element, key, value) {
+      element.setAttribute("data-bs-".concat(normalizeDataKey(key)), value);
+    },
+    removeDataAttribute: function removeDataAttribute(element, key) {
+      element.removeAttribute("data-bs-".concat(normalizeDataKey(key)));
+    },
+    getDataAttributes: function getDataAttributes(element) {
+      if (!element) {
+        return {};
+      }
+
+      var attributes = {};
+      Object.keys(element.dataset).filter(function (key) {
+        return key.startsWith('bs');
+      }).forEach(function (key) {
+        var pureKey = key.replace(/^bs/, '');
+        pureKey = pureKey.charAt(0).toLowerCase() + pureKey.slice(1, pureKey.length);
+        attributes[pureKey] = normalizeData(element.dataset[key]);
+      });
+      return attributes;
+    },
+    getDataAttribute: function getDataAttribute(element, key) {
+      return normalizeData(element.getAttribute("data-bs-".concat(normalizeDataKey(key))));
+    },
+    offset: function offset(element) {
+      var rect = element.getBoundingClientRect();
+      return {
+        top: rect.top + window.pageYOffset,
+        left: rect.left + window.pageXOffset
+      };
+    },
+    position: function position(element) {
+      return {
+        top: element.offsetTop,
+        left: element.offsetLeft
+      };
+    }
+  };
+  return Manipulator;
+});
 
 /***/ }),
 
-/***/ "./node_modules/bootstrap/js/dist/dom/selector-engine.js":
-/*!***************************************************************!*\
-  !*** ./node_modules/bootstrap/js/dist/dom/selector-engine.js ***!
-  \***************************************************************/
+/***/ 56:
 /***/ (function(module, exports, __webpack_require__) {
 
-eval("var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }\n\nfunction _nonIterableSpread() { throw new TypeError(\"Invalid attempt to spread non-iterable instance.\\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.\"); }\n\nfunction _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === \"string\") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === \"Object\" && o.constructor) n = o.constructor.name; if (n === \"Map\" || n === \"Set\") return Array.from(o); if (n === \"Arguments\" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }\n\nfunction _iterableToArray(iter) { if (typeof Symbol !== \"undefined\" && iter[Symbol.iterator] != null || iter[\"@@iterator\"] != null) return Array.from(iter); }\n\nfunction _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }\n\nfunction _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }\n\nfunction _typeof(obj) { \"@babel/helpers - typeof\"; return _typeof = \"function\" == typeof Symbol && \"symbol\" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && \"function\" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? \"symbol\" : typeof obj; }, _typeof(obj); }\n\n/*!\n  * Bootstrap selector-engine.js v5.1.3 (https://getbootstrap.com/)\n  * Copyright 2011-2021 The Bootstrap Authors (https://github.com/twbs/bootstrap/graphs/contributors)\n  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)\n  */\n(function (global, factory) {\n  ( false ? 0 : _typeof(exports)) === 'object' && \"object\" !== 'undefined' ? module.exports = factory() :  true ? !(__WEBPACK_AMD_DEFINE_FACTORY__ = (factory),\n\t\t__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?\n\t\t(__WEBPACK_AMD_DEFINE_FACTORY__.call(exports, __webpack_require__, exports, module)) :\n\t\t__WEBPACK_AMD_DEFINE_FACTORY__),\n\t\t__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)) : (0);\n})(this, function () {\n  'use strict';\n  /**\n   * --------------------------------------------------------------------------\n   * Bootstrap (v5.1.3): util/index.js\n   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)\n   * --------------------------------------------------------------------------\n   */\n\n  var isElement = function isElement(obj) {\n    if (!obj || _typeof(obj) !== 'object') {\n      return false;\n    }\n\n    if (typeof obj.jquery !== 'undefined') {\n      obj = obj[0];\n    }\n\n    return typeof obj.nodeType !== 'undefined';\n  };\n\n  var isVisible = function isVisible(element) {\n    if (!isElement(element) || element.getClientRects().length === 0) {\n      return false;\n    }\n\n    return getComputedStyle(element).getPropertyValue('visibility') === 'visible';\n  };\n\n  var isDisabled = function isDisabled(element) {\n    if (!element || element.nodeType !== Node.ELEMENT_NODE) {\n      return true;\n    }\n\n    if (element.classList.contains('disabled')) {\n      return true;\n    }\n\n    if (typeof element.disabled !== 'undefined') {\n      return element.disabled;\n    }\n\n    return element.hasAttribute('disabled') && element.getAttribute('disabled') !== 'false';\n  };\n  /**\n   * --------------------------------------------------------------------------\n   * Bootstrap (v5.1.3): dom/selector-engine.js\n   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)\n   * --------------------------------------------------------------------------\n   */\n\n\n  var NODE_TEXT = 3;\n  var SelectorEngine = {\n    find: function find(selector) {\n      var _ref;\n\n      var element = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : document.documentElement;\n      return (_ref = []).concat.apply(_ref, _toConsumableArray(Element.prototype.querySelectorAll.call(element, selector)));\n    },\n    findOne: function findOne(selector) {\n      var element = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : document.documentElement;\n      return Element.prototype.querySelector.call(element, selector);\n    },\n    children: function children(element, selector) {\n      var _ref2;\n\n      return (_ref2 = []).concat.apply(_ref2, _toConsumableArray(element.children)).filter(function (child) {\n        return child.matches(selector);\n      });\n    },\n    parents: function parents(element, selector) {\n      var parents = [];\n      var ancestor = element.parentNode;\n\n      while (ancestor && ancestor.nodeType === Node.ELEMENT_NODE && ancestor.nodeType !== NODE_TEXT) {\n        if (ancestor.matches(selector)) {\n          parents.push(ancestor);\n        }\n\n        ancestor = ancestor.parentNode;\n      }\n\n      return parents;\n    },\n    prev: function prev(element, selector) {\n      var previous = element.previousElementSibling;\n\n      while (previous) {\n        if (previous.matches(selector)) {\n          return [previous];\n        }\n\n        previous = previous.previousElementSibling;\n      }\n\n      return [];\n    },\n    next: function next(element, selector) {\n      var next = element.nextElementSibling;\n\n      while (next) {\n        if (next.matches(selector)) {\n          return [next];\n        }\n\n        next = next.nextElementSibling;\n      }\n\n      return [];\n    },\n    focusableChildren: function focusableChildren(element) {\n      var focusables = ['a', 'button', 'input', 'textarea', 'select', 'details', '[tabindex]', '[contenteditable=\"true\"]'].map(function (selector) {\n        return \"\".concat(selector, \":not([tabindex^=\\\"-\\\"])\");\n      }).join(', ');\n      return this.find(focusables, element).filter(function (el) {\n        return !isDisabled(el) && isVisible(el);\n      });\n    }\n  };\n  return SelectorEngine;\n});\n\n//# sourceURL=webpack://owc-gravityforms-zaaksysteem/./node_modules/bootstrap/js/dist/dom/selector-engine.js?");
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
-/***/ }),
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
-/***/ "./resources/js/frontend/index.js":
-/*!****************************************!*\
-  !*** ./resources/js/frontend/index.js ***!
-  \****************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 
-"use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var bootstrap_js_dist_collapse__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! bootstrap/js/dist/collapse */ \"./node_modules/bootstrap/js/dist/collapse.js\");\n/* harmony import */ var bootstrap_js_dist_collapse__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(bootstrap_js_dist_collapse__WEBPACK_IMPORTED_MODULE_0__);\n// External\n\n\nvar app = function app() {};\n\ndocument.addEventListener('DOMContentLoaded', app);\n\n//# sourceURL=webpack://owc-gravityforms-zaaksysteem/./resources/js/frontend/index.js?");
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+
+/*!
+  * Bootstrap selector-engine.js v5.1.3 (https://getbootstrap.com/)
+  * Copyright 2011-2021 The Bootstrap Authors (https://github.com/twbs/bootstrap/graphs/contributors)
+  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
+  */
+(function (global, factory) {
+  ( false ? 0 : _typeof(exports)) === 'object' && "object" !== 'undefined' ? module.exports = factory() :  true ? !(__WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+		__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+		(__WEBPACK_AMD_DEFINE_FACTORY__.call(exports, __webpack_require__, exports, module)) :
+		__WEBPACK_AMD_DEFINE_FACTORY__),
+		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)) : (0);
+})(this, function () {
+  'use strict';
+  /**
+   * --------------------------------------------------------------------------
+   * Bootstrap (v5.1.3): util/index.js
+   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
+   * --------------------------------------------------------------------------
+   */
+
+  var isElement = function isElement(obj) {
+    if (!obj || _typeof(obj) !== 'object') {
+      return false;
+    }
+
+    if (typeof obj.jquery !== 'undefined') {
+      obj = obj[0];
+    }
+
+    return typeof obj.nodeType !== 'undefined';
+  };
+
+  var isVisible = function isVisible(element) {
+    if (!isElement(element) || element.getClientRects().length === 0) {
+      return false;
+    }
+
+    return getComputedStyle(element).getPropertyValue('visibility') === 'visible';
+  };
+
+  var isDisabled = function isDisabled(element) {
+    if (!element || element.nodeType !== Node.ELEMENT_NODE) {
+      return true;
+    }
+
+    if (element.classList.contains('disabled')) {
+      return true;
+    }
+
+    if (typeof element.disabled !== 'undefined') {
+      return element.disabled;
+    }
+
+    return element.hasAttribute('disabled') && element.getAttribute('disabled') !== 'false';
+  };
+  /**
+   * --------------------------------------------------------------------------
+   * Bootstrap (v5.1.3): dom/selector-engine.js
+   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
+   * --------------------------------------------------------------------------
+   */
+
+
+  var NODE_TEXT = 3;
+  var SelectorEngine = {
+    find: function find(selector) {
+      var _ref;
+
+      var element = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : document.documentElement;
+      return (_ref = []).concat.apply(_ref, _toConsumableArray(Element.prototype.querySelectorAll.call(element, selector)));
+    },
+    findOne: function findOne(selector) {
+      var element = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : document.documentElement;
+      return Element.prototype.querySelector.call(element, selector);
+    },
+    children: function children(element, selector) {
+      var _ref2;
+
+      return (_ref2 = []).concat.apply(_ref2, _toConsumableArray(element.children)).filter(function (child) {
+        return child.matches(selector);
+      });
+    },
+    parents: function parents(element, selector) {
+      var parents = [];
+      var ancestor = element.parentNode;
+
+      while (ancestor && ancestor.nodeType === Node.ELEMENT_NODE && ancestor.nodeType !== NODE_TEXT) {
+        if (ancestor.matches(selector)) {
+          parents.push(ancestor);
+        }
+
+        ancestor = ancestor.parentNode;
+      }
+
+      return parents;
+    },
+    prev: function prev(element, selector) {
+      var previous = element.previousElementSibling;
+
+      while (previous) {
+        if (previous.matches(selector)) {
+          return [previous];
+        }
+
+        previous = previous.previousElementSibling;
+      }
+
+      return [];
+    },
+    next: function next(element, selector) {
+      var next = element.nextElementSibling;
+
+      while (next) {
+        if (next.matches(selector)) {
+          return [next];
+        }
+
+        next = next.nextElementSibling;
+      }
+
+      return [];
+    },
+    focusableChildren: function focusableChildren(element) {
+      var focusables = ['a', 'button', 'input', 'textarea', 'select', 'details', '[tabindex]', '[contenteditable="true"]'].map(function (selector) {
+        return "".concat(selector, ":not([tabindex^=\"-\"])");
+      }).join(', ');
+      return this.find(focusables, element).filter(function (el) {
+        return !isDisabled(el) && isVisible(el);
+      });
+    }
+  };
+  return SelectorEngine;
+});
 
 /***/ })
 
@@ -136,23 +1521,20 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var boot
 /******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
 /******/ 	})();
 /******/ 	
-/******/ 	/* webpack/runtime/make namespace object */
-/******/ 	(() => {
-/******/ 		// define __esModule on exports
-/******/ 		__webpack_require__.r = (exports) => {
-/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
-/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
-/******/ 			}
-/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
-/******/ 		};
-/******/ 	})();
-/******/ 	
 /************************************************************************/
-/******/ 	
-/******/ 	// startup
-/******/ 	// Load entry module and return exports
-/******/ 	// This entry module can't be inlined because the eval devtool is used.
-/******/ 	var __webpack_exports__ = __webpack_require__("./resources/js/frontend/index.js");
-/******/ 	
+var __webpack_exports__ = {};
+// This entry need to be wrapped in an IIFE because it need to be in strict mode.
+(() => {
+"use strict";
+/* harmony import */ var bootstrap_js_dist_collapse__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(62);
+/* harmony import */ var bootstrap_js_dist_collapse__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(bootstrap_js_dist_collapse__WEBPACK_IMPORTED_MODULE_0__);
+// External
+
+
+var app = function app() {};
+
+document.addEventListener('DOMContentLoaded', app);
+})();
+
 /******/ })()
 ;
