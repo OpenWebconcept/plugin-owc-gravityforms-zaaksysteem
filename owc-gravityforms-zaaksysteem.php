@@ -24,12 +24,12 @@ if (!defined('WPINC')) {
     die;
 }
 
-define('OZ_DIR', basename(__DIR__));
-define('OZ_NAME', 'OWC GravityForms Zaaksysteem');
-define('OZ_SHORT_NAME', 'OWC Zaaksysteem');
-define('OZ_PLUGIN_SLUG', 'owc-gravityforms-zaaksysteem');
-define('OZ_ROOT_PATH', __DIR__);
-define('OZ_VERSION', '1.0.3');
+define('OWC_GZ_DIR', basename(__DIR__));
+define('OWC_GZ_NAME', 'OWC GravityForms Zaaksysteem');
+define('OWC_GZ_SHORT_NAME', 'OWC Zaaksysteem');
+define('OWC_GZ_PLUGIN_SLUG', 'owc-gravityforms-zaaksysteem');
+define('OWC_GZ_ROOT_PATH', __DIR__);
+define('OWC_GZ_VERSION', '1.0.3');
 
 /**
  * Not all the members of the OpenWebconcept are using composer in the root of their project.

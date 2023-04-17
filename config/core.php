@@ -39,5 +39,5 @@ return [
         ]
     ],
 
-    'text_domain' => OZ_PLUGIN_SLUG,
+    'text_domain' => OWC_GZ_PLUGIN_SLUG,
 ];

@@ -4,9 +4,9 @@ namespace OWC\Zaaksysteem\GravityForms;
 
 class GravityFormsSettings
 {
-    protected string $prefix = OZ_PLUGIN_SLUG;
+    protected string $prefix = OWC_GZ_PLUGIN_SLUG;
 
-    protected string $name = 'gravityformsaddon_' . OZ_PLUGIN_SLUG . '_settings';
+    protected string $name = 'gravityformsaddon_' . OWC_GZ_PLUGIN_SLUG . '_settings';
 
     protected array $options = [];
 

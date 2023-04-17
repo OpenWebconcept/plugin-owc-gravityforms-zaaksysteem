@@ -2,13 +2,13 @@
 
 namespace OWC\Zaaksysteem\GravityForms;
 
-use function OWC\Zaaksysteem\Foundation\Helpers\config;
-
 use OWC\Zaaksysteem\Repositories\OpenZaak\ZaakRepository;
+
+use function OWC\Zaaksysteem\Foundation\Helpers\config;
 
 class GravityFormsFormSettings
 {
-    protected string $prefix = OZ_PLUGIN_SLUG;
+    protected string $prefix = OWC_GZ_PLUGIN_SLUG;
 
     /**
      * Get a list of related 'zaaktypen' from Open Zaak.
