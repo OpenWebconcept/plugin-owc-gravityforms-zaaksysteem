@@ -42,8 +42,4 @@ class ZaakobjectenEndpoint extends Endpoint
 
         return $this->getPagedCollection($this->handleResponse($response));
     }
-
-    // public function create(ZaakModel $model): ZaakModel;
-    // public function update(ZaakModel $model): ZaakModel;
-    // public function delete(ZaakModel $model): ZaakModel;
 }

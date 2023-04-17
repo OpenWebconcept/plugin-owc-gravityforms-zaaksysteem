@@ -22,6 +22,10 @@ class EnkelvoudiginformatieobjectenEndpoint extends Endpoint
         return $this->getSingleEntity($this->handleResponse($response));
     }
 
+    /**
+     * @todo Return a 'stream' of sorts so a controller can decide
+     * what to do with the binary data of a document.
+     */
     public function download(string $identifier)
     {
         $response = $this->client->get(
