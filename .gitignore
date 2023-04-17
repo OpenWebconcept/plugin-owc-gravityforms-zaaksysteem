@@ -53,6 +53,12 @@
 # npmrc for fontawesome
 !.npmrc.example
 
+# vscode
+!.vscode
+
+# prettier
+!.prettierrc
+
 # ignore all files that start with ~
 ~*
 
@@ -94,13 +100,5 @@ node_modules/
 # no map files
 *.map
 
-vendor
-!/src/vendor
-
-tests/coverage
-wp-content/
-
-.DS_Store
-
-# php cs
-.php_cs.cache
+# ignore composer vendor directories
+vendor/
