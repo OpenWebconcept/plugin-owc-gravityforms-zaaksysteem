@@ -53,5 +53,5 @@ if (file_exists($composerAutoload)) {
  * and wp_loaded action hooks.
  */
 \add_action('plugins_loaded', function () {
-    $plugin = Foundation\Plugin::getInstance(__DIR__)->boot();
+    Foundation\Plugin::getInstance(__DIR__)->boot();
 }, 10);
