@@ -1,2 +1,2 @@
 import "./register-blocks";
-import "./mijn-zaken.jsx";
+import "./mijn-zaken";

@@ -54,17 +54,17 @@ registerBlockType('owc/mijn-zaken', {
       });
     };
 
-    let zaaktypeFields = zaaktypeFilterArr.map((location, index) => {
+    const zaaktypeFields = zaaktypeFilterArr.map((location, index) => {
       return (
         <Fragment key={index}>
           <TextControl
-            className="ztfilter__add"
+            className="ogz-ztfilter_add"
             placeholder="https://zaaksysteem.nl/catalogi/api/v1/zaaktypen/uri"
             value={zaaktypeFilterArr[index]}
             onChange={(ztUri) => changeZTFilter(ztUri, index)}
           />
           <IconButton
-            className="ztfilter__remove"
+            className="ogz-ztfilter_remove"
             icon="no-alt"
             label="Verwijder Zaaktype filter"
             onClick={() => removeZTFilter(index)}
