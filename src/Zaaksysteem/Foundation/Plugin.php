@@ -17,13 +17,13 @@ class Plugin
     /**
      * Name of the plugin.
      */
-    public const NAME = OZ_PLUGIN_SLUG;
+    public const NAME = OWC_GZ_PLUGIN_SLUG;
 
     /**
      * Version of the plugin.
      * Used for setting versions of enqueue scripts and styles.
      */
-    public const VERSION = OZ_VERSION;
+    public const VERSION = OWC_GZ_VERSION;
 
     /**
      * Path to the root of the plugin.
@@ -121,7 +121,7 @@ class Plugin
     public function resourceUrl(string $file, string $directory = ''): string
     {
         $directory = ! empty($directory) ? $directory . '/' : '';
-        return plugins_url("resources/{$directory}/{$file}", OZ_PLUGIN_SLUG . '/plugin.php');
+        return plugins_url("resources/{$directory}/{$file}", OWC_GZ_PLUGIN_SLUG . '/plugin.php');
     }
 
     /**

@@ -84,7 +84,7 @@ function view(string $template, array $vars = []): string
 function get_supplier(array $form, bool $getKey = false): string
 {
     $allowed = config('suppliers', []);
-    $supplier = $form[sprintf('%s-form-setting-supplier', OZ_PLUGIN_SLUG)] ?? '';
+    $supplier = $form[sprintf('%s-form-setting-supplier', OWC_GZ_PLUGIN_SLUG)] ?? '';
 
     if (! is_array($allowed) || empty($allowed) || empty($supplier)) {
         return '';

@@ -1,10 +1,12 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace OWC\Zaaksysteem\Foundation;
 
 class View
 {
-    protected string $templateDirectory = OZ_ROOT_PATH . '/resources/views/';
+    protected string $templateDirectory = OWC_GZ_ROOT_PATH . '/resources/views/';
     protected array $vars = [];
     protected array $bindings = []; // Associative array of variables that will be accessible from the template.
 
@@ -29,7 +31,7 @@ class View
         if (! is_file($this->templateDirectory . $templateFile)) {
             return '';
         }
-        
+
         $this->bindAll($vars);
         ob_start();
         include($this->templateDirectory . $templateFile);

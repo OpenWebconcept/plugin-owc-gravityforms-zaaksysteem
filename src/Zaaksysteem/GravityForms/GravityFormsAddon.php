@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace OWC\Zaaksysteem\GravityForms;
 
-use function OWC\Zaaksysteem\Foundation\Helpers\config;
-
 use GFAddOn;
+
+use function OWC\Zaaksysteem\Foundation\Helpers\config;
 
 class GravityFormsAddon extends GFAddOn
 {
     /**
      * Version number.
      */
-    protected $_version = OZ_VERSION;
+    protected $_version = OWC_GZ_VERSION;
 
     /**
      * Minimal required GF version.
@@ -25,12 +25,12 @@ class GravityFormsAddon extends GFAddOn
      *
      * @var string
      */
-    protected $_slug = OZ_PLUGIN_SLUG;
+    protected $_slug = OWC_GZ_PLUGIN_SLUG;
 
     /**
      * Relative path to the plugin from the plugins folder.
      */
-    protected $_path = OZ_ROOT_PATH . '/owc-gravityforms-zaaksysteem.php';
+    protected $_path = OWC_GZ_ROOT_PATH . '/owc-gravityforms-zaaksysteem.php';
 
     /**
      * The physical path to the main plugin file.
@@ -40,17 +40,17 @@ class GravityFormsAddon extends GFAddOn
     /**
      * The complete title of the Add-On.
      */
-    protected $_title = OZ_NAME;
+    protected $_title = OWC_GZ_NAME;
 
     /**
      * The short title of the Add-On to be used in limited spaces.
      */
-    protected $_short_title = OZ_SHORT_NAME;
+    protected $_short_title = OWC_GZ_SHORT_NAME;
 
     /**
      * Field prefix in Gravity Forms.
      */
-    private string $prefix = OZ_PLUGIN_SLUG;
+    private string $prefix = OWC_GZ_PLUGIN_SLUG;
 
     /**
      * Instance object

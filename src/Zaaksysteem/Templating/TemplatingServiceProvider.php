@@ -31,7 +31,7 @@ class TemplatingServiceProvider extends ServiceProvider
          */
         add_filter('page_template', function ($pageTemplate) {
             if (get_page_template_slug() === 'template-openzaak.php') {
-                $pageTemplate = sprintf('%s/%s', OZ_ROOT_PATH, 'resources/views/template-openzaak.php');
+                $pageTemplate = sprintf('%s/%s', OWC_GZ_ROOT_PATH, 'resources/views/template-openzaak.php');
             }
 
             return $pageTemplate;

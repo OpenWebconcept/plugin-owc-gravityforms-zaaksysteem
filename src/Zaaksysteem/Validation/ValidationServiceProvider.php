@@ -61,6 +61,6 @@ class ValidationServiceProvider extends ServiceProvider
             return 'Geen toegang';
         }, 10, 1);
 
-        return sprintf('%s/%s', OZ_ROOT_PATH, 'resources/views/403.php');
+        return sprintf('%s/%s', OWC_GZ_ROOT_PATH, 'resources/views/403.php');
     }
 }
