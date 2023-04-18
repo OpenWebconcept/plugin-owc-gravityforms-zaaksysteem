@@ -11,6 +11,10 @@ use OWC\Zaaksysteem\Http\Authentication\TokenAuthenticator;
 abstract class Client
 {
     public const CLIENT_NAME = 'abstract';
+
+    /**
+     * This must be a callable abstract in the DI container.
+     */
     public const CALLABLE_NAME = 'ab.client';
     public const AVAILABLE_ENDPOINTS = [];
 

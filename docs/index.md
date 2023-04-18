@@ -121,8 +121,15 @@ foreach ($statustypen->sortByAttribute('volgnummer') as $statustype) {
 ```
 
 ## New API client
-There is support for multiple ZGW API clients (OpenZaak, Decos JOIN, etc.). 
+There is support for multiple ZGW API clients (OpenZaak, Decos JOIN, etc.). To add a new, additional API client, a custom implementation of `OWC\Zaaksysteem\Client\Client` is required. 
 
-To add a new, additional API client, a custom implementation of `OWC\Zaaksysteem\Client\Client` is required. This implementation should update the `AVAILABLE_ENDPOINTS` array to point to the right `Endpoint` implementations.
+For this implementation:
+1. The `AVAILABLE_ENDPOINTS` array should be updated to point to the right `Endpoint` implementations that are supported. If possible, use the default Endpoint implementations. 
+2. The `CALLABLE_NAME` must be a reference to a callable abstract in the DI container. 
+3. The `CLIENT_NAME` should be updated, though currently is not required.
 
 Additionally a custom `OWC\Zaaksysteem\Http\Authentication\TokenAuthenticator` might be required, as the way of authentication might differ.
+
+Next, the `config/container.php` file must be updated so that it has a factory for the defined `CALLABLE_NAME`. This factory must construct the client. 
+
+Optionally, a custom `OWC\Zaaksysteem\Http\RequestClientInterface` might be required to implement custom HTTP behaviour for your Client. 
