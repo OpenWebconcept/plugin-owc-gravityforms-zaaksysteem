@@ -1,1 +1,121 @@
-.zaak-collapse-button{--zaak-collapse-button-background-color:#f2f2f2;--zaak-collapse-button-background-color-hover:#d41422;--zaak-collapse-button-color-hover:#fff;align-items:center;background-color:transparent;background-color:var(--zaak-collapse-button-background-color);border:0;display:flex;margin-bottom:.75rem;padding:1rem;text-align:left;transition:all .15s ease;width:100%}.zaak-collapse-button:hover,.zaak-collapse-button[aria-expanded=true]{background-color:var(--zaak-collapse-button-background-color-hover);color:var(--zaak-collapse-button-color-hover)}.zaak-collapse-button:hover .zaak-collapse-button__chevron-icon,.zaak-collapse-button:hover .zaak-collapse-button__folder-icon,.zaak-collapse-button[aria-expanded=true] .zaak-collapse-button__chevron-icon,.zaak-collapse-button[aria-expanded=true] .zaak-collapse-button__folder-icon{fill:var(--zaak-collapse-button-color-hover)}.zaak-collapse-button[aria-expanded=true] .zaak-collapse-button__chevron-icon{transform:rotate(180deg)}.zaak-collapse-button__folder-icon{height:20px;margin-right:1rem;transition:all .15s ease;width:20px}.zaak-collapse-button__chevron-icon{height:20px;margin-left:auto;transition:all .15s ease;width:20px}.zaak-content{padding:2rem 0}.zaak-documents{margin-top:3rem}.zaak-meta{align-items:flex-start;display:flex;flex-wrap:wrap;justify-content:space-evenly}.zaak-meta-item{align-items:center;display:flex;flex-basis:50%;flex-direction:column;line-height:var(--zaak-meta-item-line-height,1.5);text-align:center}@media screen and (min-width:576px){.zaak-meta-item{flex-basis:25%}}.zaak-meta-item__icon{height:40px;margin-bottom:.75rem;width:40px}.zaak-meta-item__value{font-weight:var(--zaak-meta-item-value-font-weight,700)}.zaak-process{margin-top:3rem}.zaak-process-steps{--zaak-process-steps-border-width:2px;--zaak-process-steps-color:#f2f2f2;--zaak-process-steps-color-succes:#0d8228;--zaak-process-steps-spacer:1.75rem;list-style:none;padding-left:.75rem}.zaak-process-steps__step{font-weight:700;margin-bottom:var(--zaak-process-steps-spacer);position:relative}.zaak-process-steps__step:first-child .zaak-process-steps__step-marker:before{content:none}.zaak-process-steps__step-marker{background-color:var(--zaak-process-steps-color);border:var(--zaak-process-steps-border-width) solid var(--zaak-process-steps-color);border-radius:50%;display:inline-block;height:30px;margin-right:1rem;position:relative;text-align:center;width:30px}.zaak-process-steps__step-marker:before{background-color:var(--zaak-process-steps-color);bottom:calc(100% + var(--zaak-process-steps-border-width));content:"";height:var(--zaak-process-steps-spacer);left:calc(50% - var(--zaak-process-steps-border-width)/2);position:absolute;width:var(--zaak-process-steps-border-width)}.zaak-process-steps__step-marker svg{fill:var(--zaak-process-steps-color-succes);padding-bottom:.2rem;transform:scale(.6)}.zaak-process-steps__step--past .zaak-process-steps__step-marker{background-color:#fff;border-color:var(--zaak-process-steps-color-succes);color:var(--zaak-process-steps-color-succes)}.zaak-process-steps__step--current{color:var(--zaak-process-steps-color-succes)}.zaak-process-steps__step--current .zaak-process-steps__step-marker{background-color:var(--zaak-process-steps-color-succes);border-color:var(--zaak-process-steps-color-succes);color:#fff}.zaak-process-steps__step--current .zaak-process-steps__step-marker:before,.zaak-process-steps__step--past .zaak-process-steps__step-marker:before{background-color:var(--zaak-process-steps-color-succes)}.ogz-ztfilter_add{display:inline-block;width:85%}
+/*!********************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./resources/scss/style.scss ***!
+  \********************************************************************************************************************/
+.zaak-collapse-button {
+  --zaak-collapse-button-background-color: #f2f2f2;
+  --zaak-collapse-button-background-color-hover: #d41422;
+  --zaak-collapse-button-color-hover: #fff;
+  border: 0;
+  display: flex;
+  margin-bottom: 0.75rem;
+  align-items: center;
+  width: 100%;
+  background-color: transparent;
+  text-align: left;
+  padding: 1rem 1rem;
+  transition: 0.15s ease all;
+  background-color: var(--zaak-collapse-button-background-color); }
+  .zaak-collapse-button[aria-expanded="true"], .zaak-collapse-button:hover {
+    background-color: var(--zaak-collapse-button-background-color-hover);
+    color: var(--zaak-collapse-button-color-hover); }
+    .zaak-collapse-button[aria-expanded="true"] .zaak-collapse-button__folder-icon, .zaak-collapse-button:hover .zaak-collapse-button__folder-icon {
+      fill: var(--zaak-collapse-button-color-hover); }
+    .zaak-collapse-button[aria-expanded="true"] .zaak-collapse-button__chevron-icon, .zaak-collapse-button:hover .zaak-collapse-button__chevron-icon {
+      fill: var(--zaak-collapse-button-color-hover); }
+  .zaak-collapse-button[aria-expanded="true"] .zaak-collapse-button__chevron-icon {
+    transform: rotate(180deg); }
+  .zaak-collapse-button__folder-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 1rem;
+    transition: 0.15s ease all; }
+  .zaak-collapse-button__chevron-icon {
+    width: 20px;
+    height: 20px;
+    margin-left: auto;
+    transition: 0.15s ease all; }
+
+.zaak-content {
+  padding: 2rem 0; }
+
+.zaak-documents {
+  margin-top: 3rem; }
+
+.zaak-meta {
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  justify-content: space-evenly; }
+
+.zaak-meta-item {
+  display: flex;
+  text-align: center;
+  flex-direction: column;
+  flex-basis: 50%;
+  align-items: center;
+  line-height: var(--zaak-meta-item-line-height, 1.5); }
+  @media screen and (min-width: 576px) {
+    .zaak-meta-item {
+      flex-basis: 25%; } }
+  .zaak-meta-item__icon {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 0.75rem; }
+  .zaak-meta-item__value {
+    font-weight: var(--zaak-meta-item-value-font-weight, 700); }
+
+.zaak-process {
+  margin-top: 3rem; }
+
+.zaak-process-steps {
+  --zaak-process-steps-border-width: 2px;
+  --zaak-process-steps-color: #f2f2f2;
+  --zaak-process-steps-color-succes: #0d8228;
+  --zaak-process-steps-spacer: 1.75rem;
+  list-style: none;
+  padding-left: 0.75rem; }
+  .zaak-process-steps__step {
+    position: relative;
+    margin-bottom: var(--zaak-process-steps-spacer);
+    font-weight: 700; }
+    .zaak-process-steps__step:first-child .zaak-process-steps__step-marker::before {
+      content: none; }
+  .zaak-process-steps__step-marker {
+    position: relative;
+    width: 30px;
+    height: 30px;
+    margin-right: 1rem;
+    display: inline-block;
+    text-align: center;
+    border-radius: 50%;
+    border: var(--zaak-process-steps-border-width) solid var(--zaak-process-steps-color);
+    background-color: var(--zaak-process-steps-color); }
+    .zaak-process-steps__step-marker::before {
+      position: absolute;
+      bottom: calc(100% + var(--zaak-process-steps-border-width));
+      left: calc(50% - var(--zaak-process-steps-border-width) / 2);
+      height: var(--zaak-process-steps-spacer);
+      width: var(--zaak-process-steps-border-width);
+      content: "";
+      background-color: var(--zaak-process-steps-color); }
+    .zaak-process-steps__step-marker svg {
+      fill: var(--zaak-process-steps-color-succes);
+      transform: scale(0.6);
+      padding-bottom: 0.2rem; }
+  .zaak-process-steps__step--past .zaak-process-steps__step-marker {
+    border-color: var(--zaak-process-steps-color-succes);
+    color: var(--zaak-process-steps-color-succes);
+    background-color: #fff; }
+  .zaak-process-steps__step--current {
+    color: var(--zaak-process-steps-color-succes); }
+    .zaak-process-steps__step--current .zaak-process-steps__step-marker {
+      border-color: var(--zaak-process-steps-color-succes);
+      background-color: var(--zaak-process-steps-color-succes);
+      color: #fff; }
+  .zaak-process-steps__step--past .zaak-process-steps__step-marker::before, .zaak-process-steps__step--current .zaak-process-steps__step-marker::before {
+    background-color: var(--zaak-process-steps-color-succes); }
+
+.ogz-ztfilter_add {
+  width: 85%;
+  display: inline-block; }
+

@@ -1,136 +1,42 @@
+/*
+ * ATTENTION: The "eval" devtool has been used (maybe by default in mode: "development").
+ * This devtool is neither made for production nor for readable output files.
+ * It uses "eval()" calls to create a separate source file in the browser devtools.
+ * If you are trying to read the output file, select a different devtool (https://webpack.js.org/configuration/devtool/)
+ * or disable the default devtool with "devtool: false".
+ * If you are looking for production-ready output files, see mode: "production" (https://webpack.js.org/configuration/mode/).
+ */
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 855:
-/***/ (function() {
+/***/ "./resources/js/editor/index.js":
+/*!**************************************!*\
+  !*** ./resources/js/editor/index.js ***!
+  \**************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-var _this = this;
-
-var registerBlockType = wp.blocks.registerBlockType;
-var _wp = wp,
-    ServerSideRender = _wp.serverSideRender;
-var _wp$blockEditor = wp.blockEditor,
-    useBlockProps = _wp$blockEditor.useBlockProps,
-    RichText = _wp$blockEditor.RichText,
-    InspectorControls = _wp$blockEditor.InspectorControls,
-    BlockControls = _wp$blockEditor.BlockControls,
-    AlignmentToolbar = _wp$blockEditor.AlignmentToolbar,
-    ColorPalette = _wp$blockEditor.ColorPalette,
-    MediaUploadCheck = _wp$blockEditor.MediaUploadCheck,
-    MediaUpload = _wp$blockEditor.MediaUpload;
-var _wp$components = wp.components,
-    Panel = _wp$components.Panel,
-    PanelBody = _wp$components.PanelBody,
-    PanelRow = _wp$components.PanelRow,
-    Button = _wp$components.Button,
-    TextControl = _wp$components.TextControl,
-    IconButton = _wp$components.IconButton;
-var Fragment = wp.element.Fragment;
-registerBlockType('owc/mijn-zaken', {
-  apiVersion: 2,
-  title: 'Mijn Zaken',
-  category: 'common',
-  attributes: {
-    zaaktypeFilter: {
-      type: 'string',
-      "default": '[]'
-    },
-    updateMePlease: {
-      type: 'boolean',
-      "default": true
-    }
-  },
-  edit: function edit(_ref) {
-    var attributes = _ref.attributes,
-        setAttributes = _ref.setAttributes;
-    var blockProps = useBlockProps();
-    var zaaktypeFilter = attributes.zaaktypeFilter,
-        updateMePlease = attributes.updateMePlease;
-    var zaaktypeFilterArr = JSON.parse(zaaktypeFilter);
-
-    var addZTFilter = function addZTFilter() {
-      zaaktypeFilterArr.push('');
-      setAttributes({
-        zaaktypeFilter: JSON.stringify(zaaktypeFilterArr),
-        updateMePlease: !updateMePlease
-      });
-    };
-
-    var changeZTFilter = function changeZTFilter(ztUri, index) {
-      zaaktypeFilterArr[index] = ztUri;
-      setAttributes({
-        zaaktypeFilter: JSON.stringify(zaaktypeFilterArr),
-        updateMePlease: !updateMePlease
-      });
-    };
-
-    var removeZTFilter = function removeZTFilter(index) {
-      zaaktypeFilterArr.splice(index, 1);
-      setAttributes({
-        zaaktypeFilter: JSON.stringify(zaaktypeFilterArr),
-        updateMePlease: !updateMePlease
-      });
-    };
-
-    var zaaktypeFields = zaaktypeFilterArr.map(function (location, index) {
-      return /*#__PURE__*/React.createElement(Fragment, {
-        key: index
-      }, /*#__PURE__*/React.createElement(TextControl, {
-        className: "ogz-ztfilter_add",
-        placeholder: "https://zaaksysteem.nl/catalogi/api/v1/zaaktypen/uri",
-        value: zaaktypeFilterArr[index],
-        onChange: function onChange(ztUri) {
-          return changeZTFilter(ztUri, index);
-        }
-      }), /*#__PURE__*/React.createElement(IconButton, {
-        className: "ogz-ztfilter_remove",
-        icon: "no-alt",
-        label: "Verwijder Zaaktype filter",
-        onClick: function onClick() {
-          return removeZTFilter(index);
-        }
-      }));
-    });
-    return /*#__PURE__*/React.createElement("div", blockProps, /*#__PURE__*/React.createElement(InspectorControls, null, /*#__PURE__*/React.createElement(Panel, null, /*#__PURE__*/React.createElement(PanelBody, {
-      title: "Zaaktype configuratie",
-      initialOpen: false
-    }, /*#__PURE__*/React.createElement(PanelRow, null, "Zaaktypes"), zaaktypeFields, /*#__PURE__*/React.createElement(Button, {
-      isDefault: true,
-      icon: "plus",
-      onClick: addZTFilter.bind(_this)
-    }, "Voeg een Zaaktype URI toe")))), /*#__PURE__*/React.createElement("p", null, "Here be dragons"));
-  },
-  save: function save(_ref2) {
-    var className = _ref2.className,
-        attributes = _ref2.attributes;
-    return /*#__PURE__*/React.createElement("section", {
-      className: className
-    });
-  }
-});
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _register_blocks__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./register-blocks */ \"./resources/js/editor/register-blocks.js\");\n/* harmony import */ var _register_blocks__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_register_blocks__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var _mijn_zaken__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./mijn-zaken */ \"./resources/js/editor/mijn-zaken.js\");\n/* harmony import */ var _mijn_zaken__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_mijn_zaken__WEBPACK_IMPORTED_MODULE_1__);\n\n\n\n//# sourceURL=webpack://owc-gravityforms-zaaksysteem/./resources/js/editor/index.js?");
 
 /***/ }),
 
-/***/ 9:
+/***/ "./resources/js/editor/mijn-zaken.js":
+/*!*******************************************!*\
+  !*** ./resources/js/editor/mijn-zaken.js ***!
+  \*******************************************/
+/***/ (function() {
+
+eval("var _this = this;\n\nvar registerBlockType = wp.blocks.registerBlockType;\nvar _wp = wp,\n    ServerSideRender = _wp.serverSideRender;\nvar _wp$blockEditor = wp.blockEditor,\n    useBlockProps = _wp$blockEditor.useBlockProps,\n    RichText = _wp$blockEditor.RichText,\n    InspectorControls = _wp$blockEditor.InspectorControls,\n    BlockControls = _wp$blockEditor.BlockControls,\n    AlignmentToolbar = _wp$blockEditor.AlignmentToolbar,\n    ColorPalette = _wp$blockEditor.ColorPalette,\n    MediaUploadCheck = _wp$blockEditor.MediaUploadCheck,\n    MediaUpload = _wp$blockEditor.MediaUpload;\nvar _wp$components = wp.components,\n    Panel = _wp$components.Panel,\n    PanelBody = _wp$components.PanelBody,\n    PanelRow = _wp$components.PanelRow,\n    Button = _wp$components.Button,\n    TextControl = _wp$components.TextControl,\n    IconButton = _wp$components.IconButton,\n    SelectControl = _wp$components.SelectControl;\nvar Fragment = wp.element.Fragment;\nregisterBlockType('owc/mijn-zaken', {\n  apiVersion: 2,\n  title: 'Mijn Zaken',\n  category: 'common',\n  attributes: {\n    zaakClient: {\n      type: 'string',\n      \"default\": 'openzaak'\n    },\n    zaaktypeFilter: {\n      type: 'string',\n      \"default\": '[]'\n    },\n    updateMePlease: {\n      type: 'boolean',\n      \"default\": true\n    }\n  },\n  edit: function edit(_ref) {\n    var attributes = _ref.attributes,\n        setAttributes = _ref.setAttributes;\n    var blockProps = useBlockProps();\n    var zaakClient = attributes.zaakClient,\n        zaaktypeFilter = attributes.zaaktypeFilter,\n        updateMePlease = attributes.updateMePlease;\n    var zaaktypeFilterArr = JSON.parse(zaaktypeFilter);\n\n    var addZTFilter = function addZTFilter() {\n      zaaktypeFilterArr.push('');\n      setAttributes({\n        zaaktypeFilter: JSON.stringify(zaaktypeFilterArr),\n        updateMePlease: !updateMePlease\n      });\n    };\n\n    var changeZTFilter = function changeZTFilter(ztUri, index) {\n      zaaktypeFilterArr[index] = ztUri;\n      setAttributes({\n        zaaktypeFilter: JSON.stringify(zaaktypeFilterArr),\n        updateMePlease: !updateMePlease\n      });\n    };\n\n    var removeZTFilter = function removeZTFilter(index) {\n      zaaktypeFilterArr.splice(index, 1);\n      setAttributes({\n        zaaktypeFilter: JSON.stringify(zaaktypeFilterArr),\n        updateMePlease: !updateMePlease\n      });\n    };\n\n    var zaaktypeFields = zaaktypeFilterArr.map(function (location, index) {\n      return /*#__PURE__*/React.createElement(Fragment, {\n        key: index\n      }, /*#__PURE__*/React.createElement(TextControl, {\n        className: \"ogz-ztfilter_add\",\n        placeholder: \"https://zaaksysteem.nl/catalogi/api/v1/zaaktypen/uri\",\n        value: zaaktypeFilterArr[index],\n        onChange: function onChange(ztUri) {\n          return changeZTFilter(ztUri, index);\n        }\n      }), /*#__PURE__*/React.createElement(IconButton, {\n        className: \"ogz-ztfilter_remove\",\n        icon: \"no-alt\",\n        label: \"Verwijder Zaaktype filter\",\n        onClick: function onClick() {\n          return removeZTFilter(index);\n        }\n      }));\n    });\n    return /*#__PURE__*/React.createElement(\"div\", blockProps, /*#__PURE__*/React.createElement(InspectorControls, null, /*#__PURE__*/React.createElement(Panel, null, /*#__PURE__*/React.createElement(PanelBody, {\n      title: \"Zaaksysteem\",\n      initialOpen: false\n    }, /*#__PURE__*/React.createElement(\"p\", null, \"Selecteer het zaaksysteem waaruit de zaken opgehaald moeten worden.\"), /*#__PURE__*/React.createElement(SelectControl, {\n      label: \"Zaaksysteem\",\n      value: zaakClient,\n      options: [{\n        label: 'OpenZaak',\n        value: 'openzaak'\n      }, {\n        label: 'Decos JOIN',\n        value: 'decosjoin'\n      }],\n      onChange: function onChange(newzaakClient) {\n        return setAttributes({\n          zaakClient: newzaakClient\n        });\n      }\n    })), /*#__PURE__*/React.createElement(PanelBody, {\n      title: \"Zaaktype configuratie\",\n      initialOpen: false\n    }, /*#__PURE__*/React.createElement(PanelRow, null, \"Zaaktypes\"), zaaktypeFields, /*#__PURE__*/React.createElement(Button, {\n      isDefault: true,\n      icon: \"plus\",\n      onClick: addZTFilter.bind(_this)\n    }, \"Voeg een Zaaktype URI toe\")))), /*#__PURE__*/React.createElement(\"p\", null, \"Here be dragons\"));\n  },\n  save: function save(_ref2) {\n    var className = _ref2.className,\n        attributes = _ref2.attributes;\n    return /*#__PURE__*/React.createElement(\"section\", {\n      className: className\n    });\n  }\n});\n\n//# sourceURL=webpack://owc-gravityforms-zaaksysteem/./resources/js/editor/mijn-zaken.js?");
+
+/***/ }),
+
+/***/ "./resources/js/editor/register-blocks.js":
+/*!************************************************!*\
+  !*** ./resources/js/editor/register-blocks.js ***!
+  \************************************************/
 /***/ (() => {
 
-var registerBlockType = wp.blocks.registerBlockType;
-var _wp = wp,
-    ServerSideRender = _wp.serverSideRender;
-registerBlockType("owc/gravityforms-zaaksysteem", {
-  title: "Zaken",
-  category: "theme",
-  edit: function edit() {
-    return /*#__PURE__*/React.createElement(ServerSideRender, {
-      block: "owc/gravityforms-zaaksysteem"
-    });
-  },
-  save: function save() {
-    return function () {
-      return null;
-    };
-  }
-});
+eval("var registerBlockType = wp.blocks.registerBlockType;\nvar _wp = wp,\n    ServerSideRender = _wp.serverSideRender;\nregisterBlockType(\"owc/gravityforms-zaaksysteem\", {\n  title: \"Zaken\",\n  category: \"theme\",\n  edit: function edit() {\n    return /*#__PURE__*/React.createElement(ServerSideRender, {\n      block: \"owc/gravityforms-zaaksysteem\"\n    });\n  },\n  save: function save() {\n    return function () {\n      return null;\n    };\n  }\n});\n\n//# sourceURL=webpack://owc-gravityforms-zaaksysteem/./resources/js/editor/register-blocks.js?");
 
 /***/ })
 
@@ -190,18 +96,23 @@ registerBlockType("owc/gravityforms-zaaksysteem", {
 /******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
 /******/ 	})();
 /******/ 	
+/******/ 	/* webpack/runtime/make namespace object */
+/******/ 	(() => {
+/******/ 		// define __esModule on exports
+/******/ 		__webpack_require__.r = (exports) => {
+/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 			}
+/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 		};
+/******/ 	})();
+/******/ 	
 /************************************************************************/
-var __webpack_exports__ = {};
-// This entry need to be wrapped in an IIFE because it need to be in strict mode.
-(() => {
-"use strict";
-/* harmony import */ var _register_blocks__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(9);
-/* harmony import */ var _register_blocks__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_register_blocks__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _mijn_zaken__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(855);
-/* harmony import */ var _mijn_zaken__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_mijn_zaken__WEBPACK_IMPORTED_MODULE_1__);
-
-
-})();
-
+/******/ 	
+/******/ 	// startup
+/******/ 	// Load entry module and return exports
+/******/ 	// This entry module can't be inlined because the eval devtool is used.
+/******/ 	var __webpack_exports__ = __webpack_require__("./resources/js/editor/index.js");
+/******/ 	
 /******/ })()
 ;

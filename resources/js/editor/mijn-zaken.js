@@ -12,7 +12,7 @@ const {
   MediaUpload,
 } = wp.blockEditor;
 
-const { Panel, PanelBody, PanelRow, Button, TextControl, IconButton } =
+const { Panel, PanelBody, PanelRow, Button, TextControl, IconButton, SelectControl } =
   wp.components;
 
 const { Fragment } = wp.element;
@@ -22,12 +22,13 @@ registerBlockType('owc/mijn-zaken', {
   title: 'Mijn Zaken',
   category: 'common',
   attributes: {
+    zaakClient: { type: 'string', default: 'openzaak' },
     zaaktypeFilter: { type: 'string', default: '[]' },
     updateMePlease: { type: 'boolean', default: true },
   },
   edit: ({ attributes, setAttributes }) => {
     const blockProps = useBlockProps();
-    const { zaaktypeFilter, updateMePlease } = attributes;
+    const { zaakClient, zaaktypeFilter, updateMePlease } = attributes;
     const zaaktypeFilterArr = JSON.parse(zaaktypeFilter);
 
     const addZTFilter = () => {
@@ -77,6 +78,18 @@ registerBlockType('owc/mijn-zaken', {
       <div {...blockProps}>
         <InspectorControls>
           <Panel>
+              <PanelBody title="Zaaksysteem" initialOpen={ false }>
+                <p>Selecteer het zaaksysteem waaruit de zaken opgehaald moeten worden.</p>
+                <SelectControl
+                    label="Zaaksysteem"
+                    value={ zaakClient }
+                    options={ [
+                        { label: 'OpenZaak', value: 'openzaak' },
+                        { label: 'Decos JOIN', value: 'decosjoin' },
+                    ] }
+                    onChange={ ( newzaakClient ) => setAttributes( { zaakClient: newzaakClient } ) }
+                />
+            </PanelBody>
             <PanelBody title="Zaaktype configuratie" initialOpen={false}>
               <PanelRow>Zaaktypes</PanelRow>
               {zaaktypeFields}
