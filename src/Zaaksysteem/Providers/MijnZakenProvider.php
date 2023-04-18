@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace OWC\Zaaksysteem\Providers;
 
+use OWC\Zaaksysteem\Client\Client;
 use OWC\Zaaksysteem\Entities\Zaak;
 use OWC\Zaaksysteem\Foundation\ServiceProvider;
 use OWC\Zaaksysteem\Endpoint\Filter\ZakenFilter;
@@ -34,7 +35,7 @@ class MijnZakenProvider extends ServiceProvider
 
     public function renderBlock($attributes, $rendered): string
     {
-        $client = $this->plugin->getContainer()->get('api.client');
+        $client = $this->getApiClient($attributes);
         if ($client->supports('zaken') === false) {
             return 'Het Mijn Zaken overzicht is niet beschikbaar.';
         }
@@ -64,6 +65,19 @@ class MijnZakenProvider extends ServiceProvider
         }
 
         return view('mijn-zaken/overview-zaken.php', compact('zaken'));
+    }
+
+    protected function getApiClient(array $attributes): Client
+    {
+        $client = $attributes['zaakClient'] ?? 'openzaak';
+
+        switch ($client) {
+            case 'decosjoin':
+                return $this->plugin->getContainer()->get('dj.client');
+            case 'openzaak': //fallthrough
+            default:
+                return $this->plugin->getContainer()->get('oz.client');
+        }
     }
 
     protected function getFilterableZaaktypeUris(array $attributes): array
