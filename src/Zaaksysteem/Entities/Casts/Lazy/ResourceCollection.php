@@ -8,9 +8,9 @@ use RuntimeException;
 use InvalidArgumentException;
 use OWC\Zaaksysteem\Entities\Entity;
 use OWC\Zaaksysteem\Support\Collection;
-use OWC\Zaaksysteem\Entities\Casts\CastsAttributes;
+use OWC\Zaaksysteem\Entities\Casts\AbstractCast;
 
-abstract class ResourceCollection implements CastsAttributes
+abstract class ResourceCollection extends AbstractCast
 {
     public function set(Entity $model, string $key, $value)
     {

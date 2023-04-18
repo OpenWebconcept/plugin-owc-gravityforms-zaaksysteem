@@ -12,6 +12,6 @@ class Zaaktype extends Resource
 {
     protected function resolveResource(string $uuid): ?ZaaktypeEntity
     {
-        return resolve('api.client')->zaaktypen()->get($uuid);
+        return resolve($this->clientName)->zaaktypen()->get($uuid);
     }
 }

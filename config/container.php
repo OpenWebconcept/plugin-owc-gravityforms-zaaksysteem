@@ -10,45 +10,71 @@ use DI\Container;
 
 return [
     /**
-     * Set the API variables and credentials
-     * @todo overwrite this through admin settings.
+     * OpenZaak configuration
      */
-    'api_uri'           => '',
-    'api_token_uri'     => '',
-    'api_client_id'     => '',
-    'api_client_secret' => '',
-
-    /**
-     * Set the defaults for authentication, http client and api client.
-     * @todo overwrite this through admin settings.
-     */
-    'api.client' => function (Container $container) {
-        return $container->get(Client\OpenZaakClient::class);
+    'openzaak.abbr' => 'oz',
+    'oz.client' => fn (Container $container) => $container->get(Client\OpenZaakClient::class),
+    'oz.base_uri' => function (Container $container) {
+        return $container->make('gf.setting', ['-openzaak-url']);
     },
-    'http.client' => function (Container $container) {
-        return $container->get(Http\WordPress\WordPressRequestClient::class);
+    'oz.client_id' => function (Container $container) {
+        return $container->make('gf.setting', ['-openzaak-client-id']);
     },
-    'api.authenticator' => function (Container $container) {
+    'oz.client_secret' => function (Container $container) {
+        return $container->make('gf.setting', ['-openzaak-client-secret']);
+    },
+    'oz.authenticator' => function (Container $container) {
         return $container->get(Http\Authentication\OpenZaakAuthenticator::class);
     },
 
     /**
-     * API Clients
+     * Decos JOIN configuration
+     */
+    'decosjoin.abbr' => 'dj',
+    'dj.client' => fn (Container $container) => $container->get(Client\DecosJoinClient::class),
+    'dj.base_uri' => function (Container $container) {
+        return $container->make('gf.setting', ['-decos-join-url']);
+    },
+    'dj.token_uri' => function (Container $container) {
+        return $container->make('gf.setting', ['-decos-join-token-url']);
+    },
+    'dj.client_id' => function (Container $container) {
+        return $container->make('gf.setting', ['-decos-join-client-id']);
+    },
+    'dj.client_secret' => function (Container $container) {
+        return $container->make('gf.setting', ['-decos-join-client-secret']);
+    },
+    'dj.authenticator' => function (Container $container) {
+        return $container->get(Http\Authentication\DecosJoinAuthenticator::class);
+    },
+
+    /**
+     * Utilize with $container->make('gf.setting', ['setting-name-here']);
+     */
+    'gf.setting' => function (Container $container, string $type, string $name) {
+        return GravityForms\GravityFormsSettings::make()->get($name);
+    },
+
+    /**
+     * Configure API Clients
      */
     Client\OpenZaakClient::class => function (Container $container) {
         return new Client\OpenZaakClient(
-            $container->get('http.client'),
-            $container->get(Http\Authentication\OpenZaakAuthenticator::class),
+            $container->make(
+                Http\WordPress\WordPressRequestClient::class,
+                [$container->get('oz.base_uri')]
+            ),
+            $container->get('oz.authenticator'),
         );
     },
     Client\DecosJoinClient::class => function (Container $container) {
         return new Client\DecosJoinClient(
-            $container->get('http.client'),
-            $container->get(Http\Authentication\DecosJoinAuthenticator::class),
+            $container->make(
+                Http\WordPress\WordPressRequestClient::class,
+                [$container->get('dj.base_uri')]
+            ),
+            $container->get('dj.authenticator'),
         );
-    },
-    Client\Client::class => function (Container $container) {
-        return $container->get('api.client');
     },
 
     /**
@@ -56,32 +82,26 @@ return [
      */
     Http\Authentication\OpenZaakAuthenticator::class => function (Container $container) {
         return new Http\Authentication\OpenZaakAuthenticator(
-            $container->get('api_client_id'),
-            $container->get('api_client_secret'),
+            $container->get('oz.client_id'),
+            $container->get('oz.client_secret'),
         );
     },
     Http\Authentication\DecosJoinAuthenticator::class => function (Container $container) {
         return new Http\Authentication\DecosJoinAuthenticator(
             $container->get('http.client'),
-            $container->get('api_token_uri'),
-            $container->get('api_client_id'),
-            $container->get('api_client_secret')
+            $container->get('dj.token_uri'),
+            $container->get('dj.client_id'),
+            $container->get('dj.client_secret')
         );
-    },
-    Http\Authentication\TokenAuthenticator::class => function (Container $container) {
-        return $container->get('api.authenticator');
     },
 
     /**
      * HTTP clients
      */
-    Http\RequestClientInterface::class => function (Container $container) {
-        return $container->get('http.client');
-    },
-    Http\WordPress\WordPressRequestClient::class => function (Container $container) {
+    Http\WordPress\WordPressRequestClient::class => function (Container $container, string $type, string $baseUri) {
         return new Http\WordPress\WordPressRequestClient(
             new Http\RequestOptions([
-                'base_uri'      => $container->get('api_uri'),
+                'base_uri'      => $baseUri,
                 'headers'       => [
                     'Accept-Crs'    => 'EPSG:4326',
                     'Content-Crs'   => 'EPSG:4326',

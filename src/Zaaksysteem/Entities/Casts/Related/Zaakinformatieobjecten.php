@@ -14,7 +14,7 @@ class Zaakinformatieobjecten extends ResourceCollection
 {
     public function resolveRelatedResourceCollection(Entity $entity): Collection
     {
-        $statussenEndpoint = resolve('api.client')->zaakinformatieobjecten();
+        $statussenEndpoint = resolve($this->clientName)->zaakinformatieobjecten();
 
         $filter = new ZaakinformatieobjectenFilter();
 

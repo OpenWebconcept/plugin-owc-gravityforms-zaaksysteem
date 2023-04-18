@@ -15,7 +15,7 @@ class StatustypenEndpoint extends Endpoint
 
     public function all(): PagedCollection
     {
-        $response = $this->client->get(
+        $response = $this->httpClient->get(
             $this->buildUri($this->endpoint),
             $this->buildRequestOptions()
         );
@@ -25,7 +25,7 @@ class StatustypenEndpoint extends Endpoint
 
     public function get(string $identifier): ?Statustype
     {
-        $response = $this->client->get(
+        $response = $this->httpClient->get(
             $this->buildUri($this->endpoint . '/' . $identifier),
             $this->buildRequestOptions()
         );
@@ -35,7 +35,7 @@ class StatustypenEndpoint extends Endpoint
 
     public function filter(Filter\StatustypenFilter $filter): PagedCollection
     {
-        $response = $this->client->get(
+        $response = $this->httpClient->get(
             $this->buildUri($this->endpoint, $filter),
             $this->buildRequestOptions($filter)
         );

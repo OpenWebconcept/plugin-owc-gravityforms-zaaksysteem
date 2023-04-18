@@ -16,6 +16,9 @@ use OWC\Zaaksysteem\Http\Authentication\TokenAuthenticator;
 
 class OpenZaakClient extends Client
 {
+    public const CLIENT_NAME = 'openzaak';
+    public const CALLABLE_NAME = 'oz.client';
+
     public const AVAILABLE_ENDPOINTS = [
         // Zaken API
         'zaken'                     => ZakenEndpoint::class,

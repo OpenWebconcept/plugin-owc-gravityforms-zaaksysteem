@@ -12,6 +12,6 @@ class Statustype extends Resource
 {
     protected function resolveResource(string $uuid): ?StatustypeEntity
     {
-        return resolve('api.client')->statustypen()->get($uuid);
+        return resolve($this->clientName)->statustypen()->get($uuid);
     }
 }

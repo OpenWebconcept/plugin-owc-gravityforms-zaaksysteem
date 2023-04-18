@@ -10,6 +10,8 @@ use OWC\Zaaksysteem\Http\Authentication\TokenAuthenticator;
 
 abstract class Client
 {
+    public const CLIENT_NAME = 'abstract';
+    public const CALLABLE_NAME = 'ab.client';
     public const AVAILABLE_ENDPOINTS = [];
 
     protected array $container = [];
@@ -32,6 +34,16 @@ abstract class Client
         throw new \BadMethodCallException("Unknown method {$name}");
     }
 
+    public function getRequestClient(): RequestClientInterface
+    {
+        return $this->client;
+    }
+
+    public function getAuthenticator(): TokenAuthenticator
+    {
+        return $this->authenticator;
+    }
+
     public function supports(string $endpoint): bool
     {
         return isset(static::AVAILABLE_ENDPOINTS[$endpoint]);
@@ -41,7 +53,7 @@ abstract class Client
     {
         if (! isset($this->container[$key]) || empty($this->container[$key])) {
             $class = static::AVAILABLE_ENDPOINTS[$key]; // Missing isset check
-            $endpoint = new $class($this->client, $this->authenticator);
+            $endpoint = new $class($this);
             $this->container[$key] = $endpoint;
         }
 

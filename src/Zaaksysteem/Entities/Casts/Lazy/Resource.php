@@ -6,9 +6,9 @@ namespace OWC\Zaaksysteem\Entities\Casts\Lazy;
 
 use InvalidArgumentException;
 use OWC\Zaaksysteem\Entities\Entity;
-use OWC\Zaaksysteem\Entities\Casts\CastsAttributes;
+use OWC\Zaaksysteem\Entities\Casts\AbstractCast;
 
-abstract class Resource implements CastsAttributes
+abstract class Resource extends AbstractCast
 {
     public function set(Entity $model, string $key, $value)
     {

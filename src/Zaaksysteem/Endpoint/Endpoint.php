@@ -2,6 +2,7 @@
 
 namespace OWC\Zaaksysteem\Endpoint;
 
+use OWC\Zaaksysteem\Client\Client;
 use OWC\Zaaksysteem\Http\PageMeta;
 use OWC\Zaaksysteem\Http\Response;
 use OWC\Zaaksysteem\Entities\Entity;
@@ -14,7 +15,8 @@ use OWC\Zaaksysteem\Http\Authentication\TokenAuthenticator;
 
 abstract class Endpoint
 {
-    protected RequestClientInterface $client;
+    protected Client $client;
+    protected RequestClientInterface $httpClient;
     protected TokenAuthenticator $authenticator;
     protected Stack $responseHandlers;
 
@@ -23,10 +25,11 @@ abstract class Endpoint
     protected string $endpoint = 'endpoint';
     protected string $entityClass = Entity::class;
 
-    public function __construct(RequestClientInterface $client, TokenAuthenticator $authenticator)
+    public function __construct(Client $client)
     {
         $this->client = $client;
-        $this->authenticator = $authenticator;
+        $this->httpClient = $client->getRequestClient();
+        $this->authenticator = $client->getAuthenticator();
         $this->responseHandlers = Stack::create();
     }
 
@@ -61,7 +64,7 @@ abstract class Endpoint
 
     public function getSingleEntity(Response $response): Entity
     {
-        return new $this->entityClass($response->getParsedJson());
+        return $this->buildEntity($response->getParsedJson());
     }
 
     protected function getPagedCollection(Response $response): PagedCollection
@@ -85,7 +88,14 @@ abstract class Endpoint
     protected function mapEntities(array $data): array
     {
         return array_map(function ($item) {
-            return new $this->entityClass($item);
+            return $this->buildEntity($item);
         }, $data);
+    }
+
+    protected function buildEntity($data): Entity
+    {
+        $class = $this->entityClass;
+
+        return new $class($data, $this->client::CALLABLE_NAME);
     }
 }

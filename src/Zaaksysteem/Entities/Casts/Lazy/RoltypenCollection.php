@@ -12,6 +12,6 @@ class RoltypenCollection extends ResourceCollection
 {
     protected function resolveResource(string $uuid): ?Roltype
     {
-        return resolve('api.client')->roltypen()->get($uuid);
+        return resolve($this->clientName)->roltypen()->get($uuid);
     }
 }

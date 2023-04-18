@@ -13,8 +13,9 @@ class NullableDate extends AbstractCast
 {
     protected string $format;
 
-    public function __construct(string $format = 'Y-m-d')
+    public function __construct(string $clientName, string $format = 'Y-m-d')
     {
+        parent::__construct($clientName);
         $this->format = $format;
     }
 

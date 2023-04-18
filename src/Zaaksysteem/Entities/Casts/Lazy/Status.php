@@ -12,6 +12,6 @@ class Status extends Resource
 {
     protected function resolveResource(string $uuid): ?StatusEntity
     {
-        return resolve('api.client')->statussen()->get($uuid);
+        return resolve($this->clientName)->statussen()->get($uuid);
     }
 }

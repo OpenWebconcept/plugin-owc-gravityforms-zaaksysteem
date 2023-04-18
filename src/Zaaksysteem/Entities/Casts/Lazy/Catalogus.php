@@ -12,6 +12,6 @@ class Catalogus extends Resource
 {
     protected function resolveResource(string $uuid): ?CatalogusEntity
     {
-        return resolve('api.client')->catalogussen()->get($uuid);
+        return resolve($this->clientName)->catalogussen()->get($uuid);
     }
 }

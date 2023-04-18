@@ -12,6 +12,6 @@ class InformatieobjecttypenCollection extends ResourceCollection
 {
     protected function resolveResource(string $uuid): ?Informatieobjecttype
     {
-        return resolve('api.client')->informatieobjecttypen()->get($uuid);
+        return resolve($this->clientName)->informatieobjecttypen()->get($uuid);
     }
 }

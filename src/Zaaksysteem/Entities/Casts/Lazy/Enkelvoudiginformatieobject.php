@@ -12,6 +12,6 @@ class Enkelvoudiginformatieobject extends Resource
 {
     protected function resolveResource(string $uuid): ?EnkelvoudiginformatieobjectEntity
     {
-        return resolve('api.client')->enkelvoudiginformatieobjecten()->get($uuid);
+        return resolve($this->clientName)->enkelvoudiginformatieobjecten()->get($uuid);
     }
 }

@@ -12,6 +12,6 @@ class Roltype extends Resource
 {
     protected function resolveResource(string $uuid): ?RoltypeEntity
     {
-        return resolve('api.client')->roltypen()->get($uuid);
+        return resolve($this->clientName)->roltypen()->get($uuid);
     }
 }

@@ -13,6 +13,9 @@ use OWC\Zaaksysteem\Http\Authentication\TokenAuthenticator;
 
 class DecosJoinClient extends Client
 {
+    public const CLIENT_NAME = 'decosjoin';
+    public const CALLABLE_NAME = 'dj.client';
+
     public const AVAILABLE_ENDPOINTS = [
         'zaken'         => ZakenEndpoint::class,
         'zaaktypen'     => ZaaktypenEndpoint::class,
