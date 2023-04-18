@@ -68,10 +68,7 @@ class DependencyChecker
     public function notify()
     {
         add_action('admin_notices', function () {
-            $list = '<p>' . __(
-                'The following plugins are required for the usage of the the Yard | OpenZaak plugin:',
-                config('core.text_domain'),
-            ) . '</p><ol>';
+            $list = '<p>' . sprintf(esc_html__('The following plugins are required for the usage of the %1$s plugin:', config('core.text_domain')), OWC_GZ_NAME) . '</p><ol>';
 
             foreach ($this->failed as $dependency) {
                 $info = isset($dependency['message']) ? ' (' . $dependency['message'] . ')' : '';
