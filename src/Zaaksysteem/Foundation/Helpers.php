@@ -38,7 +38,7 @@ function encrypt($string): string
         $encrypted = '';
     }
 
-    return $encrypted;
+    return (string) $encrypted;
 }
 
 /**
@@ -52,7 +52,7 @@ function decrypt($string): string
         $decrypted = '';
     }
 
-    return $decrypted;
+    return (string) $decrypted;
 }
 
 /**
