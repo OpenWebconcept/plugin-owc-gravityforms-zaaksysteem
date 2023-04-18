@@ -18,9 +18,11 @@ abstract class Entity implements
 
     protected array $data;
     protected array $casts = [];
+    protected string $clientName;
 
-    public function __construct(array $itemData = [])
+    public function __construct(array $itemData = [], string $clientName)
     {
+        $this->clientName = $clientName;
         $this->hydrate($itemData);
     }
 
@@ -81,6 +83,11 @@ abstract class Entity implements
     public function toJson(int $flags = 0, int $depth = 512): string
     {
         return json_encode($this, $flags, $depth);
+    }
+
+    public function getClientName(): string
+    {
+        return $this->clientName;
     }
 
     protected function serializeAttribute(string $name)

@@ -12,6 +12,6 @@ class StatustypenCollection extends ResourceCollection
 {
     protected function resolveResource(string $uuid): ?Statustype
     {
-        return resolve('api.client')->statustypen()->get($uuid);
+        return resolve($this->clientName)->statustypen()->get($uuid);
     }
 }

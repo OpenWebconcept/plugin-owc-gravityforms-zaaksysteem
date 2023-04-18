@@ -15,7 +15,7 @@ class ZakenEndpoint extends Endpoint
 
     public function all(): PagedCollection
     {
-        $response = $this->client->get(
+        $response = $this->httpClient->get(
             $this->buildUri($this->endpoint),
             $this->buildRequestOptions()
         );
@@ -25,7 +25,7 @@ class ZakenEndpoint extends Endpoint
 
     public function get(string $identifier): ?Zaak
     {
-        $response = $this->client->get(
+        $response = $this->httpClient->get(
             $this->buildUri($this->endpoint . '/' . $identifier),
             $this->buildRequestOptions()
         );
@@ -35,7 +35,7 @@ class ZakenEndpoint extends Endpoint
 
     public function filter(Filter\ZakenFilter $filter): PagedCollection
     {
-        $response = $this->client->get(
+        $response = $this->httpClient->get(
             $this->buildUri($this->endpoint, $filter),
             $this->buildRequestOptions($filter)
         );
@@ -57,7 +57,7 @@ class ZakenEndpoint extends Endpoint
          * - laatsteBetaaldatum > NOW
          */
 
-        $response = $this->client->post(
+        $response = $this->httpClient->post(
             $this->buildUri($this->endpoint),
             $model->toJson(),
             $this->buildRequestOptions()

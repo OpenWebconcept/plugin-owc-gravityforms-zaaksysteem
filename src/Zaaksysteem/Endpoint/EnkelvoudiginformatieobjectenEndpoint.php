@@ -14,7 +14,7 @@ class EnkelvoudiginformatieobjectenEndpoint extends Endpoint
 
     public function get(string $identifier): ?Enkelvoudiginformatieobject
     {
-        $response = $this->client->get(
+        $response = $this->httpClient->get(
             $this->buildUri($this->endpoint . '/' . $identifier),
             $this->buildRequestOptions()
         );
@@ -28,7 +28,7 @@ class EnkelvoudiginformatieobjectenEndpoint extends Endpoint
      */
     public function download(string $identifier)
     {
-        $response = $this->client->get(
+        $response = $this->httpClient->get(
             $this->buildUri($this->endpoint . '/' . $identifier . '/download'),
             $this->buildRequestOptions()
         );

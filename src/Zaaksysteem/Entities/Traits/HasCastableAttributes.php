@@ -36,11 +36,11 @@ trait HasCastableAttributes
         $caster = $this->casts[$name];
 
         if (strpos($caster, ':') === false) {
-            return new $caster();
+            return new $caster($this->clientName);
         }
 
         [$class, $constructorArg] = explode(':', $caster);
 
-        return new $class($constructorArg);
+        return new $class($this->clientName, $constructorArg);
     }
 }

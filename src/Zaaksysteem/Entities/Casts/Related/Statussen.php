@@ -14,7 +14,7 @@ class Statussen extends ResourceCollection
 {
     public function resolveRelatedResourceCollection(Entity $entity): Collection
     {
-        $statussenEndpoint = resolve('api.client')->statussen();
+        $statussenEndpoint = resolve($this->clientName)->statussen();
 
         $filter = new StatussenFilter();
 

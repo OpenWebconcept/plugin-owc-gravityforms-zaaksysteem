@@ -12,6 +12,6 @@ class Resultaat extends Resource
 {
     protected function resolveResource(string $uuid): ?ResultaatEntity
     {
-        return resolve('api.client')->resultaten()->get($uuid);
+        return resolve($this->clientName)->resultaten()->get($uuid);
     }
 }
