@@ -6,6 +6,7 @@ namespace OWC\Zaaksysteem\Entities\Casts;
 
 use InvalidArgumentException;
 use OWC\Zaaksysteem\Entities\Entity;
+use OWC\Zaaksysteem\Entities\Attributes\EnumAttribute;
 use OWC\Zaaksysteem\Entities\Attributes\Confidentiality as ConfidentialityAttribute;
 
 class Confidentiality extends AbstractCast
@@ -22,5 +23,10 @@ class Confidentiality extends AbstractCast
     public function get(Entity $model, string $key, $value): ?ConfidentialityAttribute
     {
         return new ConfidentialityAttribute($value);
+    }
+
+    public function serialize(string $name, $value)
+    {
+        return (is_object($value) && $value instanceof EnumAttribute) ? $value->get() : $value;
     }
 }
