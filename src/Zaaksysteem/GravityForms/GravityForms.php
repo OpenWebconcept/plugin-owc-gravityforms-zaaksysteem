@@ -4,23 +4,29 @@ declare(strict_types=1);
 
 namespace OWC\Zaaksysteem\GravityForms;
 
+use OWC\Zaaksysteem\Repositories\AbstractRepository;
+
+use function OWC\Zaaksysteem\Foundation\Helpers\config;
 use function OWC\Zaaksysteem\Foundation\Helpers\get_supplier;
 use function OWC\Zaaksysteem\Foundation\Helpers\view;
-use OWC\Zaaksysteem\Repositories\AbstractRepository;
 
 class GravityForms
 {
     protected string $supplier;
-    
+
     protected function setSupplier(array $form)
     {
         $this->supplier = get_supplier($form);
     }
 
+    /**
+     * Handle what happens after submitting the form.
+     */
     public function afterSubmission(array $entry, array $form)
     {
         $this->setSupplier($form);
-        
+
+        // if there is no supplier set just return the form.
         if (empty($this->supplier)) {
             return $form;
         }
@@ -49,18 +55,21 @@ class GravityForms
         return $this->$handle($entry, $form);
     }
 
-    protected function handleOpenZaak(array $entry, array $form): array
+    protected function handleOpenZaak(array $entry, $form): array
     {
+
         try {
             $instance = $this->getCreateRepository();
         } catch(\Exception $e) {
             return [];
         }
 
-        $args = $this->handleArgs($instance, $form['fields'], $entry);
+        $identifier = $form['owc-gravityforms-zaaksysteem-form-setting-openzaak-identifier'];
+
+        $args = $this->handleArgs($instance, $identifier, $form['fields'], $entry);
 
         $result = $instance->createOpenZaak($args);
-        $instance->createSubmitter($result['url'], rgar($entry, '1.1'));
+        $instance->createSubmitter($result['url'], \rgar($entry, '1.1'));
 
         return $result;
     }
@@ -109,14 +118,18 @@ class GravityForms
         return new $createRepository();
     }
 
-    protected function handleArgs(AbstractRepository $instance, array $fields, array $entry)
+    protected function handleArgs(AbstractRepository $instance, string $identifier, array $fields, array $entry)
     {
+        if (empty(GravityFormsSettings::make()->get('-rsin'))) {
+            throw new \Exception(esc_html__('RSIN should not be empty in the Gravity Forms Settings', config('core.text_domain')));
+        }
+
         $args = [
-            'bronorganisatie' => GravityFormsSettings::make()->get('-rsin'),
-            'verantwoordelijkeOrganisatie' => GravityFormsSettings::make()->get('-rsin'),
-            'zaaktype' => '',
+            'bronorganisatie' => GravityFormsSettings::make()->get('-rsin') ?? '',
+            'verantwoordelijkeOrganisatie' => GravityFormsSettings::make()->get('-rsin') ?? '',
+            'zaaktype' => $identifier ?? '',
             'registratiedatum' => date('Y-m-d'),
-            'startdatum' => '',
+            'startdatum' => date('Y-m-d'),
             'omschrijving' => '',
             'informatieobject' => ''
         ];

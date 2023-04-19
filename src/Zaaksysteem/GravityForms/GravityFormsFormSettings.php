@@ -23,7 +23,7 @@ class GravityFormsFormSettings
                 $collect[] = [
                     'name' => $result['identificatie'],
                     'label' => "{$result['omschrijving']} ({$result['identificatie']})",
-                    'value' => $result['identificatie']
+                    'value' => $result['url']
                 ];
             }
 
