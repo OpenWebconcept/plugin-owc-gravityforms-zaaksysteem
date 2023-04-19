@@ -45,6 +45,7 @@ class Zaak extends Entity
 
         'statussen' => Casts\Related\Statussen::class,
         'zaakinformatieobjecten' => Casts\Related\Zaakinformatieobjecten::class,
+        'rollen'    => Casts\Related\Rollen::class,
     ];
 
     public function title(): string
