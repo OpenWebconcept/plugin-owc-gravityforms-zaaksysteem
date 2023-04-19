@@ -60,7 +60,7 @@ registerBlockType('owc/mijn-zaken', {
         <Fragment key={index}>
           <TextControl
             className="ogz-ztfilter_add"
-            placeholder="https://zaaksysteem.nl/catalogi/api/v1/zaaktypen/uri"
+            placeholder="B1026"
             value={zaaktypeFilterArr[index]}
             onChange={(ztUri) => changeZTFilter(ztUri, index)}
           />
@@ -95,7 +95,7 @@ registerBlockType('owc/mijn-zaken', {
               {zaaktypeFields}
 
               <Button isDefault icon="plus" onClick={addZTFilter.bind(this)}>
-                Voeg een Zaaktype URI toe
+                Voeg een Zaaktype identifier toe
               </Button>
             </PanelBody>
           </Panel>

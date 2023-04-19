@@ -44,20 +44,14 @@ class MijnZakenProvider extends ServiceProvider
         $filter = new ZakenFilter();
         $filter->byBsn($currentBsn);
 
-        $zaaktypeUris = $this->getFilterableZaaktypeUris($attributes);
-
-        // If there's one zaaktype URIs we can add it to the query.
-        if (count($zaaktypeUris) === 1) {
-            $filter->add('zaaktype', reset($zaaktypeUris));
-        }
-
         $zaken = $client->zaken()->filter($filter);
 
-        // If there were multiple zaaktype URIs, we have to do some
-        // post-processing and filter them out from the collection.
-        if (count($zaaktypeUris) > 1) {
-            $zaken = $zaken->filter(function (Zaak $zaak) use ($zaaktypeUris) {
-                return in_array($zaak->getAttributeValue('zaaktype'), $zaaktypeUris);
+        // Filter down the list of zaken by checking if the linked Zaaktype
+        // has an identifier that is within a set of allowable identifiers.
+        $zaaktypeIdentifiers = $this->getFilterableZaaktypeIdentifiers($attributes);
+        if (! empty($zaaktypeIdentifiers)) {
+            $zaken = $zaken->filter(function (Zaak $zaak) use ($zaaktypeIdentifiers) {
+                return in_array($zaak->zaaktype->identificatie, $zaaktypeIdentifiers);
             });
         }
 
@@ -87,13 +81,11 @@ class MijnZakenProvider extends ServiceProvider
         }
     }
 
-    protected function getFilterableZaaktypeUris(array $attributes): array
+    protected function getFilterableZaaktypeIdentifiers(array $attributes): array
     {
         $uris = json_decode($attributes['zaaktypeFilter'] ?? '', true);
 
-        return array_filter((array) $uris, function ($uri) {
-            return filter_var($uri, FILTER_VALIDATE_URL);
-        });
+        return array_filter((array) $uris);
     }
 
     /**
