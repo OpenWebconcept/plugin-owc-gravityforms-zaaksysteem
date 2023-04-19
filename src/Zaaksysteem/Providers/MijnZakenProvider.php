@@ -40,8 +40,9 @@ class MijnZakenProvider extends ServiceProvider
             return 'Het Mijn Zaken overzicht is niet beschikbaar.';
         }
 
+        $currentBsn = $this->resolveCurrentBsn();
         $filter = new ZakenFilter();
-        $filter->byBsn($this->resolveCurrentBsn());
+        $filter->byBsn($currentBsn);
 
         $zaaktypeUris = $this->getFilterableZaaktypeUris($attributes);
 
@@ -60,6 +61,12 @@ class MijnZakenProvider extends ServiceProvider
             });
         }
 
+        // Make sure we display zaken that are initiated by the current user,
+        // as opposed to zaken about the current user. We'll do this after
+        // filtering zaaktypes as this action initiates an additional HTTP request.
+        $zaken = $zaken->filter(function (Zaak $zaak) use ($currentBsn) {
+            return $zaak->isInitiatedBy($currentBsn);
+        });
         if ($zaken->isEmpty()) {
             return 'Er zijn op dit moment geen zaken beschikbaar.';
         }

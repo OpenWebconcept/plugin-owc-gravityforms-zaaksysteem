@@ -24,4 +24,9 @@ class Rol extends Entity
          */
         // 'betrokkeneIdentificatie' => SomeClass::class,
     ];
+
+    public function isInitiator(): bool
+    {
+        return $this->omschrijvingGeneriek === 'initiator';
+    }
 }
