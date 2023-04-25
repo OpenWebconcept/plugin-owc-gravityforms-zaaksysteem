@@ -18,6 +18,8 @@ It's possible that it is required to isolate the code of the 'zaken' by provider
 
 ## Enable-u
 
+- Addiitonal check if GF PDF plugin is installed.
+- Refactor! Take a look at duplicate code in CreateZaakRepository -> PDF form submission
 - Add BSN to request
 - Add logging when errors occure.
 

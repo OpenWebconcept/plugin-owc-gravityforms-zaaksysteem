@@ -25,7 +25,11 @@ trait InformationObject
     public function getContentLength(string $url): string
     {
         $headers = $this->getHeaders($url);
-        $contentLength = $headers['Content-Length'] ?? '0';
+        $contentLength = $headers['Content-Length'] ?? '';
+
+        if (is_array($contentLength) && ! empty($contentLength[0])) {
+            return $contentLength[0];
+        }
 
         return $contentLength ?: '';
     }
@@ -33,9 +37,13 @@ trait InformationObject
     public function getContentType(string $url): string
     {
         $headers = $this->getHeaders($url);
-        $contentLength = $headers['Content-Type'] ?? '0';
+        $contentType = $headers['Content-Type'] ?? '';
 
-        return $contentLength ?: '';
+        if (is_array($contentType) && ! empty($contentType[0])) {
+            return $contentType[0];
+        }
+
+        return $contentType ?: '';
     }
 
     protected function getHeaders(string $url): array

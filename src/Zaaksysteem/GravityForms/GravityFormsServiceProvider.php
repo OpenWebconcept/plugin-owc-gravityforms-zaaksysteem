@@ -16,7 +16,6 @@ class GravityFormsServiceProvider extends ServiceProvider
         $this->loadHooks();
         $this->registerSettingsAddon();
     }
-
     protected function loadHooks(): void
     {
         if (! class_exists('GFForms')) {

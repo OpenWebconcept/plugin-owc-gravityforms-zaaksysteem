@@ -98,6 +98,12 @@ class GravityForms
 
         $zaakResult = $instance->createOpenZaak($args);
 
+        if (! $zaakResult) {
+            return [];
+        }
+
+        $pdf = $instance->addFormSubmissionPDF($zaakResult, $entry, $form, $args);
+
         if ($this->hasInformationObject) {
             $informationObjectResult = $instance->addInformationObjectToZaak($args);
             $connectionResult = $instance->connectZaakToInformationObject($zaakResult, $informationObjectResult);

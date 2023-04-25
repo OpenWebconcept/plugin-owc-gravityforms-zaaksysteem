@@ -4,7 +4,7 @@ namespace OWC\Zaaksysteem\Repositories;
 
 abstract class AbstractRepository
 {
-    public function request(string $url = '', string $method = 'GET', array $args = []): array
+    public function request(string $url = '', string $method = 'GET', array $args = [], $test = ''): array
     {
         if (empty($url)) {
             return [];
@@ -15,6 +15,10 @@ abstract class AbstractRepository
         $request = \wp_remote_request($url, $this->getRequestArgs($method, $args));
         $httpSuccessCodes = [200, 201];
 
+        // if($test === 'hoi') {
+        //     echo(json_decode($request['body'], true)['detail']);
+        //     die;
+        // }
         if (\is_wp_error($request) || ! in_array($request['response']['code'], $httpSuccessCodes)) {
             return [];
         }
