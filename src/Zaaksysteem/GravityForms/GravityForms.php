@@ -6,7 +6,6 @@ namespace OWC\Zaaksysteem\GravityForms;
 
 use function OWC\Zaaksysteem\Foundation\Helpers\get_supplier;
 use function OWC\Zaaksysteem\Foundation\Helpers\view;
-use OWC\Zaaksysteem\Repositories\AbstractRepository;
 
 class GravityForms
 {
@@ -53,88 +52,44 @@ class GravityForms
     protected function handleOpenZaak(array $entry, array $form): array
     {
         try {
-            $instance = $this->getCreateRepository();
+            $controller = $this->getSupplierController();
         } catch(\Exception $e) {
             return [];
         }
 
-        $args = $this->handleArgs($instance, $form['fields'], $entry);
-
-        $result = $instance->createOpenZaak($args);
-        $instance->createSubmitter($result['url'], rgar($entry, '1.1'));
-
-        return $result;
+        return (new $controller($form, $entry))->handle();
     }
 
     protected function handleDecosJoin(array $entry, array $form): array
     {
         try {
-            $instance = $this->getCreateRepository();
+            $controller = $this->getSupplierController();
         } catch(\Exception $e) {
             return [];
         }
 
-        $args = $this->handleArgs($instance, $form['fields'], $entry);
-
-        $result = $instance->createOpenZaak($args);
-        $instance->createSubmitter($result['url'], rgar($entry, '1.1'));
-
-        return $result;
+        return (new $controller($form, $entry))->handle();
     }
 
     protected function handleEnableU(array $entry, array $form): array
     {
         try {
-            $instance = $this->getCreateRepository();
+            $controller = $this->getSupplierController();
         } catch(\Exception $e) {
             return [];
         }
 
-        $args = $this->handleArgs($instance, $form['fields'], $entry);
-
-        if (! empty($args['informatieobject'])) {
-            $this->hasInformationObject = true;
-        }
-
-        $zaakResult = $instance->createOpenZaak($args);
-
-        if (! $zaakResult) {
-            return [];
-        }
-
-        $pdf = $instance->addFormSubmissionPDF($zaakResult, $entry, $form, $args);
-
-        if ($this->hasInformationObject) {
-            $informationObjectResult = $instance->addInformationObjectToZaak($args);
-            $connectionResult = $instance->connectZaakToInformationObject($zaakResult, $informationObjectResult);
-        }
-
-        return isset($connectionResult) ? $connectionResult : $zaakResult;
+        return (new $controller($form, $entry))->handle();
     }
 
-    protected function getCreateRepository(): object
+    protected function getSupplierController(): string
     {
-        $createRepository = sprintf('OWC\Zaaksysteem\Repositories\%s\CreateZaakRepository', $this->supplier);
+        $controller = sprintf('OWC\Zaaksysteem\Controllers\%sController', $this->supplier);
 
-        if (! class_exists($createRepository)) {
-            throw new \Exception(sprintf('Class %s does not exists', $createRepository));
+        if (! class_exists($controller)) {
+            throw new \Exception(sprintf('Class %s does not exists', $controller));
         }
 
-        return new $createRepository();
-    }
-
-    protected function handleArgs(AbstractRepository $instance, array $fields, array $entry)
-    {
-        $args = [
-            'bronorganisatie' => GravityFormsSettings::make()->get('-rsin'),
-            'verantwoordelijkeOrganisatie' => GravityFormsSettings::make()->get('-rsin'),
-            'zaaktype' => '',
-            'registratiedatum' => date('Y-m-d'),
-            'startdatum' => '',
-            'omschrijving' => '',
-            'informatieobject' => ''
-        ];
-
-        return $instance->mapArgs($args, $fields, $entry);
+        return $controller;
     }
 }

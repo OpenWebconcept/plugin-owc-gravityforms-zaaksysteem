@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace OWC\Zaaksysteem\Repositories\EnableU;
 
+use function OWC\Zaaksysteem\Foundation\Helpers\decrypt;
+use OWC\PrefillGravityForms\GravityForms\GravityFormsSettings;
+use OWC\Zaaksysteem\Repositories\EnableU\Classes\InformationObjectHelper;
+use OWC\Zaaksysteem\Repositories\EnableU\Classes\PDFHelper;
 use OWC\Zaaksysteem\Traits\InformationObject;
 
 class CreateZaakRepository extends BaseRepository
@@ -11,12 +15,18 @@ class CreateZaakRepository extends BaseRepository
     use InformationObject;
 
     protected string $zakenURI = 'zaken/api/v1/zaken';
+    protected string $zakenRolURI = 'zaken/api/v1/rollen';
     protected string $informationObjectsURI = 'documenten/api/v1/enkelvoudiginformatieobjecten';
     protected string $zaakConnectioninformationObject = 'documenten/api/v1/zaakinformatieobjecten';
+    protected InformationObjectHelper $informationObjectHelper;
+    protected PDFHelper $pdfHelper;
 
     public function __construct()
     {
         parent::__construct();
+
+        $this->pdfHelper = new PDFHelper;
+        $this->informationObjectHelper = new InformationObjectHelper;
     }
 
     public function createOpenZaak(array $args = []): array
@@ -28,171 +38,100 @@ class CreateZaakRepository extends BaseRepository
         return $this->request($this->makeURL($this->zakenURI), 'POST', $args);
     }
 
-    public function addFormSubmissionPDF(array $zaak, array $entry, array $form, $args): array
+    /**
+     * Add a submitter to a `zaak`.
+     * RolTypes needs to be fetched from external source, this part is not implemented yet by the supplier.
+     */
+    public function createSubmitter(string $zaakUrl, string $bsn): array
     {
-        $pdfFormSettingID = $this->pdfFormSettingID($entry, $form);
+        if (empty($zaakUrl) || empty($bsn)) {
+            return [];
+        }
+
+        $personConcernedURL = $this->createPersonConcernedURL(decrypt($bsn));
+
+        if (empty($personConcernedURL)) {
+            return [];
+        }
+
+        $data = [
+            'zaak' => $zaakUrl,
+            'betrokkene' => $personConcernedURL,
+            'betrokkeneType' => 'natuurlijk_persoon',
+            'roltype' => 'https://digikoppeling-test.gemeentehw.nl/opentunnel/00000001825766096000/openzaak/zaakdms/catalogi/api/v1/roltypen/b8000219-345f-4b3a-9378-d999c689e216',
+            'roltoelichting' => 'De indiener van de zaak.',
+            'omschrijving' => 'indiener',
+            'omschrijvingGeneriek' => 'indiener',
+            'registratiedatum' => date('Y-m-d') // Possibly change format to '2023-04-19T09:56:58.277634Z'
+        ];
+
+        return $this->request($this->makeURL($this->zakenRolURI), 'POST', $data);
+    }
+
+    /**
+     * Create person concerned URL based on BSN.
+     * Base URL is retrieved by the prefill plugin.
+     */
+    protected function createPersonConcernedURL(string $bsn): string
+    {
+        // Below is a default value, needs to be removed when in production.
+        if (! class_exists('OWC\PrefillGravityForms\GravityForms\GravityFormsSettings')) {
+            return sprintf('https://digikoppeling.overheidsservicebus.com/opentunnel/00000001825766096000/acc/yard-key2dds/brp/ingeschrevenpersonen/%s', $bsn);
+        }
+
+        $settings = \OWC\PrefillGravityForms\GravityForms\GravityFormsSettings::make();
+
+        if (empty($settings->getBaseURL())) {
+            return '';
+        }
+
+        return sprintf('%s/%s', $settings->getBaseURL(), $bsn);
+    }
+
+    /**
+     * Get the generated PDF and send to the supplier as an information object.
+     * Finally connect this object to the 'zaak'.
+     */
+    public function addFormSubmissionPDF(array $zaak, array $form, array $entry, $args): array
+    {
+        if(! class_exists('GPDFAPI')) {
+            return [];
+        }
+        
+        $pdfFormSettingID = $this->pdfHelper->pdfFormSettingID($entry, $form);
 
         if (empty($pdfFormSettingID)) {
             return [];
         }
         
-        $pdfURL = $this->pdfURL($entry, $pdfFormSettingID);
+        $pdfURL = $this->pdfHelper->pdfURL($entry, $pdfFormSettingID);
 
         if (empty($pdfURL)) {
             return [];
         }
 
         // Enable the public access setting so the args can be prepared.
-        $this->updatePublicAccessPDF($form, $pdfFormSettingID, 'enable');
+        $this->pdfHelper->updatePublicAccessSettingPDF($form, $pdfFormSettingID, 'enable');
 
-        $args = $this->getPreservedInformationObjectArgs($args);
-        $newArgs = $this->prepareFormSubmissionArgsPDF($this->createFileName($zaak, $form), $pdfURL);
+        $args = $this->informationObjectHelper->getPreservedInformationObjectArgs($args);
+        $newArgs = $this->pdfHelper->prepareFormSubmissionArgsPDF($this->pdfHelper->createFileName($zaak, $form), $pdfURL);
 
         $args = array_merge($args, $newArgs);
         unset($args['informatieobject']);
         
         // Disable the public access setting again so the PDF stays protected.
-        $this->updatePublicAccessPDF($form, $pdfFormSettingID);
+        $this->pdfHelper->updatePublicAccessSettingPDF($form, $pdfFormSettingID);
 
         $informationObjectResult = $this->request($this->makeURL($this->informationObjectsURI), 'POST', $args);
 
         return $this->connectZaakToInformationObject($zaak, $informationObjectResult);
     }
 
-    protected function prepareFormSubmissionArgsPDF(string $fileName, string $pdfURL): array
-    {
-        $args = [];
-        $args['titel'] = $fileName;
-        $args['formaat'] = $this->getContentType($pdfURL);
-        $args['bestandsnaam'] = sprintf('%s.pdf', $fileName);
-        $args['bestandsomvang'] = (int) $this->getContentLength($pdfURL);
-        $args['inhoud'] = $this->informationObjectToBase64($pdfURL);
-        $args['vertrouwelijkheidaanduiding'] = 'vertrouwelijk';
-        $args['auteur'] = 'Yard';
-        $args['taal'] = 'dut';
-        $args['versie'] = 1;
-        $args['informatieobjecttype'] = 'https://digikoppeling-test.gemeentehw.nl/opentunnel/00000001825766096000/openzaak/zaakdms/catalogi/api/v1/informatieobjecttypen/3beec26e-e43f-4fd2-ba09-94d47316d877';
-            
-        return $args;
-    }
-
-    /**
-     * Get the first ID of the PDF settings configured per form.
-     * Maybe refactor this code to fetch the setting by the setting label.
-     */
-    protected function pdfFormSettingID(array $entry, array $form): string
-    {
-        if (empty($form['gfpdf_form_settings']) || ! is_array($form['gfpdf_form_settings'])) {
-            return '';
-        }
-
-        $pdfFormSettings = array_keys($form['gfpdf_form_settings']);
-
-        return $pdfFormSettings[0] ?? '';
-    }
-
-    /**
-     * Get the URL of the PDF that is generated after submitting the form.
-     */
-    protected function pdfURL(array $entry, string $pdfFormSettingID): string
-    {
-        if (empty($pdfFormSettingID)) {
-            return '';
-        }
-        
-        $pdfModel = \GPDFAPI::get_pdf_class('model');
-
-        if (\is_wp_error($pdfModel)) {
-            return '';
-        }
-        
-        return $pdfModel->get_pdf_url($pdfFormSettingID, $entry['id']);
-    }
-
-    protected function createFileName(array $zaak, array $form): string
-    {
-        $zaakUUID = $zaak['uuid'] ?? 'Z-23-151662';
-
-        return \sanitize_title(sprintf('%s-%s-form-%d', $zaakUUID, strtolower($form['title']), $form['id']));
-    }
-
-    /**
-     * This method enables and disables the 'public_access' setting.
-     * By default the generated PDF's are protected.
-     */
-    protected function updatePublicAccessPDF(array $form, string $pdfFormSettingID, string $access = ''): bool
-    {
-        $settings = \GPDFAPI::get_pdf($form['id'], $pdfFormSettingID);
-
-        if(! is_array($settings)) {
-            return false;
-        }
-
-        $settings['public_access'] = $access === 'enable' ? 'Yes' : '';
-
-        return \GPDFAPI::update_pdf($form['id'], $pdfFormSettingID, $settings);
-    }
-
     public function addInformationObjectToZaak(array $args = []): array
     {
-        $args = $this->prepareInformationObjectArgs($args);
+        $args = $this->informationObjectHelper->prepareInformationObjectArgs($args);
 
         return $this->request($this->makeURL($this->informationObjectsURI), 'POST', $args);
-    }
-
-    protected function prepareInformationObjectArgs(array $args)
-    {
-        $args = $this->getPreservedInformationObjectArgs($args);
-        $args = $this->handleInformationObjectArgs($args);
-
-        return $args;
-    }
-
-    /**
-     * Preserve some of the args which were used to create a 'Zaak'
-     */
-    protected function getPreservedInformationObjectArgs(array $args): array
-    {
-        $preparedArgs = [];
-
-        $keysToPreserve = [
-            'bronorganisatie',
-            'registratiedatum',
-            'informatieobject'
-        ];
-
-        foreach ($args as $key => $arg) {
-            if (! in_array($key, $keysToPreserve)) {
-                continue;
-            }
-
-            if ($key === 'registratiedatum') {
-                $key = 'creatiedatum';
-            }
-
-            $preparedArgs[$key] = $arg;
-        }
-
-        return $preparedArgs;
-    }
-
-    protected function handleInformationObjectArgs(array $args): array
-    {
-        $object = $args['informatieobject'];
-        unset($args['informatieobject']);
-
-        $args['titel'] = $this->getInformationObjectTitle($object);
-        $args['formaat'] = $this->getContentType($object);
-        $args['bestandsnaam'] = $this->getInformationObjectTitle($object);
-        $args['bestandsomvang'] = (int) $this->getContentLength($object);
-        $args['inhoud'] = $this->informationObjectToBase64($object);
-        $args['vertrouwelijkheidaanduiding'] = 'vertrouwelijk';
-        $args['auteur'] = 'Yard';
-        $args['taal'] = 'dut';
-        $args['versie'] = 1;
-        $args['informatieobjecttype'] = 'https://digikoppeling-test.gemeentehw.nl/opentunnel/00000001825766096000/openzaak/zaakdms/catalogi/api/v1/informatieobjecttypen/3beec26e-e43f-4fd2-ba09-94d47316d877';
-
-        return $args;
     }
 
     public function connectZaakToInformationObject(array $zaak, array $informationObject): array

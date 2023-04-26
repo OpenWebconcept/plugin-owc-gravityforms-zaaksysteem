@@ -4,7 +4,7 @@ namespace OWC\Zaaksysteem\Repositories;
 
 abstract class AbstractRepository
 {
-    public function request(string $url = '', string $method = 'GET', array $args = [], $test = ''): array
+    public function request(string $url = '', string $method = 'GET', array $args = []): array
     {
         if (empty($url)) {
             return [];
@@ -15,10 +15,6 @@ abstract class AbstractRepository
         $request = \wp_remote_request($url, $this->getRequestArgs($method, $args));
         $httpSuccessCodes = [200, 201];
 
-        // if($test === 'hoi') {
-        //     echo(json_decode($request['body'], true)['detail']);
-        //     die;
-        // }
         if (\is_wp_error($request) || ! in_array($request['response']['code'], $httpSuccessCodes)) {
             return [];
         }
@@ -51,31 +47,4 @@ abstract class AbstractRepository
     }
 
     abstract protected function getRequestArgs(string $method, array $args = []): array;
-
-    /**
-     * Add form field values to arguments required for creating a 'Zaak'.
-     * Mapping is done by the relation between arguments keys and form fields linkedFieldValueZGWs.
-     */
-    public function mapArgs(array $args, array $fields, array $entry): array
-    {
-        foreach ($fields as $field) {
-            if (empty($field->linkedFieldValueZGW) || ! isset($args[$field->linkedFieldValueZGW])) {
-                continue;
-            }
-
-            $property = rgar($entry, (string)$field->id);
-
-            if (empty($property)) {
-                continue;
-            }
-
-            if ($field->type === 'date') {
-                $property = (new \DateTime($property))->format('Y-m-d');
-            }
-
-            $args[$field->linkedFieldValueZGW] = $property;
-        }
-
-        return $args;
-    }
 }

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace OWC\Zaaksysteem\Repositories\EnableU;
 
-use function Yard\ConfigExpander\Foundation\Helpers\value;
 use OWC\Zaaksysteem\GravityForms\GravityFormsSettings;
 
 use OWC\Zaaksysteem\Repositories\AbstractRepository;
