@@ -16,6 +16,9 @@ class BaseRepository extends AbstractRepository
 
     protected string $clientSecret;
 
+    /**
+     * Construction of the base repository.
+     */
     public function __construct()
     {
         $this->baseURL = GravityFormsSettings::make()->get('-openzaak-url');

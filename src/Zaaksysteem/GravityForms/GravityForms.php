@@ -4,17 +4,30 @@ declare(strict_types=1);
 
 namespace OWC\Zaaksysteem\GravityForms;
 
-use OWC\Zaaksysteem\Repositories\AbstractRepository;
+use OWC\Zaaksysteem\Entities\Zaak;
+use OWC\Zaaksysteem\Foundation\Plugin;
 
-use function OWC\Zaaksysteem\Foundation\Helpers\config;
 use function OWC\Zaaksysteem\Foundation\Helpers\get_supplier;
 use function OWC\Zaaksysteem\Foundation\Helpers\view;
 
 class GravityForms
 {
+    /**
+     * Instance of the plugin.
+     */
+    protected Plugin $plugin;
+
     protected string $supplier;
 
-    protected function setSupplier(array $form)
+    public function __construct(Plugin $plugin)
+    {
+        $this->plugin = $plugin;
+    }
+
+    /**
+     * Get and set the selected Zaaksysteem supplier.
+     */
+    protected function setSupplier(array $form): void
     {
         $this->supplier = get_supplier($form);
     }
@@ -22,7 +35,7 @@ class GravityForms
     /**
      * Handle what happens after submitting the form.
      */
-    public function afterSubmission(array $entry, array $form)
+    public function GFFormSubmission(array $entry, array $form)
     {
         $this->setSupplier($form);
 
@@ -31,7 +44,7 @@ class GravityForms
             return $form;
         }
 
-        $result = $this->handleSupplier($entry, $form);
+        $result = $this->createZaak($entry, $form);
 
         if (empty($result)) {
             echo view('form-submission-failed.php');
@@ -42,98 +55,14 @@ class GravityForms
     }
 
     /**
-     * Compose method name based on supplier and execute.
+     * Create a new Zaak.
      */
-    protected function handleSupplier(array $entry, array $form): array
+    protected function createZaak(array $entry, array $form): ?Zaak
     {
-        $handle = sprintf('handle%s', $this->supplier);
+        $handle = $this->supplier;
+        $repository = sprintf('OWC\Zaaksysteem\Repositories\%s\ZaakRepository', $handle);
+        $instance = new $repository($this->plugin);
 
-        if (! method_exists($this, $handle)) {
-            return [];
-        }
-
-        return $this->$handle($entry, $form);
-    }
-
-    protected function handleOpenZaak(array $entry, $form): array
-    {
-
-        try {
-            $instance = $this->getCreateRepository();
-        } catch(\Exception $e) {
-            return [];
-        }
-
-        $identifier = $form['owc-gravityforms-zaaksysteem-form-setting-openzaak-identifier'];
-
-        $args = $this->handleArgs($instance, $identifier, $form['fields'], $entry);
-
-        $result = $instance->createOpenZaak($args);
-        $instance->createSubmitter($result['url'], \rgar($entry, '1.1'));
-
-        return $result;
-    }
-
-    protected function handleDecosJoin(array $entry, array $form): array
-    {
-        try {
-            $instance = $this->getCreateRepository();
-        } catch(\Exception $e) {
-            return [];
-        }
-
-        $args = $this->handleArgs($instance, $form['fields'], $entry);
-
-        $result = $instance->createOpenZaak($args);
-        $instance->createSubmitter($result['url'], rgar($entry, '1.1'));
-
-        return $result;
-    }
-
-    protected function handleEnableU(array $entry, array $form): array
-    {
-        try {
-            $instance = $this->getCreateRepository();
-        } catch(\Exception $e) {
-            return [];
-        }
-
-        $args = $this->handleArgs($instance, $form['fields'], $entry);
-
-        $zaakResult = $instance->createOpenZaak($args);
-        $informationObjectResult = $instance->addInformationObjectToZaak($args);
-        $connectionResult = $instance->connectZaakToInformationObject($zaakResult, $informationObjectResult);
-
-        return $connectionResult;
-    }
-
-    protected function getCreateRepository(): object
-    {
-        $createRepository = sprintf('OWC\Zaaksysteem\Repositories\%s\CreateZaakRepository', $this->supplier);
-
-        if (! class_exists($createRepository)) {
-            throw new \Exception(sprintf('Class %s does not exists', $createRepository));
-        }
-
-        return new $createRepository();
-    }
-
-    protected function handleArgs(AbstractRepository $instance, string $identifier, array $fields, array $entry)
-    {
-        if (empty(GravityFormsSettings::make()->get('-rsin'))) {
-            throw new \Exception(esc_html__('RSIN should not be empty in the Gravity Forms Settings', config('core.text_domain')));
-        }
-
-        $args = [
-            'bronorganisatie' => GravityFormsSettings::make()->get('-rsin') ?? '',
-            'verantwoordelijkeOrganisatie' => GravityFormsSettings::make()->get('-rsin') ?? '',
-            'zaaktype' => $identifier ?? '',
-            'registratiedatum' => date('Y-m-d'),
-            'startdatum' => date('Y-m-d'),
-            'omschrijving' => '',
-            'informatieobject' => ''
-        ];
-
-        return $instance->mapArgs($args, $fields, $entry);
+        return $instance->addZaak($entry, $form);
     }
 }

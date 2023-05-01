@@ -42,4 +42,15 @@ class RollenEndpoint extends Endpoint
 
         return $this->getPagedCollection($this->handleResponse($response));
     }
+
+    public function create(Rol $model): Rol
+    {
+        $response = $this->httpClient->post(
+            $this->buildUri($this->endpoint),
+            $model->toJson(),
+            $this->buildRequestOptions()
+        );
+
+        return $this->getSingleEntity($this->handleResponse($response));
+    }
 }

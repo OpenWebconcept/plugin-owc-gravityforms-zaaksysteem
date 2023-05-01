@@ -15,7 +15,7 @@ class GravityFormsFieldSettings
     {
         echo view('scriptSelect.php');
     }
-    
+
     /**
      * Add custom select to Gravity Form fields.
      * Used for mapping a field to a supplier setting.

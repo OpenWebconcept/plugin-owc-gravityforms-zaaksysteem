@@ -4,121 +4,133 @@ declare(strict_types=1);
 
 namespace OWC\Zaaksysteem\Repositories\OpenZaak;
 
-use OWC\Zaaksysteem\Models\OpenZaak as OpenZaakModel;
-use OWC\Zaaksysteem\Models\StatusType as StatusTypeModel;
+use Exception;
 
-use function OWC\Zaaksysteem\Foundation\Helpers\decrypt;
+use OWC\Zaaksysteem\Client\Client;
+use OWC\Zaaksysteem\Entities\Rol;
+use OWC\Zaaksysteem\Entities\Zaak;
+use OWC\Zaaksysteem\Foundation\Plugin;
+use OWC\Zaaksysteem\Support\PagedCollection;
+use OWC\Zaaksysteem\Http\Errors\BadRequestError;
+
+use function OWC\Zaaksysteem\Foundation\Helpers\config;
 use function Yard\DigiD\Foundation\Helpers\resolve;
+use function OWC\Zaaksysteem\Foundation\Helpers\decrypt;
 
 class ZaakRepository extends BaseRepository
 {
-    protected string $zakenURI = 'zaken/api/v1/zaken';
-    protected string $catalogiStatusTypen = 'catalogi/api/v1/statustypen';
-    protected string $zaakTypesURI = 'catalogi/api/v1/zaaktypen';
+    /**
+     * Instance of the plugin.
+     */
+    protected Plugin $plugin;
 
-    public function __construct()
+    /**
+     * Construct the repository.
+     */
+    public function __construct(Plugin $plugin)
     {
         parent::__construct();
+
+        $this->plugin = $plugin;
     }
 
-    public function getBsn(): string
+    /**
+     * Get the api client.
+     */
+    protected function getApiClient(): Client
+    {
+        return $this->plugin->getContainer()->get('oz.client');
+    }
+
+    protected function handleArgs(string $identifier, array $fields, array $entry)
+    {
+        $rsin = $this->plugin->getContainer()->get('rsin');
+
+        if (empty($rsin)) {
+            throw new Exception(
+                esc_html__(
+                    'RSIN should not be empty in the Gravity Forms Settings',
+                    config('core.text_domain')
+                )
+            );
+        }
+
+        $args = [
+            'bronorganisatie' => $rsin ?? '',
+            'verantwoordelijkeOrganisatie' => $rsin ?? '',
+            'zaaktype' => $identifier ?? '',
+            'registratiedatum' => date('Y-m-d'),
+            'startdatum' => date('Y-m-d'),
+            'omschrijving' => '',
+            'informatieobject' => ''
+        ];
+
+        return $this->mapArgs($args, $fields, $entry);
+    }
+
+    /**
+     * Get all available roles.
+     */
+    public function getRolTypen(): PagedCollection
+    {
+        $client = $this->getApiClient();
+        return $client->roltypen()->all();
+    }
+
+    /**
+     * Create "zaak".
+     */
+    public function addZaak($entry, $form): void
+    {
+        $client = $this->getApiClient();
+        $identifier = $form['owc-gravityforms-zaaksysteem-form-setting-openzaak-identifier'];
+        $args = $this->handleArgs($identifier, $form['fields'], $entry);
+
+        $zaak = $client->zaken()->create(new Zaak($args, 'test'));
+
+        $this->addRolToZaak($zaak['url']);
+    }
+
+    /**
+     * Assign a submitter to the "zaak".
+     *
+     * @todo: change createSubmitter
+     */
+    public function addRolToZaak(string $zaakUrl): void
+    {
+        $client = $this->getApiClient();
+        $rolTypen = $this->getRolTypen();
+
+        foreach ($rolTypen as $rolType) {
+            if ($rolType['omschrijvingGeneriek'] !== 'initiator') {
+                continue;
+            }
+
+            $args = [
+                'zaak' => $zaakUrl,
+                'betrokkeneType' => 'natuurlijk_persoon',
+                'roltype' => $rolType['url'],
+                'roltoelichting' => 'De indiener van de zaak.',
+                'betrokkeneIdentificatie' => [
+                    'inpBsn' => $this->resolveCurrentBsn()
+                ]
+            ];
+
+            try {
+                $client->rollen()->create(new Rol($args, 'test'));
+            } catch (BadRequestError $e) {
+                $e->getInvalidParameters();
+            }
+        }
+    }
+
+    /**
+     * @todo move this to separate handler
+     */
+    protected function resolveCurrentBsn(): string
     {
         $bsn = resolve('session')->getSegment('digid')->get('bsn');
+
         return decrypt($bsn);
-    }
-
-    /**
-     * Get the available 'zaaktypen'.
-     */
-    public function getZaakTypes(): array
-    {
-        $result = $this->request($this->makeURL($this->zaakTypesURI));
-
-        return $result;
-    }
-
-    public function getZaken(): array
-    {
-        if (empty($this->getBsn())) {
-            return [];
-        }
-
-        $result = $this->request($this->makeURL($this->zakenURI . '?rol__betrokkeneIdentificatie__natuurlijkPersoon__inpBsn=' . $this->getBsn()));
-
-        if (empty($result['results'])) {
-            return [];
-        }
-
-        return array_map(function ($zaak) {
-            $model = new OpenZaakModel($zaak); // makeFrom
-            return $this->complementZaak($model);
-        }, $result['results']);
-    }
-
-    /**
-     * Add data from other requests to OpenZaak object.
-     */
-    protected function complementZaak(OpenZaakModel $model): OpenZaakModel
-    {
-        $model->setStatusTypes($this->getStatusTypes($model));
-        $status = $this->getStatus($model);
-
-        if (empty($status)) {
-            return $model;
-        }
-
-        try {
-            $model->setDateStatusAssigned($status['datumStatusGezet'] ?? '');
-            $model->setStatusTypeURL($status['statustype'] ?? '');
-        } catch (\Exception | \TypeError $e) {
-            return $model;
-        }
-
-        $detailedStatus = $this->getDetailedStatus($model);
-
-        if (empty($detailedStatus)) {
-            return $model;
-        }
-
-        try {
-            $model->setStatusDesc($detailedStatus['omschrijving'] ?? '');
-        } catch (\Exception | \TypeError $e) {
-            return $model;
-        }
-
-        return $model;
-    }
-
-    protected function getStatusTypes(OpenZaakModel $model): array
-    {
-        $types = $this->request($this->makeURL($this->catalogiStatusTypen));
-
-        if (empty($types['results']) || ! is_array($types['results'])) {
-            return [];
-        }
-
-        $types = array_map(function ($type) {
-            return new StatusTypeModel($type);
-        }, $types['results']);
-
-        $types = array_filter($types, function ($type) use ($model) {
-            return $model->getTypeURL() === $type->getType();
-        });
-
-        usort($types, function ($type, $type2) {
-            return $type->getNumber() <=> $type2->getNumber();
-        });
-
-        return $types;
-    }
-
-    protected function getStatus(OpenZaakModel $model): array
-    {
-        return $this->request($model->getStatusURL());
-    }
-
-    protected function getDetailedStatus(OpenZaakModel $model): array
-    {
-        return $this->request($model->getStatusTypeURL());
     }
 }

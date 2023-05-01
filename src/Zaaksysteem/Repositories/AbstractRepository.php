@@ -38,10 +38,10 @@ abstract class AbstractRepository
         if ($environment === 'production') {
             return;
         }
-        
+
         \add_filter('http_request_args', function ($args, $url) {
             $args['sslverify'] = false;
-            
+
             return $args;
         }, 10, 2);
     }
@@ -55,7 +55,7 @@ abstract class AbstractRepository
     public function mapArgs(array $args, array $fields, array $entry): array
     {
         foreach ($fields as $field) {
-            if (empty($field->linkedFieldValueZGW) || ! isset($args[$field->linkedFieldValueZGW])) {
+            if (empty($field->linkedFieldValueZGW)) {
                 continue;
             }
 

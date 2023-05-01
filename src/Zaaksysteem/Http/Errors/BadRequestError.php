@@ -14,6 +14,7 @@ class BadRequestError extends RequestError
     public static function fromResponse(Response $response)
     {
         $error = parent::fromResponse($response);
+
         if ($error->code === 0) {
             // Unhandable error.
             return $error;

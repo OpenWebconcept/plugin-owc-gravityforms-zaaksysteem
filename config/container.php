@@ -49,6 +49,13 @@ return [
     },
 
     /**
+     * General configuration
+     */
+    'rsin' => function (Container $container) {
+        return $container->make('gf.setting', ['-rsin']);
+    },
+
+    /**
      * Utilize with $container->make('gf.setting', ['setting-name-here']);
      */
     'gf.setting' => function (Container $container, string $type, string $name) {

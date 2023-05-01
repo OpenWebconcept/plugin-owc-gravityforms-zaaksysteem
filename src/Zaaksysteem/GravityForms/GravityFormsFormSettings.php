@@ -2,6 +2,8 @@
 
 namespace OWC\Zaaksysteem\GravityForms;
 
+use OWC\Zaaksysteem\Client\Client;
+use OWC\Zaaksysteem\Foundation\Plugin;
 use OWC\Zaaksysteem\Repositories\OpenZaak\ZaakRepository;
 
 use function OWC\Zaaksysteem\Foundation\Helpers\config;
@@ -11,15 +13,37 @@ class GravityFormsFormSettings
     protected string $prefix = OWC_GZ_PLUGIN_SLUG;
 
     /**
+     * Instance of the plugin.
+     */
+    protected Plugin $plugin;
+
+    public function __construct(Plugin $plugin)
+    {
+        $this->plugin = $plugin;
+    }
+
+    /**
+     * Get the api client.
+     *
+     * @todo make generic, so we can use it for Decos Join as well.
+     */
+    protected function getApiClient(): Client
+    {
+        return $this->plugin->getContainer()->get('oz.client');
+    }
+
+    /**
      * Get a list of related 'zaaktypen' from Open Zaak.
      */
     public function getTypesOpenZaak(): array
     {
-        $data = (new ZaakRepository())->getZaakTypes();
+        $client = $this->getApiClient();
+        $data = $client->zaaktypen()->all();
+
         $collect = [];
 
-        if ($data && $data['results']) {
-            foreach ($data['results'] as $result) {
+        if ($data) {
+            foreach ($data as $result) {
                 $collect[] = [
                     'name' => $result['identificatie'],
                     'label' => "{$result['omschrijving']} ({$result['identificatie']})",
