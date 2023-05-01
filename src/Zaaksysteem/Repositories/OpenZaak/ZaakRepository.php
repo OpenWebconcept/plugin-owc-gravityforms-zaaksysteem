@@ -10,14 +10,14 @@ use OWC\Zaaksysteem\Client\Client;
 use OWC\Zaaksysteem\Entities\Rol;
 use OWC\Zaaksysteem\Entities\Zaak;
 use OWC\Zaaksysteem\Foundation\Plugin;
+use OWC\Zaaksysteem\Repositories\AbstractRepository;
 use OWC\Zaaksysteem\Support\PagedCollection;
 use OWC\Zaaksysteem\Http\Errors\BadRequestError;
 
-use function OWC\Zaaksysteem\Foundation\Helpers\config;
-use function Yard\DigiD\Foundation\Helpers\resolve;
 use function OWC\Zaaksysteem\Foundation\Helpers\decrypt;
+use function Yard\DigiD\Foundation\Helpers\resolve;
 
-class ZaakRepository extends BaseRepository
+class ZaakRepository extends AbstractRepository
 {
     /**
      * Instance of the plugin.
@@ -29,8 +29,6 @@ class ZaakRepository extends BaseRepository
      */
     public function __construct(Plugin $plugin)
     {
-        parent::__construct();
-
         $this->plugin = $plugin;
     }
 
@@ -39,20 +37,31 @@ class ZaakRepository extends BaseRepository
      */
     protected function getApiClient(): Client
     {
+        //$client::CALLABLE_NAME
         return $this->plugin->getContainer()->get('oz.client');
     }
 
-    protected function handleArgs(string $identifier, array $fields, array $entry)
+    /**
+     * Get all available roles.
+     */
+    public function getRolTypen(): PagedCollection
     {
+        $client = $this->getApiClient();
+
+        return $client->roltypen()->all();
+    }
+
+    /**
+     * Create "zaak".
+     */
+    public function addZaak($entry, $form): ?Zaak
+    {
+        $client = $this->getApiClient();
+        $identifier = $form['owc-gravityforms-zaaksysteem-form-setting-openzaak-identifier'];
         $rsin = $this->plugin->getContainer()->get('rsin');
 
         if (empty($rsin)) {
-            throw new Exception(
-                esc_html__(
-                    'RSIN should not be empty in the Gravity Forms Settings',
-                    config('core.text_domain')
-                )
-            );
+            throw new Exception('RSIN should not be empty in the Gravity Forms Settings');
         }
 
         $args = [
@@ -65,41 +74,23 @@ class ZaakRepository extends BaseRepository
             'informatieobject' => ''
         ];
 
-        return $this->mapArgs($args, $fields, $entry);
-    }
+        $mapping = $this->mapArgs($args, $form['fields'], $entry);
 
-    /**
-     * Get all available roles.
-     */
-    public function getRolTypen(): PagedCollection
-    {
-        $client = $this->getApiClient();
-        return $client->roltypen()->all();
-    }
-
-    /**
-     * Create "zaak".
-     */
-    public function addZaak($entry, $form): void
-    {
-        $client = $this->getApiClient();
-        $identifier = $form['owc-gravityforms-zaaksysteem-form-setting-openzaak-identifier'];
-        $args = $this->handleArgs($identifier, $form['fields'], $entry);
-
-        $zaak = $client->zaken()->create(new Zaak($args, 'test'));
+        $zaak = $client->zaken()->create(new Zaak($mapping, $client::CLIENT_NAME));
 
         $this->addRolToZaak($zaak['url']);
+
+        return $zaak;
     }
 
     /**
      * Assign a submitter to the "zaak".
-     *
-     * @todo: change createSubmitter
      */
-    public function addRolToZaak(string $zaakUrl): void
+    public function addRolToZaak(string $zaakUrl): ?Rol
     {
         $client = $this->getApiClient();
         $rolTypen = $this->getRolTypen();
+        $rol = null;
 
         foreach ($rolTypen as $rolType) {
             if ($rolType['omschrijvingGeneriek'] !== 'initiator') {
@@ -117,11 +108,13 @@ class ZaakRepository extends BaseRepository
             ];
 
             try {
-                $client->rollen()->create(new Rol($args, 'test'));
+                $rol = $client->rollen()->create(new Rol($args, $client::CLIENT_NAME));
             } catch (BadRequestError $e) {
                 $e->getInvalidParameters();
             }
         }
+
+        return $rol;
     }
 
     /**
