@@ -10,8 +10,6 @@ use function OWC\Zaaksysteem\Foundation\Helpers\view;
 
 class GravityFormsFieldSettings
 {
-    protected string $prefix = OWC_GZ_PLUGIN_SLUG;
-
     /**
      * Instance of the plugin.
      */
@@ -74,8 +72,8 @@ class GravityFormsFieldSettings
 
         // Get the zaakeigenschappen belonging to the chosen zaaktype.
         $properties = $this->getZaaktypenEigenschappen($zaaktype);
-        $options = [];
 
+        $options = [];
         foreach ($properties as $property) {
             $options[] = [
                 'label' => $property['naam'],

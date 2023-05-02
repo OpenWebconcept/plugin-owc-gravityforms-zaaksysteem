@@ -11,7 +11,7 @@ class ZaakeigenschappenEndpoint extends Endpoint
 {
     protected string $apiType = 'zaken';
     protected string $endpoint = 'zaakeigenschappen';
-    protected string $entityClass = Zaakeigenschappen::class;
+    protected string $entityClass = Zaakeigenschap::class;
 
     public function all(): Collection
     {

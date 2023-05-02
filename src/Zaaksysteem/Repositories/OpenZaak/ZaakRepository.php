@@ -89,27 +89,20 @@ class ZaakRepository extends AbstractRepository
      *
      * @todo: call rollen or zaken api
      */
-    public function addZaakEigenschappen(Zaak $zaak, $args, $fields, $entry): ?Zaakeigenschap
+    public function addZaakEigenschappen(Zaak $zaak, $args, $fields, $entry): void
     {
-        //$mapping = $this->fieldMapping($args, $fields, $entry);
+        $mapping = $this->fieldMapping($fields, $entry);
 
-        $mapping = [
-            'zaak' => $zaak->uri,
-            'eigenschap' => 'https://open-zaak.test.buren.opengem.nl/zaak/api/v1/zaak/cd484e04-9a88-424f-9b5d-e31cabb23623/zaakeigenschappen/12345',
-            'waarde' => 'Hello World',
-        ];
+        foreach ($mapping as $value) {
+            $property = [
+                'zaak' => $zaak->uri,
+                'eigenschap' => $value['eigenschap'],
+                'waarde' => $value['waarde'],
+            ];
 
-        $client = $this->getApiClient();
-        $client->zaakeigenschappen()->create($zaak->uuid, new Zaakeigenschap($mapping, $client::CLIENT_NAME));
-
-        return null;
-    }
-
-    public function getZaakEigenschappen($zaak): ?Zaakeigenschap
-    {
-        $client = $this->getApiClient();
-
-        return $client->zaakeigenschappen()->all($zaak);
+            $client = $this->getApiClient();
+            $client->zaakeigenschappen()->create($zaak->uuid, new Zaakeigenschap($property, $client::CLIENT_NAME));
+        }
     }
 
     /**
