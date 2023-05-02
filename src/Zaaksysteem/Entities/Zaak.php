@@ -45,7 +45,7 @@ class Zaak extends Entity
 
         'statussen' => Casts\Related\Statussen::class,
         'zaakinformatieobjecten' => Casts\Related\Zaakinformatieobjecten::class,
-        'rollen'    => Casts\Related\Rollen::class,
+        'rollen' => Casts\Related\Rollen::class,
     ];
 
     public function title(): string
@@ -59,8 +59,6 @@ class Zaak extends Entity
 
     /**
      * Wether or not the current Zaak is initiated by the given BSN.
-     * @param  string  $bsn
-     * @return bool
      */
     public function isInitiatedBy(string $bsn): bool
     {

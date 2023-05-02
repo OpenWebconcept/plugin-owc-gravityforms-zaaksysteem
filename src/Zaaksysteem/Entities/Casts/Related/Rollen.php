@@ -14,10 +14,10 @@ class Rollen extends ResourceCollection
 {
     public function resolveRelatedResourceCollection(Entity $entity): Collection
     {
-        $statussenEndpoint = resolve($this->clientName)->rollen();
+        $rollenEndpoint = resolve($this->clientName)->rollen();
 
         $filter = new RollenFilter();
 
-        return $statussenEndpoint->filter($filter->byZaak($entity));
+        return $rollenEndpoint->filter($filter->byZaak($entity));
     }
 }
