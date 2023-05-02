@@ -4,7 +4,6 @@ namespace OWC\Zaaksysteem\GravityForms;
 
 use OWC\Zaaksysteem\Client\Client;
 use OWC\Zaaksysteem\Foundation\Plugin;
-use OWC\Zaaksysteem\Repositories\OpenZaak\ZaakRepository;
 
 use function OWC\Zaaksysteem\Foundation\Helpers\config;
 

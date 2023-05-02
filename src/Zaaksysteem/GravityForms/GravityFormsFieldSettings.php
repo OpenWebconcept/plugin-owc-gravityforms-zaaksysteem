@@ -2,11 +2,47 @@
 
 namespace OWC\Zaaksysteem\GravityForms;
 
+use OWC\Zaaksysteem\Client\Client;
+use OWC\Zaaksysteem\Foundation\Plugin;
+
 use function OWC\Zaaksysteem\Foundation\Helpers\get_supplier;
 use function OWC\Zaaksysteem\Foundation\Helpers\view;
 
 class GravityFormsFieldSettings
 {
+    protected string $prefix = OWC_GZ_PLUGIN_SLUG;
+
+    /**
+     * Instance of the plugin.
+     */
+    protected Plugin $plugin;
+
+    public function __construct(Plugin $plugin)
+    {
+        $this->plugin = $plugin;
+    }
+
+    /**
+     * Get the api client.
+     *
+     * @todo make generic, so we can use it for Decos Join as well.
+     */
+    protected function getApiClient(): Client
+    {
+        return $this->plugin->getContainer()->get('oz.client');
+    }
+
+    /**
+     * Get the `zaakeigenschappen` belonging to the chosen `zaaktype`.
+     */
+    public function getZaaktypenEigenschappen(string $zaakTypeUrl): array
+    {
+        $client = $this->getApiClient();
+        $data = $client->eigenschappen()->get('?zaaktype=' . $zaakTypeUrl);
+
+        return $data->results;
+    }
+
     /**
      * Add script to the editor of a form.
      * Script adds chosen value from custom select to field object which can be used after the form submission.
@@ -33,9 +69,22 @@ class GravityFormsFieldSettings
             return;
         }
 
-        // Render the supplier based options.
-        $mappingOptions = sprintf('partials/gf-field-options-%s.php', $supplier);
+        // Get the selected zaaktype from the form settings.
+        $zaaktype = $form[sprintf('%s-form-setting-%s-identifier', OWC_GZ_PLUGIN_SLUG, $supplier)];
 
-        echo view($mappingOptions);
+        // Get the zaakeigenschappen belonging to the chosen zaaktype.
+        $properties = $this->getZaaktypenEigenschappen($zaaktype);
+        $options = [];
+
+        foreach ($properties as $property) {
+            $options[] = [
+                'label' => $property['naam'],
+                'value' => $property['url']
+            ];
+        }
+
+        echo view('partials/gf-field-options.php', [
+            'properties' => $options
+        ]);
     }
 }

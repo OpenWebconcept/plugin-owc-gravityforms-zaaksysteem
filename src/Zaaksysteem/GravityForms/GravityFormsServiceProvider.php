@@ -29,7 +29,7 @@ class GravityFormsServiceProvider extends ServiceProvider
             return;
         }
 
-        $gravityFormsFieldSettings = new GravityFormsFieldSettings();
+        $gravityFormsFieldSettings = new GravityFormsFieldSettings($this->plugin);
 
         $this->plugin->loader->addFilter('gform_after_submission', new GravityForms($this->plugin), 'GFFormSubmission', 10, 2);
         $this->plugin->loader->addAction('gform_field_standard_settings', $gravityFormsFieldSettings, 'addSelect', 10, 2);

@@ -8,7 +8,7 @@ abstract class AbstractRepository
      * Add form field values to arguments required for creating a 'Zaak'.
      * Mapping is done by the relation between arguments keys and form fields linkedFieldValueZGWs.
      */
-    public function mapArgs(array $args, array $fields, array $entry): array
+    public function fieldMapping(array $args, array $fields, array $entry): array
     {
         foreach ($fields as $field) {
             if (empty($field->linkedFieldValueZGW)) {
@@ -26,6 +26,8 @@ abstract class AbstractRepository
             }
 
             $args[$field->linkedFieldValueZGW] = $property;
+            // var_dump($args);
+            // die;
         }
 
         return $args;

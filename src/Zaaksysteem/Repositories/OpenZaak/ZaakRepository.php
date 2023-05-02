@@ -9,6 +9,7 @@ use Exception;
 use OWC\Zaaksysteem\Client\Client;
 use OWC\Zaaksysteem\Entities\Rol;
 use OWC\Zaaksysteem\Entities\Zaak;
+use OWC\Zaaksysteem\Entities\Zaakeigenschap;
 use OWC\Zaaksysteem\Foundation\Plugin;
 use OWC\Zaaksysteem\Repositories\AbstractRepository;
 use OWC\Zaaksysteem\Support\PagedCollection;
@@ -37,7 +38,6 @@ class ZaakRepository extends AbstractRepository
      */
     protected function getApiClient(): Client
     {
-        //$client::CALLABLE_NAME
         return $this->plugin->getContainer()->get('oz.client');
     }
 
@@ -74,13 +74,42 @@ class ZaakRepository extends AbstractRepository
             'informatieobject' => ''
         ];
 
-        $mapping = $this->mapArgs($args, $form['fields'], $entry);
+        $zaak = $client->zaken()->create(new Zaak($args, $client::CLIENT_NAME));
 
-        $zaak = $client->zaken()->create(new Zaak($mapping, $client::CLIENT_NAME));
-
-        $this->addRolToZaak($zaak['url']);
+        // @todo why does it say this role already exists?
+        // $this->addRolToZaak($zaak->url);
+        //$this->addZaakEigenschappen($args, $form['fields'], $entry);
+        $this->addZaakEigenschappen($zaak, $args, $form['fields'], $entry);
 
         return $zaak;
+    }
+
+    /**
+     * Add "zaak" properties.
+     *
+     * @todo: call rollen or zaken api
+     */
+    public function addZaakEigenschappen(Zaak $zaak, $args, $fields, $entry): ?Zaakeigenschap
+    {
+        //$mapping = $this->fieldMapping($args, $fields, $entry);
+
+        $mapping = [
+            'zaak' => $zaak->uri,
+            'eigenschap' => 'https://open-zaak.test.buren.opengem.nl/zaak/api/v1/zaak/cd484e04-9a88-424f-9b5d-e31cabb23623/zaakeigenschappen/12345',
+            'waarde' => 'Hello World',
+        ];
+
+        $client = $this->getApiClient();
+        $client->zaakeigenschappen()->create($zaak->uuid, new Zaakeigenschap($mapping, $client::CLIENT_NAME));
+
+        return null;
+    }
+
+    public function getZaakEigenschappen($zaak): ?Zaakeigenschap
+    {
+        $client = $this->getApiClient();
+
+        return $client->zaakeigenschappen()->all($zaak);
     }
 
     /**
