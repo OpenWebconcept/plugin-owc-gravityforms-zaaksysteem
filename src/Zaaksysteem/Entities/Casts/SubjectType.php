@@ -25,7 +25,7 @@ class SubjectType extends AbstractCast
         return new SubjectTypeAttribute($value);
     }
 
-    public function serialize(string $name, $value)
+    public function serialize(string $name, $value): string
     {
         return (is_object($value) && $value instanceof EnumAttribute) ? $value->get() : $value;
     }

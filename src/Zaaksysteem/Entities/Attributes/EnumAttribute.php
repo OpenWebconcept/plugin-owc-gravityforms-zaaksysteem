@@ -29,10 +29,10 @@ abstract class EnumAttribute
 
     public function __toString()
     {
-        return $this->value;
+        return $this->get();
     }
 
-    public function get()
+    public function get(): string
     {
         return $this->value;
     }
