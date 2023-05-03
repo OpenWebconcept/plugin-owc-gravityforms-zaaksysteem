@@ -61,11 +61,11 @@ class ZaakRepository extends AbstractRepository
         $zaaktype = $form[sprintf('%s-form-setting-%s-identifier', OWC_GZ_PLUGIN_SLUG, 'openzaak')];
 
         if (empty($rsin)) {
-            throw new Exception('The "RSIN" field should not be empty in the Gravity Forms Settings');
+            throw new Exception('Het RSIN is niet ingesteld in Gravity Forms instellingen');
         }
 
         if (empty($zaaktype)) {
-            throw new Exception('Please select a "zaaktype" in the Gravity Forms Settings');
+            throw new Exception('Het zaaktype is niet ingesteld in Gravity Forms instellingen');
         }
 
         $args = [
@@ -124,11 +124,11 @@ class ZaakRepository extends AbstractRepository
         $currentBsn = $this->resolveCurrentBsn();
 
         if ($rolTypen->isEmpty()) {
-            throw new Exception('There are no "roltypen" found for this "zaaktype"');
+            throw new Exception('Er zijn geen roltypen gevonden voor dit zaaktype');
         }
 
         if (empty($currentBsn)) {
-            throw new Exception('This session doesn\'t seem to have a BSN');
+            throw new Exception('Deze sessie lijkt geen BSN te hebben');
         }
 
         foreach ($rolTypen as $rolType) {

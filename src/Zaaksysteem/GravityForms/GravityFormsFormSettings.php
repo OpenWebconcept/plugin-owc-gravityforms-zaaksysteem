@@ -39,21 +39,21 @@ class GravityFormsFormSettings
         $client = $this->getApiClient();
         $data = $client->zaaktypen()->all();
 
-        $collect = [];
-
-        if ($data) {
-            foreach ($data as $result) {
-                $collect[] = [
-                    'name' => $result['identificatie'],
-                    'label' => "{$result['omschrijving']} ({$result['identificatie']})",
-                    'value' => $result['url']
-                ];
-            }
-
-            return $collect;
+        if ($data->isEmpty()){
+            return [];
         }
 
-        return [];
+        $collect = [];
+
+        foreach ($data as $result) {
+            $collect[] = [
+                'name' => $result['identificatie'],
+                'label' => "{$result['omschrijving']} ({$result['identificatie']})",
+                'value' => $result['url']
+            ];
+        }
+
+        return $collect;
     }
 
     /**
