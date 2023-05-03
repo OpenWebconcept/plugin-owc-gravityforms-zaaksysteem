@@ -29,9 +29,8 @@ class EnableUController extends BaseController
             return [];
         }
 
-        /**
-         * This part is not implemented yet by the supplier.
-         */
+        $this->repository->addZaakProperties($createdZaak, $this->handleArgsZaakProperties());
+
         $bsn = $this->getBSN();
 
         if (! empty($bsn) && is_string($bsn)) {
@@ -46,5 +45,17 @@ class EnableUController extends BaseController
         }
 
         return isset($createdConnection) ? $createdConnection : $createdZaak;
+    }
+
+    protected function handleArgsZaakProperties(): array
+    {
+        $args = [
+            'ibanNummer' => '',
+            'startdatumActiviteit' => '',
+            'datumHuwelijkPartnerschap' => '',
+            'digitaalAntwoord' => ''
+        ];
+
+        return $this->mapArgs($args);
     }
 }

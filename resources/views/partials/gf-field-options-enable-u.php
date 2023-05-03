@@ -17,5 +17,11 @@ use function OWC\Zaaksysteem\Foundation\Helpers\config;
         <option value="startdatum"><?php _e('Startdatum', config('core.text_domain')) ?></option>
         <option value="informatieobject"><?php _e('Informatieobject', config('core.text_domain')) ?></option>
         <option value="any"><?php _e('any', config('core.text_domain')) ?></option>
+        <optgroup label="Zaakeigenschappen">
+        <option value="ibanNummer"><?php _e('ibanNummer', config('core.text_domain')) ?></option>
+        <option value="startdatumActiviteit"><?php _e('startdatumActiviteit', config('core.text_domain')) ?></option>
+        <option value="datumHuwelijkPartnerschap"><?php _e('datumHuwelijkPartnerschap', config('core.text_domain')) ?></option>
+        <option value="digitaalAntwoord"><?php _e('digitaalAntwoord', config('core.text_domain')) ?></option>
+        </optgroup>
     </select>
 </li>

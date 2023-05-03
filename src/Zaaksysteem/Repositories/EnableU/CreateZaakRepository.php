@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace OWC\Zaaksysteem\Repositories\EnableU;
 
 use function OWC\Zaaksysteem\Foundation\Helpers\decrypt;
-use OWC\PrefillGravityForms\GravityForms\GravityFormsSettings;
 use OWC\Zaaksysteem\Repositories\EnableU\Classes\InformationObjectHelper;
 use OWC\Zaaksysteem\Repositories\EnableU\Classes\PDFHelper;
 use OWC\Zaaksysteem\Traits\InformationObject;
@@ -18,6 +17,7 @@ class CreateZaakRepository extends BaseRepository
     protected string $zakenRolURI = 'zaken/api/v1/rollen';
     protected string $informationObjectsURI = 'documenten/api/v1/enkelvoudiginformatieobjecten';
     protected string $zaakConnectioninformationObject = 'documenten/api/v1/zaakinformatieobjecten';
+    protected string $zaakEigenschappenURI = '/zaken/%s/zaakeigenschappen';
     protected InformationObjectHelper $informationObjectHelper;
     protected PDFHelper $pdfHelper;
 
@@ -36,6 +36,30 @@ class CreateZaakRepository extends BaseRepository
         }
         
         return $this->request($this->makeURL($this->zakenURI), 'POST', $args);
+    }
+
+    public function addZaakProperties(array $zaak, array $args): void
+    {
+        $zaakEigenschappenURI = sprintf($this->zaakEigenschappenURI, $zaak['uuid']);
+
+        $result = [];
+        $numberOfProperties = count($args);
+
+        foreach($args as $key => $arg) {
+            $preparedBody = [
+                'zaak' => $zaak['url'],
+                'eigenschap' => $key,
+                'waarde' => $arg
+            ];
+
+            $result[] = $this->request($this->makeURL($zaakEigenschappenURI), 'POST', $preparedBody);
+        }
+
+        $numberOfRequestsSucces = count(array_filter($result));
+
+        if($numberOfProperties !== $numberOfRequestsSucces) {
+            // log?
+        }
     }
 
     /**
