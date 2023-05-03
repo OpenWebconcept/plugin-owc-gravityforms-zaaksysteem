@@ -44,11 +44,11 @@ class ZaakRepository extends AbstractRepository
     /**
      * Get all available "roltypen".
      */
-    public function getRolTypen(): PagedCollection
+    public function getRolTypen(string $zaaktype): PagedCollection
     {
         $client = $this->getApiClient();
 
-        return $client->roltypen()->all();
+        return $client->roltypen()->all('zaaktype=' . $zaaktype);
     }
 
     /**
@@ -57,19 +57,21 @@ class ZaakRepository extends AbstractRepository
     public function addZaak($entry, $form): ?Zaak
     {
         $client = $this->getApiClient();
-
-        $identifier = $form[sprintf('%s-form-setting-%s-identifier', OWC_GZ_PLUGIN_SLUG, 'openzaak')];
-
         $rsin = $this->plugin->getContainer()->get('rsin');
+        $zaaktype = $form[sprintf('%s-form-setting-%s-identifier', OWC_GZ_PLUGIN_SLUG, 'openzaak')];
 
         if (empty($rsin)) {
-            throw new Exception('RSIN should not be empty in the Gravity Forms Settings');
+            throw new Exception('The "RSIN" field should not be empty in the Gravity Forms Settings');
+        }
+
+        if (empty($zaaktype)) {
+            throw new Exception('Please select a "zaaktype" in the Gravity Forms Settings');
         }
 
         $args = [
-            'bronorganisatie' => $rsin ?? '',
-            'verantwoordelijkeOrganisatie' => $rsin ?? '',
-            'zaaktype' => $identifier ?? '',
+            'bronorganisatie' => $rsin,
+            'verantwoordelijkeOrganisatie' => $rsin,
+            'zaaktype' => $zaaktype,
             'registratiedatum' => date('Y-m-d'),
             'startdatum' => date('Y-m-d'),
             'omschrijving' => '',
@@ -78,9 +80,7 @@ class ZaakRepository extends AbstractRepository
 
         $zaak = $client->zaken()->create(new Zaak($args, $client::CLIENT_NAME));
 
-        // @todo why does it say this role already exists?
-        // $this->addRolToZaak($zaak->url);
-
+        $this->addRolToZaak($zaak, $zaaktype);
         $this->addZaakEigenschappen($zaak, $form['fields'], $entry);
 
         return $zaak;
@@ -91,6 +91,7 @@ class ZaakRepository extends AbstractRepository
      */
     public function addZaakEigenschappen(Zaak $zaak, $fields, $entry): void
     {
+        $client = $this->getApiClient();
         $mapping = $this->fieldMapping($fields, $entry);
 
         foreach ($mapping as $value) {
@@ -99,8 +100,6 @@ class ZaakRepository extends AbstractRepository
                 'eigenschap' => $value['eigenschap'],
                 'waarde' => $value['waarde'],
             ];
-
-            $client = $this->getApiClient();
 
             try {
                 $client->zaakeigenschappen()->create(
@@ -116,11 +115,21 @@ class ZaakRepository extends AbstractRepository
     /**
      * Assign a submitter to the "zaak".
      */
-    public function addRolToZaak(string $zaakUrl): ?Rol
+    public function addRolToZaak(Zaak $zaak, string $zaaktype): ?Rol
     {
         $client = $this->getApiClient();
-        $rolTypen = $this->getRolTypen();
+        $rolTypen = $this->getRolTypen($zaaktype);
         $rol = null;
+
+        $currentBsn = $this->resolveCurrentBsn();
+
+        if ($rolTypen->isEmpty()) {
+            throw new Exception('There are no "roltypen" found for this "zaaktype"');
+        }
+
+        if (empty($currentBsn)) {
+            throw new Exception('This session doesn\'t seem to have a BSN');
+        }
 
         foreach ($rolTypen as $rolType) {
             if ($rolType['omschrijvingGeneriek'] !== 'initiator') {
@@ -128,12 +137,12 @@ class ZaakRepository extends AbstractRepository
             }
 
             $args = [
-                'zaak' => $zaakUrl,
+                'zaak' => $zaak->url,
                 'betrokkeneType' => 'natuurlijk_persoon',
                 'roltype' => $rolType['url'],
                 'roltoelichting' => 'De indiener van de zaak.',
                 'betrokkeneIdentificatie' => [
-                    'inpBsn' => $this->resolveCurrentBsn()
+                    'inpBsn' => $currentBsn
                 ]
             ];
 

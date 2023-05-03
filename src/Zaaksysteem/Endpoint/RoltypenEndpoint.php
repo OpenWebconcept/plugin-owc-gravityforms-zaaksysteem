@@ -13,12 +13,21 @@ class RoltypenEndpoint extends Endpoint
     protected string $endpoint = 'roltypen';
     protected string $entityClass = Roltype::class;
 
-    public function all(): PagedCollection
+    public function all(string $params): PagedCollection
     {
-        $response = $this->httpClient->get(
-            $this->buildUri($this->endpoint),
-            $this->buildRequestOptions()
-        );
+        if ($params) {
+            // var_dump($this->buildUri($this->endpoint . '?' . $params));
+            // die;
+            $response = $this->httpClient->get(
+                $this->buildUri($this->endpoint . '?' . $params),
+                $this->buildRequestOptions()
+            );
+        } else {
+            $response = $this->httpClient->get(
+                $this->buildUri($this->endpoint),
+                $this->buildRequestOptions()
+            );
+        }
 
         return $this->getPagedCollection($this->handleResponse($response));
     }
