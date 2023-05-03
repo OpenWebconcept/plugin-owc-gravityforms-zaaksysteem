@@ -42,7 +42,7 @@ class ZaakRepository extends AbstractRepository
     }
 
     /**
-     * Get all available roles.
+     * Get all available "roltypen".
      */
     public function getRolTypen(): PagedCollection
     {
@@ -57,7 +57,9 @@ class ZaakRepository extends AbstractRepository
     public function addZaak($entry, $form): ?Zaak
     {
         $client = $this->getApiClient();
-        $identifier = $form['owc-gravityforms-zaaksysteem-form-setting-openzaak-identifier'];
+
+        $identifier = $form[sprintf('%s-form-setting-%s-identifier', OWC_GZ_PLUGIN_SLUG, 'openzaak')];
+
         $rsin = $this->plugin->getContainer()->get('rsin');
 
         if (empty($rsin)) {
@@ -78,18 +80,16 @@ class ZaakRepository extends AbstractRepository
 
         // @todo why does it say this role already exists?
         // $this->addRolToZaak($zaak->url);
-        //$this->addZaakEigenschappen($args, $form['fields'], $entry);
-        $this->addZaakEigenschappen($zaak, $args, $form['fields'], $entry);
+
+        $this->addZaakEigenschappen($zaak, $form['fields'], $entry);
 
         return $zaak;
     }
 
     /**
      * Add "zaak" properties.
-     *
-     * @todo: call rollen or zaken api
      */
-    public function addZaakEigenschappen(Zaak $zaak, $args, $fields, $entry): void
+    public function addZaakEigenschappen(Zaak $zaak, $fields, $entry): void
     {
         $mapping = $this->fieldMapping($fields, $entry);
 
@@ -101,7 +101,15 @@ class ZaakRepository extends AbstractRepository
             ];
 
             $client = $this->getApiClient();
-            $client->zaakeigenschappen()->create($zaak->uuid, new Zaakeigenschap($property, $client::CLIENT_NAME));
+
+            try {
+                $client->zaakeigenschappen()->create(
+                    $zaak->uuid,
+                    new Zaakeigenschap($property, $client::CLIENT_NAME)
+                );
+            } catch (BadRequestError $e) {
+                $e->getInvalidParameters();
+            }
         }
     }
 
