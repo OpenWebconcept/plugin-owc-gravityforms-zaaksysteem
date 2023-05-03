@@ -2,6 +2,8 @@
 
 namespace OWC\Zaaksysteem\Repositories;
 
+use DateTime;
+
 abstract class AbstractRepository
 {
     /**
@@ -24,7 +26,7 @@ abstract class AbstractRepository
             }
 
             if ($field->type === 'date') {
-                $property = (new \DateTime($property))->format('Y-m-d');
+                $property = (new DateTime($property))->format('Y-m-d');
             }
 
             $mappedFields[$field->id] = [
