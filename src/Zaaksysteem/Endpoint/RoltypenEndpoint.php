@@ -16,8 +16,6 @@ class RoltypenEndpoint extends Endpoint
     public function all(string $params): PagedCollection
     {
         if ($params) {
-            // var_dump($this->buildUri($this->endpoint . '?' . $params));
-            // die;
             $response = $this->httpClient->get(
                 $this->buildUri($this->endpoint . '?' . $params),
                 $this->buildRequestOptions()
