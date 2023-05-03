@@ -6,6 +6,7 @@ namespace OWC\Zaaksysteem\Entities\Casts;
 
 use InvalidArgumentException;
 use OWC\Zaaksysteem\Entities\Entity;
+use OWC\Zaaksysteem\Entities\Attributes\EnumAttribute;
 use OWC\Zaaksysteem\Entities\Attributes\SubjectType as SubjectTypeAttribute;
 
 class SubjectType extends AbstractCast
@@ -24,8 +25,8 @@ class SubjectType extends AbstractCast
         return new SubjectTypeAttribute($value);
     }
 
-    public function serialize(string $name, $value)
+    public function serialize(string $name, $value): string
     {
-        return $value->get();
+        return (is_object($value) && $value instanceof EnumAttribute) ? $value->get() : $value;
     }
 }

@@ -45,6 +45,7 @@ class Zaak extends Entity
 
         'statussen' => Casts\Related\Statussen::class,
         'zaakinformatieobjecten' => Casts\Related\Zaakinformatieobjecten::class,
+        'rollen' => Casts\Related\Rollen::class,
     ];
 
     public function title(): string
@@ -54,5 +55,19 @@ class Zaak extends Entity
             $this->omschrijving,
             $this->registratiedatum ? $this->registratiedatum->format('d-m-Y') : ''
         );
+    }
+
+    /**
+     * Wether or not the current Zaak is initiated by the given BSN.
+     */
+    public function isInitiatedBy(string $bsn): bool
+    {
+        $validRollen = $this->rollen->filter(function (Rol $rol) use ($bsn) {
+            return $rol->isInitiator()
+                && $rol->betrokkeneType->is('natuurlijk_persoon')
+                && $rol->betrokkeneIdentificatie['inpBsn'] === $bsn;
+        });
+
+        return $validRollen->isNotEmpty();
     }
 }
