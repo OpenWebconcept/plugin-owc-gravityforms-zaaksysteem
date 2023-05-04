@@ -3,6 +3,7 @@
 namespace OWC\Zaaksysteem\GravityForms;
 
 use OWC\Zaaksysteem\Client\Client;
+use OWC\Zaaksysteem\Entities\Zaaktype;
 use OWC\Zaaksysteem\Foundation\Plugin;
 
 use function OWC\Zaaksysteem\Foundation\Helpers\config;
@@ -37,23 +38,14 @@ class GravityFormsFormSettings
     public function getTypesOpenZaak(): array
     {
         $client = $this->getApiClient();
-        $data = $client->zaaktypen()->all();
 
-        if ($data->isEmpty()){
-            return [];
-        }
-
-        $collect = [];
-
-        foreach ($data as $result) {
-            $collect[] = [
-                'name' => $result['identificatie'],
-                'label' => "{$result['omschrijving']} ({$result['identificatie']})",
-                'value' => $result['url']
+        return $client->zaaktypen()->all()->map(function (Zaaktype $zaaktype) {
+            return [
+                'name' => $zaaktype->identificatie,
+                'label' => "{$zaaktype->omschrijving} ({$zaaktype->identificatie})",
+                'value' => $zaaktype->url
             ];
-        }
-
-        return $collect;
+        })->all();
     }
 
     /**

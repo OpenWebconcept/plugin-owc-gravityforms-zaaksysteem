@@ -43,7 +43,7 @@ class ZaakeigenschappenEndpoint extends Endpoint
         return $this->getCollection($this->handleResponse($response));
     }
 
-    public function create($uuid, Zaakeigenschap $model): Zaakeigenschap
+    public function create(string $uuid, Zaakeigenschap $model): Zaakeigenschap
     {
         $response = $this->httpClient->post(
             $this->buildUri($this->apiType . '/' . $uuid . '/' . $this->endpoint),

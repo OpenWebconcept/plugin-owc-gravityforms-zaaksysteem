@@ -7,6 +7,7 @@ namespace OWC\Zaaksysteem\Repositories\OpenZaak;
 use Exception;
 
 use OWC\Zaaksysteem\Client\Client;
+use OWC\Zaaksysteem\Endpoint\Filter\RoltypenFilter;
 use OWC\Zaaksysteem\Entities\Rol;
 use OWC\Zaaksysteem\Entities\Zaak;
 use OWC\Zaaksysteem\Entities\Zaakeigenschap;
@@ -48,7 +49,10 @@ class ZaakRepository extends AbstractRepository
     {
         $client = $this->getApiClient();
 
-        return $client->roltypen()->all('zaaktype=' . $zaaktype);
+        $filter = new RoltypenFilter();
+        $filter->get('zaaktype', $zaaktype);
+
+        return $client->roltypen()->filter($filter);
     }
 
     /**

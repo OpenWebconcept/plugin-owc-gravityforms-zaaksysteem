@@ -3,6 +3,7 @@
 namespace OWC\Zaaksysteem\GravityForms;
 
 use OWC\Zaaksysteem\Client\Client;
+use OWC\Zaaksysteem\Endpoint\Filter\EigenschappenFilter;
 use OWC\Zaaksysteem\Foundation\Plugin;
 
 use function OWC\Zaaksysteem\Foundation\Helpers\get_supplier;
@@ -36,9 +37,11 @@ class GravityFormsFieldSettings
     public function getZaaktypenEigenschappen(string $zaakTypeUrl): array
     {
         $client = $this->getApiClient();
-        $data = $client->eigenschappen()->get('?zaaktype=' . $zaakTypeUrl);
 
-        return $data->results;
+        $filter = new EigenschappenFilter();
+        $filter->get('zaaktype', $zaakTypeUrl);
+
+        return $client->eigenschappen()->filter($filter);
     }
 
     /**
