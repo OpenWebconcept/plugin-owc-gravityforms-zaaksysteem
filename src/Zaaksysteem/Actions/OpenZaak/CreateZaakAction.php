@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace OWC\Zaaksysteem\Repositories\OpenZaak;
+namespace OWC\Zaaksysteem\Actions\OpenZaak;
 
 use Exception;
 
@@ -12,14 +12,14 @@ use OWC\Zaaksysteem\Entities\Rol;
 use OWC\Zaaksysteem\Entities\Zaak;
 use OWC\Zaaksysteem\Entities\Zaakeigenschap;
 use OWC\Zaaksysteem\Foundation\Plugin;
-use OWC\Zaaksysteem\Repositories\AbstractRepository;
 use OWC\Zaaksysteem\Support\PagedCollection;
 use OWC\Zaaksysteem\Http\Errors\BadRequestError;
 
 use function OWC\Zaaksysteem\Foundation\Helpers\decrypt;
+use function OWC\Zaaksysteem\Foundation\Helpers\field_mapping;
 use function Yard\DigiD\Foundation\Helpers\resolve;
 
-class ZaakRepository extends AbstractRepository
+class CreateZaakAction
 {
     /**
      * Instance of the plugin.
@@ -27,7 +27,7 @@ class ZaakRepository extends AbstractRepository
     protected Plugin $plugin;
 
     /**
-     * Construct the repository.
+     * Construct the action.
      */
     public function __construct(Plugin $plugin)
     {
@@ -96,7 +96,7 @@ class ZaakRepository extends AbstractRepository
     public function addZaakEigenschappen(Zaak $zaak, $fields, $entry): void
     {
         $client = $this->getApiClient();
-        $mapping = $this->fieldMapping($fields, $entry);
+        $mapping = field_mapping($fields, $entry);
 
         foreach ($mapping as $value) {
             $property = [

@@ -2,12 +2,11 @@
 
 declare(strict_types=1);
 
-namespace OWC\Zaaksysteem\Repositories\EnableU;
+namespace OWC\Zaaksysteem\Actions\EnableU;
 
 use OWC\Zaaksysteem\Foundation\Plugin;
-use OWC\Zaaksysteem\Repositories\AbstractRepository;
 
-class ZaakRepository extends AbstractRepository
+class CreateZaakAction
 {
     /**
      * Instance of the plugin.
@@ -15,7 +14,7 @@ class ZaakRepository extends AbstractRepository
     protected Plugin $plugin;
 
     /**
-     * Construct the repository.
+     * Construct the action.
      *
      * @todo add the EnableU logic.
      */

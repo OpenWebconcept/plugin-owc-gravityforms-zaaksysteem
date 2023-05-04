@@ -60,8 +60,8 @@ class GravityForms
     protected function createZaak(array $entry, array $form): ?Zaak
     {
         $handle = $this->supplier;
-        $repository = sprintf('OWC\Zaaksysteem\Repositories\%s\ZaakRepository', $handle);
-        $instance = new $repository($this->plugin);
+        $action = sprintf('OWC\Zaaksysteem\Actions\%s\CreateZaakAction', $handle);
+        $instance = new $action($this->plugin);
 
         return $instance->addZaak($entry, $form);
     }
