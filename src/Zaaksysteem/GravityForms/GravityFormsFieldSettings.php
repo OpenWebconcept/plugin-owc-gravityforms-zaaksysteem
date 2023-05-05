@@ -4,6 +4,7 @@ namespace OWC\Zaaksysteem\GravityForms;
 
 use OWC\Zaaksysteem\Client\Client;
 use OWC\Zaaksysteem\Endpoint\Filter\EigenschappenFilter;
+use OWC\Zaaksysteem\Entities\Zaaktype;
 use OWC\Zaaksysteem\Foundation\Plugin;
 
 use function OWC\Zaaksysteem\Foundation\Helpers\get_supplier;
@@ -32,14 +33,30 @@ class GravityFormsFieldSettings
     }
 
     /**
+     * Get the `zaaktype` by `identifier`.
+     */
+    public function getZaaktypeByIdentifier(string $zaaktypeIdentifier): Zaaktype
+    {
+        $client = $this->getApiClient();
+
+        $zaaktype = $client->zaaktypen()->all()->filter(
+            function (Zaaktype $zaaktype) use ($zaaktypeIdentifier) {
+                return $zaaktype->identificatie === $zaaktypeIdentifier;
+            }
+        )->first();
+
+        return $zaaktype;
+    }
+
+    /**
      * Get the `zaakeigenschappen` belonging to the chosen `zaaktype`.
      */
-    public function getZaaktypenEigenschappen(string $zaakTypeUrl): array
+    public function getZaaktypenEigenschappen(string $zaaktypeUrl): array
     {
         $client = $this->getApiClient();
 
         $filter = new EigenschappenFilter();
-        $filter->get('zaaktype', $zaakTypeUrl);
+        $filter->get('zaaktype', $zaaktypeUrl);
 
         return $client->eigenschappen()->filter($filter);
     }
@@ -70,11 +87,15 @@ class GravityFormsFieldSettings
             return;
         }
 
-        // Get the selected zaaktype from the form settings.
-        $zaaktype = $form[sprintf('%s-form-setting-%s-identifier', OWC_GZ_PLUGIN_SLUG, $supplier)];
+        // Get the selected zaaktype identifier from the form's settings.
+        // Unfortunately we cannot just get the zaaktype URI since this might change when updated.
+        $zaaktypeIdentifier = $form[sprintf('%s-form-setting-%s-identifier', OWC_GZ_PLUGIN_SLUG, $supplier)];
+
+        // Get the zaaktype belonging to the chosen zaaktype identifier.
+        $zaaktype = $this->getZaaktypeByIdentifier($zaaktypeIdentifier);
 
         // Get the zaakeigenschappen belonging to the chosen zaaktype.
-        $properties = $this->getZaaktypenEigenschappen($zaaktype);
+        $properties = $this->getZaaktypenEigenschappen($zaaktype->url);
 
         $options = [];
         foreach ($properties as $property) {

@@ -65,21 +65,21 @@ class CreateZaakAction
         $zaaktype = $form[sprintf('%s-form-setting-%s-identifier', OWC_GZ_PLUGIN_SLUG, 'openzaak')];
 
         if (empty($rsin)) {
-            throw new Exception('Het RSIN is niet ingesteld in Gravity Forms instellingen');
+            throw new Exception('Het RSIN is niet ingesteld in de Gravity Forms instellingen');
         }
 
         if (empty($zaaktype)) {
-            throw new Exception('Het zaaktype is niet ingesteld in Gravity Forms instellingen');
+            throw new Exception('Het zaaktype is niet ingesteld in de Gravity Forms instellingen');
         }
 
         $args = [
             'bronorganisatie' => $rsin,
-            'verantwoordelijkeOrganisatie' => $rsin,
-            'zaaktype' => $zaaktype,
+            'informatieobject' => '',
+            'omschrijving' => '',
             'registratiedatum' => date('Y-m-d'),
             'startdatum' => date('Y-m-d'),
-            'omschrijving' => '',
-            'informatieobject' => ''
+            'verantwoordelijkeOrganisatie' => $rsin,
+            'zaaktype' => $zaaktype
         ];
 
         $zaak = $client->zaken()->create(new Zaak($args, $client::CLIENT_NAME));
@@ -100,9 +100,9 @@ class CreateZaakAction
 
         foreach ($mapping as $value) {
             $property = [
-                'zaak' => $zaak->uri,
                 'eigenschap' => $value['eigenschap'],
                 'waarde' => $value['waarde'],
+                'zaak' => $zaak->uri,
             ];
 
             try {
@@ -141,13 +141,13 @@ class CreateZaakAction
             }
 
             $args = [
-                'zaak' => $zaak->url,
-                'betrokkeneType' => 'natuurlijk_persoon',
-                'roltype' => $rolType['url'],
-                'roltoelichting' => 'De indiener van de zaak.',
                 'betrokkeneIdentificatie' => [
                     'inpBsn' => $currentBsn
-                ]
+                ],
+                'betrokkeneType' => 'natuurlijk_persoon',
+                'roltoelichting' => 'De indiener van de zaak.',
+                'roltype' => $rolType['url'],
+                'zaak' => $zaak->url
             ];
 
             try {
