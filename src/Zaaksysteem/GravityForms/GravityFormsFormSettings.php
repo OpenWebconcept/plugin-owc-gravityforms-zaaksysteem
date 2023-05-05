@@ -43,7 +43,7 @@ class GravityFormsFormSettings
             return [
                 'name' => $zaaktype->identificatie,
                 'label' => "{$zaaktype->omschrijving} ({$zaaktype->identificatie})",
-                'value' => $zaaktype->url
+                'value' => $zaaktype->identificatie
             ];
         })->all();
     }

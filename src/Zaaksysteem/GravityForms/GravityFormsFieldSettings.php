@@ -6,6 +6,7 @@ use OWC\Zaaksysteem\Client\Client;
 use OWC\Zaaksysteem\Endpoint\Filter\EigenschappenFilter;
 use OWC\Zaaksysteem\Entities\Zaaktype;
 use OWC\Zaaksysteem\Foundation\Plugin;
+use OWC\Zaaksysteem\Support\PagedCollection;
 
 use function OWC\Zaaksysteem\Foundation\Helpers\get_supplier;
 use function OWC\Zaaksysteem\Foundation\Helpers\view;
@@ -33,30 +34,34 @@ class GravityFormsFieldSettings
     }
 
     /**
-     * Get the `zaaktype` by `identifier`.
+     * Use the selected `zaaktype identifier` to retrieve the `zaaktype`.
+     *
+     * @todo we cannot use the zaaktype URI to retrieve a zaaktype because it is bound to change when the zaaktype is updated. There doesn't seem to be a way to retrieve the zaaktype by identifier, so we have to get all the zaaktypen first and then filter them by identifier. We should change this when the API supports this.
+     *
+     * @see https://github.com/OpenWebconcept/plugin-owc-gravityforms-zaaksysteem/issues/13#issue-1697256063
      */
-    public function getZaaktypeByIdentifier(string $zaaktypeIdentifier): Zaaktype
+    public function getZaakType(string $zaaktypeIdentifier): ?Zaaktype
     {
-        $client = $this->getApiClient();
-
-        $zaaktype = $client->zaaktypen()->all()->filter(
+        // Get the zaaktype belonging to the chosen zaaktype identifier.
+        return $this->getApiClient()->zaaktypen()->all()->map(
             function (Zaaktype $zaaktype) use ($zaaktypeIdentifier) {
-                return $zaaktype->identificatie === $zaaktypeIdentifier;
+                if ($zaaktype->identificatie === $zaaktypeIdentifier) {
+                    return $zaaktype;
+                }
             }
         )->first();
-
-        return $zaaktype;
     }
+
 
     /**
      * Get the `zaakeigenschappen` belonging to the chosen `zaaktype`.
      */
-    public function getZaaktypenEigenschappen(string $zaaktypeUrl): array
+    public function getZaaktypenEigenschappen(string $zaaktypeUrl): PagedCollection
     {
         $client = $this->getApiClient();
 
         $filter = new EigenschappenFilter();
-        $filter->get('zaaktype', $zaaktypeUrl);
+        $filter->add('zaaktype', $zaaktypeUrl);
 
         return $client->eigenschappen()->filter($filter);
     }
@@ -88,21 +93,25 @@ class GravityFormsFieldSettings
         }
 
         // Get the selected zaaktype identifier from the form's settings.
-        // Unfortunately we cannot just get the zaaktype URI since this might change when updated.
         $zaaktypeIdentifier = $form[sprintf('%s-form-setting-%s-identifier', OWC_GZ_PLUGIN_SLUG, $supplier)];
 
         // Get the zaaktype belonging to the chosen zaaktype identifier.
-        $zaaktype = $this->getZaaktypeByIdentifier($zaaktypeIdentifier);
+        $zaaktype = $this->getZaakType($zaaktypeIdentifier);
 
-        // Get the zaakeigenschappen belonging to the chosen zaaktype.
-        $properties = $this->getZaaktypenEigenschappen($zaaktype->url);
+        if (empty($zaaktype['url'])) {
+            $properties = [];
+        } else {
+            $properties = $this->getZaaktypenEigenschappen($zaaktype->url);
+        }
 
         $options = [];
-        foreach ($properties as $property) {
-            $options[] = [
-                'label' => $property['naam'],
-                'value' => $property['url']
-            ];
+        if (!empty($properties)) {
+            foreach ($properties as $property) {
+                $options[] = [
+                    'label' => $property['naam'],
+                    'value' => $property['url']
+                ];
+            }
         }
 
         echo view('partials/gf-field-options.php', [

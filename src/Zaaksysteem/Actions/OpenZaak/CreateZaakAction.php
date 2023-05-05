@@ -10,6 +10,7 @@ use OWC\Zaaksysteem\Client\Client;
 use OWC\Zaaksysteem\Endpoint\Filter\RoltypenFilter;
 use OWC\Zaaksysteem\Entities\Rol;
 use OWC\Zaaksysteem\Entities\Zaak;
+use OWC\Zaaksysteem\Entities\Zaaktype;
 use OWC\Zaaksysteem\Entities\Zaakeigenschap;
 use OWC\Zaaksysteem\Foundation\Plugin;
 use OWC\Zaaksysteem\Support\PagedCollection;
@@ -56,13 +57,33 @@ class CreateZaakAction
     }
 
     /**
+     * Use the selected `zaaktype identifier` to retrieve the `zaaktype`.
+     *
+     * @todo we cannot use the zaaktype URI to retrieve a zaaktype because it is bound to change when the zaaktype is updated. There doesn't seem to be a way to retrieve the zaaktype by identifier, so we have to get all the zaaktypen first and then filter them by identifier. We should change this when the API supports this.
+     *
+     * @see https://github.com/OpenWebconcept/plugin-owc-gravityforms-zaaksysteem/issues/13#issue-1697256063
+     */
+    public function getZaakType($form): ?Zaaktype
+    {
+        $zaaktypeIdentifier = $form[sprintf('%s-form-setting-%s-identifier', OWC_GZ_PLUGIN_SLUG, 'openzaak')];
+
+        return $this->getApiClient()->zaaktypen()->all()->map(
+            function (Zaaktype $zaaktype) use ($zaaktypeIdentifier) {
+                if ($zaaktype->identificatie === $zaaktypeIdentifier) {
+                    return $zaaktype;
+                }
+            }
+        )->first();
+    }
+
+    /**
      * Create "zaak".
      */
     public function addZaak($entry, $form): ?Zaak
     {
         $client = $this->getApiClient();
         $rsin = $this->plugin->getContainer()->get('rsin');
-        $zaaktype = $form[sprintf('%s-form-setting-%s-identifier', OWC_GZ_PLUGIN_SLUG, 'openzaak')];
+        $zaaktype = $this->getZaakType($form);
 
         if (empty($rsin)) {
             throw new Exception('Het RSIN is niet ingesteld in de Gravity Forms instellingen');
@@ -79,12 +100,12 @@ class CreateZaakAction
             'registratiedatum' => date('Y-m-d'),
             'startdatum' => date('Y-m-d'),
             'verantwoordelijkeOrganisatie' => $rsin,
-            'zaaktype' => $zaaktype
+            'zaaktype' => $zaaktype['url']
         ];
 
         $zaak = $client->zaken()->create(new Zaak($args, $client::CLIENT_NAME));
 
-        $this->addRolToZaak($zaak, $zaaktype);
+        $this->addRolToZaak($zaak, $zaaktype['url']);
         $this->addZaakEigenschappen($zaak, $form['fields'], $entry);
 
         return $zaak;
