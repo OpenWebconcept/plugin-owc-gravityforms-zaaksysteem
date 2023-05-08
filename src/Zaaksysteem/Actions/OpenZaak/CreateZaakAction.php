@@ -128,7 +128,7 @@ class CreateZaakAction
 
             try {
                 $client->zaakeigenschappen()->create(
-                    $zaak->uuid,
+                    $zaak,
                     new Zaakeigenschap($property, $client::CLIENT_NAME)
                 );
             } catch (BadRequestError $e) {
