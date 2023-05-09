@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace OWC\Zaaksysteem\Endpoint;
 
-use OWC\Zaaksysteem\Entities\Rol;
+use OWC\Zaaksysteem\Entities\Eigenschap;
 use OWC\Zaaksysteem\Support\PagedCollection;
 
-class RollenEndpoint extends Endpoint
+class EigenschappenEndpoint extends Endpoint
 {
-    protected string $apiType = 'zaken';
-    protected string $endpoint = 'rollen';
-    protected string $entityClass = Rol::class;
+    protected string $apiType = 'catalogi';
+    protected string $endpoint = 'eigenschappen';
+    protected string $entityClass = Eigenschap::class;
 
     public function all(): PagedCollection
     {
@@ -23,17 +23,17 @@ class RollenEndpoint extends Endpoint
         return $this->getPagedCollection($this->handleResponse($response));
     }
 
-    public function get(string $identifier): ?Rol
+    public function get(string $identifier): ?Eigenschap
     {
         $response = $this->httpClient->get(
-            $this->buildUri($this->endpoint . '/' . $identifier),
+            $this->buildUri($this->endpoint . $identifier),
             $this->buildRequestOptions()
         );
 
         return $this->getSingleEntity($this->handleResponse($response));
     }
 
-    public function filter(Filter\RollenFilter $filter): PagedCollection
+    public function filter(Filter\EigenschappenFilter $filter): PagedCollection
     {
         $response = $this->httpClient->get(
             $this->buildUri($this->endpoint, $filter),
@@ -41,16 +41,5 @@ class RollenEndpoint extends Endpoint
         );
 
         return $this->getPagedCollection($this->handleResponse($response));
-    }
-
-    public function create(Rol $model): Rol
-    {
-        $response = $this->httpClient->post(
-            $this->buildUri($this->endpoint),
-            $model->toJson(),
-            $this->buildRequestOptions()
-        );
-
-        return $this->getSingleEntity($this->handleResponse($response));
     }
 }

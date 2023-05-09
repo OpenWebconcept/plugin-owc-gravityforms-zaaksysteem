@@ -4,26 +4,27 @@ declare(strict_types=1);
 
 namespace OWC\Zaaksysteem\Endpoint;
 
-use OWC\Zaaksysteem\Entities\Rol;
-use OWC\Zaaksysteem\Support\PagedCollection;
+use OWC\Zaaksysteem\Support\Collection;
+use OWC\Zaaksysteem\Entities\Zaak;
+use OWC\Zaaksysteem\Entities\Zaakeigenschap;
 
-class RollenEndpoint extends Endpoint
+class ZaakeigenschappenEndpoint extends Endpoint
 {
     protected string $apiType = 'zaken';
-    protected string $endpoint = 'rollen';
-    protected string $entityClass = Rol::class;
+    protected string $endpoint = 'zaakeigenschappen';
+    protected string $entityClass = Zaakeigenschap::class;
 
-    public function all(): PagedCollection
+    public function all(): Collection
     {
         $response = $this->httpClient->get(
             $this->buildUri($this->endpoint),
             $this->buildRequestOptions()
         );
 
-        return $this->getPagedCollection($this->handleResponse($response));
+        return $this->getCollection($this->handleResponse($response));
     }
 
-    public function get(string $identifier): ?Rol
+    public function get(string $identifier): ?Zaakeigenschap
     {
         $response = $this->httpClient->get(
             $this->buildUri($this->endpoint . '/' . $identifier),
@@ -33,20 +34,20 @@ class RollenEndpoint extends Endpoint
         return $this->getSingleEntity($this->handleResponse($response));
     }
 
-    public function filter(Filter\RollenFilter $filter): PagedCollection
+    public function filter(Filter\ZaakeigenschappenFilter $filter): Collection
     {
         $response = $this->httpClient->get(
             $this->buildUri($this->endpoint, $filter),
             $this->buildRequestOptions($filter)
         );
 
-        return $this->getPagedCollection($this->handleResponse($response));
+        return $this->getCollection($this->handleResponse($response));
     }
 
-    public function create(Rol $model): Rol
+    public function create(Zaak $zaak, Zaakeigenschap $model): Zaakeigenschap
     {
         $response = $this->httpClient->post(
-            $this->buildUri($this->endpoint),
+            $this->buildUri($this->apiType . '/' . $zaak->uuid . '/' . $this->endpoint),
             $model->toJson(),
             $this->buildRequestOptions()
         );
