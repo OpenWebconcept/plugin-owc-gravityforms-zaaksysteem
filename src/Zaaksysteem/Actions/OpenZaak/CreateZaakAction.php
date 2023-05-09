@@ -67,7 +67,7 @@ class CreateZaakAction
     {
         $zaaktypeIdentifier = $form[sprintf('%s-form-setting-%s-identifier', OWC_GZ_PLUGIN_SLUG, 'openzaak')];
 
-        return $this->getApiClient()->zaaktypen()->all()->map(
+        return $this->getApiClient()->zaaktypen()->all()->filter(
             function (Zaaktype $zaaktype) use ($zaaktypeIdentifier) {
                 if ($zaaktype->identificatie === $zaaktypeIdentifier) {
                     return $zaaktype;

@@ -43,7 +43,7 @@ class GravityFormsFieldSettings
     public function getZaakType(string $zaaktypeIdentifier): ?Zaaktype
     {
         // Get the zaaktype belonging to the chosen zaaktype identifier.
-        return $this->getApiClient()->zaaktypen()->all()->map(
+        return $this->getApiClient()->zaaktypen()->all()->filter(
             function (Zaaktype $zaaktype) use ($zaaktypeIdentifier) {
                 if ($zaaktype->identificatie === $zaaktypeIdentifier) {
                     return $zaaktype;

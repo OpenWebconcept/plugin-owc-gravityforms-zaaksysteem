@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace OWC\Zaaksysteem\Foundation\Helpers;
 
 use DateTime;
+use Exception;
 
 use OWC\Zaaksysteem\Foundation\Plugin;
 use OWC\Zaaksysteem\Foundation\Cryptor;
@@ -123,7 +124,11 @@ function field_mapping(array $fields, array $entry): array
         }
 
         if ($field->type === 'date') {
-            $property = (new DateTime($property))->format('Y-m-d');
+            try {
+                $property = (new DateTime($property))->format('Y-m-d');
+            } catch (Exception $e) {
+                $property = '0000-00-00';
+            }
         }
 
         $mappedFields[$field->id] = [
