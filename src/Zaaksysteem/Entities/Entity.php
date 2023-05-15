@@ -16,7 +16,7 @@ abstract class Entity implements
     use Traits\Arrayable;
     use Traits\HasCastableAttributes;
 
-    protected array $data;
+    protected array $data = [];
     protected array $casts = [];
     protected string $clientName;
 
