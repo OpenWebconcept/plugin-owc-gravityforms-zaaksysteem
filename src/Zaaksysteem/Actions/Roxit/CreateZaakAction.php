@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace OWC\Zaaksysteem\Actions\OpenZaak;
+namespace OWC\Zaaksysteem\Actions\Roxit;
 
 use Exception;
 
@@ -40,7 +40,7 @@ class CreateZaakAction
      */
     protected function getApiClient(): Client
     {
-        return $this->plugin->getContainer()->get('oz.client');
+        return $this->plugin->getContainer()->get('ro.client');
     }
 
     /**
@@ -65,7 +65,7 @@ class CreateZaakAction
      */
     public function getZaakType($form): ?Zaaktype
     {
-        $zaaktypeIdentifier = $form[sprintf('%s-form-setting-%s-identifier', OWC_GZ_PLUGIN_SLUG, 'openzaak')];
+        $zaaktypeIdentifier = $form[sprintf('%s-form-setting-%s-identifier', OWC_GZ_PLUGIN_SLUG, 'roxit')];
 
         return $this->getApiClient()->zaaktypen()->all()->filter(
             function (Zaaktype $zaaktype) use ($zaaktypeIdentifier) {
@@ -96,7 +96,7 @@ class CreateZaakAction
         $args = [
             'bronorganisatie' => $rsin,
             'informatieobject' => '',
-            'omschrijving' => '', // TODO: add form name
+            'omschrijving' => 'Roxit', // TODO: add form name
             'registratiedatum' => date('Y-m-d'),
             'startdatum' => date('Y-m-d'),
             'verantwoordelijkeOrganisatie' => $rsin,
@@ -119,11 +119,12 @@ class CreateZaakAction
         $client = $this->getApiClient();
         $mapping = field_mapping($fields, $entry);
 
+
         foreach ($mapping as $value) {
             $property = [
                 'eigenschap' => $value['eigenschap'],
                 'waarde' => $value['waarde'],
-                'zaak' => $zaak->uri,
+                'zaak' => $zaak->url,
             ];
 
             try {

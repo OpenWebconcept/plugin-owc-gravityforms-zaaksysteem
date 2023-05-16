@@ -30,7 +30,7 @@ class GravityFormsFieldSettings
      */
     protected function getApiClient(): Client
     {
-        return $this->plugin->getContainer()->get('oz.client');
+        return $this->plugin->getContainer()->get('ro.client');
     }
 
     /**
