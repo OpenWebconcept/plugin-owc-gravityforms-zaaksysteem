@@ -12,9 +12,10 @@
                      * @todo build proxy to download files
                      */
 
-                    ?>
+                ?>
                     <a href="#">
-                        <?= $document->titel; ?> (<?= $document->informatieobject->formaat; ?>)
+                        <!-- @todo currently results in a server error at OZ -->
+                        <?php /* $document->titel; */ ?> (<?php /* $document->informatieobject->formaat; */ ?>)
                     </a>
                 </li>
             <?php endforeach; ?>

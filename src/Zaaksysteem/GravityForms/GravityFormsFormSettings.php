@@ -24,12 +24,16 @@ class GravityFormsFormSettings
 
     /**
      * Get the api client.
-     *
-     * @todo make generic, so we can use it for Decos Join as well.
      */
-    protected function getApiClient(): Client
+    protected function getApiClient(string $client): Client
     {
-        return $this->plugin->getContainer()->get('oz.client');
+        switch ($client) {
+            case 'openzaak': //fallthrough
+            case 'roxit':
+                return $this->plugin->getContainer()->get('ro.client');
+            default:
+                return $this->plugin->getContainer()->get('oz.client');
+        }
     }
 
     /**
@@ -37,7 +41,23 @@ class GravityFormsFormSettings
      */
     public function getTypesOpenZaak(): array
     {
-        $client = $this->getApiClient();
+        $client = $this->getApiClient('openzaak');
+
+        return $client->zaaktypen()->all()->map(function (Zaaktype $zaaktype) {
+            return [
+                'name' => $zaaktype->identificatie,
+                'label' => "{$zaaktype->omschrijving} ({$zaaktype->identificatie})",
+                'value' => $zaaktype->identificatie
+            ];
+        })->all();
+    }
+
+    /**
+     * Get a list of related 'zaaktypen' from Roxit.
+     */
+    public function getTypesRoxit(): array
+    {
+        $client = $this->getApiClient('roxit');
 
         return $client->zaaktypen()->all()->map(function (Zaaktype $zaaktype) {
             return [
@@ -99,19 +119,24 @@ class GravityFormsFormSettings
                             'value' => 'none',
                         ],
                         [
+                            'name'  => "{$this->prefix}-form-setting-supplier-decos-join",
+                            'label' => __('Decos Join', config('core.text_domain')),
+                            'value' => 'decos-join',
+                        ],
+                        [
+                            'name'  => "{$this->prefix}-form-setting-supplier-enable-u",
+                            'label' => __('EnableU', config('core.text_domain')),
+                            'value' => 'enable-u',
+                        ],
+                        [
                             'name'  => "{$this->prefix}-form-setting-supplier-openzaak",
                             'label' => __('OpenZaak', config('core.text_domain')),
                             'value' => 'openzaak',
                         ],
                         [
-                            'name'  => "{$this->prefix}-form-setting-supplier-openzaak",
-                            'label' => __('EnableU', config('core.text_domain')),
-                            'value' => 'enable-u',
-                        ],
-                        [
-                            'name'  => "{$this->prefix}-form-setting-supplier-decos-join",
-                            'label' => __('Decos Join', config('core.text_domain')),
-                            'value' => 'decos-join',
+                            'name'  => "{$this->prefix}-form-setting-supplier-roxit",
+                            'label' => __('Rx.Services Roxit', config('core.text_domain')),
+                            'value' => 'roxit',
                         ],
                     ],
                 ],
@@ -160,6 +185,21 @@ class GravityFormsFormSettings
                         ],
                     ],
                     'choices' => $this->getTypesEnableU(),
+                ],
+                [
+                    'name'    => "{$this->prefix}-form-setting-roxit-identifier",
+                    'type'    => 'select',
+                    'label'   => esc_html__('Roxit identifier', config('core.text_domain')),
+                    'dependency' => [
+                        'live'   => true,
+                        'fields' => [
+                            [
+                                'field' => "{$this->prefix}-form-setting-supplier",
+                                'values' => ['roxit'],
+                            ],
+                        ],
+                    ],
+                    'choices' => $this->getTypesRoxit(),
                 ]
             ],
         ];

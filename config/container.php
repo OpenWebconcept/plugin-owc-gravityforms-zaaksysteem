@@ -28,6 +28,24 @@ return [
     },
 
     /**
+     * Roxit configuration
+     */
+    'roxit.abbr' => 'ro',
+    'ro.client' => fn (Container $container) => $container->get(Client\RoxitClient::class),
+    'ro.base_uri' => function (Container $container) {
+        return $container->make('gf.setting', ['-roxit-url']);
+    },
+    'ro.client_id' => function (Container $container) {
+        return $container->make('gf.setting', ['-roxit-client-id']);
+    },
+    'ro.client_secret' => function (Container $container) {
+        return $container->make('gf.setting', ['-roxit-client-secret']);
+    },
+    'ro.authenticator' => function (Container $container) {
+        return $container->get(Http\Authentication\RoxitAuthenticator::class);
+    },
+
+    /**
      * Decos JOIN configuration
      */
     'decosjoin.abbr' => 'dj',
@@ -74,6 +92,15 @@ return [
             $container->get('oz.authenticator'),
         );
     },
+    Client\RoxitClient::class => function (Container $container) {
+        return new Client\RoxitClient(
+            $container->make(
+                Http\WordPress\WordPressRequestClient::class,
+                [$container->get('ro.base_uri')]
+            ),
+            $container->get('ro.authenticator'),
+        );
+    },
     Client\DecosJoinClient::class => function (Container $container) {
         return new Client\DecosJoinClient(
             $container->make(
@@ -91,6 +118,12 @@ return [
         return new Http\Authentication\OpenZaakAuthenticator(
             $container->get('oz.client_id'),
             $container->get('oz.client_secret'),
+        );
+    },
+    Http\Authentication\RoxitAuthenticator::class => function (Container $container) {
+        return new Http\Authentication\RoxitAuthenticator(
+            $container->get('ro.client_id'),
+            $container->get('ro.client_secret'),
         );
     },
     Http\Authentication\DecosJoinAuthenticator::class => function (Container $container) {

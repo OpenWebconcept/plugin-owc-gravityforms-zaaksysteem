@@ -80,9 +80,10 @@ class GravityFormsAddon extends GFAddOn
     {
         return [
             $this->settingsGeneral(),
-            $this->settingsOpenZaak(),
             $this->settingsDecosJoin(),
             $this->settingsEnableU(),
+            $this->settingsOpenZaak(),
+            $this->settingsRoxit(),
             $this->RSIN()
         ];
     }
@@ -118,6 +119,39 @@ class GravityFormsAddon extends GFAddOn
                     'type'              => 'text',
                     'class'             => 'medium',
                     'name'              => "{$this->prefix}-openzaak-client-secret",
+                ]
+            ],
+        ];
+    }
+
+    protected function settingsRoxit(): array
+    {
+        return [
+            'title'  => esc_html__('Rx.Services Roxit', config('core.text_domain')),
+            'fields' => [
+                [
+                    'label'             => esc_html__('Base URL', config('core.text_domain')),
+                    'type'              => 'text',
+                    'class'             => 'medium',
+                    'name'              => "{$this->prefix}-roxit-url",
+                ],
+                [
+                    'label'             => esc_html__('Client ID', config('core.text_domain')),
+                    'type'              => 'text',
+                    'class'             => 'medium',
+                    'name'              => "{$this->prefix}-roxit-client-id",
+                ],
+                [
+                    'label'             => esc_html__('Client Secret', config('core.text_domain')),
+                    'type'              => 'text',
+                    'class'             => 'medium',
+                    'name'              => "{$this->prefix}-roxit-client-secret",
+                ],
+                [
+                    'label'             => esc_html__('Subdomain', config('core.text_domain')),
+                    'type'              => 'checkbox',
+                    'class'             => 'medium',
+                    'name'              => "{$this->prefix}-roxit-client-subdomain",
                 ]
             ],
         ];
