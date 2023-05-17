@@ -146,12 +146,6 @@ class GravityFormsAddon extends GFAddOn
                     'type'              => 'text',
                     'class'             => 'medium',
                     'name'              => "{$this->prefix}-roxit-client-secret",
-                ],
-                [
-                    'label'             => esc_html__('Subdomain', config('core.text_domain')),
-                    'type'              => 'checkbox',
-                    'class'             => 'medium',
-                    'name'              => "{$this->prefix}-roxit-client-subdomain",
                 ]
             ],
         ];
