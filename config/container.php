@@ -7,15 +7,20 @@ use DI\Container;
 /**
  * Link interfaces to their concretions.
  */
-
 return [
     /**
      * OpenZaak configuration
      */
     'openzaak.abbr' => 'oz',
     'oz.client' => fn (Container $container) => $container->get(Client\OpenZaakClient::class),
-    'oz.base_uri' => function (Container $container) {
-        return $container->make('gf.setting', ['-openzaak-url']);
+    'oz.catalogi_uri' => function (Container $container) {
+        return $container->make('gf.setting', ['-openzaak-catalogi-url']);
+    },
+    'oz.documenten_uri' => function (Container $container) {
+        return $container->make('gf.setting', ['-openzaak-documenten-url']);
+    },
+    'oz.zaken_uri' => function (Container $container) {
+        return $container->make('gf.setting', ['-openzaak-zaken-url']);
     },
     'oz.client_id' => function (Container $container) {
         return $container->make('gf.setting', ['-openzaak-client-id']);
@@ -32,8 +37,14 @@ return [
      */
     'roxit.abbr' => 'ro',
     'ro.client' => fn (Container $container) => $container->get(Client\RoxitClient::class),
-    'ro.base_uri' => function (Container $container) {
-        return $container->make('gf.setting', ['-roxit-url']);
+    'ro.catalogi_uri' => function (Container $container) {
+        return $container->make('gf.setting', ['-roxit-catalogi-url']);
+    },
+    'ro.documenten_uri' => function (Container $container) {
+        return $container->make('gf.setting', ['-roxit-documenten-url']);
+    },
+    'ro.zaken_uri' => function (Container $container) {
+        return $container->make('gf.setting', ['-roxit-zaken-url']);
     },
     'ro.client_id' => function (Container $container) {
         return $container->make('gf.setting', ['-roxit-client-id']);
@@ -50,8 +61,14 @@ return [
      */
     'decosjoin.abbr' => 'dj',
     'dj.client' => fn (Container $container) => $container->get(Client\DecosJoinClient::class),
-    'dj.base_uri' => function (Container $container) {
-        return $container->make('gf.setting', ['-decos-join-url']);
+    'dj.catalogi_uri' => function (Container $container) {
+        return $container->make('gf.setting', ['-decos-join-catalogi-url']);
+    },
+    'dj.documenten_uri' => function (Container $container) {
+        return $container->make('gf.setting', ['-decos-join-documenten-url']);
+    },
+    'dj.zaken_uri' => function (Container $container) {
+        return $container->make('gf.setting', ['-decos-join-zaken-url']);
     },
     'dj.token_uri' => function (Container $container) {
         return $container->make('gf.setting', ['-decos-join-token-url']);
@@ -86,8 +103,7 @@ return [
     Client\OpenZaakClient::class => function (Container $container) {
         return new Client\OpenZaakClient(
             $container->make(
-                Http\WordPress\WordPressRequestClient::class,
-                [$container->get('oz.base_uri')]
+                Http\WordPress\WordPressRequestClient::class
             ),
             $container->get('oz.authenticator'),
         );
@@ -95,8 +111,7 @@ return [
     Client\RoxitClient::class => function (Container $container) {
         return new Client\RoxitClient(
             $container->make(
-                Http\WordPress\WordPressRequestClient::class,
-                [$container->get('ro.base_uri')]
+                Http\WordPress\WordPressRequestClient::class
             ),
             $container->get('ro.authenticator'),
         );
@@ -104,8 +119,7 @@ return [
     Client\DecosJoinClient::class => function (Container $container) {
         return new Client\DecosJoinClient(
             $container->make(
-                Http\WordPress\WordPressRequestClient::class,
-                [$container->get('dj.base_uri')]
+                Http\WordPress\WordPressRequestClient::class
             ),
             $container->get('dj.authenticator'),
         );
@@ -138,10 +152,9 @@ return [
     /**
      * HTTP clients
      */
-    Http\WordPress\WordPressRequestClient::class => function (Container $container, string $type, string $baseUri) {
+    Http\WordPress\WordPressRequestClient::class => function (Container $container, string $type) {
         return new Http\WordPress\WordPressRequestClient(
             new Http\RequestOptions([
-                'base_uri'      => $baseUri,
                 'headers'       => [
                     'Accept-Crs'    => 'EPSG:4326',
                     'Content-Crs'   => 'EPSG:4326',
