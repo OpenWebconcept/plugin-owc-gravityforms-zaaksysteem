@@ -72,7 +72,7 @@ class BaseController
                 continue;
             }
 
-            $digiDFieldID = $field->id;
+            $digiDFieldID = sprintf('%d.1', $field->id);
 
             break;
         }
