@@ -42,22 +42,53 @@ class BaseController
                 continue;
             }
 
-            $property = rgar($this->entry, (string)$field->id);
+            $fieldValue = rgar($this->entry, (string)$field->id);
 
-            if (empty($property)) {
+            if (empty($fieldValue)) {
                 continue;
             }
 
             if ($field->type === 'date') {
-                $property = (new \DateTime($property))->format('Y-m-d');
+                $fieldValue = (new \DateTime($fieldValue))->format('Y-m-d');
             }
 
-            $args[$field->linkedFieldValueZGW] = $property;
+            if ($field->linkedFieldValueZGW === 'informatieobject') {
+                $args = $this->mapInformationObjectArg($args, $field, $fieldValue);
+
+                continue;
+            }
+
+            $args[$field->linkedFieldValueZGW] = $fieldValue;
         }
 
         return $args;
     }
 
+    /**
+     * Fields mapped to 'informatieobject' can contain a simple url but also an array of urls in JSON format.
+     */
+    protected function mapInformationObjectArg(array $args, $field, $fieldValue): array
+    {
+        $start = substr($fieldValue, 0, 1);
+        $end = substr($fieldValue, -1, 1);
+
+        // Check if field value is an array in JSON format and decode.
+        if ($start === '[' && $end === ']') {
+            $fieldValue = json_decode($fieldValue);
+        }
+
+        if (is_string($fieldValue)) {
+            $fieldValue = [$fieldValue];
+        }
+
+        if (! empty($args[$field->linkedFieldValueZGW])) {
+            $args[$field->linkedFieldValueZGW] = array_merge($args[$field->linkedFieldValueZGW], $fieldValue);
+        } else {
+            $args[$field->linkedFieldValueZGW] = $fieldValue;
+        }
+
+        return $args;
+    }
 
     /**
      * Validate if form has a DigiD field.

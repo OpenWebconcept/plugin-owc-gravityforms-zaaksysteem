@@ -10,6 +10,13 @@ class InformationObjectHelper
 {
     use InformationObject;
 
+    protected string $documentType;
+
+    public function __construct(string $documentType)
+    {
+        $this->documentType = $documentType;
+    }
+
     public function prepareInformationObjectArgs(array $args)
     {
         $args = $this->getPreservedInformationObjectArgs($args);
@@ -60,7 +67,7 @@ class InformationObjectHelper
         $args['auteur'] = 'Yard';
         $args['taal'] = 'dut';
         $args['versie'] = 1;
-        $args['informatieobjecttype'] = 'https://digikoppeling-test.gemeentehw.nl/opentunnel/00000001825766096000/openzaak/zaakdms/catalogi/api/v1/informatieobjecttypen/3beec26e-e43f-4fd2-ba09-94d47316d880';
+        $args['informatieobjecttype'] = sprintf('https://digikoppeling-test.gemeentehw.nl/opentunnel/00000001825766096000/openzaak/zaakdms/catalogi/api/v1/informatieobjecttypen/%s', $this->documentType);
 
         return $args;
     }

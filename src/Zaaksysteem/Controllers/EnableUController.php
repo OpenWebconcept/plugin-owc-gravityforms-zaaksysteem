@@ -2,20 +2,21 @@
 
 namespace OWC\Zaaksysteem\Controllers;
 
+use function OWC\Zaaksysteem\Foundation\Helpers\get_documenttype;
 use OWC\Zaaksysteem\Repositories\EnableU\CreateZaakRepository;
 
 class EnableUController extends BaseController
 {
     protected CreateZaakRepository $repository;
 
-    public function __construct(array $form, array $entry)
+    public function __construct(array $form, array $entry, string $supplier)
     {
         parent::__construct($form, $entry);
 
-        $this->repository = new CreateZaakRepository;
+        $this->repository = new CreateZaakRepository(get_documenttype($this->form, $supplier));
     }
 
-    public function handle(): array
+    public function handle(): bool
     {
         $args = $this->handleArgs();
 
@@ -40,11 +41,10 @@ class EnableUController extends BaseController
         $this->repository->addFormSubmissionPDF($createdZaak, $this->form, $this->entry, $args);
 
         if ($this->hasInformationObject) {
-            $createdInformationObject = $this->repository->addInformationObjectToZaak($args);
-            $createdConnection = $this->repository->connectZaakToInformationObject($createdZaak, $createdInformationObject);
+            $createdConnections = $this->repository->handleZaakInformationObjects($args, $createdZaak);
         }
 
-        return isset($createdConnection) ? $createdConnection : $createdZaak;
+        return $createdConnections && $createdZaak;
     }
 
     protected function handleArgsZaakProperties(): array
@@ -56,6 +56,6 @@ class EnableUController extends BaseController
             'digitaalAntwoord' => ''
         ];
 
-        return $this->mapArgs($args);
+        return array_filter($this->mapArgs($args));
     }
 }

@@ -10,11 +10,13 @@ use function OWC\Zaaksysteem\Foundation\Helpers\view;
 class GravityForms
 {
     protected string $supplier;
+    protected string $supplierKey;
     protected bool $hasInformationObject = false;
     
     protected function setSupplier(array $form)
     {
         $this->supplier = get_supplier($form);
+        $this->supplierKey = get_supplier($form, true);
     }
 
     public function afterSubmission(array $entry, array $form)
@@ -38,48 +40,26 @@ class GravityForms
     /**
      * Compose method name based on supplier and execute.
      */
-    protected function handleSupplier(array $entry, array $form): array
+    protected function handleSupplier(array $entry, array $form): bool
     {
         $handle = sprintf('handle%s', $this->supplier);
 
         if (! method_exists($this, $handle)) {
-            return [];
+            return false;
         }
 
         return $this->$handle($entry, $form);
     }
 
-    protected function handleOpenZaak(array $entry, array $form): array
+    protected function handleEnableU(array $entry, array $form): bool
     {
         try {
             $controller = $this->getSupplierController();
         } catch(\Exception $e) {
-            return [];
+            return false;
         }
 
-        return (new $controller($form, $entry))->handle();
-    }
-
-    protected function handleDecosJoin(array $entry, array $form): array
-    {
-        try {
-            $controller = $this->getSupplierController();
-        } catch(\Exception $e) {
-            return [];
-        }
-
-        return (new $controller($form, $entry))->handle();
-    }
-
-    protected function handleEnableU(array $entry, array $form): array
-    {
-        try {
-            $controller = $this->getSupplierController();
-        } catch(\Exception $e) {
-            return [];
-        }
-
-        return (new $controller($form, $entry))->handle();
+        return (new $controller($form, $entry, $this->supplierKey))->handle();
     }
 
     protected function getSupplierController(): string

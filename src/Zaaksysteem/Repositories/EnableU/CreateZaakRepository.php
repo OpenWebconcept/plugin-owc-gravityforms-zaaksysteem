@@ -18,15 +18,15 @@ class CreateZaakRepository extends BaseRepository
     protected string $informationObjectsURI = 'documenten/api/v1/enkelvoudiginformatieobjecten';
     protected string $zaakConnectioninformationObject = 'documenten/api/v1/zaakinformatieobjecten';
     protected string $zaakEigenschappenURI = '/zaken/%s/zaakeigenschappen';
-    protected InformationObjectHelper $informationObjectHelper;
     protected PDFHelper $pdfHelper;
+    protected InformationObjectHelper $informationObjectHelper;
 
-    public function __construct()
+    public function __construct(string $documentType)
     {
         parent::__construct();
 
         $this->pdfHelper = new PDFHelper;
-        $this->informationObjectHelper = new InformationObjectHelper;
+        $this->informationObjectHelper = new InformationObjectHelper($documentType);
     }
 
     public function createOpenZaak(array $args = []): array
@@ -151,14 +151,42 @@ class CreateZaakRepository extends BaseRepository
         return $this->connectZaakToInformationObject($zaak, $informationObjectResult);
     }
 
-    public function addInformationObjectToZaak(array $args = []): array
+    /**
+     * Argument 'Informatieobject' is an array which contains urls of the information objects.
+     * Add information objects and connect them to the 'zaak' seperatly.
+     */
+    public function handleZaakInformationObjects(array $args, array $zaak): bool
+    {
+        $holder = $args;
+        $numberOfObjects = count($args['informatieobject']);
+        $numberOfMadeConnections = 0;
+
+        foreach ($args['informatieobject'] as $object) {
+            if (empty($object)) {
+                continue;
+            }
+            
+            $holder['informatieobject'] = $object;
+            $createdInformationObject = $this->addInformationObjectToZaak($holder);
+            $connectionResult = $this->connectZaakToInformationObject($zaak, $createdInformationObject);
+
+            if ($connectionResult) {
+                $numberOfMadeConnections++;
+            }
+        }
+
+        // Number of objects should match with the number of the connections made.
+        return $numberOfObjects === $numberOfMadeConnections;
+    }
+
+    protected function addInformationObjectToZaak(array $args = []): array
     {
         $args = $this->informationObjectHelper->prepareInformationObjectArgs($args);
 
         return $this->request($this->makeURL($this->informationObjectsURI), 'POST', $args);
     }
 
-    public function connectZaakToInformationObject(array $zaak, array $informationObject): array
+    protected function connectZaakToInformationObject(array $zaak, array $informationObject): array
     {
         $args = [
             'informatieobject' => $informationObject['url'] ?? '',
