@@ -51,7 +51,7 @@ function decrypt($string): string
         $decrypted = '';
     }
 
-    return $decrypted;
+    return $decrypted ?: '';
 }
 
 /**
