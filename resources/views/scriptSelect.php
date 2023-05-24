@@ -10,5 +10,6 @@
     });
     jQuery(document).bind('gform_load_field_settings', function(event, field, form) {
         jQuery('#linkedFieldZGW').val(field['linkedFieldValueZGW']);
+        jQuery('#linkedFieldDocumentType').val(field['linkedFieldValueDocumentType']);
     });
 </script>

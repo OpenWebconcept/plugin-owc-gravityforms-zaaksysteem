@@ -10,13 +10,11 @@ use function OWC\Zaaksysteem\Foundation\Helpers\view;
 class GravityForms
 {
     protected string $supplier;
-    protected string $supplierKey;
     protected bool $hasInformationObject = false;
     
     protected function setSupplier(array $form)
     {
         $this->supplier = get_supplier($form);
-        $this->supplierKey = get_supplier($form, true);
     }
 
     public function afterSubmission(array $entry, array $form)
@@ -59,7 +57,7 @@ class GravityForms
             return false;
         }
 
-        return (new $controller($form, $entry, $this->supplierKey))->handle();
+        return (new $controller($form, $entry))->handle();
     }
 
     protected function getSupplierController(): string

@@ -44,7 +44,9 @@ class BaseController
         return preg_replace_callback('/\[[^\]]*\]/', function ($matches) {
             $fieldID = str_replace(['[', ']'], '', $matches[0]);
 
-            return rgar($this->entry, $fieldID);
+            $fieldValue = rgar($this->entry, $fieldID);
+
+            return is_string($fieldValue) ? $fieldValue : '';
         }, $value);
     }
 
@@ -91,11 +93,18 @@ class BaseController
 
         // Check if field value is an array in JSON format and decode.
         if ($start === '[' && $end === ']') {
-            $fieldValue = json_decode($fieldValue);
+            $fieldValue = $this->convertInformationObjectFieldJSON($fieldValue, $field);
         }
 
         if (is_string($fieldValue)) {
-            $fieldValue = [$fieldValue];
+            $fieldValue = [
+                ['type' => $field->linkedFieldValueDocumentType, 'url' => $fieldValue]
+            ];
+        }
+
+        // After previous conversions it's possible the value is empty.
+        if (empty($fieldValue)) {
+            return $args;
         }
 
         if (! empty($args[$field->linkedFieldValueZGW])) {
@@ -105,6 +114,22 @@ class BaseController
         }
 
         return $args;
+    }
+
+    /**
+     * Decode to array and return array with documenttype and url of information object.
+     */
+    protected function convertInformationObjectFieldJSON(string $fieldValue, $field): array
+    {
+        $fieldValues = json_decode($fieldValue);
+
+        if (empty($fieldValues) || ! is_array($fieldValues)) {
+            return [];
+        }
+
+        return array_map(function ($fieldValue) use ($field) {
+            return ['type' => $field->linkedFieldValueDocumentType, 'url' => $fieldValue];
+        }, $fieldValues);
     }
 
     /**

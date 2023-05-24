@@ -2,18 +2,17 @@
 
 namespace OWC\Zaaksysteem\Controllers;
 
-use function OWC\Zaaksysteem\Foundation\Helpers\get_documenttype;
 use OWC\Zaaksysteem\Repositories\EnableU\CreateZaakRepository;
 
 class EnableUController extends BaseController
 {
     protected CreateZaakRepository $repository;
 
-    public function __construct(array $form, array $entry, string $supplier)
+    public function __construct(array $form, array $entry)
     {
         parent::__construct($form, $entry);
 
-        $this->repository = new CreateZaakRepository(get_documenttype($this->form, $supplier));
+        $this->repository = new CreateZaakRepository;
     }
 
     public function handle(): bool

@@ -49,21 +49,6 @@ class GravityFormsFormSettings
                         ],
                     ],
                     'choices' => $this->getZaakTypesEnableU(),
-                ],
-                [
-                    'name'    => "{$this->prefix}-form-setting-enable-u-documenttype",
-                    'type'    => 'select',
-                    'label'   => esc_html__('EnableU Document Type', config('core.text_domain')),
-                    'dependency' => [
-                        'live'   => true,
-                        'fields' => [
-                            [
-                                'field' => "{$this->prefix}-form-setting-supplier",
-                                'values' => ['enable-u'],
-                            ],
-                        ],
-                    ],
-                    'choices' => $this->getDocumentTypesEnableU(),
                 ]
             ]
         ];
@@ -84,27 +69,5 @@ class GravityFormsFormSettings
                 'label' => 'Todo',
             ]
         ];
-    }
-
-    /**
-     * Endpoint for retrieving document types is not available.
-     * There return a hardcoded array
-     */
-    public function getDocumentTypesEnableU(): array
-    {
-        return [
-            ['value' => '3beec26e-e43f-4fd2-ba09-94d47316d870', 'label' =>  'Aanvraag eFormulier'],
-            ['value' => '3beec26e-e43f-4fd2-ba09-94d47316d871', 'label' =>  'Aanvraag - Situatietekening'],
-            ['value' => '3beec26e-e43f-4fd2-ba09-94d47316d872', 'label' =>  'Aanvraag - Verklaring'],
-            ['value' => '3beec26e-e43f-4fd2-ba09-94d47316d873', 'label' =>  'Aanvraag - Draaiboek'],
-            ['value' => '3beec26e-e43f-4fd2-ba09-94d47316d874', 'label' =>  'Aanvraag - Overig'],
-            ['value' => '3beec26e-e43f-4fd2-ba09-94d47316d875', 'label' =>  'Aanvraag - Facturen'],
-            ['value' => '3beec26e-e43f-4fd2-ba09-94d47316d876', 'label' =>  'Aanvraag - Fotoâ€™s'],
-            ['value' => '3beec26e-e43f-4fd2-ba09-94d47316d877', 'label' =>  'Zienswijze - bijlage'],
-            ['value' => '3beec26e-e43f-4fd2-ba09-94d47316d878', 'label' =>  'Melding - Situatietekening'],
-            ['value' => '3beec26e-e43f-4fd2-ba09-94d47316d879', 'label' =>  'Melding - Overig'],
-            ['value' => '3beec26e-e43f-4fd2-ba09-94d47316d880', 'label' =>  'Aanvraag']
-        ];
-
     }
 }

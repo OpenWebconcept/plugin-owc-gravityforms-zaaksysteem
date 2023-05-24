@@ -21,12 +21,12 @@ class CreateZaakRepository extends BaseRepository
     protected PDFHelper $pdfHelper;
     protected InformationObjectHelper $informationObjectHelper;
 
-    public function __construct(string $documentType)
+    public function __construct()
     {
         parent::__construct();
 
         $this->pdfHelper = new PDFHelper;
-        $this->informationObjectHelper = new InformationObjectHelper($documentType);
+        $this->informationObjectHelper = new InformationObjectHelper;
     }
 
     public function createOpenZaak(array $args = []): array
@@ -162,12 +162,12 @@ class CreateZaakRepository extends BaseRepository
         $numberOfMadeConnections = 0;
 
         foreach ($args['informatieobject'] as $object) {
-            if (empty($object)) {
+            if (empty($object['url']) || empty($object['type'])) {
                 continue;
             }
             
-            $holder['informatieobject'] = $object;
-            $createdInformationObject = $this->addInformationObjectToZaak($holder);
+            $holder['informatieobject'] = $object['url'];
+            $createdInformationObject = $this->addInformationObjectToZaak($holder, $object['type']);
             $connectionResult = $this->connectZaakToInformationObject($zaak, $createdInformationObject);
 
             if ($connectionResult) {
@@ -179,9 +179,9 @@ class CreateZaakRepository extends BaseRepository
         return $numberOfObjects === $numberOfMadeConnections;
     }
 
-    protected function addInformationObjectToZaak(array $args = []): array
+    protected function addInformationObjectToZaak(array $args = [], $documentType): array
     {
-        $args = $this->informationObjectHelper->prepareInformationObjectArgs($args);
+        $args = $this->informationObjectHelper->prepareInformationObjectArgs($args, $documentType);
 
         return $this->request($this->makeURL($this->informationObjectsURI), 'POST', $args);
     }
