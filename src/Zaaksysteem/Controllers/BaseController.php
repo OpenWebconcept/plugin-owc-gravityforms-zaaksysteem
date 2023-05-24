@@ -28,7 +28,24 @@ class BaseController
             'informatieobject' => ''
         ];
 
-        return $this->mapArgs($args);
+        $args = $this->mapArgs($args);
+        $args['omschrijving'] = $this->convertMergeTags($args['omschrijving']);
+        
+        return $args;
+    }
+
+    /**
+     * Convert merge tags to the value of the corrensponding fields.
+     * Search for field IDs between square brackets like: [3].
+     * Retrieve field value based on the ID and return instead of found match.
+     */
+    protected function convertMergeTags(string $value): string
+    {
+        return preg_replace_callback('/\[[^\]]*\]/', function ($matches) {
+            $fieldID = str_replace(['[', ']'], '', $matches[0]);
+
+            return rgar($this->entry, $fieldID);
+        }, $value);
     }
 
     /**

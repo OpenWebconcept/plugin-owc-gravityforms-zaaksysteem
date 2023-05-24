@@ -100,8 +100,10 @@ function get_supplier(array $form, bool $getKey = false): string
     return $allowed[$supplier] ?? '';
 }
 
-
-function get_documenttype(array $form, $supplier)
+/**
+ * Get the current selected document type on a per form basis.
+ */
+function get_documenttype(array $form, $supplier): string
 {
     return $form[sprintf('%s-form-setting-%s-documenttype', OZ_PLUGIN_SLUG, $supplier)] ?? '';
 }

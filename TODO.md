@@ -4,3 +4,4 @@
 
 - Add logging when errors occure.
 - Refactoren, testing and improvements.
+- Translations
