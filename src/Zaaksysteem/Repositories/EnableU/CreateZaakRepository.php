@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace OWC\Zaaksysteem\Repositories\EnableU;
 
-use function OWC\Zaaksysteem\Foundation\Helpers\decrypt;
 use OWC\Zaaksysteem\Repositories\EnableU\Classes\InformationObjectHelper;
 use OWC\Zaaksysteem\Repositories\EnableU\Classes\PDFHelper;
 use OWC\Zaaksysteem\Traits\InformationObject;
@@ -72,7 +71,7 @@ class CreateZaakRepository extends BaseRepository
             return [];
         }
 
-        $personConcernedURL = $this->createPersonConcernedURL(decrypt($bsn));
+        $personConcernedURL = $this->createPersonConcernedURL($bsn);
 
         if (empty($personConcernedURL)) {
             return [];

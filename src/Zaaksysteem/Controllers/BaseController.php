@@ -2,6 +2,9 @@
 
 namespace OWC\Zaaksysteem\Controllers;
 
+use Exception;
+use function OWC\Zaaksysteem\Foundation\Helpers\decrypt;
+use function Yard\DigiD\Foundation\Helpers\resolve;
 use OWC\Zaaksysteem\GravityForms\GravityFormsSettings;
 
 class BaseController
@@ -138,18 +141,12 @@ class BaseController
      */
     protected function getBSN(): string
     {
-        $digiDFieldID = '';
-
-        foreach ($this->form['fields'] as $field) {
-            if ($field->type !== 'digid') {
-                continue;
-            }
-
-            $digiDFieldID = sprintf('%d.1', $field->id);
-
-            break;
+        try {
+            $bsn = resolve('session')->getSegment('digid')->get('bsn');
+        } catch(Exception $e) {
+            $bsn = '';
         }
 
-        return $digiDFieldID ? rgar($this->entry, $digiDFieldID) : '';
+        return is_string($bsn) && ! empty($bsn) ? decrypt($bsn) : '';
     }
 }
