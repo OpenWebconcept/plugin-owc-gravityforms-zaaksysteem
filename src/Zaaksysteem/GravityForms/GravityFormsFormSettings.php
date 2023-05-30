@@ -2,11 +2,11 @@
 
 namespace OWC\Zaaksysteem\GravityForms;
 
+use function OWC\Zaaksysteem\Foundation\Helpers\config;
 use OWC\Zaaksysteem\Client\Client;
 use OWC\Zaaksysteem\Entities\Zaaktype;
-use OWC\Zaaksysteem\Foundation\Plugin;
 
-use function OWC\Zaaksysteem\Foundation\Helpers\config;
+use OWC\Zaaksysteem\Foundation\Plugin;
 
 class GravityFormsFormSettings
 {
@@ -77,23 +77,9 @@ class GravityFormsFormSettings
     {
         return [
             [
-                'name' => 'Todo',
-                'label' => 'Todo',
-            ]
-        ];
-    }
-
-    /**
-     * Get a list of related 'zaaktypen' from Enable U.
-     *
-     * TODO: endpoint for retrieving types is not production ready.
-     */
-    public function getTypesEnableU(): array
-    {
-        return [
-            [
-                'name' => 'Todo',
-                'label' => 'Todo',
+                'name' => 'YARD01',
+                'label' => 'TestZaaktype YARD',
+                'value' => 'YARD01'
             ]
         ];
     }
@@ -170,21 +156,6 @@ class GravityFormsFormSettings
                         ],
                     ],
                     'choices' => $this->getTypesDecosJoin(),
-                ],
-                [
-                    'name'    => "{$this->prefix}-form-setting-enable-u-identifier",
-                    'type'    => 'select',
-                    'label'   => esc_html__('EnableU identifier', config('core.text_domain')),
-                    'dependency' => [
-                        'live'   => true,
-                        'fields' => [
-                            [
-                                'field' => "{$this->prefix}-form-setting-supplier",
-                                'values' => ['enable-u'],
-                            ],
-                        ],
-                    ],
-                    'choices' => $this->getTypesEnableU(),
                 ],
                 [
                     'name'    => "{$this->prefix}-form-setting-roxit-identifier",

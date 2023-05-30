@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace OWC\Zaaksysteem\GravityForms;
 
-use GFAddOn;
-
 use function OWC\Zaaksysteem\Foundation\Helpers\config;
+
+use GFAddOn;
 
 class GravityFormsAddon extends GFAddOn
 {
@@ -25,12 +25,12 @@ class GravityFormsAddon extends GFAddOn
      *
      * @var string
      */
-    protected $_slug = OWC_GZ_PLUGIN_SLUG;
+    protected $_slug = \OWC_GZ_PLUGIN_SLUG;
 
     /**
      * Relative path to the plugin from the plugins folder.
      */
-    protected $_path = OWC_GZ_ROOT_PATH . '/owc-gravityforms-zaaksysteem.php';
+    protected $_path = \OWC_GZ_ROOT_PATH . '/owc-gravityforms-zaaksysteem.php';
 
     /**
      * The physical path to the main plugin file.
@@ -40,17 +40,17 @@ class GravityFormsAddon extends GFAddOn
     /**
      * The complete title of the Add-On.
      */
-    protected $_title = OWC_GZ_NAME;
+    protected $_title = \OWC_GZ_NAME;
 
     /**
      * The short title of the Add-On to be used in limited spaces.
      */
-    protected $_short_title = OWC_GZ_SHORT_NAME;
+    protected $_short_title = \OWC_GZ_SHORT_NAME;
 
     /**
      * Field prefix in Gravity Forms.
      */
-    private string $prefix = OWC_GZ_PLUGIN_SLUG;
+    private string $prefix = \OWC_GZ_PLUGIN_SLUG;
 
     /**
      * Instance object
@@ -81,7 +81,6 @@ class GravityFormsAddon extends GFAddOn
         return [
             $this->settingsGeneral(),
             $this->settingsDecosJoin(),
-            $this->settingsEnableU(),
             $this->settingsOpenZaak(),
             $this->settingsRoxit(),
             $this->RSIN()
@@ -179,23 +178,6 @@ class GravityFormsAddon extends GFAddOn
                         'type'              => 'text',
                         'class'             => 'medium',
                         'name'              => "{$this->prefix}-decos-join-client-secret",
-                    ]
-                ],
-
-
-        ];
-    }
-
-    protected function settingsEnableU(): array
-    {
-        return [
-                'title'  => esc_html__('Enable U', config('core.text_domain')),
-                'fields' => [
-                    [
-                        'label'             => esc_html__('Base URL', config('core.text_domain')),
-                        'type'              => 'text',
-                        'class'             => 'medium',
-                        'name'              => "{$this->prefix}-enable-u-url",
                     ]
                 ],
 
