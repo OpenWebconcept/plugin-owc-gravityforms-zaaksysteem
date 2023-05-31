@@ -3,15 +3,15 @@
 namespace OWC\Zaaksysteem\Endpoint;
 
 use OWC\Zaaksysteem\Client\Client;
-use OWC\Zaaksysteem\Http\PageMeta;
-use OWC\Zaaksysteem\Http\Response;
 use OWC\Zaaksysteem\Entities\Entity;
-use OWC\Zaaksysteem\Support\Collection;
-use OWC\Zaaksysteem\Http\Handlers\Stack;
-use OWC\Zaaksysteem\Http\RequestOptions;
-use OWC\Zaaksysteem\Support\PagedCollection;
-use OWC\Zaaksysteem\Http\RequestClientInterface;
 use OWC\Zaaksysteem\Http\Authentication\TokenAuthenticator;
+use OWC\Zaaksysteem\Http\Handlers\Stack;
+use OWC\Zaaksysteem\Http\PageMeta;
+use OWC\Zaaksysteem\Http\RequestClientInterface;
+use OWC\Zaaksysteem\Http\RequestOptions;
+use OWC\Zaaksysteem\Http\Response;
+use OWC\Zaaksysteem\Support\Collection;
+use OWC\Zaaksysteem\Support\PagedCollection;
 
 abstract class Endpoint
 {
@@ -20,7 +20,8 @@ abstract class Endpoint
     protected TokenAuthenticator $authenticator;
     protected Stack $responseHandlers;
 
-    protected string $apiType = 'api-type'; // E.g. 'zaken' or 'catalogi'
+    protected string $apiType = 'api-type'; // E.g. 'zaken' or 'catalogi' -> REFERENCE POINT: Mike kan weg?
+    protected string $endpointURL = '';
     protected string $version = 'v1';
     protected string $endpoint = 'endpoint';
     protected string $entityClass = Entity::class;
@@ -31,6 +32,17 @@ abstract class Endpoint
         $this->httpClient = $client->getRequestClient();
         $this->authenticator = $client->getAuthenticator();
         $this->responseHandlers = Stack::create();
+    }
+
+    public function setEndpointURL(string $url): self
+    {
+        if (empty($url)) {
+            return $this;
+        }
+
+        $this->endpointURL = $url;
+
+        return $this;
     }
 
     protected function handleResponse(Response $response)
@@ -46,14 +58,18 @@ abstract class Endpoint
     {
         return new RequestOptions([
             'headers'   => [
-                'Authorization'     => $this->authenticator->getAuthString()
+                'Authorization' => $this->authenticator->getAuthString()
             ],
         ]);
     }
 
+    /**
+     * REFERENCE POINT: Mike
+     * Maybe rename to buildUrl since there is a full URL made and not an URI
+     */
     protected function buildUri(string $uri, ?Filter\AbstractFilter $filter = null): string
     {
-        $uri = sprintf('%s/api/%s/%s', $this->apiType, $this->version, $uri);
+        $uri = sprintf('%s/%s/%s', untrailingslashit($this->endpointURL), $this->version, $uri);
 
         if ($filter) {
             $uri = \add_query_arg($filter->getParameters(), $uri);

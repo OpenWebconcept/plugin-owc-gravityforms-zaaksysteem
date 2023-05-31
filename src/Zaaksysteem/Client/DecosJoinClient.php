@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace OWC\Zaaksysteem\Client;
 
-use OWC\Zaaksysteem\Endpoint\ZakenEndpoint;
+use OWC\Zaaksysteem\Endpoint\EigenschappenEndpoint;
 use OWC\Zaaksysteem\Endpoint\StatussenEndpoint;
-use OWC\Zaaksysteem\Endpoint\ZaaktypenEndpoint;
-use OWC\Zaaksysteem\Http\RequestClientInterface;
 use OWC\Zaaksysteem\Endpoint\StatustypenEndpoint;
+use OWC\Zaaksysteem\Endpoint\ZaakeigenschappenEndpoint;
+use OWC\Zaaksysteem\Endpoint\ZaaktypenEndpoint;
+use OWC\Zaaksysteem\Endpoint\ZakenEndpoint;
 use OWC\Zaaksysteem\Http\Authentication\TokenAuthenticator;
+use OWC\Zaaksysteem\Http\RequestClientInterface;
 
 class DecosJoinClient extends Client
 {
@@ -17,10 +19,14 @@ class DecosJoinClient extends Client
     public const CALLABLE_NAME = 'dj.client';
 
     public const AVAILABLE_ENDPOINTS = [
-        'zaken'         => ZakenEndpoint::class,
-        'zaaktypen'     => ZaaktypenEndpoint::class,
-        'statussen'     => StatussenEndpoint::class,
-        'statustypen'   => StatustypenEndpoint::class,
+        'zaken' => ZakenEndpoint::class,
+        'statussen' => StatussenEndpoint::class,
+        'zaakeigenschappen' => ZaakeigenschappenEndpoint::class,
+        
+        // Catalogi API
+        'zaaktypen' => ZaaktypenEndpoint::class,
+        'statustypen' => StatustypenEndpoint::class,
+        'eigenschappen' => EigenschappenEndpoint::class,
 
         /**
          * Not yet implemented

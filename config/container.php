@@ -13,13 +13,13 @@ return [
      */
     'openzaak.abbr' => 'oz',
     'oz.client' => fn (Container $container) => $container->get(Client\OpenZaakClient::class),
-    'oz.catalogi_uri' => function (Container $container) {
+    'oz.catalogi_url' => function (Container $container) {
         return $container->make('gf.setting', ['-openzaak-catalogi-url']);
     },
-    'oz.documenten_uri' => function (Container $container) {
+    'oz.documenten_url' => function (Container $container) {
         return $container->make('gf.setting', ['-openzaak-documenten-url']);
     },
-    'oz.zaken_uri' => function (Container $container) {
+    'oz.zaken_url' => function (Container $container) {
         return $container->make('gf.setting', ['-openzaak-zaken-url']);
     },
     'oz.client_id' => function (Container $container) {
@@ -37,13 +37,13 @@ return [
      */
     'roxit.abbr' => 'ro',
     'ro.client' => fn (Container $container) => $container->get(Client\RoxitClient::class),
-    'ro.catalogi_uri' => function (Container $container) {
+    'ro.catalogi_url' => function (Container $container) {
         return $container->make('gf.setting', ['-roxit-catalogi-url']);
     },
-    'ro.documenten_uri' => function (Container $container) {
+    'ro.documenten_url' => function (Container $container) {
         return $container->make('gf.setting', ['-roxit-documenten-url']);
     },
-    'ro.zaken_uri' => function (Container $container) {
+    'ro.zaken_url' => function (Container $container) {
         return $container->make('gf.setting', ['-roxit-zaken-url']);
     },
     'ro.client_id' => function (Container $container) {
@@ -61,13 +61,13 @@ return [
      */
     'decosjoin.abbr' => 'dj',
     'dj.client' => fn (Container $container) => $container->get(Client\DecosJoinClient::class),
-    'dj.catalogi_uri' => function (Container $container) {
+    'dj.catalogi_url' => function (Container $container) {
         return $container->make('gf.setting', ['-decos-join-catalogi-url']);
     },
-    'dj.documenten_uri' => function (Container $container) {
+    'dj.documenten_url' => function (Container $container) {
         return $container->make('gf.setting', ['-decos-join-documenten-url']);
     },
-    'dj.zaken_uri' => function (Container $container) {
+    'dj.zaken_url' => function (Container $container) {
         return $container->make('gf.setting', ['-decos-join-zaken-url']);
     },
     'dj.token_uri' => function (Container $container) {
@@ -142,8 +142,7 @@ return [
     },
     Http\Authentication\DecosJoinAuthenticator::class => function (Container $container) {
         return new Http\Authentication\DecosJoinAuthenticator(
-            $container->get('http.client'),
-            $container->get('dj.token_uri'),
+            $container->get('dj.catalogi_url'),
             $container->get('dj.client_id'),
             $container->get('dj.client_secret')
         );

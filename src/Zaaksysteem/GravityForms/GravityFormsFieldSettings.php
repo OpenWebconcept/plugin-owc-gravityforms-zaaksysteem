@@ -2,14 +2,14 @@
 
 namespace OWC\Zaaksysteem\GravityForms;
 
+use function OWC\Zaaksysteem\Foundation\Helpers\get_supplier;
+use function OWC\Zaaksysteem\Foundation\Helpers\view;
 use OWC\Zaaksysteem\Client\Client;
 use OWC\Zaaksysteem\Endpoint\Filter\EigenschappenFilter;
 use OWC\Zaaksysteem\Entities\Zaaktype;
+
 use OWC\Zaaksysteem\Foundation\Plugin;
 use OWC\Zaaksysteem\Support\PagedCollection;
-
-use function OWC\Zaaksysteem\Foundation\Helpers\get_supplier;
-use function OWC\Zaaksysteem\Foundation\Helpers\view;
 
 class GravityFormsFieldSettings
 {
@@ -24,13 +24,51 @@ class GravityFormsFieldSettings
     }
 
     /**
-     * Get the api client.
-     *
-     * @todo make generic, so we can use it for Decos Join as well.
+     * Get the api client based on the selected supplier.
      */
-    protected function getApiClient(): Client
+    protected function getApiClient(string $client): Client
     {
-        return $this->plugin->getContainer()->get('ro.client');
+        switch ($client) {
+            case 'decos':
+            case 'decos-join':
+                return $this->plugin->getContainer()->get('dj.client');
+            case 'roxit':
+                return $this->plugin->getContainer()->get('ro.client');
+            default:
+                return $this->plugin->getContainer()->get('oz.client');
+        }
+    }
+
+    /**
+     * Get the URL of the 'catalogi' endpoint of the selected supplier.
+     */
+    protected function getCatalogiURL(string $supplier): string
+    {
+        switch ($supplier) {
+            case 'decos':
+            case 'decos-join':
+                return $this->plugin->getContainer()->get('dj.catalogi_url');
+            case 'roxit':
+                return $this->plugin->getContainer()->get('ro.catalogi_url');
+            default:
+                return $this->plugin->getContainer()->get('oz.catalogi_url');
+        }
+    }
+
+    /**
+     * Get the URL of the 'zaken' endpoint of the selected supplier.
+     */
+    protected function getZakenURL(string $supplier): string
+    {
+        switch ($supplier) {
+            case 'decos':
+            case 'decos-join':
+                return $this->plugin->getContainer()->get('dj.zaken_url');
+            case 'roxit':
+                return $this->plugin->getContainer()->get('ro.zaken_url');
+            default:
+                return $this->plugin->getContainer()->get('oz.zaken_url');
+        }
     }
 
     /**
@@ -40,10 +78,15 @@ class GravityFormsFieldSettings
      *
      * @see https://github.com/OpenWebconcept/plugin-owc-gravityforms-zaaksysteem/issues/13#issue-1697256063
      */
-    public function getZaakType(string $zaaktypeIdentifier): ?Zaaktype
+    public function getZaakType(string $supplier, string $zaaktypeIdentifier): ?Zaaktype
     {
+        $client = $this->getApiClient($supplier);
+        $client->setEndpointURL($this->getCatalogiURL($supplier));
+
+        // REFERENCE POINT: Mike -> what if there is no result? Bool will be returned.
+        
         // Get the zaaktype belonging to the chosen zaaktype identifier.
-        return $this->getApiClient()->zaaktypen()->all()->filter(
+        return $client->zaaktypen()->all()->filter(
             function (Zaaktype $zaaktype) use ($zaaktypeIdentifier) {
                 if ($zaaktype->identificatie === $zaaktypeIdentifier) {
                     return $zaaktype;
@@ -56,12 +99,15 @@ class GravityFormsFieldSettings
     /**
      * Get the `zaakeigenschappen` belonging to the chosen `zaaktype`.
      */
-    public function getZaaktypenEigenschappen(string $zaaktypeUrl): PagedCollection
+    public function getZaaktypenEigenschappen(string $supplier, string $zaaktypeUrl): PagedCollection
     {
-        $client = $this->getApiClient();
+        $client = $this->getApiClient($supplier);
+        $client->setEndpointURL($this->getCatalogiURL($supplier));
 
         $filter = new EigenschappenFilter();
         $filter->add('zaaktype', $zaaktypeUrl);
+
+        // REFERENCE POINT: Mike -> what if the request fails? Errors are not handled.
 
         return $client->eigenschappen()->filter($filter);
     }
@@ -96,26 +142,32 @@ class GravityFormsFieldSettings
         $zaaktypeIdentifier = $form[sprintf('%s-form-setting-%s-identifier', OWC_GZ_PLUGIN_SLUG, $supplier)];
 
         // Get the zaaktype belonging to the chosen zaaktype identifier.
-        $zaaktype = $this->getZaakType($zaaktypeIdentifier);
+        $zaaktype = $this->getZaakType($supplier, $zaaktypeIdentifier);
 
-        if (empty($zaaktype['url'])) {
+        if (empty($zaaktype['url'])) { // Why array? -> REFERENCE POINT: Mike
             $properties = [];
         } else {
-            $properties = $this->getZaaktypenEigenschappen($zaaktype->url);
-        }
-
-        $options = [];
-        if (!empty($properties)) {
-            foreach ($properties as $property) {
-                $options[] = [
-                    'label' => $property['naam'],
-                    'value' => $property['url']
-                ];
-            }
+            $properties = $this->getZaaktypenEigenschappen($supplier, $zaaktype->url); // And why an object? -> REFERENCE POINT: Mike
         }
 
         echo view('partials/gf-field-options.php', [
-            'properties' => $options
+            'properties' => $this->prepareOptions($properties)
         ]);
+    }
+
+    protected function prepareOptions(PagedCollection $properties): array
+    {
+        $options = $properties->map(function ($property) {
+            if (empty($property['naam']) || empty($property['url'])) {
+                return [];
+            }
+            
+            return [
+                'label' => $property['naam'],
+                'value' => $property['url']
+            ];
+        })->toArray();
+
+        return array_filter((array) $options);
     }
 }

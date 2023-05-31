@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace OWC\Zaaksysteem\Endpoint;
 
-use OWC\Zaaksysteem\Support\Collection;
 use OWC\Zaaksysteem\Entities\Zaak;
 use OWC\Zaaksysteem\Entities\Zaakeigenschap;
+use OWC\Zaaksysteem\Support\Collection;
 
 class ZaakeigenschappenEndpoint extends Endpoint
 {

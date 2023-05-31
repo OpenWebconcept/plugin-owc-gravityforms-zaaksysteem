@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace OWC\Zaaksysteem\Http\WordPress;
 
-use OWC\Zaaksysteem\Http\Response;
-use OWC\Zaaksysteem\Http\RequestOptions;
 use OWC\Zaaksysteem\Http\RequestClientInterface;
+use OWC\Zaaksysteem\Http\RequestOptions;
+use OWC\Zaaksysteem\Http\Response;
 
 class WordPressRequestClient implements RequestClientInterface
 {

@@ -5,8 +5,9 @@ namespace OWC\Zaaksysteem\GravityForms;
 use function OWC\Zaaksysteem\Foundation\Helpers\config;
 use OWC\Zaaksysteem\Client\Client;
 use OWC\Zaaksysteem\Entities\Zaaktype;
-
 use OWC\Zaaksysteem\Foundation\Plugin;
+
+use OWC\Zaaksysteem\Http\RequestError;
 
 class GravityFormsFormSettings
 {
@@ -28,11 +29,27 @@ class GravityFormsFormSettings
     protected function getApiClient(string $client): Client
     {
         switch ($client) {
-            case 'openzaak': //fallthrough
+            case 'decos':
+                return $this->plugin->getContainer()->get('dj.client');
             case 'roxit':
                 return $this->plugin->getContainer()->get('ro.client');
             default:
                 return $this->plugin->getContainer()->get('oz.client');
+        }
+    }
+
+    /**
+     * Get the URL of the catalogi endpoint of the selected client.
+     */
+    protected function getCatalogiURL(string $client): string
+    {
+        switch ($client) {
+            case 'decos':
+                return $this->plugin->getContainer()->get('dj.catalogi_url');
+            case 'roxit':
+                return $this->plugin->getContainer()->get('ro.catalogi_url');
+            default:
+                return $this->plugin->getContainer()->get('oz.catalogi_url');
         }
     }
 
@@ -42,8 +59,16 @@ class GravityFormsFormSettings
     public function getTypesOpenZaak(): array
     {
         $client = $this->getApiClient('openzaak');
+        $client->setEndpointURL($this->getCatalogiURL('openzaak'));
 
-        return $client->zaaktypen()->all()->map(function (Zaaktype $zaaktype) {
+        try {
+            $zaaktypen = $client->zaaktypen()->all();
+        } catch(RequestError $exception) {
+            //REFERENCE POINT: Mike -> just return, let it break or catch and log?
+            return [];
+        }
+        
+        return $zaaktypen->map(function (Zaaktype $zaaktype) {
             return [
                 'name' => $zaaktype->identificatie,
                 'label' => "{$zaaktype->omschrijving} ({$zaaktype->identificatie})",
@@ -58,8 +83,16 @@ class GravityFormsFormSettings
     public function getTypesRoxit(): array
     {
         $client = $this->getApiClient('roxit');
+        $client->setEndpointURL($this->getCatalogiURL('roxit'));
 
-        return $client->zaaktypen()->all()->map(function (Zaaktype $zaaktype) {
+        try {
+            $zaaktypen = $client->zaaktypen()->all();
+        } catch(RequestError $exception) {
+            // REFERENCE POINT: Mike -> just return, let it break or catch and log?
+            return [];
+        }
+
+        return $zaaktypen->map(function (Zaaktype $zaaktype) {
             return [
                 'name' => $zaaktype->identificatie,
                 'label' => "{$zaaktype->omschrijving} ({$zaaktype->identificatie})",
@@ -75,13 +108,23 @@ class GravityFormsFormSettings
      */
     public function getTypesDecosJoin(): array
     {
-        return [
-            [
-                'name' => 'YARD01',
-                'label' => 'TestZaaktype YARD',
-                'value' => 'YARD01'
-            ]
-        ];
+        $client = $this->getApiClient('decos');
+        $client->setEndpointURL($this->getCatalogiURL('decos'));
+
+        try {
+            $zaaktypen = $client->zaaktypen()->all();
+        } catch(RequestError $exception) {
+            // REFERENCE POINT: Mike -> just return, let it break or catch and log?
+            return [];
+        }
+
+        return $zaaktypen->map(function (Zaaktype $zaaktype) {
+            return [
+                'name' => $zaaktype->identificatie,
+                'label' => "{$zaaktype->omschrijving} ({$zaaktype->identificatie})",
+                'value' => $zaaktype->identificatie
+            ];
+        })->all();
     }
 
     /**
@@ -108,11 +151,6 @@ class GravityFormsFormSettings
                             'name'  => "{$this->prefix}-form-setting-supplier-decos-join",
                             'label' => __('Decos Join', config('core.text_domain')),
                             'value' => 'decos-join',
-                        ],
-                        [
-                            'name'  => "{$this->prefix}-form-setting-supplier-enable-u",
-                            'label' => __('EnableU', config('core.text_domain')),
-                            'value' => 'enable-u',
                         ],
                         [
                             'name'  => "{$this->prefix}-form-setting-supplier-openzaak",

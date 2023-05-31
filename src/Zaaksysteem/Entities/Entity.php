@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace OWC\Zaaksysteem\Entities;
 
 use ArrayAccess;
+use Exception;
 use JsonSerializable;
 
 abstract class Entity implements
@@ -54,7 +55,15 @@ abstract class Entity implements
         if ($this->hasCast($name)) {
             $caster = $this->getCaster($name);
 
-            $value = $caster->set($this, $name, $value);
+            /**
+             * REFERENCE POINT: Mike
+             * Added because decos sometimes have empty fields which caused an exception
+             */
+            try {
+                $value = $caster->set($this, $name, $value);
+            } catch(Exception $e) {
+                return;
+            }
         }
 
         return $this->setAttributeValue($name, $value);
