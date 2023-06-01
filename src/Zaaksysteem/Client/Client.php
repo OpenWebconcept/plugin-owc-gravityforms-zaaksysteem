@@ -78,6 +78,7 @@ abstract class Client
      */
     protected function fetchFromContainer(string $key): Endpoint
     {
+        // REFERENCE POINT: Mike -> catch and log or show critical error has occurred?
         if (empty($this->getEndpointURL())) {
             throw new ResourceNotFoundError(sprintf('Client "%s" must have an endpoint URL.', static::CLIENT_NAME));
         }

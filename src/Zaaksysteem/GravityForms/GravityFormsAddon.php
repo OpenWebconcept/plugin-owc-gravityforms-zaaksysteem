@@ -209,6 +209,12 @@ class GravityFormsAddon extends GFAddOn
                     'class' => 'medium',
                     'name' => "{$this->prefix}-decos-join-client-secret",
                 ],
+                [
+                    'label' => esc_html__('Client Secret (ZRC)', config('core.text_domain')),
+                    'type' => 'text',
+                    'class' => 'medium',
+                    'name' => "{$this->prefix}-decos-join-client-secret-zrc",
+                ],
             ],
         ];
     }

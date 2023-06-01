@@ -63,6 +63,7 @@ class ZakenEndpoint extends Endpoint
             $this->buildRequestOptions()
         );
 
+
         return $this->getSingleEntity($this->handleResponse($response));
     }
 }

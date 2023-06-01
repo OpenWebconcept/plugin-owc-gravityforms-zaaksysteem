@@ -6,49 +6,27 @@ namespace OWC\Zaaksysteem\Actions\OpenZaak;
 
 use Exception;
 
-use OWC\Zaaksysteem\Client\Client;
+use function OWC\Zaaksysteem\Foundation\Helpers\field_mapping;
+
+use OWC\Zaaksysteem\Actions\AbstractCreateZaakAction;
 use OWC\Zaaksysteem\Endpoint\Filter\RoltypenFilter;
 use OWC\Zaaksysteem\Entities\Rol;
 use OWC\Zaaksysteem\Entities\Zaak;
-use OWC\Zaaksysteem\Entities\Zaaktype;
 use OWC\Zaaksysteem\Entities\Zaakeigenschap;
-use OWC\Zaaksysteem\Foundation\Plugin;
-use OWC\Zaaksysteem\Support\PagedCollection;
 use OWC\Zaaksysteem\Http\Errors\BadRequestError;
+use OWC\Zaaksysteem\Support\PagedCollection;
 
-use function OWC\Zaaksysteem\Foundation\Helpers\decrypt;
-use function OWC\Zaaksysteem\Foundation\Helpers\field_mapping;
-use function Yard\DigiD\Foundation\Helpers\resolve;
-
-class CreateZaakAction
+class CreateZaakAction extends AbstractCreateZaakAction
 {
-    /**
-     * Instance of the plugin.
-     */
-    protected Plugin $plugin;
+    public const CALLABLE_NAME = 'oz.client';
+    public const CLIENT_CATALOGI_URL = 'oz.catalogi_url';
+    public const CLIENT_ZAKEN_URL = 'oz.zaken_url';
+    public const FORM_SETTING_SUPPLIER_KEY = 'openzaak';
 
-    /**
-     * Construct the action.
-     */
-    public function __construct(Plugin $plugin)
-    {
-        $this->plugin = $plugin;
-    }
-
-    /**
-     * Get the api client.
-     */
-    protected function getApiClient(): Client
-    {
-        return $this->plugin->getContainer()->get('oz.client');
-    }
-
-    /**
-     * Get all available "roltypen".
-     */
     public function getRolTypen(string $zaaktype): PagedCollection
     {
         $client = $this->getApiClient();
+        $client->setEndpointURL($this->getCatalogiURL());
 
         $filter = new RoltypenFilter();
         $filter->get('zaaktype', $zaaktype);
@@ -57,31 +35,10 @@ class CreateZaakAction
     }
 
     /**
-     * Use the selected `zaaktype identifier` to retrieve the `zaaktype`.
-     *
-     * @todo we cannot use the zaaktype URI to retrieve a zaaktype because it is bound to change when the zaaktype is updated. There doesn't seem to be a way to retrieve the zaaktype by identifier, so we have to get all the zaaktypen first and then filter them by identifier. We should change this when the API supports this.
-     *
-     * @see https://github.com/OpenWebconcept/plugin-owc-gravityforms-zaaksysteem/issues/13#issue-1697256063
-     */
-    public function getZaakType($form): ?Zaaktype
-    {
-        $zaaktypeIdentifier = $form[sprintf('%s-form-setting-%s-identifier', OWC_GZ_PLUGIN_SLUG, 'openzaak')];
-
-        return $this->getApiClient()->zaaktypen()->all()->filter(
-            function (Zaaktype $zaaktype) use ($zaaktypeIdentifier) {
-                if ($zaaktype->identificatie === $zaaktypeIdentifier) {
-                    return $zaaktype;
-                }
-            }
-        )->first();
-    }
-
-    /**
      * Create "zaak".
      */
     public function addZaak($entry, $form): ?Zaak
     {
-        $client = $this->getApiClient();
         $rsin = $this->plugin->getContainer()->get('rsin');
         $zaaktype = $this->getZaakType($form);
 
@@ -103,6 +60,9 @@ class CreateZaakAction
             'zaaktype' => $zaaktype['url']
         ];
 
+        $client = $this->getApiClient();
+        $client->setEndpointURL($this->getZakenURL());
+
         $zaak = $client->zaken()->create(new Zaak($args, $client::CLIENT_NAME));
 
         $this->addRolToZaak($zaak, $zaaktype['url']);
@@ -117,6 +77,7 @@ class CreateZaakAction
     public function addZaakEigenschappen(Zaak $zaak, $fields, $entry): void
     {
         $client = $this->getApiClient();
+        $client->setEndpointURL($this->getZakenURL());
         $mapping = field_mapping($fields, $entry);
 
         foreach ($mapping as $value) {
@@ -142,7 +103,6 @@ class CreateZaakAction
      */
     public function addRolToZaak(Zaak $zaak, string $zaaktype): ?Rol
     {
-        $client = $this->getApiClient();
         $rolTypen = $this->getRolTypen($zaaktype);
         $rol = null;
 
@@ -156,6 +116,9 @@ class CreateZaakAction
             throw new Exception('Deze sessie lijkt geen BSN te hebben');
         }
 
+        $client = $this->getApiClient();
+        $client->setEndpointURL($this->getZakenURL());
+        
         foreach ($rolTypen as $rolType) {
             if ($rolType['omschrijvingGeneriek'] !== 'initiator') {
                 continue;
@@ -179,15 +142,5 @@ class CreateZaakAction
         }
 
         return $rol;
-    }
-
-    /**
-     * @todo move this to separate handler
-     */
-    protected function resolveCurrentBsn(): string
-    {
-        $bsn = resolve('session')->getSegment('digid')->get('bsn');
-
-        return decrypt($bsn);
     }
 }

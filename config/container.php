@@ -79,6 +79,9 @@ return [
     'dj.client_secret' => function (Container $container) {
         return $container->make('gf.setting', ['-decos-join-client-secret']);
     },
+    'dj.client_secret_zrc' => function (Container $container) {
+        return $container->make('gf.setting', ['-decos-join-client-secret-zrc']);
+    },
     'dj.authenticator' => function (Container $container) {
         return $container->get(Http\Authentication\DecosJoinAuthenticator::class);
     },
@@ -142,7 +145,6 @@ return [
     },
     Http\Authentication\DecosJoinAuthenticator::class => function (Container $container) {
         return new Http\Authentication\DecosJoinAuthenticator(
-            $container->get('dj.catalogi_url'),
             $container->get('dj.client_id'),
             $container->get('dj.client_secret')
         );

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace OWC\Zaaksysteem\Client;
 
 use OWC\Zaaksysteem\Endpoint\EigenschappenEndpoint;
+use OWC\Zaaksysteem\Endpoint\RoltypenEndpoint;
 use OWC\Zaaksysteem\Endpoint\StatussenEndpoint;
 use OWC\Zaaksysteem\Endpoint\StatustypenEndpoint;
 use OWC\Zaaksysteem\Endpoint\ZaakeigenschappenEndpoint;
@@ -26,6 +27,7 @@ class DecosJoinClient extends Client
         // Catalogi API
         'zaaktypen' => ZaaktypenEndpoint::class,
         'statustypen' => StatustypenEndpoint::class,
+        'roltypen' => RoltypenEndpoint::class,
         'eigenschappen' => EigenschappenEndpoint::class,
 
         /**
