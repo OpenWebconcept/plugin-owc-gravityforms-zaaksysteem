@@ -6,8 +6,9 @@ use function OWC\Zaaksysteem\Foundation\Helpers\config;
 use OWC\Zaaksysteem\Client\Client;
 use OWC\Zaaksysteem\Entities\Zaaktype;
 use OWC\Zaaksysteem\Foundation\Plugin;
-
 use OWC\Zaaksysteem\Http\RequestError;
+
+use OWC\Zaaksysteem\Support\Collection;
 
 class GravityFormsFormSettings
 {
@@ -111,14 +112,22 @@ class GravityFormsFormSettings
         $client = $this->getApiClient('decos');
         $client->setEndpointURL($this->getCatalogiURL('decos'));
 
+        $page = 1;
+        $zaaktypen = [];
+
+
         try {
-            $zaaktypen = $client->zaaktypen()->all();
+            while ($page) {
+                $result = $client->zaaktypen()->all((new \OWC\Zaaksysteem\Endpoint\Filter\ResultaattypenFilter())->page($page));
+                $zaaktypen = array_merge($zaaktypen, $result->all());
+                $page = $result->pageMeta()->getNextPageNumber();
+            }
         } catch(RequestError $exception) {
             // REFERENCE POINT: Mike -> just return, let it break or catch and log?
             return [];
         }
 
-        return $zaaktypen->map(function (Zaaktype $zaaktype) {
+        return (array) Collection::collect($zaaktypen)->map(function (Zaaktype $zaaktype) {
             return [
                 'name' => $zaaktype->identificatie,
                 'label' => "{$zaaktype->omschrijving} ({$zaaktype->identificatie})",

@@ -13,10 +13,10 @@ class ZaaktypenEndpoint extends Endpoint
     protected string $endpoint = 'zaaktypen';
     protected string $entityClass = Zaaktype::class;
 
-    public function all(): PagedCollection
+    public function all(?Filter\AbstractFilter $filter = null): PagedCollection
     {
         $response = $this->httpClient->get(
-            $this->buildUri($this->endpoint),
+            $filter ? $this->buildUri($this->endpoint, $filter) : $this->buildUri($this->endpoint),
             $this->buildRequestOptions()
         );
 
