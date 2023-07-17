@@ -30,7 +30,7 @@
   },
   "autoload": {
     "psr-4": {
-      "OWC\\Zaaksysteem\\": "./src/Zaaksysteem"
+      "OWC\\Zaaksysteem\\": "./src"
     }
   },
   "autoload-dev": {
