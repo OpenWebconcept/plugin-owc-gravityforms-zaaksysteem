@@ -3,16 +3,18 @@
 ## Configuration
 Check out `config/container.php` and adjust variables as needed. 
 
-## Endpoint usage
+## OpenZaak usage example
+
+> **Note:** this example uses OpenZaak as example, but can be substituted by any other implemented client.
 
 ```php
 namespace OWC\Zaaksysteem;
 
 use function OWC\Zaaksysteem\Foundation\Helpers\resolve;
 
-// $client is an instance of \OWC\Zaaksysteem\Client\Client 
+// $client is an instance of \OWC\Zaaksysteem\Clients\OpenZaak\Client 
 // and is (currently!) configured in /config/container.php.
-$client = resolve('api.client');
+$client = resolve('oz.client');
 
 // Optionally check if the client supports a given Endpoint:
 if ($client->supports('zaken') && $client->supports('zaakobjecten') {
@@ -41,7 +43,7 @@ if ($zaken->isEmpty()) {
 
 if ($zaken->pageMeta()->hasNextPage()) {
     // Load the next page, for example:
-    $filter = new \OWC\Zaaksysteem\Endpoint\Filter\ZakenFilter();
+    $filter = new \OWC\Zaaksysteem\Endpoints\Filter\ZakenFilter();
     $filter->page($zaken->pageMeta()->getNextPageNumber());
     $zaken = $zakenEndpoint->filter($filter);
 }
@@ -50,12 +52,12 @@ if ($zaken->pageMeta()->hasNextPage()) {
 It's also possible to apply a filter on other attributes.
 ```php
 // Apply a filter. Start with creating a new ZakenFilter instance.
-$filter = new \OWC\Zaaksysteem\Endpoint\Filter\ZakenFilter();
+$filter = new \OWC\Zaaksysteem\Endpoints\Filter\ZakenFilter();
 
 // The available methods differ to every AbstractFilter implementation.
 $filter->byStartDate(new DateTime());
 // Though on every filter attributes can be set through the `add()` method.
-$filter-add('attribute', 'value');
+$filter->add('attribute', 'value');
 // Returns a \OWC\Zaaksysteem\Support\PagedCollection instance.
 $zaken = $zakenEndpoint->filter($filter);
 ```
@@ -93,7 +95,7 @@ Connected resources are not automatically loaded, but only when accessed.
 
 ```php
 // We'll start with finding a specific zaak.
-$client = container()->get('api.client');
+$client = container()->get('oz.client');
 $zakenEndpoint = $client->zaken();
 $zaak = $zakenEndpoint->find($zaakUuid);
 
@@ -121,14 +123,14 @@ foreach ($statustypen->sortByAttribute('volgnummer') as $statustype) {
 ```
 
 ## New API client
-There is support for multiple ZGW API clients (OpenZaak, Decos JOIN, etc.). To add a new, additional API client, a custom implementation of `OWC\Zaaksysteem\Client\Client` is required. 
+There is support for multiple ZGW API clients (OpenZaak, Decos JOIN, etc.). To add a new, additional API client, a custom implementation of `OWC\Zaaksysteem\Contracts\Client` is required. The `OWC\Zaaksysteem\Contracts\AbstractClient` may be extended to save time.
 
-For this implementation:
+For any implementation:
 1. The `AVAILABLE_ENDPOINTS` array should be updated to point to the right `Endpoint` implementations that are supported. If possible, use the default Endpoint implementations. 
 2. The `CALLABLE_NAME` must be a reference to a callable abstract in the DI container. 
 3. The `CLIENT_NAME` should be updated, though currently is not required.
 
-Additionally a custom `OWC\Zaaksysteem\Http\Authentication\TokenAuthenticator` might be required, as the way of authentication might differ.
+Additionally a custom `OWC\Zaaksysteem\Contracts\TokenAuthenticator` is required, as the way of authentication might differ. Simply extending `OWC\Zaaksysteem\Contracts\AbstractTokenAuthenticator` might be enough.
 
 Next, the `config/container.php` file must be updated so that it has a factory for the defined `CALLABLE_NAME`. This factory must construct the client. 
 
