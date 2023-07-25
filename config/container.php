@@ -13,7 +13,7 @@ return [
      * OpenZaak configuration
      */
     'openzaak.abbr' => 'oz',
-    'oz.client' => fn (Container $container) => $container->get(Client\OpenZaakClient::class),
+    'oz.client' => fn (Container $container) => $container->get(Clients\OpenZaak\Client::class),
     'oz.base_uri' => function (Container $container) {
         return $container->make('gf.setting', ['-openzaak-url']);
     },
@@ -24,14 +24,14 @@ return [
         return $container->make('gf.setting', ['-openzaak-client-secret']);
     },
     'oz.authenticator' => function (Container $container) {
-        return $container->get(Http\Authentication\OpenZaakAuthenticator::class);
+        return $container->get(Clients\OpenZaak\Authenticator::class);
     },
 
     /**
      * Decos JOIN configuration
      */
     'decosjoin.abbr' => 'dj',
-    'dj.client' => fn (Container $container) => $container->get(Client\DecosJoinClient::class),
+    'dj.client' => fn (Container $container) => $container->get(Clients\DecosJoin\Client::class),
     'dj.base_uri' => function (Container $container) {
         return $container->make('gf.setting', ['-decos-join-url']);
     },
@@ -45,7 +45,7 @@ return [
         return $container->make('gf.setting', ['-decos-join-client-secret']);
     },
     'dj.authenticator' => function (Container $container) {
-        return $container->get(Http\Authentication\DecosJoinAuthenticator::class);
+        return $container->get(Clients\DecosJoin\Authenticator::class);
     },
 
     /**
@@ -65,8 +65,8 @@ return [
     /**
      * Configure API Clients
      */
-    Client\OpenZaakClient::class => function (Container $container) {
-        return new Client\OpenZaakClient(
+    Clients\OpenZaak\Client::class => function (Container $container) {
+        return new Clients\OpenZaak\Client(
             $container->make(
                 Http\WordPress\WordPressRequestClient::class,
                 [$container->get('oz.base_uri')]
@@ -74,8 +74,8 @@ return [
             $container->get('oz.authenticator'),
         );
     },
-    Client\DecosJoinClient::class => function (Container $container) {
-        return new Client\DecosJoinClient(
+    Clients\DecosJoin\Client::class => function (Container $container) {
+        return new Clients\DecosJoin\Client(
             $container->make(
                 Http\WordPress\WordPressRequestClient::class,
                 [$container->get('dj.base_uri')]
@@ -87,14 +87,14 @@ return [
     /**
      * Authenticators
      */
-    Http\Authentication\OpenZaakAuthenticator::class => function (Container $container) {
-        return new Http\Authentication\OpenZaakAuthenticator(
+    Clients\OpenZaak\Authenticator::class => function (Container $container) {
+        return new Clients\OpenZaak\Authenticator(
             $container->get('oz.client_id'),
             $container->get('oz.client_secret'),
         );
     },
-    Http\Authentication\DecosJoinAuthenticator::class => function (Container $container) {
-        return new Http\Authentication\DecosJoinAuthenticator(
+    Clients\DecosJoin\Authenticator::class => function (Container $container) {
+        return new Clients\DecosJoin\Authenticator(
             $container->get('http.client'),
             $container->get('dj.token_uri'),
             $container->get('dj.client_id'),
