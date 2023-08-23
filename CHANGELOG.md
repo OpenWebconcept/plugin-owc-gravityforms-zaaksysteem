@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.1.0
+
+- Chore: update webpack removes usage of eval
+
 ## v1.0.3
 
 - Change: namespace for consistency
