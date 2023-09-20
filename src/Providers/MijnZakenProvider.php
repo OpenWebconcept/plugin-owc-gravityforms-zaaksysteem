@@ -93,8 +93,6 @@ class MijnZakenProvider extends ServiceProvider
      */
     protected function resolveCurrentBsn(): string
     {
-         // return '111111110';
-         return '900246315';
         $bsn = resolve('session')->getSegment('digid')->get('bsn');
 
         return decrypt($bsn);
