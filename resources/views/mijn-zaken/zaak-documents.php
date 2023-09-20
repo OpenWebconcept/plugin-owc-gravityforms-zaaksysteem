@@ -14,7 +14,7 @@
 
                     ?>
                     <a href="#">
-                        <?= $document->titel; ?> (<?= $document->informatieobject->formaat; ?>)
+                        <?= $document->titel; ?> (TODO)
                     </a>
                 </li>
             <?php endforeach; ?>
