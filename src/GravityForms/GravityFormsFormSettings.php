@@ -39,31 +39,16 @@ class GravityFormsFormSettings
     }
 
     /**
-     * Get the URL of the catalogi endpoint of the selected client.
-     */
-    protected function getCatalogiURL(string $client): string
-    {
-        switch ($client) {
-            case 'decos':
-                return $this->plugin->getContainer()->get('dj.catalogi_url');
-            default:
-                return $this->plugin->getContainer()->get('oz.catalogi_url');
-        }
-    }
-
-    /**
      * Get a list of related 'zaaktypen' from Open Zaak.
      */
     public function getTypesOpenZaak(): array
     {
         $client = $this->getApiClient('openzaak');
-        $client->setEndpointURL($this->getCatalogiURL('openzaak'));
 
         try {
             $zaaktypen = $client->zaaktypen()->all();
         } catch(RequestError $exception) {
-            //REFERENCE POINT: Mike -> just return, let it break or catch and log?
-            return [];
+            return $this->handleNoChoices();
         }
 
         return $zaaktypen->map(function (Zaaktype $zaaktype) {
@@ -81,13 +66,11 @@ class GravityFormsFormSettings
     public function getTypesDecosJoin(): array
     {
         $client = $this->getApiClient('decos');
-        $client->setEndpointURL($this->getCatalogiURL('decos'));
 
         try {
             $zaaktypen = $client->zaaktypen()->all();
         } catch(RequestError $exception) {
-            // REFERENCE POINT: Mike -> just return, let it break or catch and log?
-            return [];
+            return $this->handleNoChoices();
         }
 
         return $zaaktypen->map(function (Zaaktype $zaaktype) {
@@ -97,6 +80,15 @@ class GravityFormsFormSettings
                 'value' => $zaaktype->identificatie
             ];
         })->all();
+    }
+
+    protected function handleNoChoices(): array
+    {
+        return [
+            [
+                'label' => __('Unable to retrieve "Zaak" types provided by selected supplier.', config('core.text_domain')),
+            ]
+        ];
     }
 
     /**

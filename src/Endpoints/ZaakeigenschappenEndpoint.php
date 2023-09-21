@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace OWC\Zaaksysteem\Endpoints;
 
-use OWC\Zaaksysteem\Support\Collection;
 use OWC\Zaaksysteem\Entities\Zaak;
 use OWC\Zaaksysteem\Entities\Zaakeigenschap;
+use OWC\Zaaksysteem\Support\Collection;
 
 class ZaakeigenschappenEndpoint extends Endpoint
 {
-    protected string $apiType = 'zaken';
     protected string $endpoint = 'zaakeigenschappen';
     protected string $entityClass = Zaakeigenschap::class;
 
@@ -47,7 +46,7 @@ class ZaakeigenschappenEndpoint extends Endpoint
     public function create(Zaak $zaak, Zaakeigenschap $model): Zaakeigenschap
     {
         $response = $this->httpClient->post(
-            $this->buildUri($this->apiType . '/' . $zaak->uuid . '/' . $this->endpoint),
+            $this->buildUri(sprintf('%s/%s', $zaak->uuid, $this->endpoint)),
             $model->toJson(),
             $this->buildRequestOptions()
         );

@@ -9,7 +9,6 @@ use OWC\Zaaksysteem\Support\PagedCollection;
 
 class ZaakobjectenEndpoint extends Endpoint
 {
-    protected string $apiType = 'zaken';
     protected string $endpoint = 'zaakobjecten';
     protected string $entityClass = Zaakobject::class;
 
@@ -26,7 +25,7 @@ class ZaakobjectenEndpoint extends Endpoint
     public function get(string $identifier): ?Zaakobject
     {
         $response = $this->httpClient->get(
-            $this->buildUri($this->endpoint . '/' . $identifier),
+            $this->buildUri(sprintf('%s/%s', $this->endpoint, $identifier)),
             $this->buildRequestOptions()
         );
 

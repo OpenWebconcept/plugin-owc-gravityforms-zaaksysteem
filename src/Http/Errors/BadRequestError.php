@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace OWC\Zaaksysteem\Http\Errors;
 
-use OWC\Zaaksysteem\Http\Response;
 use OWC\Zaaksysteem\Http\RequestError;
+use OWC\Zaaksysteem\Http\Response;
 
 class BadRequestError extends RequestError
 {

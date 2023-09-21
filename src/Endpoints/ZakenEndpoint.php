@@ -26,7 +26,7 @@ class ZakenEndpoint extends Endpoint
     public function get(string $identifier): ?Zaak
     {
         $response = $this->httpClient->get(
-            $this->buildUri($this->endpoint . '/' . $identifier),
+            $this->buildUri(sprintf('%s/%s', $this->endpoint, $identifier)),
             $this->buildRequestOptions()
         );
 

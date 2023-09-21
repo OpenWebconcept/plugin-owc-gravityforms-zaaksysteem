@@ -8,7 +8,6 @@ use OWC\Zaaksysteem\Entities\Enkelvoudiginformatieobject;
 
 class EnkelvoudiginformatieobjectenEndpoint extends Endpoint
 {
-    protected string $apiType = 'documenten';
     protected string $endpoint = 'enkelvoudiginformatieobjecten';
     protected string $entityClass = Enkelvoudiginformatieobject::class;
 

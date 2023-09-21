@@ -9,7 +9,6 @@ use OWC\Zaaksysteem\Support\PagedCollection;
 
 class RoltypenEndpoint extends Endpoint
 {
-    protected string $apiType = 'catalogi';
     protected string $endpoint = 'roltypen';
     protected string $entityClass = Roltype::class;
 

@@ -5,16 +5,17 @@ declare(strict_types=1);
 namespace OWC\Zaaksysteem\Providers;
 
 use OWC\Zaaksysteem\Contracts\Client;
+use OWC\Zaaksysteem\Endpoints\Filter\ZakenFilter;
 use OWC\Zaaksysteem\Entities\Zaak;
 use OWC\Zaaksysteem\Foundation\ServiceProvider;
-use OWC\Zaaksysteem\Endpoints\Filter\ZakenFilter;
+use OWC\Zaaksysteem\Traits\ResolveBSN;
 
-use function Yard\DigiD\Foundation\Helpers\resolve;
 use function OWC\Zaaksysteem\Foundation\Helpers\view;
-use function OWC\Zaaksysteem\Foundation\Helpers\decrypt;
 
 class MijnZakenProvider extends ServiceProvider
 {
+    use ResolveBSN;
+
     public function boot(): void
     {
         add_action('init', [$this, 'registerBlock']);
@@ -86,15 +87,5 @@ class MijnZakenProvider extends ServiceProvider
         $uris = json_decode($attributes['zaaktypeFilter'] ?? '', true);
 
         return array_filter((array) $uris);
-    }
-
-    /**
-     * @todo move this to separate handler
-     */
-    protected function resolveCurrentBsn(): string
-    {
-        $bsn = resolve('session')->getSegment('digid')->get('bsn');
-
-        return decrypt($bsn);
     }
 }

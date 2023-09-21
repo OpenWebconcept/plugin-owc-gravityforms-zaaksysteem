@@ -9,7 +9,6 @@ use OWC\Zaaksysteem\Support\PagedCollection;
 
 class InformatieobjecttypenEndpoint extends Endpoint
 {
-    protected string $apiType = 'catalogi';
     protected string $endpoint = 'informatieobjecttypen';
     protected string $entityClass = Informatieobjecttype::class;
 

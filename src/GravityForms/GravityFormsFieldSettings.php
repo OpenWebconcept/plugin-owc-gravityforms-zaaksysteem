@@ -13,9 +13,6 @@ use function OWC\Zaaksysteem\Foundation\Helpers\view;
 
 class GravityFormsFieldSettings
 {
-    /**
-     * Instance of the plugin.
-     */
     protected Plugin $plugin;
 
     public function __construct(Plugin $plugin)
@@ -23,11 +20,6 @@ class GravityFormsFieldSettings
         $this->plugin = $plugin;
     }
 
-    /**
-     * Get the api client.
-     *
-     * @todo make generic, so we can use it for Decos Join as well.
-     */
     protected function getApiClient(string $client): Client
     {
         switch ($client) {
@@ -36,34 +28,6 @@ class GravityFormsFieldSettings
                 return $this->plugin->getContainer()->get('dj.client');
             default:
                 return $this->plugin->getContainer()->get('oz.client');
-        }
-    }
-
-    /**
-     * Get the URL of the 'catalogi' endpoint of the selected supplier.
-     */
-    protected function getCatalogiURL(string $supplier): string
-    {
-        switch ($supplier) {
-            case 'decos':
-            case 'decos-join':
-                return $this->plugin->getContainer()->get('dj.catalogi_url');
-            default:
-                return $this->plugin->getContainer()->get('oz.catalogi_url');
-        }
-    }
-
-    /**
-     * Get the URL of the 'zaken' endpoint of the selected supplier.
-     */
-    protected function getZakenURL(string $supplier): string
-    {
-        switch ($supplier) {
-            case 'decos':
-            case 'decos-join':
-                return $this->plugin->getContainer()->get('dj.zaken_url');
-            default:
-                return $this->plugin->getContainer()->get('oz.zaken_url');
         }
     }
 
@@ -77,7 +41,6 @@ class GravityFormsFieldSettings
     public function getZaakType(string $supplier, string $zaaktypeIdentifier): ?Zaaktype
     {
         $client = $this->getApiClient($supplier);
-        $client->setEndpointURL($this->getCatalogiURL($supplier));
 
         // Get the zaaktype belonging to the chosen zaaktype identifier.
         return $client->zaaktypen()->all()->filter(
@@ -96,12 +59,9 @@ class GravityFormsFieldSettings
     public function getZaaktypenEigenschappen(string $supplier, string $zaaktypeUrl): PagedCollection
     {
         $client = $this->getApiClient($supplier);
-        $client->setEndpointURL($this->getCatalogiURL($supplier));
 
         $filter = new EigenschappenFilter();
         $filter->add('zaaktype', $zaaktypeUrl);
-
-        // REFERENCE POINT: Mike -> what if the request fails? Errors are not handled.
 
         return $client->eigenschappen()->filter($filter);
     }

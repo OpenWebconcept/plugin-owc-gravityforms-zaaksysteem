@@ -7,10 +7,9 @@ use DI\Container;
 /**
  * Link interfaces to their concretions.
  */
-
 return [
     /**
-     * OpenZaak configuration
+     * OpenZaak configuration.
      */
     'openzaak.abbr' => 'oz',
     'oz.client' => fn (Container $container) => $container->get(Clients\OpenZaak\Client::class),
@@ -34,7 +33,7 @@ return [
     },
 
     /**
-     * Decos JOIN configuration
+     * Decos JOIN configuration.
      */
     'decosjoin.abbr' => 'dj',
     'dj.client' => fn (Container $container) => $container->get(Clients\DecosJoin\Client::class),
@@ -55,6 +54,9 @@ return [
     },
     'dj.client_secret' => function (Container $container) {
         return $container->make('gf.setting', ['-decos-join-client-secret']);
+    },
+    'dj.client_secret_zrc' => function (Container $container) {
+        return $container->make('gf.setting', ['-decos-join-client-secret-zrc']);
     },
     'dj.authenticator' => function (Container $container) {
         return $container->get(Clients\DecosJoin\Authenticator::class);
@@ -83,6 +85,9 @@ return [
                 Http\WordPress\WordPressRequestClient::class
             ),
             $container->get('oz.authenticator'),
+            $container->get('oz.zaken_uri'),
+            $container->get('oz.catalogi_uri'),
+            $container->get('oz.documenten_uri'),
         );
     },
     Clients\DecosJoin\Client::class => function (Container $container) {
@@ -91,6 +96,9 @@ return [
                 Http\WordPress\WordPressRequestClient::class
             ),
             $container->get('dj.authenticator'),
+            $container->get('dj.zaken_uri'),
+            $container->get('dj.catalogi_uri'),
+            $container->get('dj.documenten_uri'),
         );
     },
 
@@ -105,7 +113,6 @@ return [
     },
     Clients\DecosJoin\Authenticator::class => function (Container $container) {
         return new Clients\DecosJoin\Authenticator(
-            $container->get('dj.catalogi_url'),
             $container->get('dj.client_id'),
             $container->get('dj.client_secret')
         );
