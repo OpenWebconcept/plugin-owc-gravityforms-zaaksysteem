@@ -82,7 +82,6 @@ class GravityFormsAddon extends GFAddOn
             $this->settingsGeneral(),
             $this->settingsOpenZaak(),
             $this->settingsDecosJoin(),
-            $this->settingsEnableU(),
             $this->RSIN()
         ];
     }
@@ -151,23 +150,6 @@ class GravityFormsAddon extends GFAddOn
                         'type'              => 'text',
                         'class'             => 'medium',
                         'name'              => "{$this->prefix}-decos-join-client-secret",
-                    ]
-                ],
-
-
-        ];
-    }
-
-    protected function settingsEnableU(): array
-    {
-        return [
-                'title'  => esc_html__('Enable U', config('core.text_domain')),
-                'fields' => [
-                    [
-                        'label'             => esc_html__('Base URL', config('core.text_domain')),
-                        'type'              => 'text',
-                        'class'             => 'medium',
-                        'name'              => "{$this->prefix}-enable-u-url",
                     ]
                 ],
 

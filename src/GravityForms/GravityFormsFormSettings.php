@@ -64,21 +64,6 @@ class GravityFormsFormSettings
     }
 
     /**
-     * Get a list of related 'zaaktypen' from Enable U.
-     *
-     * TODO: endpoint for retrieving types is not production ready.
-     */
-    public function getTypesEnableU(): array
-    {
-        return [
-            [
-                'name' => 'Todo',
-                'label' => 'Todo',
-            ]
-        ];
-    }
-
-    /**
      * Add form based settings.
      */
     public function addFormSettings(array $fields): array
@@ -102,11 +87,6 @@ class GravityFormsFormSettings
                             'name'  => "{$this->prefix}-form-setting-supplier-openzaak",
                             'label' => __('OpenZaak', config('core.text_domain')),
                             'value' => 'openzaak',
-                        ],
-                        [
-                            'name'  => "{$this->prefix}-form-setting-supplier-openzaak",
-                            'label' => __('EnableU', config('core.text_domain')),
-                            'value' => 'enable-u',
                         ],
                         [
                             'name'  => "{$this->prefix}-form-setting-supplier-decos-join",
@@ -145,21 +125,6 @@ class GravityFormsFormSettings
                         ],
                     ],
                     'choices' => $this->getTypesDecosJoin(),
-                ],
-                [
-                    'name'    => "{$this->prefix}-form-setting-enable-u-identifier",
-                    'type'    => 'select',
-                    'label'   => esc_html__('EnableU identifier', config('core.text_domain')),
-                    'dependency' => [
-                        'live'   => true,
-                        'fields' => [
-                            [
-                                'field' => "{$this->prefix}-form-setting-supplier",
-                                'values' => ['enable-u'],
-                            ],
-                        ],
-                    ],
-                    'choices' => $this->getTypesEnableU(),
                 ]
             ],
         ];
