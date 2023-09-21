@@ -89,8 +89,8 @@ class GravityFormsAddon extends GFAddOn
     protected function settingsGeneral(): array
     {
         return [
-            'title'  => esc_html__('Description', config('core.text_domain')),
-            'description' => esc_html__(' Enter the details of the suppliers you would like to use.', config('core.text_domain')),
+            'title' => esc_html__('Description', config('core.text_domain')),
+            'description' => esc_html__('Enter the details of the suppliers you would like to use. When configuring the API endpoints don\'t add the API version and the endpoint, e.g. "https://supplier.com/api/v1/eigenschappen" should be "https://supplier.com/api/".', config('core.text_domain')),
             'fields' => [[]],
         ];
     }
@@ -101,22 +101,34 @@ class GravityFormsAddon extends GFAddOn
             'title'  => esc_html__('OpenZaak', config('core.text_domain')),
             'fields' => [
                 [
-                    'label'             => esc_html__('Base URL', config('core.text_domain')),
-                    'type'              => 'text',
-                    'class'             => 'medium',
-                    'name'              => "{$this->prefix}-openzaak-url",
+                    'label' => esc_html__('Catalogi URL', config('core.text_domain')),
+                    'type' => 'text',
+                    'class' => 'medium',
+                    'name' => "{$this->prefix}-openzaak-catalogi-url",
                 ],
                 [
-                    'label'             => esc_html__('Client ID', config('core.text_domain')),
-                    'type'              => 'text',
-                    'class'             => 'medium',
-                    'name'              => "{$this->prefix}-openzaak-client-id",
+                    'label' => esc_html__('Documenten URL', config('core.text_domain')),
+                    'type' => 'text',
+                    'class' => 'medium',
+                    'name' => "{$this->prefix}-openzaak-documenten-url",
                 ],
                 [
-                    'label'             => esc_html__('Client Secret', config('core.text_domain')),
-                    'type'              => 'text',
-                    'class'             => 'medium',
-                    'name'              => "{$this->prefix}-openzaak-client-secret",
+                    'label' => esc_html__('Zaken URL', config('core.text_domain')),
+                    'type' => 'text',
+                    'class' => 'medium',
+                    'name' => "{$this->prefix}-openzaak-zaken-url",
+                ],
+                [
+                    'label' => esc_html__('Client ID', config('core.text_domain')),
+                    'type' => 'text',
+                    'class' => 'medium',
+                    'name' => "{$this->prefix}-openzaak-client-id",
+                ],
+                [
+                    'label' => esc_html__('Client Secret', config('core.text_domain')),
+                    'type' => 'text',
+                    'class' => 'medium',
+                    'name' => "{$this->prefix}-openzaak-client-secret",
                 ]
             ],
         ];
@@ -128,29 +140,35 @@ class GravityFormsAddon extends GFAddOn
                 'title'  => esc_html__('Decos Join', config('core.text_domain')),
                 'fields' => [
                     [
-                        'label'             => esc_html__('Base URL', config('core.text_domain')),
-                        'type'              => 'text',
-                        'class'             => 'medium',
-                        'name'              => "{$this->prefix}-decos-join-url",
+                        'label' => esc_html__('Catalogi URL', config('core.text_domain')),
+                        'type' => 'text',
+                        'class' => 'medium',
+                        'name' => "{$this->prefix}-decos-join-catalogi-url",
                     ],
                     [
-                        'label'             => esc_html__('Token URL', config('core.text_domain')),
-                        'type'              => 'text',
-                        'class'             => 'medium',
-                        'name'              => "{$this->prefix}-decos-join-token-url",
+                        'label' => esc_html__('Documenten URL', config('core.text_domain')),
+                        'type' => 'text',
+                        'class' => 'medium',
+                        'name' => "{$this->prefix}-decos-join-documenten-url",
                     ],
                     [
-                        'label'             => esc_html__('Client ID', config('core.text_domain')),
-                        'type'              => 'text',
-                        'class'             => 'medium',
-                        'name'              => "{$this->prefix}-decos-join-client-id",
+                        'label' => esc_html__('Zaken URL', config('core.text_domain')),
+                        'type' => 'text',
+                        'class' => 'medium',
+                        'name' => "{$this->prefix}-decos-join-zaken-url",
                     ],
                     [
-                        'label'             => esc_html__('Client Secret', config('core.text_domain')),
-                        'type'              => 'text',
-                        'class'             => 'medium',
-                        'name'              => "{$this->prefix}-decos-join-client-secret",
-                    ]
+                        'label' => esc_html__('Client ID', config('core.text_domain')),
+                        'type' => 'text',
+                        'class' => 'medium',
+                        'name' => "{$this->prefix}-decos-join-client-id",
+                    ],
+                    [
+                        'label' => esc_html__('Client Secret', config('core.text_domain')),
+                        'type' => 'text',
+                        'class' => 'medium',
+                        'name' => "{$this->prefix}-decos-join-client-secret",
+                    ],
                 ],
 
 
@@ -160,14 +178,14 @@ class GravityFormsAddon extends GFAddOn
     protected function RSIN(): array
     {
         return [
-            'title'  => esc_html__('Organization', config('core.text_domain')),
+            'title' => esc_html__('Organization', config('core.text_domain')),
             'fields' => [
                 [
-                    'label'             => esc_html__('RSIN', config('core.text_domain')),
-                    'type'              => 'text',
-                    'class'             => 'medium',
-                    'name'              => "{$this->prefix}-rsin",
-                    'description'       => 'Registration number for non-natural persons, also known as the counterpart of the citizen service number (BSN).'
+                    'label' => esc_html__('RSIN', config('core.text_domain')),
+                    'type' => 'text',
+                    'class' => 'medium',
+                    'name' => "{$this->prefix}-rsin",
+                    'description' => 'Registration number for non-natural persons, also known as the counterpart of the citizen service number (BSN).'
                 ]
             ],
         ];

@@ -4,19 +4,17 @@ declare(strict_types=1);
 
 namespace OWC\Zaaksysteem\Clients\DecosJoin;
 
-use OWC\Zaaksysteem\Http\RequestClientInterface;
+use Firebase\JWT\JWT;
 use OWC\Zaaksysteem\Contracts\AbstractTokenAuthenticator;
 
 class Authenticator extends AbstractTokenAuthenticator
 {
-    protected RequestClientInterface $client;
     protected string $tokenUrl;
     protected string $clientId;
     protected string $clientSecret;
 
-    public function __construct(RequestClientInterface $client, string $tokenUrl, string $clientId, string $clientSecret)
+    public function __construct(string $tokenUrl, string $clientId, string $clientSecret)
     {
-        $this->client = $client;
         $this->tokenUrl = $tokenUrl;
         $this->clientId = $clientId;
         $this->clientSecret = $clientSecret;
@@ -24,14 +22,14 @@ class Authenticator extends AbstractTokenAuthenticator
 
     public function generateToken(): string
     {
-        $response = $this->client->post($this->tokenUrl, [
-            'clientId'          => $this->clientId,
-            'clientSecret'      => $this->clientSecret,
-            'expiresInMinute'   => '2'
-        ])->getParsedJson();
+        $payload = [
+            'iss'                   => $this->clientId,
+            'iat'                   => time(),
+            'client_id'             => $this->clientId,
+            'user_id'               => $this->clientId,
+            'user_representation'   => $this->clientId,
+        ];
 
-        // Does this return some sort of lifetime data? Because that
-        // would allow to cache the token for a short period.
-        return $response['token'] ?? '';
+        return JWT::encode($payload, $this->clientSecret, 'HS256');
     }
 }

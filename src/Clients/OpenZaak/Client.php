@@ -4,15 +4,23 @@ declare(strict_types=1);
 
 namespace OWC\Zaaksysteem\Clients\OpenZaak;
 
-use OWC\Zaaksysteem\Endpoints\ {
-    ZakenEndpoint, RollenEndpoint, RoltypenEndpoint, StatussenEndpoint,
-    ZaaktypenEndpoint, ResultatenEndpoint, StatustypenEndpoint,
-    CatalogussenEndpoint, ZaakobjectenEndpoint, ResultaattypenEndpoint,
-    ObjectinformatieEndpoint, ZaakinformatieobjectenEndpoint,
-    InformatieobjecttypenEndpoint, EnkelvoudiginformatieobjectenEndpoint,
-    ZaakeigenschappenEndpoint, EigenschappenEndpoint
-};
 use OWC\Zaaksysteem\Contracts\AbstractClient;
+use OWC\Zaaksysteem\Endpoint\CatalogussenEndpoint;
+use OWC\Zaaksysteem\Endpoint\EigenschappenEndpoint;
+use OWC\Zaaksysteem\Endpoint\EnkelvoudiginformatieobjectenEndpoint;
+use OWC\Zaaksysteem\Endpoint\InformatieobjecttypenEndpoint;
+use OWC\Zaaksysteem\Endpoint\ObjectinformatieEndpoint;
+use OWC\Zaaksysteem\Endpoint\ResultaattypenEndpoint;
+use OWC\Zaaksysteem\Endpoint\ResultatenEndpoint;
+use OWC\Zaaksysteem\Endpoint\RollenEndpoint;
+use OWC\Zaaksysteem\Endpoint\RoltypenEndpoint;
+use OWC\Zaaksysteem\Endpoint\StatussenEndpoint;
+use OWC\Zaaksysteem\Endpoint\StatustypenEndpoint;
+use OWC\Zaaksysteem\Endpoint\ZaakeigenschappenEndpoint;
+use OWC\Zaaksysteem\Endpoint\ZaakinformatieobjectenEndpoint;
+use OWC\Zaaksysteem\Endpoint\ZaakobjectenEndpoint;
+use OWC\Zaaksysteem\Endpoint\ZaaktypenEndpoint;
+use OWC\Zaaksysteem\Endpoint\ZakenEndpoint;
 
 class Client extends AbstractClient
 {

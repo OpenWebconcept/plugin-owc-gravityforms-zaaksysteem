@@ -14,8 +14,14 @@ return [
      */
     'openzaak.abbr' => 'oz',
     'oz.client' => fn (Container $container) => $container->get(Clients\OpenZaak\Client::class),
-    'oz.base_uri' => function (Container $container) {
-        return $container->make('gf.setting', ['-openzaak-url']);
+    'oz.catalogi_uri' => function (Container $container) {
+        return $container->make('gf.setting', ['-openzaak-catalogi-url']);
+    },
+    'oz.documenten_uri' => function (Container $container) {
+        return $container->make('gf.setting', ['-openzaak-documenten-url']);
+    },
+    'oz.zaken_uri' => function (Container $container) {
+        return $container->make('gf.setting', ['-openzaak-zaken-url']);
     },
     'oz.client_id' => function (Container $container) {
         return $container->make('gf.setting', ['-openzaak-client-id']);
@@ -32,8 +38,14 @@ return [
      */
     'decosjoin.abbr' => 'dj',
     'dj.client' => fn (Container $container) => $container->get(Clients\DecosJoin\Client::class),
-    'dj.base_uri' => function (Container $container) {
-        return $container->make('gf.setting', ['-decos-join-url']);
+    'dj.catalogi_uri' => function (Container $container) {
+        return $container->make('gf.setting', ['-decos-join-catalogi-url']);
+    },
+    'dj.documenten_uri' => function (Container $container) {
+        return $container->make('gf.setting', ['-decos-join-documenten-url']);
+    },
+    'dj.zaken_uri' => function (Container $container) {
+        return $container->make('gf.setting', ['-decos-join-zaken-url']);
     },
     'dj.token_uri' => function (Container $container) {
         return $container->make('gf.setting', ['-decos-join-token-url']);
@@ -68,8 +80,7 @@ return [
     Clients\OpenZaak\Client::class => function (Container $container) {
         return new Clients\OpenZaak\Client(
             $container->make(
-                Http\WordPress\WordPressRequestClient::class,
-                [$container->get('oz.base_uri')]
+                Http\WordPress\WordPressRequestClient::class
             ),
             $container->get('oz.authenticator'),
         );
@@ -77,8 +88,7 @@ return [
     Clients\DecosJoin\Client::class => function (Container $container) {
         return new Clients\DecosJoin\Client(
             $container->make(
-                Http\WordPress\WordPressRequestClient::class,
-                [$container->get('dj.base_uri')]
+                Http\WordPress\WordPressRequestClient::class
             ),
             $container->get('dj.authenticator'),
         );
@@ -95,8 +105,7 @@ return [
     },
     Clients\DecosJoin\Authenticator::class => function (Container $container) {
         return new Clients\DecosJoin\Authenticator(
-            $container->get('http.client'),
-            $container->get('dj.token_uri'),
+            $container->get('dj.catalogi_url'),
             $container->get('dj.client_id'),
             $container->get('dj.client_secret')
         );
@@ -105,10 +114,9 @@ return [
     /**
      * HTTP clients
      */
-    Http\WordPress\WordPressRequestClient::class => function (Container $container, string $type, string $baseUri) {
+    Http\WordPress\WordPressRequestClient::class => function (Container $container, string $type) {
         return new Http\WordPress\WordPressRequestClient(
             new Http\RequestOptions([
-                'base_uri'      => $baseUri,
                 'headers'       => [
                     'Accept-Crs'    => 'EPSG:4326',
                     'Content-Crs'   => 'EPSG:4326',
