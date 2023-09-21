@@ -9,7 +9,7 @@ use OWC\Zaaksysteem\Support\PagedCollection;
 
 class ZaaktypenEndpoint extends Endpoint
 {
-    protected string $apiType = 'catalogi';
+    protected string $apiType = 'catalogi'; // REFERENCE POINT: Mike kan weg, zo ja dan bij alle endpoint classes?
     protected string $endpoint = 'zaaktypen';
     protected string $entityClass = Zaaktype::class;
 

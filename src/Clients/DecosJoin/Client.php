@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace OWC\Zaaksysteem\Clients\DecosJoin;
 
 use OWC\Zaaksysteem\Contracts\AbstractClient;
-use OWC\Zaaksysteem\Endpoints\ZakenEndpoint;
+use OWC\Zaaksysteem\Endpoint\EigenschappenEndpoint;
+use OWC\Zaaksysteem\Endpoint\ZaakeigenschappenEndpoint;
 use OWC\Zaaksysteem\Endpoints\StatussenEndpoint;
-use OWC\Zaaksysteem\Endpoints\ZaaktypenEndpoint;
 use OWC\Zaaksysteem\Endpoints\StatustypenEndpoint;
+use OWC\Zaaksysteem\Endpoints\ZaaktypenEndpoint;
+use OWC\Zaaksysteem\Endpoints\ZakenEndpoint;
 
 class Client extends AbstractClient
 {
@@ -16,10 +18,14 @@ class Client extends AbstractClient
     public const CALLABLE_NAME = 'dj.client';
 
     public const AVAILABLE_ENDPOINTS = [
-        'zaken'         => ZakenEndpoint::class,
-        'zaaktypen'     => ZaaktypenEndpoint::class,
-        'statussen'     => StatussenEndpoint::class,
-        'statustypen'   => StatustypenEndpoint::class,
+        'zaken' => ZakenEndpoint::class,
+        'statussen' => StatussenEndpoint::class,
+        'zaakeigenschappen' => ZaakeigenschappenEndpoint::class,
+
+        // Catalogi API
+        'zaaktypen' => ZaaktypenEndpoint::class,
+        'statustypen' => StatustypenEndpoint::class,
+        'eigenschappen' => EigenschappenEndpoint::class,
 
         /**
          * Not yet implemented

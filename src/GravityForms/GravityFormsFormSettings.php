@@ -5,6 +5,7 @@ namespace OWC\Zaaksysteem\GravityForms;
 use OWC\Zaaksysteem\Contracts\Client;
 use OWC\Zaaksysteem\Entities\Zaaktype;
 use OWC\Zaaksysteem\Foundation\Plugin;
+use OWC\Zaaksysteem\Http\RequestError;
 
 use function OWC\Zaaksysteem\Foundation\Helpers\config;
 
@@ -27,9 +28,27 @@ class GravityFormsFormSettings
      *
      * @todo make generic, so we can use it for Decos Join as well.
      */
-    protected function getApiClient(): Client
+    protected function getApiClient(string $client): Client
     {
-        return $this->plugin->getContainer()->get('oz.client');
+        switch ($client) {
+            case 'decos':
+                return $this->plugin->getContainer()->get('dj.client');
+            default:
+                return $this->plugin->getContainer()->get('oz.client');
+        }
+    }
+
+    /**
+     * Get the URL of the catalogi endpoint of the selected client.
+     */
+    protected function getCatalogiURL(string $client): string
+    {
+        switch ($client) {
+            case 'decos':
+                return $this->plugin->getContainer()->get('dj.catalogi_url');
+            default:
+                return $this->plugin->getContainer()->get('oz.catalogi_url');
+        }
     }
 
     /**
@@ -37,9 +56,17 @@ class GravityFormsFormSettings
      */
     public function getTypesOpenZaak(): array
     {
-        $client = $this->getApiClient();
+        $client = $this->getApiClient('openzaak');
+        $client->setEndpointURL($this->getCatalogiURL('openzaak'));
 
-        return $client->zaaktypen()->all()->map(function (Zaaktype $zaaktype) {
+        try {
+            $zaaktypen = $client->zaaktypen()->all();
+        } catch(RequestError $exception) {
+            //REFERENCE POINT: Mike -> just return, let it break or catch and log?
+            return [];
+        }
+
+        return $zaaktypen->map(function (Zaaktype $zaaktype) {
             return [
                 'name' => $zaaktype->identificatie,
                 'label' => "{$zaaktype->omschrijving} ({$zaaktype->identificatie})",
@@ -50,17 +77,26 @@ class GravityFormsFormSettings
 
     /**
      * Get a list of related 'zaaktypen' from Decos Join.
-     *
-     * TODO: implement api
      */
     public function getTypesDecosJoin(): array
     {
-        return [
-            [
-                'name' => 'Todo',
-                'label' => 'Todo',
-            ]
-        ];
+        $client = $this->getApiClient('decos');
+        $client->setEndpointURL($this->getCatalogiURL('decos'));
+
+        try {
+            $zaaktypen = $client->zaaktypen()->all();
+        } catch(RequestError $exception) {
+            // REFERENCE POINT: Mike -> just return, let it break or catch and log?
+            return [];
+        }
+
+        return $zaaktypen->map(function (Zaaktype $zaaktype) {
+            return [
+                'name' => $zaaktype->identificatie,
+                'label' => "{$zaaktype->omschrijving} ({$zaaktype->identificatie})",
+                'value' => $zaaktype->identificatie
+            ];
+        })->all();
     }
 
     /**
