@@ -9,7 +9,6 @@ use OWC\Zaaksysteem\Support\PagedCollection;
 
 class StatustypenEndpoint extends Endpoint
 {
-    protected string $apiType = 'catalogi';
     protected string $endpoint = 'statustypen';
     protected string $entityClass = Statustype::class;
 

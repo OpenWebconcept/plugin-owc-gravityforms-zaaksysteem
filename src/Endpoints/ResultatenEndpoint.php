@@ -9,7 +9,6 @@ use OWC\Zaaksysteem\Support\PagedCollection;
 
 class ResultatenEndpoint extends Endpoint
 {
-    protected string $apiType = 'zaken';
     protected string $endpoint = 'resultaten';
     protected string $entityClass = Resultaat::class;
 

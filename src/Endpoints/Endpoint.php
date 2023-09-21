@@ -16,33 +16,20 @@ use OWC\Zaaksysteem\Support\PagedCollection;
 abstract class Endpoint
 {
     protected Client $client;
+    protected string $endpointURL = '';
     protected RequestClientInterface $httpClient;
     protected TokenAuthenticator $authenticator;
     protected Stack $responseHandlers;
 
-    protected string $apiType = 'api-type'; // E.g. 'zaken' or 'catalogi' -> REFERENCE POINT: Mike kan weg?
-    protected string $endpointURL = '';
-    protected string $version = 'v1';
-    protected string $endpoint = 'endpoint';
     protected string $entityClass = Entity::class;
 
-    public function __construct(Client $client)
+    public function __construct(Client $client, string $endpointURL)
     {
         $this->client = $client;
+        $this->endpointURL = $endpointURL;
         $this->httpClient = $client->getRequestClient();
         $this->authenticator = $client->getAuthenticator();
         $this->responseHandlers = Stack::create();
-    }
-
-    public function setEndpointURL(string $url): self
-    {
-        if (empty($url)) {
-            return $this;
-        }
-
-        $this->endpointURL = $url;
-
-        return $this;
     }
 
     protected function handleResponse(Response $response)
@@ -58,14 +45,14 @@ abstract class Endpoint
     {
         return new RequestOptions([
             'headers'   => [
-                'Authorization'     => $this->authenticator->getAuthString()
+                'Authorization' => $this->authenticator->getAuthString()
             ],
         ]);
     }
 
     protected function buildUri(string $uri, ?Filter\AbstractFilter $filter = null): string
     {
-        $uri = sprintf('%s/%s/%s', untrailingslashit($this->endpointURL), $this->version, $uri);
+        $uri = sprintf('%s/%s', untrailingslashit($this->endpointURL), $uri);
 
         if ($filter) {
             $uri = \add_query_arg($filter->getParameters(), $uri);

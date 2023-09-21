@@ -9,7 +9,6 @@ use OWC\Zaaksysteem\Support\PagedCollection;
 
 class ZaaktypenEndpoint extends Endpoint
 {
-    protected string $apiType = 'catalogi'; // REFERENCE POINT: Mike kan weg, zo ja dan bij alle endpoint classes?
     protected string $endpoint = 'zaaktypen';
     protected string $entityClass = Zaaktype::class;
 
@@ -26,7 +25,7 @@ class ZaaktypenEndpoint extends Endpoint
     public function get(string $identifier): ?Zaaktype
     {
         $response = $this->httpClient->get(
-            $this->buildUri($this->endpoint . '/' . $identifier),
+            $this->buildUri(sprintf('%s/%s', $this->endpoint, $identifier)),
             $this->buildRequestOptions()
         );
 

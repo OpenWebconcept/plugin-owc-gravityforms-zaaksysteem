@@ -9,13 +9,11 @@ use OWC\Zaaksysteem\Contracts\AbstractTokenAuthenticator;
 
 class Authenticator extends AbstractTokenAuthenticator
 {
-    protected string $tokenUrl;
     protected string $clientId;
     protected string $clientSecret;
 
-    public function __construct(string $tokenUrl, string $clientId, string $clientSecret)
+    public function __construct(string $clientId, string $clientSecret)
     {
-        $this->tokenUrl = $tokenUrl;
         $this->clientId = $clientId;
         $this->clientSecret = $clientSecret;
     }

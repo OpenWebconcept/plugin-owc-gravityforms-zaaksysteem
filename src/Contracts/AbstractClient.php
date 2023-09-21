@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace OWC\Zaaksysteem\Contracts;
 
+use InvalidArgumentException;
 use OWC\Zaaksysteem\Endpoints\Endpoint;
 use OWC\Zaaksysteem\Http\Errors\ResourceNotFoundError;
+use OWC\Zaaksysteem\Http\Errors\ServerError;
 use OWC\Zaaksysteem\Http\RequestClientInterface;
 
 abstract class AbstractClient implements Client
@@ -22,14 +24,23 @@ abstract class AbstractClient implements Client
     protected RequestClientInterface $client;
     protected TokenAuthenticator $authenticator;
 
-    // Is new so we can pass this URL simply to the endpoint -> REFERENCE POINT: Mike
-    protected string $endpointURL = '';
+    protected string $zakenEndpointUrl;
+    protected string $catalogiEndpointUrl;
+    protected string $documentenEndpointUrl;
 
     // Does every API require token authentication? Maybe replace with interface
-    public function __construct(RequestClientInterface $client, TokenAuthenticator $authenticator)
-    {
+    public function __construct(
+        RequestClientInterface $client,
+        TokenAuthenticator $authenticator,
+        string $zakenEndpointUrl,
+        string $catalogiEndpointUrl,
+        string $documentenEndpointUrl
+    ) {
         $this->client = $client;
         $this->authenticator = $authenticator;
+        $this->zakenEndpointUrl = $zakenEndpointUrl;
+        $this->catalogiEndpointUrl = $catalogiEndpointUrl;
+        $this->documentenEndpointUrl = $documentenEndpointUrl;
     }
 
     public function __call($name, $arguments)
@@ -39,6 +50,11 @@ abstract class AbstractClient implements Client
         }
 
         throw new \BadMethodCallException("Unknown method {$name}");
+    }
+
+    public function getClientName(): string
+    {
+        return static::CLIENT_NAME;
     }
 
     public function getRequestClient(): RequestClientInterface
@@ -56,35 +72,52 @@ abstract class AbstractClient implements Client
         return isset(static::AVAILABLE_ENDPOINTS[$endpoint]);
     }
 
-    protected function getEndpointURL(): string
-    {
-        return $this->endpointURL;
-    }
-
-    public function setEndpointURL(string $url): self
-    {
-        if (empty($url)) {
-            return $this;
-        }
-
-        $this->endpointURL = $url;
-
-        return $this;
-    }
-
     protected function fetchFromContainer(string $key): Endpoint
     {
-        if (empty($this->getEndpointURL())) {
-            throw new ResourceNotFoundError(sprintf('Client "%s" must have an endpoint URL.', static::CLIENT_NAME));
-        }
-
         if (! isset($this->container[$key]) || empty($this->container[$key])) {
-            $class = static::AVAILABLE_ENDPOINTS[$key]; // Missing isset check
-            $endpoint = new $class($this);
-            $endpoint->setEndpointURL($this->getEndpointURL());
+            $endpoint = $this->validateEndpoint($key); // Throws exception when validation fails.
+
+            [$class, $type] = $endpoint;
+
+            $endpoint = new $class($this, $this->getEndpointUrlByType($type));
             $this->container[$key] = $endpoint;
         }
 
         return $this->container[$key];
+    }
+
+    protected function validateEndpoint(string $key): array
+    {
+        $endpoint = static::AVAILABLE_ENDPOINTS[$key] ?? false;
+
+        if (! $endpoint) {
+            throw new ResourceNotFoundError(sprintf('Available endpoint lookup of client "%s" failed. Endpoint defined by key "%s" does not exists.', static::CLIENT_NAME, $key));
+        }
+
+        [$class, $type] = $endpoint;
+
+        if (! class_exists($class)) {
+            throw new ServerError(sprintf('Available endpoint lookup of client "%s" failed. Class defined by key "%s" does not exists.', static::CLIENT_NAME, $key));
+        }
+
+        if (empty($type)) {
+            throw new ServerError(sprintf('Available endpoint lookup of client "%s" failed. Defined class "%s" does not have a endpoint type defined.', static::CLIENT_NAME, $class));
+        }
+
+        return $endpoint;
+    }
+
+    protected function getEndpointUrlByType(string $type): string
+    {
+        switch ($type) {
+            case 'zaken':
+                return $this->zakenEndpointUrl;
+            case 'catalogi':
+                return $this->catalogiEndpointUrl;
+            case 'documenten':
+                return $this->documentenEndpointUrl;
+            default:
+                throw new InvalidArgumentException("Unknown endpoint type {$type}");
+        }
     }
 }

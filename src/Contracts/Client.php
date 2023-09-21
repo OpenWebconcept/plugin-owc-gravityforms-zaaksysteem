@@ -8,7 +8,14 @@ use OWC\Zaaksysteem\Http\RequestClientInterface;
 
 interface Client
 {
-    public function __construct(RequestClientInterface $client, TokenAuthenticator $authenticator);
+    public function __construct(
+        RequestClientInterface $client,
+        TokenAuthenticator $authenticator,
+        string $zakenEndpointUrl,
+        string $catalogiEndpointUrl,
+        string $documentenEndpointUrl
+    );
+
     public function __call($name, $arguments);
     public function getRequestClient(): RequestClientInterface;
     public function getAuthenticator(): TokenAuthenticator;

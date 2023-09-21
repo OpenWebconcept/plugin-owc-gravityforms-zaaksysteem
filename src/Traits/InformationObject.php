@@ -25,7 +25,11 @@ trait InformationObject
     public function getContentLength(string $url): string
     {
         $headers = $this->getHeaders($url);
-        $contentLength = $headers['Content-Length'] ?? '0';
+        $contentLength = $headers['Content-Length'] ?? '';
+
+        if (is_array($contentLength) && ! empty($contentLength[0])) {
+            return $contentLength[0];
+        }
 
         return $contentLength ?: '';
     }
@@ -33,15 +37,23 @@ trait InformationObject
     public function getContentType(string $url): string
     {
         $headers = $this->getHeaders($url);
-        $contentLength = $headers['Content-Type'] ?? '0';
+        $contentType = $headers['Content-Type'] ?? '';
 
-        return $contentLength ?: '';
+        if (is_array($contentType) && ! empty($contentType[0])) {
+            return $contentType[0];
+        }
+
+        return $contentType ?: '';
     }
 
     protected function getHeaders(string $url): array
     {
+        if (empty($url)) {
+            return [];
+        }
+
         $response = get_headers($url, 1, $this->streamContext());
-    
+
         return $response ?: [];
     }
 
@@ -54,7 +66,7 @@ trait InformationObject
         if (($_ENV['APP_ENV'] ?? '') !== 'development') {
             return null;
         }
-        
+
         return stream_context_create([
             'ssl' => [
                 'verify_peer' => false,

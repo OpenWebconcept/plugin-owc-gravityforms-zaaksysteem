@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace OWC\Zaaksysteem\Endpoints;
 
-use OWC\Zaaksysteem\Support\Collection;
 use OWC\Zaaksysteem\Entities\Zaakinformatieobject;
+use OWC\Zaaksysteem\Support\Collection;
 
 class ZaakinformatieobjectenEndpoint extends Endpoint
 {
-    protected string $apiType = 'zaken';
     protected string $endpoint = 'zaakinformatieobjecten';
     protected string $entityClass = Zaakinformatieobject::class;
 

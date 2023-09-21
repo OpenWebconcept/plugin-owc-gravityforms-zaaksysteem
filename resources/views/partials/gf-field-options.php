@@ -12,7 +12,7 @@ use function OWC\Zaaksysteem\Foundation\Helpers\config;
     <select id="linkedFieldZGW" onchange="SetFieldProperty('linkedFieldValueZGW', this.value);">
         <option value=""><?php _e('Kies veldnaam Zaaksysteem', config('core.text_domain')) ?></option>
         
-        <?php foreach ($vars['properties'] as $property) : ?>
+        <?php foreach ($vars['properties'] ?? [] as $property) : ?>
             <option value="<?php echo $property['value']; ?>">
                 <?php echo $property['label']; ?>
             </option>
