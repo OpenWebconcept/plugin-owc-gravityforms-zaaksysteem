@@ -3,9 +3,11 @@
 namespace OWC\Zaaksysteem\GravityForms;
 
 use OWC\Zaaksysteem\Contracts\Client;
+use OWC\Zaaksysteem\Endpoints\Filter\ResultaattypenFilter;
 use OWC\Zaaksysteem\Entities\Zaaktype;
 use OWC\Zaaksysteem\Foundation\Plugin;
 use OWC\Zaaksysteem\Http\RequestError;
+use OWC\Zaaksysteem\Support\Collection;
 
 use function OWC\Zaaksysteem\Foundation\Helpers\config;
 
@@ -33,6 +35,8 @@ class GravityFormsFormSettings
         switch ($client) {
             case 'decos':
                 return $this->plugin->getContainer()->get('dj.client');
+            case 'rx-mission':
+                return $this->plugin->getContainer()->get('rx.client');
             default:
                 return $this->plugin->getContainer()->get('oz.client');
         }
@@ -43,21 +47,7 @@ class GravityFormsFormSettings
      */
     public function getTypesOpenZaak(): array
     {
-        $client = $this->getApiClient('openzaak');
-
-        try {
-            $zaaktypen = $client->zaaktypen()->all();
-        } catch(RequestError $exception) {
-            return $this->handleNoChoices();
-        }
-
-        return $zaaktypen->map(function (Zaaktype $zaaktype) {
-            return [
-                'name' => $zaaktype->identificatie,
-                'label' => "{$zaaktype->omschrijving} ({$zaaktype->identificatie})",
-                'value' => $zaaktype->identificatie
-            ];
-        })->all();
+        return $this->getTypesByClient($this->getApiClient('openzaak'));
     }
 
     /**
@@ -65,15 +55,32 @@ class GravityFormsFormSettings
      */
     public function getTypesDecosJoin(): array
     {
-        $client = $this->getApiClient('decos');
+        return $this->getTypesByClient($this->getApiClient('decos'), true);
+    }
 
-        try {
-            $zaaktypen = $client->zaaktypen()->all();
-        } catch(RequestError $exception) {
-            return $this->handleNoChoices();
+    /**
+     * Get a list of related 'zaaktypen' from Rx.Mission.
+     */
+    public function getTypesRxMission(): array
+    {
+        return $this->getTypesByClient($this->getApiClient('rx-mission'));
+    }
+
+    /**
+     * Return types by client, includes pagination.
+     */
+    protected function getTypesByClient(Client $client, bool $test = false): array
+    {
+        $page = 1;
+        $zaaktypen = [];
+
+        while ($page) {
+            $result = $client->zaaktypen()->all((new ResultaattypenFilter())->page($page));
+            $zaaktypen = array_merge($zaaktypen, $result->all());
+            $page = $result->pageMeta()->getNextPageNumber();
         }
 
-        return $zaaktypen->map(function (Zaaktype $zaaktype) {
+        return (array) Collection::collect($zaaktypen)->map(function (Zaaktype $zaaktype) use ($test) {
             return [
                 'name' => $zaaktype->identificatie,
                 'label' => "{$zaaktype->omschrijving} ({$zaaktype->identificatie})",
@@ -121,6 +128,11 @@ class GravityFormsFormSettings
                             'label' => __('Decos Join', config('core.text_domain')),
                             'value' => 'decos-join',
                         ],
+                        [
+                            'name'  => "{$this->prefix}-form-setting-supplier-rx-mission",
+                            'label' => __('Rx.Mission', config('core.text_domain')),
+                            'value' => 'rx-mission',
+                        ],
                     ],
                 ],
                 // TODO: verify if there is a way to actively get the selected value without a save and without custom JS.
@@ -153,6 +165,21 @@ class GravityFormsFormSettings
                         ],
                     ],
                     'choices' => $this->getTypesDecosJoin(),
+                ],
+                [
+                    'name'    => "{$this->prefix}-form-setting-rx-mission-identifier",
+                    'type'    => 'select',
+                    'label'   => esc_html__('Rx.Mission identifier', config('core.text_domain')),
+                    'dependency' => [
+                        'live'   => true,
+                        'fields' => [
+                            [
+                                'field' => "{$this->prefix}-form-setting-supplier",
+                                'values' => ['rx-mission'],
+                            ],
+                        ],
+                    ],
+                    'choices' => $this->getTypesRxMission(),
                 ]
             ],
         ];

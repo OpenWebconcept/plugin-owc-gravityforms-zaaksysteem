@@ -63,6 +63,30 @@ return [
     },
 
     /**
+     * RX.Mission configuration.
+     */
+    'rx-mission.abbr' => 'rx',
+    'rx.client' => fn (Container $container) => $container->get(Clients\RxMission\Client::class),
+    'rx.catalogi_uri' => function (Container $container) {
+        return $container->make('gf.setting', ['-rx-mission-catalogi-url']);
+    },
+    'rx.documenten_uri' => function (Container $container) {
+        return $container->make('gf.setting', ['-rx-mission-documenten-url']);
+    },
+    'rx.zaken_uri' => function (Container $container) {
+        return $container->make('gf.setting', ['-rx-mission-zaken-url']);
+    },
+    'rx.client_id' => function (Container $container) {
+        return $container->make('gf.setting', ['-rx-mission-client-id']);
+    },
+    'rx.client_secret' => function (Container $container) {
+        return $container->make('gf.setting', ['-rx-mission-client-secret']);
+    },
+    'rx.authenticator' => function (Container $container) {
+        return $container->get(Clients\RxMission\Authenticator::class);
+    },
+
+    /**
      * General configuration
      */
     'rsin' => function (Container $container) {
@@ -90,6 +114,7 @@ return [
             $container->get('oz.documenten_uri'),
         );
     },
+
     Clients\DecosJoin\Client::class => function (Container $container) {
         return new Clients\DecosJoin\Client(
             $container->make(
@@ -102,6 +127,18 @@ return [
         );
     },
 
+    Clients\RxMission\Client::class => function (Container $container) {
+        return new Clients\RxMission\Client(
+            $container->make(
+                Http\WordPress\WordPressRequestClient::class
+            ),
+            $container->get('rx.authenticator'),
+            $container->get('rx.zaken_uri'),
+            $container->get('rx.catalogi_uri'),
+            $container->get('rx.documenten_uri'),
+        );
+    },
+
     /**
      * Authenticators
      */
@@ -111,10 +148,18 @@ return [
             $container->get('oz.client_secret'),
         );
     },
+
     Clients\DecosJoin\Authenticator::class => function (Container $container) {
         return new Clients\DecosJoin\Authenticator(
             $container->get('dj.client_id'),
             $container->get('dj.client_secret')
+        );
+    },
+
+    Clients\RxMission\Authenticator::class => function (Container $container) {
+        return new Clients\RxMission\Authenticator(
+            $container->get('rx.client_id'),
+            $container->get('rx.client_secret')
         );
     },
 
@@ -124,7 +169,8 @@ return [
     Http\WordPress\WordPressRequestClient::class => function (Container $container, string $type) {
         return new Http\WordPress\WordPressRequestClient(
             new Http\RequestOptions([
-                'headers'       => [
+                'timeout' => 10,
+                'headers' => [
                     'Accept-Crs'    => 'EPSG:4326',
                     'Content-Crs'   => 'EPSG:4326',
                     'Content-Type'  => 'application/json',

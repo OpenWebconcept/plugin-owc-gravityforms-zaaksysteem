@@ -2,5 +2,6 @@
 
 return [
     'openzaak' => 'OpenZaak',
-    'decos-join' => 'DecosJoin'
+    'decos-join' => 'DecosJoin',
+    'rx-mission' => 'Rx.Mission'
 ];

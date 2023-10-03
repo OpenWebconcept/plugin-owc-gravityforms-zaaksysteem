@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace OWC\Zaaksysteem\Endpoints;
 
+use OWC\Zaaksysteem\Endpoints\Filter\AbstractFilter;
 use OWC\Zaaksysteem\Entities\Zaaktype;
 use OWC\Zaaksysteem\Support\PagedCollection;
 
@@ -12,10 +13,10 @@ class ZaaktypenEndpoint extends Endpoint
     protected string $endpoint = 'zaaktypen';
     protected string $entityClass = Zaaktype::class;
 
-    public function all(): PagedCollection
+    public function all(?AbstractFilter $filter = null): PagedCollection
     {
         $response = $this->httpClient->get(
-            $this->buildUri($this->endpoint),
+            $filter ? $this->buildUri($this->endpoint, $filter) : $this->buildUri($this->endpoint),
             $this->buildRequestOptions()
         );
 
