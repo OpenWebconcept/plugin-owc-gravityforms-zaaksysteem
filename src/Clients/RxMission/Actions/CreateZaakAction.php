@@ -13,8 +13,6 @@ use OWC\Zaaksysteem\Entities\Zaakeigenschap;
 use OWC\Zaaksysteem\Http\Errors\BadRequestError;
 use OWC\Zaaksysteem\Support\PagedCollection;
 
-use function OWC\Zaaksysteem\Foundation\Helpers\field_mapping;
-
 class CreateZaakAction extends AbstractCreateZaakAction
 {
     public const CALLABLE_NAME = 'rx.client';
@@ -41,28 +39,20 @@ class CreateZaakAction extends AbstractCreateZaakAction
     public function addZaak($entry, $form): ?Zaak
     {
         $rsin = $this->plugin->getContainer()->get('rsin');
-        $zaaktype = $this->getZaakType($form);
 
         if (empty($rsin)) {
             throw new Exception('Het RSIN is niet ingesteld in de Gravity Forms instellingen');
         }
 
+        $zaaktype = $this->getZaakType($form);
+
         if (empty($zaaktype)) {
             throw new Exception('Het zaaktype is niet ingesteld in de Gravity Forms instellingen');
         }
 
-        $args = [
-            'bronorganisatie' => $rsin,
-            'informatieobject' => '',
-            'omschrijving' => '',
-            'registratiedatum' => date('Y-m-d'),
-            'startdatum' => date('Y-m-d'),
-            'verantwoordelijkeOrganisatie' => $rsin,
-            'zaaktype' => $zaaktype['url']
-        ];
-
         $client = $this->getApiClient();
 
+        $args = $this->mappedArgs($rsin, $zaaktype, $form, $entry);
         $zaak = $client->zaken()->create(new Zaak($args, $client->getClientName()));
 
         $this->addRolToZaak($zaak, $zaaktype['url']);
@@ -77,7 +67,7 @@ class CreateZaakAction extends AbstractCreateZaakAction
     public function addZaakEigenschappen(Zaak $zaak, $fields, $entry): void
     {
         $client = $this->getApiClient();
-        $mapping = field_mapping($fields, $entry);
+        $mapping = $this->mapZaakEigenschappenArgs($fields, $entry);
 
         foreach ($mapping as $value) {
             $property = [
@@ -103,13 +93,12 @@ class CreateZaakAction extends AbstractCreateZaakAction
     public function addRolToZaak(Zaak $zaak, string $zaaktype): ?Rol
     {
         $rolTypen = $this->getRolTypen($zaaktype);
-        $rol = null;
-
-        $currentBsn = $this->resolveCurrentBsn();
 
         if ($rolTypen->isEmpty()) {
             throw new Exception('Er zijn geen roltypen gevonden voor dit zaaktype');
         }
+
+        $currentBsn = $this->resolveCurrentBsn();
 
         if (empty($currentBsn)) {
             throw new Exception('Deze sessie lijkt geen BSN te hebben');

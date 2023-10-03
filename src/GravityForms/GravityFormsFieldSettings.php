@@ -7,12 +7,15 @@ use OWC\Zaaksysteem\Endpoints\Filter\EigenschappenFilter;
 use OWC\Zaaksysteem\Entities\Zaaktype;
 use OWC\Zaaksysteem\Foundation\Plugin;
 use OWC\Zaaksysteem\Support\PagedCollection;
+use OWC\Zaaksysteem\Traits\ZaakTypeByIdentifier;
 
 use function OWC\Zaaksysteem\Foundation\Helpers\get_supplier;
 use function OWC\Zaaksysteem\Foundation\Helpers\view;
 
 class GravityFormsFieldSettings
 {
+    use ZaakTypeByIdentifier;
+
     protected Plugin $plugin;
 
     public function __construct(Plugin $plugin)
@@ -41,15 +44,8 @@ class GravityFormsFieldSettings
     public function getZaakType(string $supplier, string $zaaktypeIdentifier): ?Zaaktype
     {
         $client = $this->getApiClient($supplier);
-
         // Get the zaaktype belonging to the chosen zaaktype identifier.
-        return $client->zaaktypen()->all()->filter(
-            function (Zaaktype $zaaktype) use ($zaaktypeIdentifier) {
-                if ($zaaktype->identificatie === $zaaktypeIdentifier) {
-                    return $zaaktype;
-                }
-            }
-        )->first();
+        return $this->zaakTypeByIdentifier($client, $zaaktypeIdentifier);
     }
 
 
@@ -98,14 +94,14 @@ class GravityFormsFieldSettings
         // Get the zaaktype belonging to the chosen zaaktype identifier.
         $zaaktype = $this->getZaakType($supplier, $zaaktypeIdentifier);
 
-        if (empty($zaaktype['url'])) {
+        if (empty($zaaktype->url)) {
             $properties = [];
         } else {
             $properties = $this->getZaaktypenEigenschappen($supplier, $zaaktype->url);
         }
 
         echo view('partials/gf-field-options.php', [
-            'properties' => $this->prepareOptions($properties)
+            'properties' => $properties instanceof PagedCollection ? $this->prepareOptions($properties) : []
         ]);
     }
 
