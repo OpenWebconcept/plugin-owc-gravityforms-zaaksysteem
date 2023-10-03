@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace OWC\Zaaksysteem\Contracts;
 
 use OWC\Zaaksysteem\Contracts\Client;
+use OWC\Zaaksysteem\Endpoints\Filter\ResultaattypenFilter;
 use OWC\Zaaksysteem\Entities\Rol;
 use OWC\Zaaksysteem\Entities\Zaak;
 use OWC\Zaaksysteem\Entities\Zaaktype;
 use OWC\Zaaksysteem\Foundation\Plugin;
+use OWC\Zaaksysteem\Support\Collection;
 use OWC\Zaaksysteem\Support\PagedCollection;
 use OWC\Zaaksysteem\Traits\ResolveBSN;
 
@@ -47,7 +49,16 @@ abstract class AbstractCreateZaakAction
         $zaaktypeIdentifier = $form[sprintf('%s-form-setting-%s-identifier', OWC_GZ_PLUGIN_SLUG, static::FORM_SETTING_SUPPLIER_KEY)];
         $client = $this->getApiClient();
 
-        return $client->zaaktypen()->all()->filter(
+        $page = 1;
+        $zaaktypen = [];
+
+        while ($page) {
+            $result = $client->zaaktypen()->all((new ResultaattypenFilter())->page($page));
+            $zaaktypen = array_merge($zaaktypen, $result->all());
+            $page = $result->pageMeta()->getNextPageNumber();
+        }
+
+        return Collection::collect($zaaktypen)->filter(
             function (Zaaktype $zaaktype) use ($zaaktypeIdentifier) {
                 if ($zaaktype->identificatie === $zaaktypeIdentifier) {
                     return $zaaktype;

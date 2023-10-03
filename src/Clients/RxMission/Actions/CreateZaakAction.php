@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace OWC\Zaaksysteem\Clients\OpenZaak\Actions;
+namespace OWC\Zaaksysteem\Clients\RxMission\Actions;
 
 use Exception;
 use OWC\Zaaksysteem\Contracts\AbstractCreateZaakAction;
@@ -17,10 +17,10 @@ use function OWC\Zaaksysteem\Foundation\Helpers\field_mapping;
 
 class CreateZaakAction extends AbstractCreateZaakAction
 {
-    public const CALLABLE_NAME = 'oz.client';
-    public const CLIENT_CATALOGI_URL = 'oz.catalogi_uri';
-    public const CLIENT_ZAKEN_URL = 'oz.zaken_uri';
-    public const FORM_SETTING_SUPPLIER_KEY = 'openzaak';
+    public const CALLABLE_NAME = 'rx.client';
+    public const CLIENT_CATALOGI_URL = 'rx.catalogi_uri';
+    public const CLIENT_ZAKEN_URL = 'rx.zaken_uri';
+    public const FORM_SETTING_SUPPLIER_KEY = 'rx-mission';
 
     /**
      * Get all available "roltypen".

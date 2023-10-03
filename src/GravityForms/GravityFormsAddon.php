@@ -82,6 +82,7 @@ class GravityFormsAddon extends GFAddOn
             $this->settingsGeneral(),
             $this->settingsOpenZaak(),
             $this->settingsDecosJoin(),
+            $this->settingsRxMission(),
             $this->RSIN()
         ];
     }
@@ -175,6 +176,45 @@ class GravityFormsAddon extends GFAddOn
                     'class' => 'medium',
                     'name' => "{$this->prefix}-decos-join-client-secret-zrc",
                 ],
+            ],
+        ];
+    }
+
+    protected function settingsRxMission(): array
+    {
+        return [
+            'title'  => esc_html__('Rx.Mission', config('core.text_domain')),
+            'fields' => [
+                [
+                    'label' => esc_html__('Catalogi URL', config('core.text_domain')),
+                    'type' => 'text',
+                    'class' => 'medium',
+                    'name' => "{$this->prefix}-rx-mission-catalogi-url",
+                ],
+                [
+                    'label' => esc_html__('Documenten URL', config('core.text_domain')),
+                    'type' => 'text',
+                    'class' => 'medium',
+                    'name' => "{$this->prefix}-rx-mission-documenten-url",
+                ],
+                [
+                    'label' => esc_html__('Zaken URL', config('core.text_domain')),
+                    'type' => 'text',
+                    'class' => 'medium',
+                    'name' => "{$this->prefix}-rx-mission-zaken-url",
+                ],
+                [
+                    'label' => esc_html__('Client ID', config('core.text_domain')),
+                    'type' => 'text',
+                    'class' => 'medium',
+                    'name' => "{$this->prefix}-rx-mission-client-id",
+                ],
+                [
+                    'label' => esc_html__('Client Secret', config('core.text_domain')),
+                    'type' => 'text',
+                    'class' => 'medium',
+                    'name' => "{$this->prefix}-rx-mission-client-secret",
+                ]
             ],
         ];
     }
