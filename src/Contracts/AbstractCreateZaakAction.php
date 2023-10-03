@@ -4,19 +4,21 @@ declare(strict_types=1);
 
 namespace OWC\Zaaksysteem\Contracts;
 
+use DateTime;
+use Exception;
 use OWC\Zaaksysteem\Contracts\Client;
-use OWC\Zaaksysteem\Endpoints\Filter\ResultaattypenFilter;
 use OWC\Zaaksysteem\Entities\Rol;
 use OWC\Zaaksysteem\Entities\Zaak;
 use OWC\Zaaksysteem\Entities\Zaaktype;
 use OWC\Zaaksysteem\Foundation\Plugin;
-use OWC\Zaaksysteem\Support\Collection;
 use OWC\Zaaksysteem\Support\PagedCollection;
 use OWC\Zaaksysteem\Traits\ResolveBSN;
+use OWC\Zaaksysteem\Traits\ZaakTypeByIdentifier;
 
 abstract class AbstractCreateZaakAction
 {
     use ResolveBSN;
+    use ZaakTypeByIdentifier;
 
     public const CALLABLE_NAME = '';
     public const CLIENT_CATALOGI_URL = '';
@@ -46,25 +48,91 @@ abstract class AbstractCreateZaakAction
      */
     public function getZaakType($form): ?Zaaktype
     {
-        $zaaktypeIdentifier = $form[sprintf('%s-form-setting-%s-identifier', OWC_GZ_PLUGIN_SLUG, static::FORM_SETTING_SUPPLIER_KEY)];
         $client = $this->getApiClient();
+        $zaaktypeIdentifier = $form[sprintf('%s-form-setting-%s-identifier', OWC_GZ_PLUGIN_SLUG, static::FORM_SETTING_SUPPLIER_KEY)];
 
-        $page = 1;
-        $zaaktypen = [];
+        return $this->zaakTypeByIdentifier($client, $zaaktypeIdentifier);
+    }
 
-        while ($page) {
-            $result = $client->zaaktypen()->all((new ResultaattypenFilter())->page($page));
-            $zaaktypen = array_merge($zaaktypen, $result->all());
-            $page = $result->pageMeta()->getNextPageNumber();
+    /**
+     * Merge mapped arguments with defaults.
+     */
+    protected function mappedArgs(string $rsin, Zaaktype $zaaktype, array $form, array $entry): array
+    {
+        $defaults = [
+            'bronorganisatie' => $rsin,
+            'informatieobject' => '',
+            'omschrijving' => '',
+            'registratiedatum' => date('Y-m-d'),
+            'startdatum' => date('Y-m-d'),
+            'verantwoordelijkeOrganisatie' => $rsin,
+            'zaaktype' => $zaaktype['url']
+        ];
+
+        return $this->mapArgs($defaults, $form, $entry);
+    }
+
+    /**
+     * Add form field values to arguments required for creating a 'Zaak'.
+     * Mapping is done by the relation between arguments keys and form fields linkedFieldValueZGWs.
+     */
+    protected function mapArgs(array $args, array $form, array $entry): array
+    {
+        foreach ($form['fields'] as $field) {
+            if (empty($field->linkedFieldValueZGW) || ! isset($args[$field->linkedFieldValueZGW])) {
+                continue;
+            }
+
+            $fieldValue = rgar($entry, (string) $field->id);
+
+            if (empty($fieldValue)) {
+                continue;
+            }
+
+            if ($field->type === 'date') {
+                $fieldValue = (new \DateTime($fieldValue))->format('Y-m-d');
+            }
+
+            $args[$field->linkedFieldValueZGW] = $fieldValue;
         }
 
-        return Collection::collect($zaaktypen)->filter(
-            function (Zaaktype $zaaktype) use ($zaaktypeIdentifier) {
-                if ($zaaktype->identificatie === $zaaktypeIdentifier) {
-                    return $zaaktype;
+        return $args;
+    }
+
+    /**
+     * Add form field values to arguments required for creating a 'Zaak'.
+     * Mapping is done by the relation between arguments keys and form fields linkedFieldValueZGWs.
+     */
+    protected function mapZaakEigenschappenArgs(array $fields, array $entry): array
+    {
+        $mappedFields = [];
+
+        foreach ($fields as $field) {
+            if (empty($field->linkedFieldValueZGW)) {
+                continue;
+            }
+
+            $property = \rgar($entry, (string)$field->id);
+
+            if (empty($property)) {
+                continue;
+            }
+
+            if ($field->type === 'date') {
+                try {
+                    $property = (new DateTime($property))->format('Y-m-d');
+                } catch (Exception $e) {
+                    $property = '0000-00-00';
                 }
             }
-        )->first();
+
+            $mappedFields[$field->id] = [
+                'eigenschap' => $field->linkedFieldValueZGW,
+                'waarde' => $property
+            ];
+        }
+
+        return $mappedFields;
     }
 
     abstract public function addZaak($entry, $form): ?Zaak;

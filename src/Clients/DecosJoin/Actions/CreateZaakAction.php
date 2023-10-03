@@ -14,8 +14,6 @@ use OWC\Zaaksysteem\Entities\Zaakeigenschap;
 use OWC\Zaaksysteem\Http\Errors\BadRequestError;
 use OWC\Zaaksysteem\Support\PagedCollection;
 
-use function OWC\Zaaksysteem\Foundation\Helpers\field_mapping;
-
 class CreateZaakAction extends AbstractCreateZaakAction
 {
     public const CALLABLE_NAME = 'dj.client';
@@ -39,30 +37,24 @@ class CreateZaakAction extends AbstractCreateZaakAction
     public function addZaak($entry, $form): ?Zaak
     {
         $rsin = $this->plugin->getContainer()->get('rsin');
-        $zaaktype = $this->getZaakType($form);
 
         if (empty($rsin)) {
             throw new Exception('Het RSIN is niet ingesteld in de Gravity Forms instellingen');
         }
 
+        $zaaktype = $this->getZaakType($form);
+
         if (empty($zaaktype)) {
             throw new Exception('Het zaaktype is niet ingesteld in de Gravity Forms instellingen');
         }
 
-        $args = [
-            'bronorganisatie' => $rsin,
-            'informatieobject' => '',
-            'omschrijving' => '',
-            'registratiedatum' => date('Y-m-d'),
-            'startdatum' => date('Y-m-d'),
-            'verantwoordelijkeOrganisatie' => $rsin,
-            'zaaktype' => $zaaktype['url']
-        ];
-
         $client = $this->getApiClient();
-        $client = $this->setAuthenticatorSecretZRC($client);
+        $client = $this->setAuthenticatorSecretZRC($client); // Another secret is required for talking to this specific API.
+
+        $args = $this->mappedArgs($rsin, $zaaktype, $form, $entry);
         $zaak = $client->zaken()->create(new Zaak($args, $client->getClientName()));
-        $client = $this->setAuthenticatorSecretZTC($client);
+
+        $client = $this->setAuthenticatorSecretZTC($client); // Restore default secret.
 
         // REFERENCE POINT: Mike, adding 'Rol' and 'Zaak Eigenschappen' does not work yet.
         // $this->addRolToZaak($zaak, $zaaktype['url']); -> returns 'Bad request "zaaktype mandatory parameter not provided."
@@ -79,7 +71,7 @@ class CreateZaakAction extends AbstractCreateZaakAction
         $client = $this->getApiClient();
         $client = $this->setAuthenticatorSecretZRC($client);
 
-        $mapping = field_mapping($fields, $entry);
+        $mapping = $this->mapZaakEigenschappenArgs($fields, $entry);
 
         foreach ($mapping as $value) {
             $property = [
@@ -107,13 +99,12 @@ class CreateZaakAction extends AbstractCreateZaakAction
     public function addRolToZaak(Zaak $zaak, string $zaaktype): ?Rol
     {
         $rolTypen = $this->getRolTypen($zaaktype);
-        $rol = null;
-
-        $currentBsn = $this->resolveCurrentBsn();
 
         if ($rolTypen->isEmpty()) {
             throw new Exception('Er zijn geen roltypen gevonden voor dit zaaktype');
         }
+
+        $currentBsn = $this->resolveCurrentBsn();
 
         if (empty($currentBsn)) {
             throw new Exception('Deze sessie lijkt geen BSN te hebben');
@@ -149,6 +140,9 @@ class CreateZaakAction extends AbstractCreateZaakAction
         return $rol;
     }
 
+    /**
+     * Token for the 'ZTC' api.
+     */
     private function setAuthenticatorSecretZTC(Client $client): Client
     {
         $secret = $this->plugin->getContainer()->get('dj.client_secret');
@@ -158,7 +152,7 @@ class CreateZaakAction extends AbstractCreateZaakAction
     }
 
     /**
-     * Token for the 'zaken' api.
+     * Token for the 'ZRC' api.
      */
     private function setAuthenticatorSecretZRC(Client $client): Client
     {
