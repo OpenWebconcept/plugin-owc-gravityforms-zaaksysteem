@@ -13,8 +13,28 @@ class Zaken extends AbstractBlock
      */
     public function __construct()
     {
-        $this->register('owc/gravityforms-zaaksysteem', [
-            'attributes' => [],
+        $this->register('owc/mijn-zaken', [
+            'attributes' => [
+                'zaakClient' => [
+                    'type' => 'string',
+                    'default' => 'openzaak',
+                ],
+                'zaaktypeFilter' => [
+                    'type'    => 'string',
+                    'default' => [],
+                    'items'   => [
+                        'type' => 'object'
+                    ]
+                ],
+                'updateMePlease' => [
+                    'type' => 'boolean',
+                    'default' => true
+                ],
+                'title' => 'Mijn Zaken',
+                'style' => 'swf-extended-blocks-style',
+                'editor_script' => 'swf-extended-blocks-script',
+                'editor_style' => 'swf-extended-blocks-editor-style',
+            ],
             'render_callback' => [new Block(), 'render'],
         ]);
     }
