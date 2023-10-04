@@ -29,7 +29,15 @@ abstract class Entity implements
 
     public function __get($name)
     {
-        return $this->getValue($name);
+        /**
+         * REFERENCE POINT: Mike
+         * Try catch block because HTTP 400 requests were breaking the code execution.
+         */
+        try {
+            return $this->getValue($name);
+        } catch(\Exception $e) {
+            return null;
+        }
     }
 
     public function __set($name, $value)

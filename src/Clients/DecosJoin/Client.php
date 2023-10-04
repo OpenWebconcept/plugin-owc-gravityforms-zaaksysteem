@@ -11,6 +11,7 @@ use OWC\Zaaksysteem\Endpoints\RoltypenEndpoint;
 use OWC\Zaaksysteem\Endpoints\StatussenEndpoint;
 use OWC\Zaaksysteem\Endpoints\StatustypenEndpoint;
 use OWC\Zaaksysteem\Endpoints\ZaakeigenschappenEndpoint;
+use OWC\Zaaksysteem\Endpoints\ZaakinformatieobjectenEndpoint;
 use OWC\Zaaksysteem\Endpoints\ZaaktypenEndpoint;
 use OWC\Zaaksysteem\Endpoints\ZakenEndpoint;
 
@@ -25,6 +26,7 @@ class Client extends AbstractClient
         'statussen' => [StatussenEndpoint::class, 'zaken'],
         'rollen' => [RollenEndpoint::class, 'zaken'],
         'zaakeigenschappen' => [ZaakeigenschappenEndpoint::class, 'zaken'],
+        'zaakinformatieobjecten' => [ZaakinformatieobjectenEndpoint::class, 'zaken'],
 
         // Catalogi API.
         'zaaktypen' => [ZaaktypenEndpoint::class, 'catalogi'],

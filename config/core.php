@@ -8,7 +8,7 @@ return [
         OWC\Zaaksysteem\GravityForms\GravityFormsServiceProvider::class,
         OWC\Zaaksysteem\Templating\TemplatingServiceProvider::class,
         OWC\Zaaksysteem\Validation\ValidationServiceProvider::class,
-        OWC\Zaaksysteem\Providers\MijnZakenProvider::class,
+        // OWC\Zaaksysteem\Providers\MijnZakenProvider::class,
     ],
 
     /**

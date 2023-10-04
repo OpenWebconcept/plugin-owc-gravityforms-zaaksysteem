@@ -9,6 +9,8 @@ use OWC\Zaaksysteem\Foundation\ServiceProvider;
 
 class BlocksServiceProvider extends ServiceProvider
 {
+    protected Blocks $blocks;
+
     public function __construct(Plugin $plugin)
     {
         parent::__construct($plugin);

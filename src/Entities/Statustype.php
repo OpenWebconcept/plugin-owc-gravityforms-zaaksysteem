@@ -16,4 +16,9 @@ class Statustype extends Entity
         // 'isEindstatus' => true,
         // 'informeren' => true
     ];
+
+    public function isEndStatus(): bool
+    {
+        return $this->data['isEindstatus'] ?? false;
+    }
 }
