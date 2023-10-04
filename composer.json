@@ -23,8 +23,8 @@
   "require-dev": {
     "mockery/mockery": "^1.0",
     "phpunit/phpunit": "^9.0",
-    "10up/wp_mock": "dev-master",
-    "friendsofphp/php-cs-fixer": "^2.18",
+    "10up/wp_mock": "^0.5.0",
+    "friendsofphp/php-cs-fixer": "^3.0",
     "phpstan/phpstan": "^0.12",
     "szepeviktor/phpstan-wordpress": "^0.6.0"
   },
