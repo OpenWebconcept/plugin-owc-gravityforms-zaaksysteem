@@ -165,7 +165,7 @@ class GravityFormsAddon extends GFAddOn
                     'name' => "{$this->prefix}-decos-join-client-id",
                 ],
                 [
-                    'label' => esc_html__('Client Secret', config('core.text_domain')),
+                    'label' => esc_html__('Client Secret (ZTC)', config('core.text_domain')),
                     'type' => 'text',
                     'class' => 'medium',
                     'name' => "{$this->prefix}-decos-join-client-secret",

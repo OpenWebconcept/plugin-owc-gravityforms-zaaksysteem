@@ -51,9 +51,15 @@ class Response
         return $this->json;
     }
 
-    protected function parseAsJson(string $body)
+    protected function parseAsJson(string $body): array
     {
-        return json_decode($body, true, 512, JSON_THROW_ON_ERROR);
+        $decoded = json_decode($body, true, 512);
+
+        if (! is_array($decoded)) {
+            return [];
+        }
+
+        return $decoded;
     }
 
     public function getCookies(): array

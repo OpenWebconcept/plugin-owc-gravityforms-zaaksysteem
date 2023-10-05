@@ -18,7 +18,6 @@ use function OWC\Zaaksysteem\Foundation\Helpers\config;
         <option value="registratiedatum"><?php _e('Registratiedatum', config('core.text_domain')) ?></option>
         <option value="verantwoordelijkeOrganisatie"><?php _e('Verantwoordelijke organisatie', config('core.text_domain')) ?></option>
         <option value="startdatum"><?php _e('Startdatum', config('core.text_domain')) ?></option>
-        <option value="any"><?php _e('any', config('core.text_domain')) ?></option>
         <optgroup label="Zaakeigenschappen">
         <?php foreach ($vars['properties'] ?? [] as $property) : ?>
             <option value="<?php echo $property['value']; ?>">

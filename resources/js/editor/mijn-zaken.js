@@ -12,7 +12,7 @@ const {
   MediaUpload,
 } = wp.blockEditor;
 
-const { Panel, PanelBody, PanelRow, Button, TextControl, IconButton, SelectControl } =
+const { Panel, PanelBody, PanelRow, Button, TextControl, IconButton, SelectControl, CheckboxControl } =
   wp.components;
 
 const { Fragment } = wp.element;
@@ -25,10 +25,12 @@ registerBlockType('owc/mijn-zaken', {
     zaakClient: { type: 'string', default: 'openzaak' },
     zaaktypeFilter: { type: 'string', default: '[]' },
     updateMePlease: { type: 'boolean', default: true },
+    combinedClients: { type: 'boolean', default: false },
+    byBSN: { type: 'boolean', default: true },
   },
   edit: ({ attributes, setAttributes }) => {
     const blockProps = useBlockProps();
-    const { zaakClient, zaaktypeFilter, updateMePlease } = attributes;
+    const { zaakClient, zaaktypeFilter, updateMePlease, combinedClients, byBSN } = attributes;
     const zaaktypeFilterArr = JSON.parse(zaaktypeFilter);
 
     const addZTFilter = () => {
@@ -86,8 +88,21 @@ registerBlockType('owc/mijn-zaken', {
                     options={ [
                         { label: 'OpenZaak', value: 'openzaak' },
                         { label: 'Decos JOIN', value: 'decosjoin' },
+                        { label: 'Rx.Mission', value: 'rx-mission' },
                     ] }
                     onChange={ ( newzaakClient ) => setAttributes( { zaakClient: newzaakClient } ) }
+                />
+                <CheckboxControl
+                    label="Gecombineerde zaaksystemen"
+                    help="Toon zaken uit gecombineerde zaaksystemen."
+                    checked={ combinedClients }
+                    onChange={ ( combinedClients ) => setAttributes( { combinedClients } ) }
+                />
+                <CheckboxControl
+                    label="Filter op BSN"
+                    help="Filter zaken die aangemaakt zijn door de ingelogde gebruiker op basis van het BSN nummer."
+                    checked={ byBSN }
+                    onChange={ ( byBSN ) => setAttributes( { byBSN } ) }
                 />
             </PanelBody>
             <PanelBody title="Zaaktype configuratie" initialOpen={false}>
@@ -95,7 +110,7 @@ registerBlockType('owc/mijn-zaken', {
               {zaaktypeFields}
 
               <Button isDefault icon="plus" onClick={addZTFilter.bind(this)}>
-                Voeg een Zaaktype identifier toe
+                Voeg een Zaaktype identifier toe (volledige URL)
               </Button>
             </PanelBody>
           </Panel>

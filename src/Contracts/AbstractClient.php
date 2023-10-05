@@ -10,6 +10,8 @@ use OWC\Zaaksysteem\Http\Errors\ResourceNotFoundError;
 use OWC\Zaaksysteem\Http\Errors\ServerError;
 use OWC\Zaaksysteem\Http\RequestClientInterface;
 
+use function OWC\Zaaksysteem\Foundation\Helpers\resolve;
+
 abstract class AbstractClient implements Client
 {
     public const CLIENT_NAME = 'abstract';
@@ -79,6 +81,8 @@ abstract class AbstractClient implements Client
 
             [$class, $type] = $endpoint;
 
+            $this->setClientSecretByType($type);
+
             $endpoint = new $class($this, $this->getEndpointUrlByType($type));
             $this->container[$key] = $endpoint;
         }
@@ -105,6 +109,26 @@ abstract class AbstractClient implements Client
         }
 
         return $endpoint;
+    }
+
+    /**
+     * Applies only to Decos.
+     */
+    protected function setClientSecretByType(string $type): self
+    {
+        if ($this->getClientName() !== 'decosjoin') {
+            return $this;
+        }
+
+        if ($type === 'zaken') {
+            $secret = resolve('dj.client_secret_zrc');
+        } else {
+            $secret = resolve('dj.client_secret');
+        }
+
+        $this->getAuthenticator()->setClientSecret($secret);
+
+        return $this;
     }
 
     protected function getEndpointUrlByType(string $type): string

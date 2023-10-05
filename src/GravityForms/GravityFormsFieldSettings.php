@@ -29,6 +29,8 @@ class GravityFormsFieldSettings
             case 'decos':
             case 'decos-join':
                 return $this->plugin->getContainer()->get('dj.client');
+            case 'rx-mission':
+                return $this->plugin->getContainer()->get('rz.client');
             default:
                 return $this->plugin->getContainer()->get('oz.client');
         }
@@ -44,7 +46,7 @@ class GravityFormsFieldSettings
     public function getZaakType(string $supplier, string $zaaktypeIdentifier): ?Zaaktype
     {
         $client = $this->getApiClient($supplier);
-        // Get the zaaktype belonging to the chosen zaaktype identifier.
+
         return $this->zaakTypeByIdentifier($client, $zaaktypeIdentifier);
     }
 
@@ -94,7 +96,7 @@ class GravityFormsFieldSettings
         // Get the zaaktype belonging to the chosen zaaktype identifier.
         $zaaktype = $this->getZaakType($supplier, $zaaktypeIdentifier);
 
-        if (empty($zaaktype->url)) {
+        if (empty($zaaktype['url'])) {
             $properties = [];
         } else {
             $properties = $this->getZaaktypenEigenschappen($supplier, $zaaktype->url);
