@@ -27,6 +27,7 @@ registerBlockType('owc/mijn-zaken', {
     updateMePlease: { type: 'boolean', default: true },
     combinedClients: { type: 'boolean', default: false },
     byBSN: { type: 'boolean', default: true },
+    view: { type: 'string', default: 'default' },
   },
   edit: ({ attributes, setAttributes }) => {
     const blockProps = useBlockProps();
@@ -112,6 +113,17 @@ registerBlockType('owc/mijn-zaken', {
               <Button isDefault icon="plus" onClick={addZTFilter.bind(this)}>
                 Voeg een Zaaktype identifier toe (volledige URL)
               </Button>
+            </PanelBody>
+            <PanelBody title="Weergave" initialOpen={false}>
+                <SelectControl
+                    label="Selecteer de weergave van de zaken"
+                    value={attributes.view}
+                    options={[
+                        { label: 'Standaard', value: 'default' },
+                        { label: 'Tabbladen', value: 'tabs' },
+                    ]}
+                    onChange={(newView) => setAttributes({ view: newView })}
+                />
             </PanelBody>
           </Panel>
         </InspectorControls>

@@ -50,11 +50,7 @@ class Zaak extends Entity
 
     public function title(): string
     {
-        return sprintf(
-            '%s, %s',
-            $this->omschrijving,
-            $this->registratiedatum ? $this->registratiedatum->format('d-m-Y') : ''
-        );
+        return $this->omschrijving;
     }
 
     /**

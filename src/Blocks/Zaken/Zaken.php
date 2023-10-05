@@ -38,6 +38,10 @@ class Zaken extends AbstractBlock
                     'type' => 'boolean',
                     'default' => true
                 ],
+                'view' => [
+                    'type' => 'string',
+                    'default' => 'default',
+                ],
                 'title' => 'Mijn Zaken',
                 'style' => 'swf-extended-blocks-style',
                 'editor_script' => 'swf-extended-blocks-script',

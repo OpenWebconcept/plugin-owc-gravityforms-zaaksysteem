@@ -1,7 +1,20 @@
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/variables-dark';
+@import '~bootstrap/scss/maps';
+@import '~bootstrap/scss/mixins';
+@import '~bootstrap/scss/nav';
+@import '~bootstrap/scss/root';
+
+@import './zaak/zaak-card'; 
 @import './zaak/zaak-collapse-button'; 
 @import './zaak/zaak-content'; 
+@import './zaak/zaak-details'; 
 @import './zaak/zaak-documents'; 
+@import './zaak/zaak-header'; 
 @import './zaak/zaak-meta'; 
 @import './zaak/zaak-process'; 
+@import './zaak/zaak-tabs'; 
 
-@import './editor/mijn-zaken'; 
+@import './editor/mijn-zaken';
+
