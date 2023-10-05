@@ -169,7 +169,7 @@ return [
     Http\WordPress\WordPressRequestClient::class => function (Container $container, string $type) {
         return new Http\WordPress\WordPressRequestClient(
             new Http\RequestOptions([
-                'timeout' => 10,
+                'timeout' => 15,
                 'headers' => [
                     'Accept-Crs'    => 'EPSG:4326',
                     'Content-Crs'   => 'EPSG:4326',

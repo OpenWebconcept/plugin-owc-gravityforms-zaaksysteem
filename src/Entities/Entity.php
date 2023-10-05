@@ -29,14 +29,10 @@ abstract class Entity implements
 
     public function __get($name)
     {
-        /**
-         * REFERENCE POINT: Mike
-         * Try catch block because HTTP 400 requests were breaking the code execution.
-         */
         try {
             return $this->getValue($name);
-        } catch(\Exception $e) {
-            return null;
+        } catch(Exception $e) {
+            return null; // Returning null is in line with the return types of the methods inside the cast classes.
         }
     }
 

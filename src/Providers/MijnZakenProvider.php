@@ -26,10 +26,11 @@ class MijnZakenProvider extends ServiceProvider
         register_block_type('owc/mijn-zaken', [
             'render_callback' => [$this, 'renderBlock'],
             'attributes'      => [
-                'title'         => 'Mijn Zaken',
-                'style'             => 'swf-extended-blocks-style',
-                'editor_script'     => 'swf-extended-blocks-script',
-                'editor_style'      => 'swf-extended-blocks-editor-style',
+                'zaakClient' => 'openzaak',
+                'title' => 'Mijn Zaken',
+                'style' => 'swf-extended-blocks-style',
+                'editor_script' => 'swf-extended-blocks-script',
+                'editor_style' => 'swf-extended-blocks-editor-style',
             ]
         ]);
     }
@@ -43,30 +44,33 @@ class MijnZakenProvider extends ServiceProvider
 
         $currentBsn = $this->resolveCurrentBsn();
         $filter = new ZakenFilter();
-        $filter->byBsn($currentBsn);
+        // $filter->byBsn($currentBsn);
+        $filter->add('identificatie', 'ZAAK-2023-0000000064');
 
         $zaken = $client->zaken()->filter($filter);
+        // $zaken = $client->zaken()->all();
 
         // Filter down the list of zaken by checking if the linked Zaaktype
         // has an identifier that is within a set of allowable identifiers.
-        $zaaktypeIdentifiers = $this->getFilterableZaaktypeIdentifiers($attributes);
-        if (! empty($zaaktypeIdentifiers)) {
-            $zaken = $zaken->filter(function (Zaak $zaak) use ($zaaktypeIdentifiers) {
-                return in_array($zaak->zaaktype->identificatie, $zaaktypeIdentifiers);
-            });
-        }
+        // $zaaktypeIdentifiers = $this->getFilterableZaaktypeIdentifiers($attributes);
+        // if (! empty($zaaktypeIdentifiers)) {
+        //     $zaken = $zaken->filter(function (Zaak $zaak) use ($zaaktypeIdentifiers) {
+        //         return in_array($zaak->zaaktype->identificatie, $zaaktypeIdentifiers);
+        //     });
+        // }
 
         // Make sure we display zaken that are initiated by the current user,
         // as opposed to zaken about the current user. We'll do this after
         // filtering zaaktypes as this action initiates an additional HTTP request.
-        $zaken = $zaken->filter(function (Zaak $zaak) use ($currentBsn) {
-            return $zaak->isInitiatedBy($currentBsn);
-        });
+        // $zaken = $zaken->filter(function (Zaak $zaak) use ($currentBsn) {
+        //     return $zaak->isInitiatedBy($currentBsn);
+        // });
+
         if ($zaken->isEmpty()) {
             return 'Er zijn op dit moment geen zaken beschikbaar.';
         }
 
-        return view('mijn-zaken/overview-zaken.php', compact('zaken'));
+        return view('blocks/mijn-zaken/overview-zaken.php', compact('zaken'));
     }
 
     protected function getApiClient(array $attributes): Client

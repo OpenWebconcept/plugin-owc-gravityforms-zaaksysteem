@@ -7,10 +7,7 @@ namespace OWC\Zaaksysteem\Clients\OpenZaak\Actions;
 use Exception;
 use OWC\Zaaksysteem\Contracts\AbstractCreateZaakAction;
 use OWC\Zaaksysteem\Endpoints\Filter\RoltypenFilter;
-use OWC\Zaaksysteem\Entities\Rol;
 use OWC\Zaaksysteem\Entities\Zaak;
-use OWC\Zaaksysteem\Entities\Zaakeigenschap;
-use OWC\Zaaksysteem\Http\Errors\BadRequestError;
 use OWC\Zaaksysteem\Support\PagedCollection;
 
 class CreateZaakAction extends AbstractCreateZaakAction
@@ -59,75 +56,5 @@ class CreateZaakAction extends AbstractCreateZaakAction
         $this->addZaakEigenschappen($zaak, $form['fields'], $entry);
 
         return $zaak;
-    }
-
-    /**
-     * Add "zaak" properties.
-     */
-    public function addZaakEigenschappen(Zaak $zaak, $fields, $entry): void
-    {
-        $client = $this->getApiClient();
-        $mapping = $this->mapZaakEigenschappenArgs($fields, $entry);
-
-        foreach ($mapping as $value) {
-            $property = [
-                'eigenschap' => $value['eigenschap'],
-                'waarde' => $value['waarde'],
-                'zaak' => $zaak->uri,
-            ];
-
-            try {
-                $client->zaakeigenschappen()->create(
-                    $zaak,
-                    new Zaakeigenschap($property, $client->getClientName())
-                );
-            } catch (BadRequestError $e) {
-                $e->getInvalidParameters();
-            }
-        }
-    }
-
-    /**
-     * Assign a submitter to the "zaak".
-     */
-    public function addRolToZaak(Zaak $zaak, string $zaaktype): ?Rol
-    {
-        $rolTypen = $this->getRolTypen($zaaktype);
-
-        if ($rolTypen->isEmpty()) {
-            throw new Exception('Er zijn geen roltypen gevonden voor dit zaaktype');
-        }
-
-        $currentBsn = $this->resolveCurrentBsn();
-
-        if (empty($currentBsn)) {
-            throw new Exception('Deze sessie lijkt geen BSN te hebben');
-        }
-
-        $client = $this->getApiClient();
-
-        foreach ($rolTypen as $rolType) {
-            if ($rolType['omschrijvingGeneriek'] !== 'initiator') {
-                continue;
-            }
-
-            $args = [
-                'betrokkeneIdentificatie' => [
-                    'inpBsn' => $currentBsn
-                ],
-                'betrokkeneType' => 'natuurlijk_persoon',
-                'roltoelichting' => 'De indiener van de zaak.',
-                'roltype' => $rolType['url'],
-                'zaak' => $zaak->url
-            ];
-
-            try {
-                $rol = $client->rollen()->create(new Rol($args, $client->getClientName()));
-            } catch (BadRequestError $e) {
-                $e->getInvalidParameters();
-            }
-        }
-
-        return $rol;
     }
 }

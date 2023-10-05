@@ -46,7 +46,7 @@ class ZaakeigenschappenEndpoint extends Endpoint
     public function create(Zaak $zaak, Zaakeigenschap $model): Zaakeigenschap
     {
         $response = $this->httpClient->post(
-            $this->buildUri(sprintf('%s/%s', $zaak->uuid, $this->endpoint)),
+            $this->buildUri(sprintf('zaken/%s/%s', $zaak->uuid, $this->endpoint)),
             $model->toJson(),
             $this->buildRequestOptions()
         );

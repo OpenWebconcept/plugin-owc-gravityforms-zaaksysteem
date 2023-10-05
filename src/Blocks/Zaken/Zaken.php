@@ -30,6 +30,14 @@ class Zaken extends AbstractBlock
                     'type' => 'boolean',
                     'default' => true
                 ],
+                'combinedClients' => [
+                    'type' => 'boolean',
+                    'default' => false
+                ],
+                'byBSN' => [
+                    'type' => 'boolean',
+                    'default' => true
+                ],
                 'title' => 'Mijn Zaken',
                 'style' => 'swf-extended-blocks-style',
                 'editor_script' => 'swf-extended-blocks-script',

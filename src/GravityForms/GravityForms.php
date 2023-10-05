@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace OWC\Zaaksysteem\GravityForms;
 
+use Exception;
 use OWC\Zaaksysteem\Entities\Zaak;
 use OWC\Zaaksysteem\Foundation\Plugin;
 use OWC\Zaaksysteem\Http\Errors\ResourceNotFoundError;
@@ -45,10 +46,17 @@ class GravityForms
             return $form;
         }
 
-        $result = $this->createZaak($entry, $form);
+        try {
+            $result = $this->createZaak($entry, $form);
+        } catch(Exception $e) {
+            $result = [
+                'error' => $e->getMessage()
+            ];
+        }
 
-        if (empty($result)) {
-            echo view('form-submission-failed.php');
+        if (! empty($result['error'])) {
+            echo view('form-submission-failed.php', $result);
+
             exit;
         }
 
@@ -63,7 +71,6 @@ class GravityForms
         $action = sprintf('OWC\Zaaksysteem\Clients\%s\Actions\CreateZaakAction', $this->supplier);
 
         if (! class_exists($action)) {
-            // REFERENCE POINT: Mike -> catch and log or show critical error has occurred?
             throw new ResourceNotFoundError(sprintf('Class "%s" does not exists. Verify if the selected supplier has an action class', $action));
         }
 
