@@ -1,0 +1,17 @@
+$component: 'zaak-details';
+
+.#{$component} {
+  &-table {
+    width: 100%;
+
+    th,
+    td {
+      padding: 1rem;
+      line-height: 1;
+    }
+    
+    tr {
+      border-bottom: 1px solid  var(--grey-2, #D2D2D2);
+    }
+  }
+}

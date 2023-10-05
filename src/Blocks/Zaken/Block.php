@@ -20,7 +20,7 @@ class Block
     {
         $client = $this->getApiClient($attributes);
 
-        if (! $client->supports('zaken')) {
+        if (!$client->supports('zaken')) {
             return 'Het Mijn Zaken overzicht is niet beschikbaar.';
         }
 
@@ -28,6 +28,10 @@ class Block
 
         if ($zaken->isEmpty()) {
             return 'Er zijn op dit moment geen zaken beschikbaar.';
+        }
+
+        if ($attributes['view'] === 'tabs') {
+            return view('blocks/mijn-zaken/overview-zaken-tabs.php', ['zaken' => $zaken]);
         }
 
         return view('blocks/mijn-zaken/overview-zaken.php', ['zaken' => $zaken]);

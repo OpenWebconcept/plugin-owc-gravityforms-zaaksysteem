@@ -1,5 +1,6 @@
 // External
 import 'bootstrap/js/dist/collapse';
+import 'bootstrap/js/dist/tab';
 
 const app = () => {};
 

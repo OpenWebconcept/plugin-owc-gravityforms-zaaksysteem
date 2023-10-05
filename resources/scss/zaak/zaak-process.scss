@@ -35,6 +35,7 @@ $process-steps: 'zaak-process-steps';
     display: inline-block;
     text-align: center;
     border-radius: 50%;
+    font-size: 1rem;
     border: var(--zaak-process-steps-border-width) solid var(--zaak-process-steps-color);
     background-color: var(--zaak-process-steps-color);
 
