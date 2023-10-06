@@ -3,7 +3,7 @@ $isActive = $vars['isActive'] ?? false;
 $title = $vars['title'] ?? '';
 $date = $vars['date'] ?? '';
 $tag = $vars['tag'] ?? '';
-$zaak = $vars['zaak'];
+$zaak = $vars['zaak'] ?? '';
 ?>
 <div class="zaak-card <?php echo $isActive ? 'active' : ''; ?>">
     <svg class="zaak-card-svg" width="385" height="200" viewBox="0 0 385 200" fill="#F1F1F1" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">

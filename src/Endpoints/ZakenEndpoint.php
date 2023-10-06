@@ -56,7 +56,6 @@ class ZakenEndpoint extends Endpoint
          * - zaaktype != concept
          * - laatsteBetaaldatum > NOW
          */
-
         $response = $this->httpClient->post(
             $this->buildUri($this->endpoint),
             $model->toJson(),
