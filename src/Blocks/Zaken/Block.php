@@ -20,7 +20,7 @@ class Block
     {
         $client = $this->getApiClient($attributes);
 
-        if (!$client->supports('zaken')) {
+        if (! $client->supports('zaken')) {
             return 'Het Mijn Zaken overzicht is niet beschikbaar.';
         }
 
