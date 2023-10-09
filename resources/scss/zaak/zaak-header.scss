@@ -1,20 +1,20 @@
 $component: 'zaak-header';
 
 .#{$component} {
-  border-radius: 40px 0px;
-  height: 100px;
-  background-color: var(--grey-2, #D2D2D2);
-  margin-bottom: 6rem;
+	height: var( --zaak-header-height, 100px );
+	border-radius: var( --zaak-header-border-radius, 40px 0px );
+	margin-bottom: var( --zaak-header-margin-bottom, 6rem );
+	background-color: var( --zaak-header-background-color, #d2d2d2 );
 
-  &-title {
-    padding: 1rem 2rem;
-    margin-left: 3rem;
-    border-radius: 10px 0px;
-    border-left: 2px solid var(--color-palette-primary);
-    border-bottom: 2px solid var(--color-palette-primary);
-    width: fit-content;
-    background-color: #fff;
-    position: relative;
-    top: 3rem;
-  }
+	&-title {
+		position: relative;
+		top: var( --zaak-header-title-top, 3rem );
+		width: var( --zaak-header-title-width, fit-content );
+		padding: var( --zaak-header-title-padding, 1rem 2rem );
+		border-radius: var( --zaak-header-title-border-radius, 10px 0px );
+		border-bottom: var(--zaak-header-title-border-bottom, 2px solid #328725);
+		border-left: var( --zaak-header-title-border-left, 2px solid #328725 );
+		margin-left: var( --zaak-header-title-margin-left, 3rem );
+		background-color: var( --zaak-header-title-background-color, #fff );
+	}
 }

@@ -1,17 +1,16 @@
 $component: 'zaak-card';
 
-
 .#{$component} {
   position: relative;
-  z-index: 1;
-  padding: 2.5rem 1.5rem 1.5rem 1.5rem; 
-  color: var(--grey-4, #4B4B4B);
-  border-radius: var(--card-border-radius, 5px);
-  transition: var(--card-transition, all 0.2s ease); 
-  cursor: pointer;
+  z-index: var(--zaak-card-z-index, 1);
   display: flex;
-  min-height: 190px;
+  min-height: var(--zaak-card-min-height, 190px);
   flex-direction: column;
+  padding: var(--zaak-card-padding, 2.5rem 1.5rem 1.5rem 1.5rem);
+  border-radius: var(--zaak-card-border-radius, 5px);
+  color: var(--zaak-card-color, #4b4b4b);
+  cursor: pointer;
+  transition: var(--zaak-card-transition, all 0.2s ease);
 
   &::before {
     position: absolute;
@@ -20,10 +19,10 @@ $component: 'zaak-card';
     right: 1px;
     bottom: 0;
     left: 0;
-    background-color: var(--grey-2, #D2D2D2);
-    content: "";
-    border-radius: var(--card-border-radius, 5px);
-    transition: var(--card-transition, all 0.2s ease); 
+    border-radius: var(--zaak-card-border-radius, 5px);
+    background-color: var(--zaak-card-before-background-color, #d2d2d2);
+    content: '';
+    transition: var(--zaak-card-transition, all 0.2s ease);
   }
 
   &::after {
@@ -33,19 +32,18 @@ $component: 'zaak-card';
     right: 8px;
     bottom: 0;
     left: 0;
-    background-color: var(--white, #fff);
-    content: "";
-    border-radius: var(--card-border-radius, 5px);
-    transition: var(--card-transition, all 0.2s ease); 
+    border-radius: var(--zaak-card-card-border-radius, 5px);
+    background-color: var(--zaak-card-after-background-color, #fff);
+    content: '';
+    transition: var(--zaak-card-transition, all 0.2s ease);
   }
 
-
   &:hover {
-    transform: translateY(-4px);
+    transform: var(--zaak-card-hover-transform, translateY(-4px));
 
     &::before,
     &::after {
-      transform: translateY(-6px);
+      transform: var(--zaak-card-hover-before-after-transform, translateY(-7px));
     }
   }
 
@@ -53,64 +51,64 @@ $component: 'zaak-card';
     position: absolute;
     z-index: -1;
     top: 0;
-    left: 0;
     right: 0;
     bottom: 0;
+    left: 0;
     width: 100%;
     height: 100%;
   }
 
   &-title {
-    color: inherit; 
     margin-bottom: 1rem;
+    color: inherit;
   }
 
   &-footer {
-    margin-top: auto;
     display: flex;
-    line-height: 1.2;
-    gap: 1rem; 
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
+    margin-top: auto;
+    gap: 1rem;
+    line-height: 1.2;
   }
 
   &-date {
-    text-transform: lowercase;
+    text-transform: var(--zaak-card-date-text-transform, lowercase);
   }
 
   &-tag {
+    padding: var(--zaak-card-tag-padding, 0.25rem 0.5rem);
+    border-radius: var(--zaak-card-tag-border-radius, 5px);
     margin-left: auto;
-    font-size: 0.8rem;
-    background-color: var(--primary-300, #001D5F);
-    padding: 0.25rem 0.5rem;
-    font-weight: 700;
-    border-radius: var(--card-border-radius, 5px);
-    text-transform: uppercase;
-    color: #fff;
+    background-color: var(--zaak-card-tag-background-color, #001d5f);
+    color: var(--zaak-card-tag-color, #fff);
+    font-size: var(--zaak-card-tag-font-size, 0.8rem);
+    font-weight: var(--zaak-card-tag-padding-font-weight, 700);
+    text-transform: var(--zaak-card-tag-text-transform, uppercase);
   }
 
   &.active {
-    color: var(--primary-300, #001D5F);
+    color: var(--zaak-card-active-color, #001d5f);
 
     &::before {
-      background-color: var(--primary-200, #4D6EB9);
+      background-color: var(--zaak-card-active-before-background-color, #4d6eb9);
     }
 
     .#{$component}-svg {
-      fill: var(--primary-100, #E9EFFF);
+      fill: var(--zaak-card-active-svg-background-color, #e9efff);
     }
 
     .#{$component}-arrow {
-      fill: var(--primary-300, #4D6EB9);
+      fill: var(--zaak-card-active-arrow-background-color, #4d6eb9);
     }
   }
 }
 
 .#{$component}-wrapper {
-  margin-top: 2rem;
-  margin-bottom: 2rem;
   display: grid;
-  gap: 2rem; 
+  margin-top: var(--zaak-card-wrapper-spacing, 2rem);
+  margin-bottom: var(--zaak-card-wrapper-spacing, 2rem);
+  gap: var(--zaak-card-wrapper-gap, 2rem);
 
   @media screen and (min-width: 950px) {
     grid-template-columns: 1fr 1fr;

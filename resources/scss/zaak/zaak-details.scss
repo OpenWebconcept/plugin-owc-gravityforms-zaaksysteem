@@ -6,12 +6,12 @@ $component: 'zaak-details';
 
     th,
     td {
-      padding: 1rem;
-      line-height: 1;
+      padding: var(--zaak-details-padding, 1em);
+      line-height: var(--zaak-details-line-height, 1);
     }
-    
+
     tr {
-      border-bottom: 1px solid  var(--grey-2, #D2D2D2);
+      border-bottom: 1px solid var(--zaak-details-border-color, #D2D2D2);
     }
   }
 }

@@ -1,17 +1,19 @@
-.zaak-tabs {
-  --bs-nav-tabs-link-active-border-color: var(--color-palette-primary);
-  --bs-nav-tabs-border-width: 2px; 
-  --bs-nav-tabs-border-color: #D2D2D2;
-  --bs-nav-tabs-link-active-color: var(--color-palette-primary);
-  --bs-nav-link-color: #000;
-  --bs-nav-link-hover-color: #000;
+$component: 'zaak-tabs';
+
+.#{$component} {
+  --bs-nav-link-color: var(--zaak-tabs-link-color, #000);
+  --bs-nav-link-hover-color: var(--zaak-tabs-link-hover-color, #000);
+  --bs-nav-tabs-border-width: var( --zaak-tabs-border-width, 2px); 
+  --bs-nav-tabs-border-color: var(--zaak-tabs-border-color, #D2D2D2);
+  --bs-nav-tabs-link-active-color: var(--zaak-tabs-link-active-border-color, #328725);
+  --bs-nav-tabs-link-active-border-color: var(--zaak-tabs-link-active-border-color, #328725);
 
   .nav-link {
     border: 0; 
     border-bottom: var(--bs-nav-tabs-border-width) solid  var(--bs-nav-tabs-border-color);
 
     &.active {
-      font-weight: $font-weight-bold;
+      font-weight: var(--zaak-tabs-link-font-weight, 700);
     }
   }
 }
