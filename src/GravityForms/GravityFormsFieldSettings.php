@@ -2,40 +2,16 @@
 
 namespace OWC\Zaaksysteem\GravityForms;
 
-use OWC\Zaaksysteem\Contracts\Client;
 use OWC\Zaaksysteem\Endpoints\Filter\EigenschappenFilter;
 use OWC\Zaaksysteem\Entities\Zaaktype;
-use OWC\Zaaksysteem\Foundation\Plugin;
+use OWC\Zaaksysteem\Resolvers\ContainerResolver;
 use OWC\Zaaksysteem\Support\PagedCollection;
-use OWC\Zaaksysteem\Traits\ZaakTypeByIdentifier;
 
 use function OWC\Zaaksysteem\Foundation\Helpers\get_supplier;
 use function OWC\Zaaksysteem\Foundation\Helpers\view;
 
 class GravityFormsFieldSettings
 {
-    use ZaakTypeByIdentifier;
-
-    protected Plugin $plugin;
-
-    public function __construct(Plugin $plugin)
-    {
-        $this->plugin = $plugin;
-    }
-
-    protected function getApiClient(string $client): Client
-    {
-        switch ($client) {
-            case 'decos':
-            case 'decos-join':
-                return $this->plugin->getContainer()->get('dj.client');
-            case 'rx-mission':
-                return $this->plugin->getContainer()->get('rz.client');
-            default:
-                return $this->plugin->getContainer()->get('oz.client');
-        }
-    }
-
     /**
      * Use the selected `zaaktype identifier` to retrieve the `zaaktype`.
      *
@@ -45,9 +21,9 @@ class GravityFormsFieldSettings
      */
     public function getZaakType(string $supplier, string $zaaktypeIdentifier): ?Zaaktype
     {
-        $client = $this->getApiClient($supplier);
+        $client = ContainerResolver::make()->getApiClient($supplier);
 
-        return $this->zaakTypeByIdentifier($client, $zaaktypeIdentifier);
+        return $client->zaaktypen()->byIdentifier($zaaktypeIdentifier);
     }
 
 
@@ -56,7 +32,7 @@ class GravityFormsFieldSettings
      */
     public function getZaaktypenEigenschappen(string $supplier, string $zaaktypeUrl): PagedCollection
     {
-        $client = $this->getApiClient($supplier);
+        $client = ContainerResolver::make()->getApiClient($supplier);
 
         $filter = new EigenschappenFilter();
         $filter->add('zaaktype', $zaaktypeUrl);

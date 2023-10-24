@@ -4,6 +4,8 @@ namespace OWC\Zaaksysteem;
 
 use DI\Container;
 
+use OWC\Zaaksysteem\Resolvers\DigiDSegmentResolver;
+
 /**
  * Link interfaces to their concretions.
  */
@@ -12,7 +14,7 @@ return [
      * OpenZaak configuration.
      */
     'openzaak.abbr' => 'oz',
-    'oz.client' => fn (Container $container) => $container->get(Clients\OpenZaak\Client::class),
+    'oz.client' => fn(Container $container) => $container->get(Clients\OpenZaak\Client::class),
     'oz.catalogi_uri' => function (Container $container) {
         return $container->make('gf.setting', ['-openzaak-catalogi-url']);
     },
@@ -36,7 +38,7 @@ return [
      * Decos JOIN configuration.
      */
     'decosjoin.abbr' => 'dj',
-    'dj.client' => fn (Container $container) => $container->get(Clients\DecosJoin\Client::class),
+    'dj.client' => fn(Container $container) => $container->get(Clients\DecosJoin\Client::class),
     'dj.catalogi_uri' => function (Container $container) {
         return $container->make('gf.setting', ['-decos-join-catalogi-url']);
     },
@@ -66,7 +68,7 @@ return [
      * RX.Mission configuration.
      */
     'rx-mission.abbr' => 'rx',
-    'rx.client' => fn (Container $container) => $container->get(Clients\RxMission\Client::class),
+    'rx.client' => fn(Container $container) => $container->get(Clients\RxMission\Client::class),
     'rx.catalogi_uri' => function (Container $container) {
         return $container->make('gf.setting', ['-rx-mission-catalogi-url']);
     },
@@ -99,6 +101,11 @@ return [
     'gf.setting' => function (Container $container, string $type, string $name) {
         return GravityForms\GravityFormsSettings::make()->get($name);
     },
+
+    /**
+     * Resolved BSN of logged in user.
+     */
+    'digid.current_user_bsn' => DigiDSegmentResolver::make()->bsn(),
 
     /**
      * Configure API Clients

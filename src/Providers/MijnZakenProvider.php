@@ -8,14 +8,12 @@ use OWC\Zaaksysteem\Contracts\Client;
 use OWC\Zaaksysteem\Endpoints\Filter\ZakenFilter;
 use OWC\Zaaksysteem\Entities\Zaak;
 use OWC\Zaaksysteem\Foundation\ServiceProvider;
-use OWC\Zaaksysteem\Traits\ResolveBSN;
 
+use function OWC\Zaaksysteem\Foundation\Helpers\resolve;
 use function OWC\Zaaksysteem\Foundation\Helpers\view;
 
 class MijnZakenProvider extends ServiceProvider
 {
-    use ResolveBSN;
-
     public function boot(): void
     {
         add_action('init', [$this, 'registerBlock']);
@@ -42,7 +40,7 @@ class MijnZakenProvider extends ServiceProvider
             return 'Het Mijn Zaken overzicht is niet beschikbaar.';
         }
 
-        $currentBsn = $this->resolveCurrentBsn();
+        $currentBsn = resolve('digid.current_user_bsn');
         $filter = new ZakenFilter();
         // $filter->byBsn($currentBsn);
         $filter->add('identificatie', 'ZAAK-2023-0000000064');

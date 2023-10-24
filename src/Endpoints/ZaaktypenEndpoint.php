@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace OWC\Zaaksysteem\Endpoints;
 
 use OWC\Zaaksysteem\Endpoints\Filter\AbstractFilter;
+use OWC\Zaaksysteem\Endpoints\Filter\ResultaattypenFilter;
 use OWC\Zaaksysteem\Entities\Zaaktype;
+use OWC\Zaaksysteem\Support\Collection;
 use OWC\Zaaksysteem\Support\PagedCollection;
 
 class ZaaktypenEndpoint extends Endpoint
@@ -41,5 +43,25 @@ class ZaaktypenEndpoint extends Endpoint
         );
 
         return $this->getPagedCollection($this->handleResponse($response));
+    }
+
+    public function byIdentifier(string $zaaktypeIdentifier): ?Zaaktype
+    {
+        $page = 1;
+        $zaaktypen = [];
+
+        while ($page) {
+            $result = $this->all((new ResultaattypenFilter())->page($page));
+            $zaaktypen = array_merge($zaaktypen, $result->all());
+            $page = $result->pageMeta()->getNextPageNumber();
+        }
+
+        return Collection::collect($zaaktypen)->filter(
+            function (Zaaktype $zaaktype) use ($zaaktypeIdentifier) {
+                if ($zaaktype->identificatie === $zaaktypeIdentifier) {
+                    return $zaaktype;
+                }
+            }
+        )->first() ?: null;
     }
 }

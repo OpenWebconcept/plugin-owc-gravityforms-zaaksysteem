@@ -88,7 +88,7 @@ registerBlockType('owc/mijn-zaken', {
                     value={ zaakClient }
                     options={ [
                         { label: 'OpenZaak', value: 'openzaak' },
-                        { label: 'Decos JOIN', value: 'decosjoin' },
+                        { label: 'Decos JOIN', value: 'decos-join' },
                         { label: 'Rx.Mission', value: 'rx-mission' },
                     ] }
                     onChange={ ( newzaakClient ) => setAttributes( { zaakClient: newzaakClient } ) }
@@ -111,7 +111,7 @@ registerBlockType('owc/mijn-zaken', {
               {zaaktypeFields}
 
               <Button isDefault icon="plus" onClick={addZTFilter.bind(this)}>
-                Voeg een Zaaktype identifier toe (volledige URL)
+                Voeg een Zaaktype identificatie toe
               </Button>
             </PanelBody>
             <PanelBody title="Weergave" initialOpen={false}>

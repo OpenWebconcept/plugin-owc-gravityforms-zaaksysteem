@@ -27,6 +27,7 @@ class Blocks
         foreach ($this->getFiles() as $file) {
             $directory = explode('/', pathinfo($file, PATHINFO_DIRNAME));
             $class = $blocksNamespace . '\\' . implode('\\', array_slice($directory, -1, 1, true)) . '\\' . implode('\\', array_slice($directory, -1, 1, true));
+
             if (class_exists($class)) {
                 $classes[] = $class;
             }

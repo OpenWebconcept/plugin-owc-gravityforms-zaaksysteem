@@ -5,6 +5,7 @@
 - When creating a Zaak, via form submission, add extra fields.
 - Retrieve 'ZaakTypen' dynamically and use it in form settings.
 - Map form fields values to args used in request for creating zaak.
+- Remove OWC\Zaaksysteem\Providers\MijnZakenProvider::class when block is finished inside the src/Blocks/Zaken dir.
 
 ## Decos Join
 

@@ -7,27 +7,32 @@ use OWC\Zaaksysteem\Entities\Zaaktype;
 
 class ZakenFilter extends AbstractFilter
 {
-// identificatie
-// bronorganisatie
-// archiefnominatie
-// archiefnominatie__in
-// archiefactiedatum
-// archiefactiedatum__lt
-// archiefactiedatum__gt
-// archiefstatus
-// archiefstatus__in
-// rol__betrokkeneType
-// rol__betrokkene
-// rol__omschrijvingGeneriek
-// maximaleVertrouwelijkheidaanduiding
-// rol__betrokkeneIdentificatie__natuurlijkPersoon__inpBsn
-// rol__betrokkeneIdentificatie__medewerker__identificatie
-// rol__betrokkeneIdentificatie__organisatorischeEenheid__identificatie
-// ordering
+    // identificatie
+    // bronorganisatie
+    // archiefnominatie
+    // archiefnominatie__in
+    // archiefactiedatum
+    // archiefactiedatum__lt
+    // archiefactiedatum__gt
+    // archiefstatus
+    // archiefstatus__in
+    // rol__betrokkeneType
+    // rol__betrokkene
+    // rol__omschrijvingGeneriek
+    // maximaleVertrouwelijkheidaanduiding
+    // rol__betrokkeneIdentificatie__natuurlijkPersoon__inpBsn
+    // rol__betrokkeneIdentificatie__medewerker__identificatie
+    // rol__betrokkeneIdentificatie__organisatorischeEenheid__identificatie
+    // ordering
 
     public function byZaaktype(Zaaktype $zaaktype)
     {
         return $this->add('zaaktype', $zaaktype->url);
+    }
+
+    public function byZaaktypeIdentification(Zaaktype $zaaktype)
+    {
+        return $this->add('identificatie', $zaaktype->identificatie);
     }
 
     public function byBsn(string $bsn)

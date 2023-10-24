@@ -6,6 +6,7 @@ namespace OWC\Zaaksysteem\Foundation;
 
 use DI\Container;
 use DI\ContainerBuilder;
+use Exception;
 
 use function OWC\Zaaksysteem\Foundation\Helpers\resolve;
 
@@ -127,7 +128,7 @@ class Plugin
     /**
      * Call method on service providers.
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function callServiceProviders(string $method, string $key = ''): void
     {
@@ -141,8 +142,8 @@ class Plugin
 
             $service = $this->container->get($service);
 
-            if (!$service instanceof ServiceProvider) {
-                throw new \Exception('Provider must be an instance of ServiceProvider.');
+            if (! $service instanceof ServiceProvider) {
+                throw new Exception('Provider must be an instance of ServiceProvider.');
             }
 
             if (method_exists($service, $method)) {

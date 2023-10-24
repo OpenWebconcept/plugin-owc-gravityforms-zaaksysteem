@@ -35,7 +35,7 @@ class CreateZaakAction extends AbstractCreateZaakAction
      */
     public function addZaak($entry, $form): ?Zaak
     {
-        $rsin = $this->plugin->getContainer()->get('rsin');
+        $rsin = $this->getRSIN();
 
         if (empty($rsin)) {
             throw new Exception('Het RSIN is niet ingesteld in de Gravity Forms instellingen');
