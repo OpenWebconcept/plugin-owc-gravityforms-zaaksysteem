@@ -5,8 +5,7 @@ namespace OWC\Zaaksysteem\GravityForms;
 use OWC\Zaaksysteem\Contracts\Client;
 use OWC\Zaaksysteem\Endpoints\Filter\ResultaattypenFilter;
 use OWC\Zaaksysteem\Entities\Zaaktype;
-use OWC\Zaaksysteem\Foundation\Plugin;
-use OWC\Zaaksysteem\Http\RequestError;
+use OWC\Zaaksysteem\Resolvers\ContainerResolver;
 use OWC\Zaaksysteem\Support\Collection;
 
 use function OWC\Zaaksysteem\Foundation\Helpers\config;
@@ -16,38 +15,11 @@ class GravityFormsFormSettings
     protected string $prefix = OWC_GZ_PLUGIN_SLUG;
 
     /**
-     * Instance of the plugin.
-     */
-    protected Plugin $plugin;
-
-    public function __construct(Plugin $plugin)
-    {
-        $this->plugin = $plugin;
-    }
-
-    /**
-     * Get the api client.
-     *
-     * @todo make generic, so we can use it for Decos Join as well.
-     */
-    protected function getApiClient(string $client): Client
-    {
-        switch ($client) {
-            case 'decos':
-                return $this->plugin->getContainer()->get('dj.client');
-            case 'rx-mission':
-                return $this->plugin->getContainer()->get('rx.client');
-            default:
-                return $this->plugin->getContainer()->get('oz.client');
-        }
-    }
-
-    /**
      * Get a list of related 'zaaktypen' from Open Zaak.
      */
     public function getTypesOpenZaak(): array
     {
-        return $this->getTypesByClient($this->getApiClient('openzaak'));
+        return $this->getTypesByClient(ContainerResolver::make()->getApiClient('openzaak'));
     }
 
     /**
@@ -55,7 +27,7 @@ class GravityFormsFormSettings
      */
     public function getTypesDecosJoin(): array
     {
-        return $this->getTypesByClient($this->getApiClient('decos'), true);
+        return $this->getTypesByClient(ContainerResolver::make()->getApiClient('decos'));
     }
 
     /**
@@ -63,13 +35,13 @@ class GravityFormsFormSettings
      */
     public function getTypesRxMission(): array
     {
-        return $this->getTypesByClient($this->getApiClient('rx-mission'));
+        return $this->getTypesByClient(ContainerResolver::make()->getApiClient('rx-mission'));
     }
 
     /**
      * Return types by client, includes pagination.
      */
-    protected function getTypesByClient(Client $client, bool $test = false): array
+    protected function getTypesByClient(Client $client): array
     {
         $page = 1;
         $zaaktypen = [];
@@ -80,7 +52,7 @@ class GravityFormsFormSettings
             $page = $result->pageMeta()->getNextPageNumber();
         }
 
-        return (array) Collection::collect($zaaktypen)->map(function (Zaaktype $zaaktype) use ($test) {
+        return (array) Collection::collect($zaaktypen)->map(function (Zaaktype $zaaktype) {
             return [
                 'name' => $zaaktype->identificatie,
                 'label' => "{$zaaktype->omschrijving} ({$zaaktype->identificatie})",

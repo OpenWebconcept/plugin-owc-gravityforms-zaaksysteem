@@ -4,10 +4,6 @@ declare(strict_types=1);
 
 namespace OWC\Zaaksysteem\Foundation\Helpers;
 
-use DateTime;
-use Exception;
-
-use OWC\Zaaksysteem\Foundation\Cryptor;
 use OWC\Zaaksysteem\Foundation\Plugin;
 
 function app(): Plugin
@@ -28,34 +24,6 @@ function storage_path(string $path = ''): string
 function resolve($container, $arguments = [])
 {
     return Plugin::getInstance()->getContainer()->get($container, $arguments);
-}
-
-/**
- * Encrypt a string.
- */
-function encrypt($string): string
-{
-    try {
-        $encrypted = resolve(Cryptor::class)->encrypt($string);
-    } catch (\Exception $e) {
-        $encrypted = '';
-    }
-
-    return (string) $encrypted;
-}
-
-/**
- * Decrypt a string.
- */
-function decrypt($string): string
-{
-    try {
-        $decrypted = resolve(Cryptor::class)->decrypt($string);
-    } catch (\Exception $e) {
-        $decrypted = '';
-    }
-
-    return (string) $decrypted;
 }
 
 /**

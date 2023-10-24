@@ -6,7 +6,6 @@ namespace OWC\Zaaksysteem\GravityForms;
 
 use Exception;
 use OWC\Zaaksysteem\Entities\Zaak;
-use OWC\Zaaksysteem\Foundation\Plugin;
 use OWC\Zaaksysteem\Http\Errors\ResourceNotFoundError;
 
 use function OWC\Zaaksysteem\Foundation\Helpers\get_supplier;
@@ -14,17 +13,7 @@ use function OWC\Zaaksysteem\Foundation\Helpers\view;
 
 class GravityForms
 {
-    /**
-     * Instance of the plugin.
-     */
-    protected Plugin $plugin;
-
     protected string $supplier;
-
-    public function __construct(Plugin $plugin)
-    {
-        $this->plugin = $plugin;
-    }
 
     /**
      * Get and set the selected Zaaksysteem supplier.
@@ -74,7 +63,7 @@ class GravityForms
             throw new ResourceNotFoundError(sprintf('Class "%s" does not exists. Verify if the selected supplier has an action class', $action));
         }
 
-        $instance = new $action($this->plugin);
+        $instance = new $action();
 
         return $instance->addZaak($entry, $form);
     }

@@ -12,27 +12,29 @@ use OWC\Zaaksysteem\Entities\Rol;
 use OWC\Zaaksysteem\Entities\Zaak;
 use OWC\Zaaksysteem\Entities\Zaakeigenschap;
 use OWC\Zaaksysteem\Entities\Zaaktype;
-use OWC\Zaaksysteem\Foundation\Plugin;
 use OWC\Zaaksysteem\Http\Errors\BadRequestError;
+use OWC\Zaaksysteem\Resolvers\ContainerResolver;
 use OWC\Zaaksysteem\Support\PagedCollection;
-use OWC\Zaaksysteem\Traits\ResolveBSN;
-use OWC\Zaaksysteem\Traits\ZaakTypeByIdentifier;
+
+use function OWC\Zaaksysteem\Foundation\Helpers\resolve;
 
 abstract class AbstractCreateZaakAction
 {
-    use ResolveBSN;
-    use ZaakTypeByIdentifier;
-
     public const CALLABLE_NAME = '';
     public const CLIENT_CATALOGI_URL = '';
     public const CLIENT_ZAKEN_URL = '';
     public const FORM_SETTING_SUPPLIER_KEY = '';
 
-    protected Plugin $plugin;
-
-    public function __construct(Plugin $plugin)
+    protected function getApiClient(): Client
     {
-        $this->plugin = $plugin;
+        return ContainerResolver::make()->getApiClient(static::CALLABLE_NAME);
+    }
+
+    protected function getRSIN(): string
+    {
+        $rsin = ContainerResolver::make()->get('rsin');
+
+        return ! empty($rsin) && is_string($rsin) ? $rsin : '';
     }
 
     /**
@@ -48,11 +50,6 @@ abstract class AbstractCreateZaakAction
         return $client->roltypen()->filter($filter);
     }
 
-    protected function getApiClient(): Client
-    {
-        return $this->plugin->getContainer()->get(static::CALLABLE_NAME);
-    }
-
     /**
      * Use the selected `zaaktype identifier` to retrieve the `zaaktype`.
      *
@@ -65,7 +62,7 @@ abstract class AbstractCreateZaakAction
         $client = $this->getApiClient();
         $zaaktypeIdentifier = $form[sprintf('%s-form-setting-%s-identifier', OWC_GZ_PLUGIN_SLUG, static::FORM_SETTING_SUPPLIER_KEY)];
 
-        return $this->zaakTypeByIdentifier($client, $zaaktypeIdentifier);
+        return $client->zaaktypen()->byIdentifier($zaaktypeIdentifier);
     }
 
     /**
@@ -192,7 +189,7 @@ abstract class AbstractCreateZaakAction
             throw new Exception('Er zijn geen roltypen gevonden voor dit zaaktype');
         }
 
-        $currentBsn = $this->resolveCurrentBsn();
+        $currentBsn = resolve('digid.current_user_bsn');
 
         if (empty($currentBsn)) {
             throw new Exception('Deze sessie lijkt geen BSN te hebben');
