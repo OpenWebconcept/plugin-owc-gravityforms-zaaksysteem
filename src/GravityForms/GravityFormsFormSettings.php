@@ -2,6 +2,7 @@
 
 namespace OWC\Zaaksysteem\GravityForms;
 
+use Exception;
 use OWC\Zaaksysteem\Contracts\Client;
 use OWC\Zaaksysteem\Endpoints\Filter\ResultaattypenFilter;
 use OWC\Zaaksysteem\Entities\Zaaktype;
@@ -19,7 +20,11 @@ class GravityFormsFormSettings
      */
     public function getTypesOpenZaak(): array
     {
-        return $this->getTypesByClient(ContainerResolver::make()->getApiClient('openzaak'));
+        try {
+            return $this->getTypesByClient(ContainerResolver::make()->getApiClient('openzaak'));
+        } catch(Exception $e) {
+            return $this->handleNoChoices();
+        }
     }
 
     /**
@@ -27,7 +32,11 @@ class GravityFormsFormSettings
      */
     public function getTypesDecosJoin(): array
     {
-        return $this->getTypesByClient(ContainerResolver::make()->getApiClient('decos'));
+        try {
+            return $this->getTypesByClient(ContainerResolver::make()->getApiClient('decos'));
+        } catch(Exception $e) {
+            return $this->handleNoChoices();
+        }
     }
 
     /**
@@ -35,7 +44,23 @@ class GravityFormsFormSettings
      */
     public function getTypesRxMission(): array
     {
-        return $this->getTypesByClient(ContainerResolver::make()->getApiClient('rx-mission'));
+        try {
+            return $this->getTypesByClient(ContainerResolver::make()->getApiClient('rx-mission'));
+        } catch(Exception $e) {
+            return $this->handleNoChoices();
+        }
+    }
+
+    /**
+     * Get a list of related 'zaaktypen' from Rx.Mission.
+     */
+    public function getTypesXxllnc(): array
+    {
+        try {
+            return $this->getTypesByClient(ContainerResolver::make()->getApiClient('xxllnc'));
+        } catch(Exception $e) {
+            return $this->handleNoChoices();
+        }
     }
 
     /**
@@ -105,6 +130,11 @@ class GravityFormsFormSettings
                             'label' => __('Rx.Mission', config('core.text_domain')),
                             'value' => 'rx-mission',
                         ],
+                        [
+                            'name'  => "{$this->prefix}-form-setting-supplier-xxllnc",
+                            'label' => __('Xxllnc', config('core.text_domain')),
+                            'value' => 'xxllnc',
+                        ],
                     ],
                 ],
                 // TODO: verify if there is a way to actively get the selected value without a save and without custom JS.
@@ -152,6 +182,21 @@ class GravityFormsFormSettings
                         ],
                     ],
                     'choices' => $this->getTypesRxMission(),
+                ],
+                [
+                    'name'    => "{$this->prefix}-form-setting-xxllnc-identifier",
+                    'type'    => 'select',
+                    'label'   => esc_html__('Xxllnc identifier', config('core.text_domain')),
+                    'dependency' => [
+                        'live'   => true,
+                        'fields' => [
+                            [
+                                'field' => "{$this->prefix}-form-setting-supplier",
+                                'values' => ['xxllnc'],
+                            ],
+                        ],
+                    ],
+                    'choices' => $this->getTypesXxllnc(),
                 ]
             ],
         ];

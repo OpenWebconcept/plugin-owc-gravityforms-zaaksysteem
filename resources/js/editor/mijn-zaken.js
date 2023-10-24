@@ -90,6 +90,7 @@ registerBlockType('owc/mijn-zaken', {
                         { label: 'OpenZaak', value: 'openzaak' },
                         { label: 'Decos JOIN', value: 'decos-join' },
                         { label: 'Rx.Mission', value: 'rx-mission' },
+						{ label: 'xxllnc', value: 'xxllnc' }
                     ] }
                     onChange={ ( newzaakClient ) => setAttributes( { zaakClient: newzaakClient } ) }
                 />
