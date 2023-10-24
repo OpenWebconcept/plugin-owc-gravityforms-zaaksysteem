@@ -10,7 +10,7 @@ class Collection extends Enumerable implements CollectionInterface
 {
     use Sortable;
 
-    const SORT_REVERSE = true;
+    public const SORT_REVERSE = true;
 
     public static function collect(iterable $data): CollectionInterface
     {
@@ -94,6 +94,13 @@ class Collection extends Enumerable implements CollectionInterface
     public function flatten(Closure $callback, $initial = null)
     {
         return array_reduce($this->data, $callback, $initial);
+    }
+
+    public function flattenAndAssign(Closure $callback, $initial = null)
+    {
+        $this->data = array_reduce($this->data, $callback, $initial);
+
+        return $this;
     }
 
     public function groupBy(Closure $callback): CollectionInterface
