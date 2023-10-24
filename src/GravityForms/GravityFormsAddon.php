@@ -83,6 +83,7 @@ class GravityFormsAddon extends GFAddOn
             $this->settingsOpenZaak(),
             $this->settingsDecosJoin(),
             $this->settingsRxMission(),
+            $this->settingsXxllnc(),
             $this->RSIN()
         ];
     }
@@ -214,6 +215,45 @@ class GravityFormsAddon extends GFAddOn
                     'type' => 'text',
                     'class' => 'medium',
                     'name' => "{$this->prefix}-rx-mission-client-secret",
+                ]
+            ],
+        ];
+    }
+
+    protected function settingsXxllnc(): array
+    {
+        return [
+            'title'  => esc_html__('Xxllnc', config('core.text_domain')),
+            'fields' => [
+                [
+                    'label' => esc_html__('Catalogi URL', config('core.text_domain')),
+                    'type' => 'text',
+                    'class' => 'medium',
+                    'name' => "{$this->prefix}-xxllnc-catalogi-url",
+                ],
+                [
+                    'label' => esc_html__('Documenten URL', config('core.text_domain')),
+                    'type' => 'text',
+                    'class' => 'medium',
+                    'name' => "{$this->prefix}-xxllnc-documenten-url",
+                ],
+                [
+                    'label' => esc_html__('Zaken URL', config('core.text_domain')),
+                    'type' => 'text',
+                    'class' => 'medium',
+                    'name' => "{$this->prefix}-xxllnc-zaken-url",
+                ],
+                [
+                    'label' => esc_html__('Client ID', config('core.text_domain')),
+                    'type' => 'text',
+                    'class' => 'medium',
+                    'name' => "{$this->prefix}-xxllnc-client-id",
+                ],
+                [
+                    'label' => esc_html__('Client Secret', config('core.text_domain')),
+                    'type' => 'text',
+                    'class' => 'medium',
+                    'name' => "{$this->prefix}-xxllnc-client-secret",
                 ]
             ],
         ];

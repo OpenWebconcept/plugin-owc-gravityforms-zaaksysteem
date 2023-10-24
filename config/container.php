@@ -89,6 +89,30 @@ return [
     },
 
     /**
+     * Xxllnc configuration.
+     */
+    'xxllnc.abbr' => 'xxllnc',
+    'xxllnc.client' => fn(Container $container) => $container->get(Clients\Xxllnc\Client::class),
+    'xxllnc.catalogi_uri' => function (Container $container) {
+        return $container->make('gf.setting', ['-xxllnc-catalogi-url']);
+    },
+    'xxllnc.documenten_uri' => function (Container $container) {
+        return $container->make('gf.setting', ['-xxllnc-documenten-url']);
+    },
+    'xxllnc.zaken_uri' => function (Container $container) {
+        return $container->make('gf.setting', ['-xxllnc-zaken-url']);
+    },
+    'xxllnc.client_id' => function (Container $container) {
+        return $container->make('gf.setting', ['-xxllnc-client-id']);
+    },
+    'xxllnc.client_secret' => function (Container $container) {
+        return $container->make('gf.setting', ['-xxllnc-client-secret']);
+    },
+    'xxllnc.authenticator' => function (Container $container) {
+        return $container->get(Clients\Xxllnc\Authenticator::class);
+    },
+
+    /**
      * General configuration
      */
     'rsin' => function (Container $container) {
@@ -146,6 +170,18 @@ return [
         );
     },
 
+    Clients\Xxllnc\Client::class => function (Container $container) {
+        return new Clients\Xxllnc\Client(
+            $container->make(
+                Http\WordPress\WordPressRequestClient::class
+            ),
+            $container->get('xxllnc.authenticator'),
+            $container->get('xxllnc.zaken_uri'),
+            $container->get('xxllnc.catalogi_uri'),
+            $container->get('xxllnc.documenten_uri'),
+        );
+    },
+
     /**
      * Authenticators
      */
@@ -167,6 +203,13 @@ return [
         return new Clients\RxMission\Authenticator(
             $container->get('rx.client_id'),
             $container->get('rx.client_secret')
+        );
+    },
+
+    Clients\Xxllnc\Authenticator::class => function (Container $container) {
+        return new Clients\Xxllnc\Authenticator(
+            $container->get('xxllnc.client_id'),
+            $container->get('xxllnc.client_secret')
         );
     },
 
