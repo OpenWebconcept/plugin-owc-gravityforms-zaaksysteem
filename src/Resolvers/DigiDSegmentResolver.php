@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace OWC\Zaaksysteem\Resolvers;
 
 use Aura\Session\Segment;
+use OWC\Zaaksysteem\Contracts\Resolver;
 
 use function Yard\DigiD\Foundation\Helpers\decrypt;
 use function Yard\DigiD\Foundation\Helpers\resolve;
 
-class DigiDSegmentResolver
+class DigiDSegmentResolver implements Resolver
 {
     protected Segment $segment;
 
@@ -25,12 +26,12 @@ class DigiDSegmentResolver
 
     public function get(string $key)
     {
-        return $this->segment[$key] ?? null;
+        return $this->segment->get($key) ?? null;
     }
 
     public function bsn(): string
     {
-        $bsn = $this->segment->get('bsn');
+        $bsn = $this->get('bsn');
 
         return ! empty($bsn) && is_string($bsn) ? decrypt($bsn) : '';
     }

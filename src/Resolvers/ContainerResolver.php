@@ -24,10 +24,10 @@ class ContainerResolver
 
     public function get(string $key)
     {
-        return $this->container[$key] ?? null;
+        return $this->container->get($key) ?? null;
     }
 
-    public function getApiClient(string $client): client
+    public function getApiClient(string $client): Client
     {
         switch ($client) {
             case 'decos':
@@ -35,6 +35,8 @@ class ContainerResolver
                 return $this->container->get('dj.client');
             case 'rx-mission':
                 return $this->container->get('rx.client');
+            case 'xxllnc':
+                return $this->container->get('xxllnc.client');
             case 'openzaak': // fallthrough.
             default:
                 return $this->container->get('oz.client');
