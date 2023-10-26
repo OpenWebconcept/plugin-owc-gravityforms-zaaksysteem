@@ -30,9 +30,17 @@ class ValidationServiceProvider extends ServiceProvider
          */
         add_action('template_include', function ($template) {
             $templateName = str_replace(['.blade.php', '.php'], '', basename($template));
-            $templateToValidate = 'template-openzaak';
 
-            if ($templateName !== $templateToValidate) {
+            /**
+             * Filters the array of templates to validate.
+             *
+             * @since 1.1.1
+             *
+             * @param array $templatesToValidate Template names to validate
+             */
+            $templatesToValidate = apply_filters('owc_gravityforms_zaaksysteem_templates_to_validate', ['template-openzaak']);
+
+            if (! in_array($templateName, $templatesToValidate)) {
                 return $template;
             }
 
@@ -57,7 +65,7 @@ class ValidationServiceProvider extends ServiceProvider
 
         status_header(403);
 
-        add_filter('pre_get_document_title', function (string $title) {
+        add_filter('pre_get_document_title', function ($title) {
             return 'Geen toegang';
         }, 10, 1);
 
