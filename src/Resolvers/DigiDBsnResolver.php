@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace OWC\Zaaksysteem\Resolvers;
 
 use Aura\Session\Segment;
-use OWC\Zaaksysteem\Contracts\Resolver;
+use OWC\Zaaksysteem\Contracts\BsnResolver;
 
 use function Yard\DigiD\Foundation\Helpers\decrypt;
 use function Yard\DigiD\Foundation\Helpers\resolve;
 
-class DigiDSegmentResolver implements Resolver
+class DigiDBsnResolver implements BsnResolver
 {
     protected Segment $segment;
 
