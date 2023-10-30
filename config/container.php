@@ -4,7 +4,7 @@ namespace OWC\Zaaksysteem;
 
 use DI\Container;
 
-use OWC\Zaaksysteem\Resolvers\DigiDSegmentResolver;
+use OWC\Zaaksysteem\Resolvers\DigiDBsnResolver;
 
 /**
  * Link interfaces to their concretions.
@@ -129,7 +129,7 @@ return [
     /**
      * Resolved BSN of logged in user.
      */
-    'digid.current_user_bsn' => DigiDSegmentResolver::make()->bsn(),
+    'digid.current_user_bsn' => DigiDBsnResolver::make()->bsn(),
 
     /**
      * Configure API Clients
