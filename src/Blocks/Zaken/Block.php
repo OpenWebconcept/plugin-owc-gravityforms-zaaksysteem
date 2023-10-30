@@ -52,11 +52,15 @@ class Block
     protected function getZaken(array $attributes): Collection
     {
         $filter = new ZakenFilter();
-
         $filter = $this->handleFilterBSN($filter, $attributes);
         $filter = $this->handleFilterZaaktype($filter, $attributes);
 
-        return $this->client->zaken()->filter($filter);
+        $zaken = $this->client->zaken()->filter($filter);
+
+        return $zaken->map(function ($zaak) {
+            $zaak->setValue('leverancier', $this->client->getClientName());
+            return $zaak;
+        });
     }
 
     protected function getCombinedZaken(array $attributes): Collection
@@ -66,12 +70,16 @@ class Block
 
         foreach (array_keys($suppliers) as $supplier) {
             $client = ContainerResolver::make()->getApiClient($supplier);
+
             $filter = new ZakenFilter();
             $filter = $this->handleFilterBSN($filter, $attributes);
             $filter = $this->handleFilterZaaktype($filter, $attributes, $client);
 
             try {
-                $zaken[] = $client->zaken()->filter($filter)->all();
+                $zaken[] = $client->zaken()->filter($filter)->map(function ($zaak) use ($client) {
+                    $zaak->setValue('leverancier', $client->getClientName());
+                    return $zaak;
+                })->all();
             } catch(Exception $e) {
                 continue;
             }
@@ -94,8 +102,7 @@ class Block
             return $filter;
         }
 
-        $currentBsn = resolve('digid.current_user_bsn');
-        $filter->byBsn($currentBsn);
+        $filter->byBsn(resolve('digid.current_user_bsn'));
 
         return $filter;
     }

@@ -23,11 +23,11 @@ use function OWC\Zaaksysteem\Foundation\Helpers\view;
                     'title' => $zaak->title(),
                     'date' => $zaak->startdatum->format('j F Y'),
                     'tag' => '1 taak open', // Dummy data
-                    'isActive' => true
+                    'isActive' => true,
+                    'link' => $zaak->getPermalink()
                 ]);
             } ?>
         </div>
-
         <div class="my-5 py-5 border-top">
             <?php foreach ($vars['zaken'] as $zaak) {
                 echo view('blocks/mijn-zaken/tabs-view/zaak-header.php', compact('zaak'));
