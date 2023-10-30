@@ -5,18 +5,10 @@ declare(strict_types=1);
 namespace OWC\Zaaksysteem\Validation;
 
 use OWC\Zaaksysteem\Foundation\ServiceProvider;
-
-use function Yard\DigiD\Foundation\Helpers\resolve;
+use OWC\Zaaksysteem\Resolvers\ContainerResolver;
 
 class ValidationServiceProvider extends ServiceProvider
 {
-    protected object $session;
-
-    public function __construct()
-    {
-        $this->session = resolve('session')->getSegment('digid');
-    }
-
     public function boot(): void
     {
         $this->loadHooks();
@@ -24,19 +16,31 @@ class ValidationServiceProvider extends ServiceProvider
 
     protected function loadHooks(): void
     {
-        /**
-         * Validate private pages on template.
-         * Check if BSN is present in current user session.
-         */
+        $this->validateTemplate();
+    }
+
+    /**
+     * Validate if the wanted template requires an BSN from the current user session and is valid.
+     */
+    private function validateTemplate(): void
+    {
         add_action('template_include', function ($template) {
             $templateName = str_replace(['.blade.php', '.php'], '', basename($template));
-            $templateToValidate = 'template-openzaak';
 
-            if ($templateName !== $templateToValidate) {
+            /**
+             * Filters the array of templates to validate.
+             *
+             * @since 1.1.1
+             *
+             * @param array $templatesToValidate Template names to validate
+             */
+            $templatesToValidate = apply_filters('owc_gravityforms_zaaksysteem_templates_to_validate', ['template-openzaak']);
+
+            if (! in_array($templateName, $templatesToValidate)) {
                 return $template;
             }
 
-            if (empty($this->session->get('bsn', ''))) {
+            if (empty(ContainerResolver::make()->get('digid.current_user_bsn'))) {
                 return $this->returnForbidden();
             }
 
@@ -57,7 +61,7 @@ class ValidationServiceProvider extends ServiceProvider
 
         status_header(403);
 
-        add_filter('pre_get_document_title', function (string $title) {
+        add_filter('pre_get_document_title', function (?string $title) {
             return 'Geen toegang';
         }, 10, 1);
 
