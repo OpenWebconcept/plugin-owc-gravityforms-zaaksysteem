@@ -23,7 +23,6 @@ use function OWC\Zaaksysteem\Foundation\Helpers\view;
                 <?php
                 echo view('blocks/mijn-zaken/zaak-process-step.php', [
                     'step' => $step,
-                    // Used to be strtolower($step->omschrijving ?? '') === strtolower($vars['currentStep'] ?? ''), -> is not always the same.
                     'isCurrent' => $step->isEndStatus(),
                     'isPast' => !$step->isEndStatus(),
                     'stepUpdate' => $statusUpdate ?? false,

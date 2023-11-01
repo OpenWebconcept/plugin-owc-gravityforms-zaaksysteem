@@ -1,7 +1,4 @@
 <?php
-
-use OWC\Zaaksysteem\Support\Collection;
-
 use function OWC\Zaaksysteem\Foundation\Helpers\view;
 
 ?>
@@ -24,20 +21,18 @@ use function OWC\Zaaksysteem\Foundation\Helpers\view;
                     'date' => $zaak->startdatum->format('j F Y'),
                     'tag' => '1 taak open', // Dummy data
                     'isActive' => true,
-                    'link' => $zaak->getPermalink()
+                    'link' => $zaak->permalink()
                 ]);
             } ?>
         </div>
         <div class="my-5 py-5 border-top">
             <?php foreach ($vars['zaken'] as $zaak) {
                 echo view('blocks/mijn-zaken/tabs-view/zaak-header.php', compact('zaak'));
-
                 echo view('blocks/mijn-zaken/tabs-view/zaak-details.php', compact('zaak'));
-
                 echo view('blocks/mijn-zaken/zaak-process-steps.php', [
-                    'steps' => is_object($zaak->zaaktype) && $zaak->zaaktype->statustypen instanceof Collection ? $zaak->zaaktype->statustypen->sortByAttribute('volgnummer') : [],
-                    'status_history' => $zaak->statussen,
-                    'hasNoStatus' => ($zaak->status->statustoelichting ?? '') === 'Niet beschikbaar',
+                    'steps' => $zaak->steps(),
+                    'status_history' => $zaak->statusHistory(),
+                    'hasNoStatus' => $zaak->hasNoStatus(),
                 ]);
 
                 if ($zaak->zaakinformatieobjecten->count() > 0) {
