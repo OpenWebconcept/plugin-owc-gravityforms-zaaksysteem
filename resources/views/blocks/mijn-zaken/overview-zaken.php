@@ -1,7 +1,4 @@
 <?php
-
-use OWC\Zaaksysteem\Support\Collection;
-
 use function OWC\Zaaksysteem\Foundation\Helpers\view;
 
 ?>
@@ -20,9 +17,9 @@ use function OWC\Zaaksysteem\Foundation\Helpers\view;
                 echo view('blocks/mijn-zaken/zaak-meta.php', compact('zaak'));
 
     echo view('blocks/mijn-zaken/zaak-process-steps.php', [
-        'steps' => is_object($zaak->zaaktype) && $zaak->zaaktype->statustypen instanceof Collection ? $zaak->zaaktype->statustypen->sortByAttribute('volgnummer') : [],
-        'status_history' => $zaak->statussen,
-        'hasNoStatus' => ($zaak->status->statustoelichting ?? '') === 'Niet beschikbaar',
+        'steps' => $zaak->steps(),
+        'status_history' => $zaak->statusHistory(),
+        'hasNoStatus' => $zaak->hasNoStatus(),
     ]);
 
     if ($zaak->zaakinformatieobjecten->count() > 0) {
