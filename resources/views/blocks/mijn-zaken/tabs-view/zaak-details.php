@@ -2,16 +2,14 @@
 
 declare(strict_types=1);
 
-use function OWC\Zaaksysteem\Foundation\Helpers\view;
-
 $zaak = $vars['zaak'];
 $label = 'Status';
-$status = $zaak->status->statustoelichting ?? false;
+$status = $zaak->statusExplanation() ?: 'Onbekend';
+
 if ($zaak->resultaat) {
     $label = 'Resultaat';
     $status = $zaak->resultaat->toelichting;
 }
-$status = $status ?: 'Onbekend';
 
 ?>
 

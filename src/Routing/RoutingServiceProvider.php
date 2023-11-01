@@ -32,7 +32,7 @@ class RoutingServiceProvider extends ServiceProvider
      *
      * This implementation requires:
      * - a page with 'zaak' as the slug
-     * - the page to be connected with template 'template-mijn-zaak'
+     * - the page to be connected with template 'template-single-zaak'
      */
     protected function addCustomRewriteRule(): void
     {
@@ -65,7 +65,7 @@ class RoutingServiceProvider extends ServiceProvider
         add_action('template_include', function ($template) {
             $templateName = str_replace(['.blade.php', '.php'], '', basename($template));
 
-            if ($templateName !== 'template-mijn-zaak') {
+            if ($templateName !== 'template-single-zaak') {
                 return $template;
             }
 

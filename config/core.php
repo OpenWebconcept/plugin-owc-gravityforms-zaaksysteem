@@ -28,7 +28,7 @@ return [
         [
             'type'    => 'plugin',
             'label'   => 'Gravity Forms',
-            'version' => '>=2.5.8',
+            'version' => '>=2.7.15',
             'file'    => 'gravityforms/gravityforms.php',
         ],
         [

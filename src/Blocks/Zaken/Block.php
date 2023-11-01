@@ -8,16 +8,24 @@ use Exception;
 use OWC\Zaaksysteem\Contracts\Client;
 use OWC\Zaaksysteem\Endpoints\Filter\ResultaattypenFilter;
 use OWC\Zaaksysteem\Endpoints\Filter\ZakenFilter;
+use OWC\Zaaksysteem\Entities\Zaak;
 use OWC\Zaaksysteem\Entities\Zaaktype;
 use OWC\Zaaksysteem\Resolvers\ContainerResolver;
 use OWC\Zaaksysteem\Support\Collection;
 
 use function OWC\Zaaksysteem\Foundation\Helpers\resolve;
 use function OWC\Zaaksysteem\Foundation\Helpers\view;
+use function Yard\ConfigExpander\Foundation\Helpers\value;
 
 class Block
 {
     protected Client $client;
+    protected string $currentUserBsn;
+
+    public function __construct()
+    {
+        $this->currentUserBsn = resolve('digid.current_user_bsn');
+    }
 
     public function render($attributes, $rendered, $editor)
     {
@@ -26,10 +34,20 @@ class Block
             return;
         }
 
+        if (empty($this->currentUserBsn)) {
+            return 'Er is geen geldig BSN gevonden waardoor er geen zaken opgehaald kunnen worden.';
+        }
+
         $this->client = ContainerResolver::make()->getApiClient($attributes['zaakClient'] ?? 'openzaak');
 
         if (! $this->client->supports('zaken')) {
             return 'Het Mijn Zaken overzicht is niet beschikbaar.';
+        }
+
+        $zaken = get_transient($this->uniqueTransientKey($attributes));
+
+        if ($zaken instanceof Collection && $zaken->isNotEmpty()) {
+            return $this->returnView($attributes, $zaken);
         }
 
         if (! $attributes['combinedClients']) {
@@ -42,11 +60,19 @@ class Block
             return 'Er zijn op dit moment geen zaken beschikbaar.';
         }
 
-        if ($attributes['view'] === 'tabs') {
-            return view('blocks/mijn-zaken/overview-zaken-tabs.php', ['zaken' => $zaken]);
-        }
+        set_transient($this->uniqueTransientKey($attributes), $zaken, 500);
 
-        return view('blocks/mijn-zaken/overview-zaken.php', ['zaken' => $zaken]);
+        return $this->returnView($attributes, $zaken);
+    }
+
+    /**
+     * Based on the configured attributes and the bsn of the current user.
+     */
+    protected function uniqueTransientKey(array $attributes): string
+    {
+        $attributes['bsnCurrentUser'] = $this->currentUserBsn;
+
+        return md5(json_encode($attributes));
     }
 
     protected function getZaken(array $attributes): Collection
@@ -58,8 +84,7 @@ class Block
         $zaken = $this->client->zaken()->filter($filter);
 
         return $zaken->map(function ($zaak) {
-            $zaak->setValue('leverancier', $this->client->getClientName());
-            return $zaak;
+            return $this->enrichZaak($zaak, $this->client);
         });
     }
 
@@ -77,8 +102,7 @@ class Block
 
             try {
                 $zaken[] = $client->zaken()->filter($filter)->map(function ($zaak) use ($client) {
-                    $zaak->setValue('leverancier', $client->getClientName());
-                    return $zaak;
+                    return $this->enrichZaak($zaak, $this->client);
                 })->all();
             } catch(Exception $e) {
                 continue;
@@ -96,13 +120,26 @@ class Block
         }, []);
     }
 
+    /**
+     * Set additional values to the 'Zaak'.
+     * This way class methods, which are stored in the transient as well, can be used in the views.
+     */
+    protected function enrichZaak(Zaak $zaak, Client $client): Zaak
+    {
+        $zaak->setValue('leverancier', $client->getClientName());
+        $zaak->setValue('steps', is_object($zaak->zaaktype) && $zaak->zaaktype->statustypen instanceof Collection ? $zaak->zaaktype->statustypen->sortByAttribute('volgnummer') : []);
+        $zaak->setValue('status_history', $zaak->statussen);
+
+        return $zaak;
+    }
+
     protected function handleFilterBSN(ZakenFilter $filter, array $attributes): ZakenFilter
     {
         if (! $attributes['byBSN']) {
             return $filter;
         }
 
-        $filter->byBsn(resolve('digid.current_user_bsn'));
+        $filter->byBsn($this->currentUserBsn);
 
         return $filter;
     }
@@ -154,5 +191,14 @@ class Block
         })->filter(function ($url) {
             return ! empty($url);
         })->all();
+    }
+
+    protected function returnView(array $attributes, Collection $zaken)
+    {
+        if ($attributes['view'] === 'tabs') {
+            return view('blocks/mijn-zaken/overview-zaken-tabs.php', ['zaken' => $zaken]);
+        }
+
+        return view('blocks/mijn-zaken/overview-zaken.php', ['zaken' => $zaken]);
     }
 }
