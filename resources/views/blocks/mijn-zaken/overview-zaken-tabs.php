@@ -17,13 +17,13 @@ use function OWC\Zaaksysteem\Foundation\Helpers\view;
 	<div class="tab-pane fade show active" id="current" role="tabpanel" aria-labelledby="current-tab">
 		<div class="zaak-card-wrapper">
 			<?php foreach ($vars['zaken'] as $zaak) {
-				echo view('blocks/mijn-zaken/tabs-view/zaak-card.php', [
-					'title' => $zaak->title(),
-					'date' => $zaak->startdatum->format('j F Y'),
-					// 'tag' => '1 taak open', // Dummy data
-					'isActive' => true,
-					'link' => $zaak->permalink()
-				]);
+			    echo view('blocks/mijn-zaken/tabs-view/zaak-card.php', [
+			        'title' => $zaak->title(),
+			        'date' => $zaak->startDate('j F Y'),
+			        // 'tag' => '1 taak open', // Dummy data
+			        'isActive' => true,
+			        'link' => $zaak->permalink()
+			    ]);
 			} ?>
 		</div>
 	</div>
@@ -31,10 +31,10 @@ use function OWC\Zaaksysteem\Foundation\Helpers\view;
 	<div class="tab-pane fade" id="completed" role="tabpanel" aria-labelledby="completed-tab">
 		<div class="zaak-card-wrapper">
 			<?php foreach ($vars['zaken'] as $zaak) {
-				echo view('blocks/mijn-zaken/tabs-view/zaak-card.php', [
-					'title' => $zaak->title(),
-					'date' => $zaak->startdatum->format('j F Y'),
-				]);
+			    echo view('blocks/mijn-zaken/tabs-view/zaak-card.php', [
+			        'title' => $zaak->title(),
+			        'date' => $zaak->startDate('j F Y'),
+			    ]);
 			} ?>
 		</div>
 	</div>
