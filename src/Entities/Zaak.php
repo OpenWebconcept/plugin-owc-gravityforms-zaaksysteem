@@ -99,6 +99,16 @@ class Zaak extends Entity
         return $this->status->statustoelichting ?? '';
     }
 
+    public function startDate(string $format = 'j F Y'): string
+    {
+        return date_i18n($format, $this->startdatum->getTimestamp());
+    }
+
+    public function registerDate(string $format = 'j F Y'): string
+    {
+        return date_i18n($format, $this->registratiedatum->getTimestamp());
+    }
+
     /**
      * Wether or not the current Zaak is initiated by the given BSN.
      */
