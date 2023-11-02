@@ -8,6 +8,7 @@ use OWC\Zaaksysteem\Endpoints\Filter\ZakenFilter;
 use OWC\Zaaksysteem\Entities\Zaak;
 use OWC\Zaaksysteem\Foundation\ServiceProvider;
 use OWC\Zaaksysteem\Resolvers\ContainerResolver;
+use OWC\Zaaksysteem\Support\Collection;
 
 use function OWC\Zaaksysteem\Foundation\Helpers\resolve;
 
@@ -94,7 +95,17 @@ class RoutingServiceProvider extends ServiceProvider
         $filter->add('identificatie', $identification);
         $filter->byBsn(resolve('digid.current_user_bsn'));
 
-        return $client->zaken()->filter($filter)->first() ?: null;
+        $zaak = $client->zaken()->filter($filter)->first() ?: null;
+
+        if (empty($zaak)) {
+            return null;
+        }
+
+        // Enrich the 'zaak' with additional values.
+        $zaak->setValue('steps', is_object($zaak->zaaktype) && $zaak->zaaktype->statustypen instanceof Collection ? $zaak->zaaktype->statustypen->sortByAttribute('volgnummer') : []);
+        $zaak->setValue('status_history', $zaak->statussen);
+
+        return $zaak;
     }
 
     /**
