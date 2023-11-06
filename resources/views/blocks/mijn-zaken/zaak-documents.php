@@ -6,15 +6,8 @@
         <ul>
             <?php foreach ($vars['documents'] as $document) : ?>
                 <li>
-                    <?php
-
-                    /**
-                     * @todo build proxy to download files
-                     */
-
-                    ?>
-                    <a href="#">
-                        <?= $document->titel; ?> (TODO)
+                    <a href="<?= $document->informatieobject->downloadUrl(); ?>">
+                        <?= $document->informatieobject->fileName(); ?> <?php if ($document->informatieobject->sizeFormatted()): ?>(<?= $document->informatieobject->sizeFormatted(); ?>) <?php endif ?>
                     </a>
                 </li>
             <?php endforeach; ?>

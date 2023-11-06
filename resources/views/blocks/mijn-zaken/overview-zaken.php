@@ -19,6 +19,7 @@ use function OWC\Zaaksysteem\Foundation\Helpers\view;
     echo view('blocks/mijn-zaken/zaak-process-steps.php', [
         'steps' => $zaak->steps(),
         'status_history' => $zaak->statusHistory(),
+        'currentStep' => $zaak->statusExplanation(),
         'hasNoStatus' => $zaak->hasNoStatus(),
     ]);
 

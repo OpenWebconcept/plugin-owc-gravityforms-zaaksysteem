@@ -45,7 +45,7 @@ abstract class Endpoint
     {
         return new RequestOptions([
             'headers'   => [
-                'Authorization' => $this->authenticator->getAuthString()
+                'Authorization' => $this->authenticator->getAuthString(),
             ],
         ]);
     }
@@ -95,6 +95,6 @@ abstract class Endpoint
     {
         $class = $this->entityClass;
 
-        return new $class($data, $this->client::CALLABLE_NAME);
+        return new $class($data, $this->client::CALLABLE_NAME, $this->client::CLIENT_NAME);
     }
 }

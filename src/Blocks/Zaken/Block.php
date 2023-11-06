@@ -10,12 +10,11 @@ use OWC\Zaaksysteem\Endpoints\Filter\ResultaattypenFilter;
 use OWC\Zaaksysteem\Endpoints\Filter\ZakenFilter;
 use OWC\Zaaksysteem\Entities\Zaak;
 use OWC\Zaaksysteem\Entities\Zaaktype;
+use function OWC\Zaaksysteem\Foundation\Helpers\resolve;
+
+use function OWC\Zaaksysteem\Foundation\Helpers\view;
 use OWC\Zaaksysteem\Resolvers\ContainerResolver;
 use OWC\Zaaksysteem\Support\Collection;
-
-use function OWC\Zaaksysteem\Foundation\Helpers\resolve;
-use function OWC\Zaaksysteem\Foundation\Helpers\view;
-use function Yard\ConfigExpander\Foundation\Helpers\value;
 
 class Block
 {
@@ -195,7 +194,7 @@ class Block
 
     protected function returnView(array $attributes, Collection $zaken)
     {
-        if ($attributes['view'] === 'tabs') {
+        if ('tabs' === $attributes['view']) {
             return view('blocks/mijn-zaken/overview-zaken-tabs.php', ['zaken' => $zaken]);
         }
 
