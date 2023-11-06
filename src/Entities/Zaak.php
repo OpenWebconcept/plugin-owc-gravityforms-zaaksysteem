@@ -51,9 +51,15 @@ class Zaak extends Entity
         'rollen' => Casts\Related\Rollen::class,
     ];
 
+    /**
+     * Returns the 'Zaak' description.
+     * When the description is empty the 'Zaak' identification is returned.
+     */
     public function title(): string
     {
-        return $this->omschrijving ?? '';
+        $title = $this->omschrijving ?? '';
+
+        return $title ? $title : $this->identificatie ?? '';
     }
 
     /**

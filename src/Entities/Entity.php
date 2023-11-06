@@ -20,10 +20,12 @@ abstract class Entity implements
     protected array $data = [];
     protected array $casts = [];
     protected string $clientName;
+    protected string $clientNamePretty;
 
-    public function __construct(array $itemData = [], string $clientName)
+    public function __construct(array $itemData = [], string $clientName, $clientNamePretty)
     {
         $this->clientName = $clientName;
+        $this->clientNamePretty = $clientNamePretty;
         $this->hydrate($itemData);
     }
 
@@ -98,9 +100,20 @@ abstract class Entity implements
         return json_encode($this, $flags, $depth);
     }
 
+    /**
+     * E.g. 'oz.client'
+     */
     public function getClientName(): string
     {
         return $this->clientName;
+    }
+
+    /**
+     * E.g. 'openzaak'
+     */
+    public function getClientNamePretty(): string
+    {
+        return $this->clientNamePretty;
     }
 
     protected function serializeAttribute(string $name)
