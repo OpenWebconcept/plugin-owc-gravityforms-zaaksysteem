@@ -23,7 +23,8 @@ use function OWC\Zaaksysteem\Foundation\Helpers\view;
                 <?php
                 echo view('blocks/mijn-zaken/zaak-process-step.php', [
                     'step' => $step,
-                    'isCurrent' => $step->isEndStatus(),
+                    // 'isCurrent' => $step->isEndStatus(),
+                    'isCurrent' => $step->statusExplanation() === $vars['currentStep'],
                     'isPast' => !$step->isEndStatus(),
                     'stepUpdate' => $statusUpdate ?? false,
                 ]);

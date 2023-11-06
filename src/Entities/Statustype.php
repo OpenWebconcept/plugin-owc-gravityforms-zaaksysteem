@@ -21,4 +21,9 @@ class Statustype extends Entity
     {
         return $this->data['isEindstatus'] ?? false;
     }
+
+    public function statusExplanation(): string
+    {
+        return strtolower($this->data['omschrijving'] ?? '');
+    }
 }

@@ -6,11 +6,11 @@ namespace OWC\Zaaksysteem\Contracts;
 
 use InvalidArgumentException;
 use OWC\Zaaksysteem\Endpoints\Endpoint;
+use function OWC\Zaaksysteem\Foundation\Helpers\resolve;
 use OWC\Zaaksysteem\Http\Errors\ResourceNotFoundError;
 use OWC\Zaaksysteem\Http\Errors\ServerError;
-use OWC\Zaaksysteem\Http\RequestClientInterface;
 
-use function OWC\Zaaksysteem\Foundation\Helpers\resolve;
+use OWC\Zaaksysteem\Http\RequestClientInterface;
 
 abstract class AbstractClient implements Client
 {
@@ -120,7 +120,7 @@ abstract class AbstractClient implements Client
             return $this;
         }
 
-        if ($type === 'zaken') {
+        if ('zaken' === $type) {
             $secret = resolve('dj.client_secret_zrc');
         } else {
             $secret = resolve('dj.client_secret');

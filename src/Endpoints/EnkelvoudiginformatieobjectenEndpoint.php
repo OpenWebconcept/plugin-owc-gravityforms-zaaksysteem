@@ -22,18 +22,17 @@ class EnkelvoudiginformatieobjectenEndpoint extends Endpoint
     }
 
     /**
-     * @todo Return a 'stream' of sorts so a controller can decide
-     * what to do with the binary data of a document.
+     * Return the binary data of a document.
      */
-    public function download(string $identifier)
+    public function download(string $identifier): string
     {
         $response = $this->httpClient->get(
             $this->buildUri($this->endpoint . '/' . $identifier . '/download'),
             $this->buildRequestOptions()
         );
 
-        var_dump($response);
-        exit();
-        //
+        $this->handleResponse($response);
+
+        return $response->getBody();
     }
 }
