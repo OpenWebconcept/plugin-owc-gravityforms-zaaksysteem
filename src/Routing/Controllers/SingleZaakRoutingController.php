@@ -8,8 +8,8 @@ use Exception;
 use OWC\Zaaksysteem\Endpoints\Filter\ZakenFilter;
 use OWC\Zaaksysteem\Entities\Zaak;
 use function OWC\Zaaksysteem\Foundation\Helpers\resolve;
-
 use OWC\Zaaksysteem\Support\Collection;
+use WP_Rewrite;
 
 class SingleZaakRoutingController extends AbstractRoutingController
 {
@@ -30,14 +30,12 @@ class SingleZaakRoutingController extends AbstractRoutingController
      */
     protected function addCustomRewriteRules(): void
     {
-        add_action('init', function () {
-            flush_rewrite_rules();
+        add_action('generate_rewrite_rules', function (WP_Rewrite $rewrite) {
+            $rules = [
+                'zaak/([a-zA-Z0-9-]+)/([a-zA-Z]+)/?$' => 'index.php?pagename=zaak&zaak_identification=$matches[1]&zaak_supplier=$matches[2]',
+            ];
 
-            add_rewrite_rule(
-                'zaak/([a-zA-Z0-9-]+)/([a-zA-Z]+)/?$',
-                'index.php?pagename=zaak&zaak_identification=$matches[1]&zaak_supplier=$matches[2]',
-                'top'
-            );
+            $rewrite->rules = $rules + $rewrite->rules;
         });
     }
 
