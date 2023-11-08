@@ -23,9 +23,9 @@ use function OWC\Zaaksysteem\Foundation\Helpers\view;
         'hasNoStatus' => $zaak->hasNoStatus(),
     ]);
 
-    if ($zaak->zaakinformatieobjecten->count() > 0) {
+    if ($zaak->informationObjects() && $zaak->informationObjects()->count() > 0) {
         echo view('blocks/mijn-zaken/zaak-documents.php', [
-            'documents' => $zaak->zaakinformatieobjecten
+            'documents' => $zaak->informationObjects(),
         ]);
     }
     ?>
