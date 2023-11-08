@@ -19,11 +19,11 @@ class Statustype extends Entity
 
     public function isEndStatus(): bool
     {
-        return $this->data['isEindstatus'] ?? false;
+        return $this->getValue('isEindstatus', false);
     }
 
     public function statusExplanation(): string
     {
-        return strtolower($this->data['omschrijving'] ?? '');
+        return strtolower($this->getValue('omschrijving', ''));
     }
 }
