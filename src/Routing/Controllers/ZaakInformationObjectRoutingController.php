@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace OWC\Zaaksysteem\Routing\Controllers;
 
 use Exception;
+use WP_Rewrite;
 
 class ZaakInformationObjectRoutingController extends AbstractRoutingController
 {
@@ -24,14 +25,12 @@ class ZaakInformationObjectRoutingController extends AbstractRoutingController
      */
     protected function addCustomRewriteRules(): void
     {
-        add_action('init', function () {
-            flush_rewrite_rules();
+        add_action('generate_rewrite_rules', function (WP_Rewrite $rewrite) {
+            $rules = [
+                'zaak-download/([a-zA-Z0-9-]+)/([a-zA-Z]+)/?$' => 'index.php?pagename=zaak-download&zaak_download_identification=$matches[1]&zaak_supplier=$matches[2]',
+            ];
 
-            add_rewrite_rule(
-                'zaak-download/([a-zA-Z0-9-]+)/([a-zA-Z]+)/?$',
-                'index.php?pagename=zaak-download&zaak_download_identification=$matches[1]&zaak_supplier=$matches[2]',
-                'top'
-            );
+            $rewrite->rules = $rules + $rewrite->rules;
         });
     }
 
@@ -41,6 +40,7 @@ class ZaakInformationObjectRoutingController extends AbstractRoutingController
     protected function allowCustomQueryVars(): void
     {
         add_action('query_vars', function (array $queryVars) {
+            $queryVars[] = 'zaak_identification';
             $queryVars[] = 'zaak_supplier';
             $queryVars[] = 'zaak_download_identification';
 
