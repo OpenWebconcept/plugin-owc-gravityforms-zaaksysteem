@@ -40,7 +40,6 @@ class ZaakInformationObjectRoutingController extends AbstractRoutingController
     protected function allowCustomQueryVars(): void
     {
         add_action('query_vars', function (array $queryVars) {
-            $queryVars[] = 'zaak_identification';
             $queryVars[] = 'zaak_supplier';
             $queryVars[] = 'zaak_download_identification';
 

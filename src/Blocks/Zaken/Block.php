@@ -10,11 +10,12 @@ use OWC\Zaaksysteem\Endpoints\Filter\ResultaattypenFilter;
 use OWC\Zaaksysteem\Endpoints\Filter\ZakenFilter;
 use OWC\Zaaksysteem\Entities\Zaak;
 use OWC\Zaaksysteem\Entities\Zaaktype;
-use function OWC\Zaaksysteem\Foundation\Helpers\resolve;
-
-use function OWC\Zaaksysteem\Foundation\Helpers\view;
 use OWC\Zaaksysteem\Resolvers\ContainerResolver;
+
 use OWC\Zaaksysteem\Support\Collection;
+
+use function OWC\Zaaksysteem\Foundation\Helpers\resolve;
+use function OWC\Zaaksysteem\Foundation\Helpers\view;
 
 class Block
 {
@@ -39,7 +40,7 @@ class Block
 
         $this->client = ContainerResolver::make()->getApiClient($attributes['zaakClient'] ?? 'openzaak');
 
-        if (! $this->client->supports('zaken')) {
+        if (!$this->client->supports('zaken')) {
             return 'Het Mijn Zaken overzicht is niet beschikbaar.';
         }
 
@@ -49,7 +50,7 @@ class Block
             return $this->returnView($attributes, $zaken);
         }
 
-        if (! $attributes['combinedClients']) {
+        if (!$attributes['combinedClients']) {
             $zaken = $this->getZaken($attributes);
         } else {
             $zaken = $this->getCombinedZaken($attributes);
@@ -129,7 +130,7 @@ class Block
         $zaak->setValue('steps', is_object($zaak->zaaktype) && $zaak->zaaktype->statustypen instanceof Collection ? $zaak->zaaktype->statustypen->sortByAttribute('volgnummer') : []);
         $zaak->setValue('status_history', $zaak->statussen);
         $zaak->setValue('information_objects', $zaak->zaakinformatieobjecten);
-        $zaak->setValue('status_explanation', $zaak->status->statustoelichting);
+        $zaak->setValue('status_explanation', $zaak->status->statustoelichting ?? '');
         $zaak->setValue('result', $zaak->resultaat);
 
         return $zaak;
@@ -137,7 +138,7 @@ class Block
 
     protected function handleFilterBSN(ZakenFilter $filter, array $attributes): ZakenFilter
     {
-        if (! $attributes['byBSN']) {
+        if (!$attributes['byBSN']) {
             return $filter;
         }
 
@@ -148,13 +149,13 @@ class Block
 
     protected function handleFilterZaaktype(ZakenFilter $filter, array $attributes, ?Client $client = null): ZakenFilter
     {
-        if (! is_string($attributes['zaaktypeFilter'])) {
+        if (!is_string($attributes['zaaktypeFilter'])) {
             return $filter;
         }
 
         $identifications = json_decode($attributes['zaaktypeFilter'], true);
 
-        if (! is_array($identifications) || empty($identifications)) {
+        if (!is_array($identifications) || empty($identifications)) {
             return $filter;
         }
 
@@ -185,13 +186,13 @@ class Block
         }
 
         return (array) Collection::collect($zaaktypen)->map(function (Zaaktype $zaaktype) use ($identifications) {
-            if (! in_array($zaaktype->identificatie, $identifications)) {
+            if (!in_array($zaaktype->identificatie, $identifications)) {
                 return '';
             }
 
             return $zaaktype->url;
         })->filter(function ($url) {
-            return ! empty($url);
+            return !empty($url);
         })->all();
     }
 
