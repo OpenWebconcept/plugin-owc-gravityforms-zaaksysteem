@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace OWC\Zaaksysteem\Entities;
 
+use DateTimeImmutable;
 use OWC\Zaaksysteem\Support\Collection;
 use OWC\Zaaksysteem\Support\PagedCollection;
 
@@ -57,9 +58,9 @@ class Zaak extends Entity
      */
     public function title(): string
     {
-        $title = $this->omschrijving ?? '';
+        $title = $this->getValue('omschrijving', '');
 
-        return $title ? $title : $this->identificatie ?? '';
+        return $title ? $title : $this->getValue('identificatie', '');
     }
 
     /**
@@ -78,7 +79,7 @@ class Zaak extends Entity
 
     protected function getSupplier(): string
     {
-        return $this->leverancier ?? '';
+        return $this->getValue('leverancier', '');
     }
 
     public function steps(): array
@@ -92,12 +93,12 @@ class Zaak extends Entity
 
     public function statusHistory(): ?PagedCollection
     {
-        return $this->status_history;
+        return $this->getValue('status_history');
     }
 
     public function informationObjects(): ?Collection
     {
-        return $this->information_objects ?? null;
+        return $this->getValue('information_objects');
     }
 
     public function hasNoStatus(): bool
@@ -107,17 +108,39 @@ class Zaak extends Entity
 
     public function statusExplanation(): string
     {
-        return $this->status->statustoelichting ?? '';
+        return $this->getValue('status_explanation', '');
+    }
+
+    public function result(): ?Resultaat
+    {
+        return $this->getValue('result');
+    }
+
+    public function resultExplanation(): string
+    {
+        return $this->result()->toelichting ?? '';
     }
 
     public function startDate(string $format = 'j F Y'): string
     {
-        return date_i18n($format, $this->startdatum->getTimestamp());
+        $startDate = $this->getValue('startdatum', null);
+
+        if (! $startDate instanceof DateTimeImmutable) {
+            return 'Onbekend';
+        }
+
+        return date_i18n($format, $startDate->getTimestamp());
     }
 
     public function registerDate(string $format = 'j F Y'): string
     {
-        return date_i18n($format, $this->registratiedatum->getTimestamp());
+        $registerDate = $this->getValue('registratiedatum', null);
+
+        if (! $registerDate instanceof DateTimeImmutable) {
+            return 'Onbekend';
+        }
+
+        return date_i18n($format, $registerDate->getTimestamp());
     }
 
     /**

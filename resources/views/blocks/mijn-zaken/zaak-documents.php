@@ -5,11 +5,13 @@
     <?php else : ?>
         <ul>
             <?php foreach ($vars['documents'] as $document) : ?>
-                <li>
-                    <a href="<?= $document->informatieobject->downloadUrl(); ?>">
-                        <?= $document->informatieobject->fileName(); ?> <?php if ($document->informatieobject->sizeFormatted()): ?>(<?= $document->informatieobject->sizeFormatted(); ?>) <?php endif ?>
-                    </a>
-                </li>
+				<?php if (! empty($document->informatieobject->downloadUrl())) : ?>
+					<li>
+						<a href="<?= $document->informatieobject->downloadUrl(); ?>">
+							<?= $document->informatieobject->fileName(); ?> <?php if ($document->informatieobject->sizeFormatted()): ?>(<?= $document->informatieobject->sizeFormatted(); ?>) <?php endif ?>
+						</a>
+					</li>
+				<?php endif ?>
             <?php endforeach; ?>
         </ul>
     <?php endif; ?>
