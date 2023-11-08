@@ -14,7 +14,7 @@ use function OWC\Zaaksysteem\Foundation\Helpers\view;
         <ol class="zaak-process-steps">
             <?php foreach ($vars['steps'] as $step) : ?>
                 <?php
-                if (!empty($vars['status_history'])) {
+                if (! empty($vars['status_history'])) {
                     $statusUpdate = $vars['status_history']->filter(function ($status) use ($step) {
                         return $status->statustype->url === $step->url;
                     })->first();
@@ -25,7 +25,7 @@ use function OWC\Zaaksysteem\Foundation\Helpers\view;
                     'step' => $step,
                     // 'isCurrent' => $step->isEndStatus(),
                     'isCurrent' => $step->statusExplanation() === $vars['currentStep'],
-                    'isPast' => !$step->isEndStatus(),
+                    'isPast' => ! $step->isEndStatus(),
                     'stepUpdate' => $statusUpdate ?? false,
                 ]);
                 ?>
