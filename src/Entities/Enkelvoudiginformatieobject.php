@@ -36,22 +36,22 @@ class Enkelvoudiginformatieobject extends Entity
 
     public function title(): string
     {
-        return $this->data['titel'] ?? '';
+        return $this->getValue('titel', '');
     }
 
     public function fileName(): string
     {
-        return $this->data['bestandsnaam'] ?? '';
+        return $this->getValue('bestandsnaam', '');
     }
 
     public function content(): string
     {
-        return $this->data['inhoud'] ?? '';
+        return $this->getValue('inhoud', '');
     }
 
     public function language(): string
     {
-        return $this->data['taal'] ?? '';
+        return $this->getValue('taal', '');
     }
 
     public function sizeFormatted(): string
@@ -63,7 +63,7 @@ class Enkelvoudiginformatieobject extends Entity
 
     public function size(): int
     {
-        return $this->data['bestandsomvang'] ?? 0;
+        return $this->getValue('bestandsomvang', 0);
     }
 
     public function downloadUrl(): string
@@ -71,7 +71,7 @@ class Enkelvoudiginformatieobject extends Entity
         $identification = $this->identification();
 
         if (empty($identification)) {
-            return '#';
+            return '';
         }
 
         return sprintf('%s/zaak-download/%s/%s', get_site_url(), $identification, $this->getClientNamePretty());
@@ -92,6 +92,6 @@ class Enkelvoudiginformatieobject extends Entity
 
     public function url(): string
     {
-        return $this->data['url'] ?? '';
+        return $this->getValue('url', '');
     }
 }
