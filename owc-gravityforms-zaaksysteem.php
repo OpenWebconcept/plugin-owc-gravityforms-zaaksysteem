@@ -20,7 +20,7 @@ namespace OWC\Zaaksysteem;
 /**
  * If this file is called directly, abort.
  */
-if (!defined('WPINC')) {
+if (! defined('WPINC')) {
     die;
 }
 
@@ -44,6 +44,10 @@ if (file_exists($composerAutoload)) {
     require_once __DIR__ . '/autoloader.php';
     $autoloader = new Autoloader();
 }
+
+register_activation_hook(__FILE__, function () {
+    flush_rewrite_rules(false);
+});
 
 /**
  * Begin execution of the plugin
