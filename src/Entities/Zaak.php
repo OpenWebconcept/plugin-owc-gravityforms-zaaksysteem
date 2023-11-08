@@ -90,9 +90,14 @@ class Zaak extends Entity
         return (array) $this->steps->toArray(); // type cast to array for the editor.
     }
 
-    public function statusHistory(): PagedCollection
+    public function statusHistory(): ?PagedCollection
     {
         return $this->status_history;
+    }
+
+    public function informationObjects(): ?Collection
+    {
+        return $this->information_objects ?? null;
     }
 
     public function hasNoStatus(): bool
