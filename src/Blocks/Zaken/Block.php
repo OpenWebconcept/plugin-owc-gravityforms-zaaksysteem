@@ -10,12 +10,12 @@ use OWC\Zaaksysteem\Endpoints\Filter\ResultaattypenFilter;
 use OWC\Zaaksysteem\Endpoints\Filter\ZakenFilter;
 use OWC\Zaaksysteem\Entities\Zaak;
 use OWC\Zaaksysteem\Entities\Zaaktype;
-use OWC\Zaaksysteem\Resolvers\ContainerResolver;
-
-use OWC\Zaaksysteem\Support\Collection;
-
 use function OWC\Zaaksysteem\Foundation\Helpers\resolve;
+
 use function OWC\Zaaksysteem\Foundation\Helpers\view;
+
+use OWC\Zaaksysteem\Resolvers\ContainerResolver;
+use OWC\Zaaksysteem\Support\Collection;
 
 class Block
 {
@@ -40,8 +40,8 @@ class Block
 
         $this->client = ContainerResolver::make()->getApiClient($attributes['zaakClient'] ?? 'openzaak');
 
-        if (!$this->client->supports('zaken')) {
-            return 'Het Mijn Zaken overzicht is niet beschikbaar.';
+        if (! $this->client->supports('zaken')) {
+            return __('Het Mijn Zaken overzicht is niet beschikbaar.', 'owc-gravityforms-zaaksysteem');
         }
 
         $zaken = get_transient($this->uniqueTransientKey($attributes));
@@ -50,19 +50,28 @@ class Block
             return $this->returnView($attributes, $zaken);
         }
 
-        if (!$attributes['combinedClients']) {
-            $zaken = $this->getZaken($attributes);
-        } else {
-            $zaken = $this->getCombinedZaken($attributes);
+        try {
+            $zaken = $this->handleZaken($attributes);
+        } catch (Exception $e) {
+            $zaken = collect();
         }
 
         if ($zaken->isEmpty()) {
-            return 'Er zijn op dit moment geen zaken beschikbaar.';
+            return __('Er zijn op dit moment geen zaken beschikbaar.', 'owc-gravityforms-zaaksysteem');
         }
 
         set_transient($this->uniqueTransientKey($attributes), $zaken, 500);
 
         return $this->returnView($attributes, $zaken);
+    }
+
+    protected function handleZaken(array $attributes): Collection
+    {
+        if (! $attributes['combinedClients']) {
+            return $this->getZaken($attributes);
+        }
+
+        return $this->getCombinedZaken($attributes);
     }
 
     /**
@@ -138,7 +147,7 @@ class Block
 
     protected function handleFilterBSN(ZakenFilter $filter, array $attributes): ZakenFilter
     {
-        if (!$attributes['byBSN']) {
+        if (! $attributes['byBSN']) {
             return $filter;
         }
 
@@ -149,13 +158,13 @@ class Block
 
     protected function handleFilterZaaktype(ZakenFilter $filter, array $attributes, ?Client $client = null): ZakenFilter
     {
-        if (!is_string($attributes['zaaktypeFilter'])) {
+        if (! is_string($attributes['zaaktypeFilter'])) {
             return $filter;
         }
 
         $identifications = json_decode($attributes['zaaktypeFilter'], true);
 
-        if (!is_array($identifications) || empty($identifications)) {
+        if (! is_array($identifications) || empty($identifications)) {
             return $filter;
         }
 
@@ -186,13 +195,13 @@ class Block
         }
 
         return (array) Collection::collect($zaaktypen)->map(function (Zaaktype $zaaktype) use ($identifications) {
-            if (!in_array($zaaktype->identificatie, $identifications)) {
+            if (! in_array($zaaktype->identificatie, $identifications)) {
                 return '';
             }
 
             return $zaaktype->url;
         })->filter(function ($url) {
-            return !empty($url);
+            return ! empty($url);
         })->all();
     }
 
