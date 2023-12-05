@@ -35,7 +35,7 @@ class CreateZaakAction extends AbstractCreateZaakAction
         $client = $this->getApiClient();
 
         $args = $this->mappedArgs($rsin, $zaaktype, $form, $entry);
-        $zaak = $client->zaken()->create(new Zaak($args, $client->getClientName()));
+        $zaak = $client->zaken()->create(new Zaak($args, $client->getClientName(), $client->getClientNamePretty()));
 
         // REFERENCE POINT: Mike, adding 'Rol' and 'Zaak Eigenschappen' does not work yet.
         //$this->addRolToZaak($zaak, $zaaktype['url']); // -> returns 'Bad request "zaaktype mandatory parameter not provided."

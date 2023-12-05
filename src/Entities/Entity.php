@@ -22,7 +22,7 @@ abstract class Entity implements
     protected string $clientName;
     protected string $clientNamePretty;
 
-    public function __construct(array $itemData = [], string $clientName, $clientNamePretty)
+    public function __construct(array $itemData = [], string $clientName, string $clientNamePretty)
     {
         $this->clientName = $clientName;
         $this->clientNamePretty = $clientNamePretty;
