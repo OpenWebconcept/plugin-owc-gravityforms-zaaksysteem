@@ -6,10 +6,12 @@ use Exception;
 use OWC\Zaaksysteem\Contracts\Client;
 use OWC\Zaaksysteem\Endpoints\Filter\ResultaattypenFilter;
 use OWC\Zaaksysteem\Entities\Zaaktype;
+use function OWC\Zaaksysteem\Foundation\Helpers\config;
 use OWC\Zaaksysteem\Resolvers\ContainerResolver;
+
 use OWC\Zaaksysteem\Support\Collection;
 
-use function OWC\Zaaksysteem\Foundation\Helpers\config;
+use function Yard\ConfigExpander\Foundation\Helpers\value;
 
 class GravityFormsFormSettings
 {
@@ -68,6 +70,13 @@ class GravityFormsFormSettings
      */
     protected function getTypesByClient(Client $client): array
     {
+        $transientKey = sprintf('%s-form-settings-zaaktypen', $client->getClientNamePretty());
+        $types = get_transient($transientKey);
+
+        if (is_array($types) && $types) {
+            return $types;
+        }
+
         $page = 1;
         $zaaktypen = [];
 
@@ -77,13 +86,17 @@ class GravityFormsFormSettings
             $page = $result->pageMeta()->getNextPageNumber();
         }
 
-        return (array) Collection::collect($zaaktypen)->map(function (Zaaktype $zaaktype) {
+        $types = (array) Collection::collect($zaaktypen)->map(function (Zaaktype $zaaktype) {
             return [
                 'name' => $zaaktype->identificatie,
                 'label' => "{$zaaktype->omschrijving} ({$zaaktype->identificatie})",
-                'value' => $zaaktype->identificatie
+                'value' => $zaaktype->identificatie,
             ];
         })->all();
+
+        set_transient($transientKey, $types, 500);
+
+        return $types;
     }
 
     protected function handleNoChoices(): array
@@ -91,7 +104,7 @@ class GravityFormsFormSettings
         return [
             [
                 'label' => __('Unable to retrieve "Zaak" types provided by selected supplier.', config('core.text_domain')),
-            ]
+            ],
         ];
     }
 
@@ -197,7 +210,7 @@ class GravityFormsFormSettings
                         ],
                     ],
                     'choices' => $this->getTypesXxllnc(),
-                ]
+                ],
             ],
         ];
 
