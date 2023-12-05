@@ -94,4 +94,39 @@ class Enkelvoudiginformatieobject extends Entity
     {
         return $this->getValue('url', '');
     }
+
+    public function status(): string
+    {
+        return $this->getValue('status', '');
+    }
+
+    public function hasFinalStatus(): bool
+    {
+        $status = $this->status();
+
+        $finalStatusses = [
+            'definitief',
+            'gearchiveerd',
+        ];
+
+        return in_array($status, $finalStatusses);
+    }
+
+    public function confidentialityDesignation(): string
+    {
+        return $this->getValue('vertrouwelijkheidaanduiding', '');
+    }
+
+    public function isClassified(): bool
+    {
+        $designation = $this->confidentialityDesignation();
+        $classifiedDesignations = [
+            'intern',
+            'confidentieel',
+            'geheim',
+            'zeer_geheim',
+        ];
+
+        return in_array($designation, $classifiedDesignations);
+    }
 }
