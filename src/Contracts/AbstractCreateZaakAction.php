@@ -6,7 +6,7 @@ namespace OWC\Zaaksysteem\Contracts;
 
 use DateTime;
 use Exception;
-use OWC\Zaaksysteem\Contracts\Client;
+use function OWC\Zaaksysteem\Foundation\Helpers\resolve;
 use OWC\Zaaksysteem\Endpoints\Filter\RoltypenFilter;
 use OWC\Zaaksysteem\Entities\Rol;
 use OWC\Zaaksysteem\Entities\Zaak;
@@ -15,8 +15,6 @@ use OWC\Zaaksysteem\Entities\Zaaktype;
 use OWC\Zaaksysteem\Http\Errors\BadRequestError;
 use OWC\Zaaksysteem\Resolvers\ContainerResolver;
 use OWC\Zaaksysteem\Support\PagedCollection;
-
-use function OWC\Zaaksysteem\Foundation\Helpers\resolve;
 
 abstract class AbstractCreateZaakAction
 {
@@ -77,7 +75,7 @@ abstract class AbstractCreateZaakAction
             'registratiedatum' => date('Y-m-d'),
             'startdatum' => date('Y-m-d'),
             'verantwoordelijkeOrganisatie' => $rsin,
-            'zaaktype' => $zaaktype['url']
+            'zaaktype' => $zaaktype['url'],
         ];
 
         return $this->mapArgs($defaults, $form, $entry);
@@ -100,7 +98,7 @@ abstract class AbstractCreateZaakAction
                 continue;
             }
 
-            if ($field->type === 'date') {
+            if ('date' === $field->type) {
                 $fieldValue = (new \DateTime($fieldValue))->format('Y-m-d');
             }
 
@@ -128,13 +126,13 @@ abstract class AbstractCreateZaakAction
             $property = [
                 'zaak' => $zaak->url,
                 'eigenschap' => $value['eigenschap'],
-                'waarde' => $value['waarde']
+                'waarde' => $value['waarde'],
             ];
 
             try {
                 $client->zaakeigenschappen()->create(
                     $zaak,
-                    new Zaakeigenschap($property, $client->getClientName())
+                    new Zaakeigenschap($property, $client->getClientName(), $client->getClientNamePretty())
                 );
             } catch (BadRequestError $e) {
                 $e->getInvalidParameters();
@@ -161,7 +159,7 @@ abstract class AbstractCreateZaakAction
                 continue;
             }
 
-            if ($field->type === 'date') {
+            if ('date' === $field->type) {
                 try {
                     $property = (new DateTime($property))->format('Y-m-d');
                 } catch (Exception $e) {
@@ -171,7 +169,7 @@ abstract class AbstractCreateZaakAction
 
             $mappedFields[$field->id] = [
                 'eigenschap' => $field->linkedFieldValueZGW,
-                'waarde' => $property
+                'waarde' => $property,
             ];
         }
 
@@ -198,22 +196,22 @@ abstract class AbstractCreateZaakAction
         $client = $this->getApiClient();
 
         foreach ($rolTypen as $rolType) {
-            if ($rolType['omschrijvingGeneriek'] !== 'initiator') {
+            if ('initiator' !== $rolType['omschrijvingGeneriek']) {
                 continue;
             }
 
             $args = [
                 'betrokkeneIdentificatie' => [
-                    'inpBsn' => $currentBsn
+                    'inpBsn' => $currentBsn,
                 ],
                 'betrokkeneType' => 'natuurlijk_persoon',
                 'roltoelichting' => 'De indiener van de zaak.',
                 'roltype' => $rolType['url'],
-                'zaak' => $zaak->url
+                'zaak' => $zaak->url,
             ];
 
             try {
-                $rol = $client->rollen()->create(new Rol($args, $client->getClientName()));
+                $rol = $client->rollen()->create(new Rol($args, $client->getClientName(), $client->getClientNamePretty()));
             } catch (Exception | BadRequestError $e) {
                 $e->getInvalidParameters();
             }

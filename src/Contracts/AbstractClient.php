@@ -56,6 +56,11 @@ abstract class AbstractClient implements Client
 
     public function getClientName(): string
     {
+        return static::CALLABLE_NAME;
+    }
+
+    public function getClientNamePretty(): string
+    {
         return static::CLIENT_NAME;
     }
 
@@ -116,7 +121,7 @@ abstract class AbstractClient implements Client
      */
     protected function setClientSecretByType(string $type): self
     {
-        if ($this->getClientName() !== 'decosjoin') {
+        if ($this->getClientNamePretty() !== 'decosjoin') {
             return $this;
         }
 

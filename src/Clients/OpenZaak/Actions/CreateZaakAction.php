@@ -50,7 +50,7 @@ class CreateZaakAction extends AbstractCreateZaakAction
         $client = $this->getApiClient();
 
         $args = $this->mappedArgs($rsin, $zaaktype, $form, $entry);
-        $zaak = $client->zaken()->create(new Zaak($args, $client->getClientName()));
+        $zaak = $client->zaken()->create(new Zaak($args, $client->getClientName(), $client->getClientNamePretty()));
 
         $this->addRolToZaak($zaak, $zaaktype['url']);
         $this->addZaakEigenschappen($zaak, $form['fields'], $entry);
