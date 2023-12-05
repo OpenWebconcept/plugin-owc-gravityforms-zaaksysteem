@@ -27,7 +27,7 @@ class ZaakInformationObjectRoutingController extends AbstractRoutingController
     {
         add_action('generate_rewrite_rules', function (WP_Rewrite $rewrite) {
             $rules = [
-                'zaak-download/([a-zA-Z0-9-]+)/([a-zA-Z]+)/?$' => 'index.php?pagename=zaak-download&zaak_download_identification=$matches[1]&zaak_supplier=$matches[2]',
+                'zaak-download/([a-zA-Z0-9-]+)/([a-zA-Z-]+)/?$' => 'index.php?pagename=zaak-download&zaak_download_identification=$matches[1]&zaak_supplier=$matches[2]',
             ];
 
             $rewrite->rules = $rules + $rewrite->rules;
