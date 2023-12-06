@@ -5,6 +5,10 @@ declare(strict_types=1);
 namespace OWC\Zaaksysteem\Routing\Controllers;
 
 use Exception;
+use OWC\Zaaksysteem\Contracts\Client;
+use OWC\Zaaksysteem\Endpoints\Filter\ZakenFilter;
+use OWC\Zaaksysteem\Entities\Zaak;
+use function OWC\Zaaksysteem\Foundation\Helpers\resolve;
 use WP_Rewrite;
 
 class ZaakInformationObjectRoutingController extends AbstractRoutingController
@@ -27,7 +31,7 @@ class ZaakInformationObjectRoutingController extends AbstractRoutingController
     {
         add_action('generate_rewrite_rules', function (WP_Rewrite $rewrite) {
             $rules = [
-                'zaak-download/([a-zA-Z0-9-]+)/([a-zA-Z-]+)/?$' => 'index.php?pagename=zaak-download&zaak_download_identification=$matches[1]&zaak_supplier=$matches[2]',
+                'zaak-download/([a-zA-Z0-9-]+)/([a-zA-Z0-9-]+)/([a-zA-Z-]+)/?$' => 'index.php?pagename=zaak-download&zaak_download_identification=$matches[1]&zaak_identification=$matches[2]&zaak_supplier=$matches[3]',
             ];
 
             $rewrite->rules = $rules + $rewrite->rules;
@@ -41,6 +45,7 @@ class ZaakInformationObjectRoutingController extends AbstractRoutingController
     {
         add_action('query_vars', function (array $queryVars) {
             $queryVars[] = 'zaak_supplier';
+            $queryVars[] = 'zaak_identification';
             $queryVars[] = 'zaak_download_identification';
 
             return array_unique($queryVars);
@@ -58,26 +63,31 @@ class ZaakInformationObjectRoutingController extends AbstractRoutingController
 
     protected function handleZaakDownload(): void
     {
-        $identification = get_query_var('zaak_download_identification');
+        $downloadIdentification = get_query_var('zaak_download_identification');
+        $zaakIdentification = get_query_var('zaak_identification');
         $supplier = get_query_var('zaak_supplier');
 
-        if (empty($identification) || empty($supplier)) {
+        if (empty($downloadIdentification) || empty($zaakIdentification) || empty($supplier)) {
             return;
         }
 
         if (! $this->checkSupplier($supplier)) {
             return;
         }
-
         $client = $this->container->getApiClient($supplier);
 
+        if (! $this->validateZaak($client, $zaakIdentification)) {
+            return;
+        }
+
         try {
-            $binary = $client->enkelvoudiginformatieobjecten()->download($identification);
+            // Zaak ophalen op basis van de identifier en BSN.
+            $binary = $client->enkelvoudiginformatieobjecten()->download($downloadIdentification);
         } catch(Exception $e) {
             return;
         }
 
-        $file = sprintf('%s.pdf', $identification);
+        $file = sprintf('%s.pdf', $downloadIdentification);
         file_put_contents($file, $binary);
 
         if (! file_exists($file)) {
@@ -85,6 +95,20 @@ class ZaakInformationObjectRoutingController extends AbstractRoutingController
         }
 
         $this->initiateFileDownload($file);
+    }
+
+    protected function validateZaak(Client $client, string $zaakIdentification): ?Zaak
+    {
+        try {
+            $filter = new ZakenFilter();
+            $filter->add('identificatie', $zaakIdentification);
+            $filter->byBsn(resolve('digid.current_user_bsn'));
+            $zaak = $client->zaken()->filter($filter)->first() ?: null;
+        } catch(Exception $e) {
+            $zaak = null;
+        }
+
+        return $zaak;
     }
 
     /**

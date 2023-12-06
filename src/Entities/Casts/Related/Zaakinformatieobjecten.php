@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace OWC\Zaaksysteem\Entities\Casts\Related;
 
-use function OWC\Zaaksysteem\Foundation\Helpers\resolve;
 use OWC\Zaaksysteem\Endpoints\Filter\ZaakinformatieobjectenFilter;
 use OWC\Zaaksysteem\Entities\Enkelvoudiginformatieobject;
 use OWC\Zaaksysteem\Entities\Entity;
 use OWC\Zaaksysteem\Entities\Zaakinformatieobject;
+use function OWC\Zaaksysteem\Foundation\Helpers\resolve;
 
 use OWC\Zaaksysteem\Support\Collection;
 

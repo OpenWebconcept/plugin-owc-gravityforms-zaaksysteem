@@ -71,10 +71,10 @@ class Zaak extends Entity
         $supplier = $this->getSupplier();
 
         if (empty($supplier)) {
-            return sprintf('%s/zaak/%s', get_site_url(), $this->identificatie);
+            return sprintf('%s/zaak/%s', get_site_url(), $this->getValue('identificatie', ''));
         }
 
-        return sprintf('%s/zaak/%s/%s', get_site_url(), $this->identificatie, $supplier);
+        return sprintf('%s/zaak/%s/%s', get_site_url(), $this->getValue('identificatie', ''), $supplier);
     }
 
     protected function getSupplier(): string
