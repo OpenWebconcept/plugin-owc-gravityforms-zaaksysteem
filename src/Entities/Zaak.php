@@ -143,6 +143,13 @@ class Zaak extends Entity
         return date_i18n($format, $registerDate->getTimestamp());
     }
 
+    public function hasEndDate(): bool
+    {
+        $endDate = $this->getValue('einddatum', null);
+
+        return $endDate instanceof DateTimeImmutable;
+    }
+
     /**
      * Wether or not the current Zaak is initiated by the given BSN.
      */
