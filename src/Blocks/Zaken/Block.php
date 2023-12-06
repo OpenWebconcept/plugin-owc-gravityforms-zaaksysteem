@@ -135,7 +135,7 @@ class Block
      */
     protected function enrichZaak(Zaak $zaak, Client $client): Zaak
     {
-        $zaak->setValue('leverancier', $client->getClientName());
+        $zaak->setValue('leverancier', $client->getClientNamePretty());
         $zaak->setValue('steps', is_object($zaak->zaaktype) && $zaak->zaaktype->statustypen instanceof Collection ? $zaak->zaaktype->statustypen->sortByAttribute('volgnummer') : []);
         $zaak->setValue('status_history', $zaak->statussen);
         $zaak->setValue('information_objects', $zaak->zaakinformatieobjecten);
