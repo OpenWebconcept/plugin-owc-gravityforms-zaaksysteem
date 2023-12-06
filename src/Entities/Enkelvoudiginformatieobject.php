@@ -66,15 +66,19 @@ class Enkelvoudiginformatieobject extends Entity
         return $this->getValue('bestandsomvang', 0);
     }
 
-    public function downloadUrl(): string
+    public function downloadUrl(string $zaakIdentification): string
     {
-        $identification = $this->identification();
-
-        if (empty($identification)) {
+        if ($this->isClassified() || ! $this->hasFinalStatus()) {
             return '';
         }
 
-        return sprintf('%s/zaak-download/%s/%s', get_site_url(), $identification, $this->getClientNamePretty());
+        $identification = $this->identification();
+
+        if (empty($identification) || empty($zaakIdentification)) {
+            return '';
+        }
+
+        return sprintf('%s/zaak-download/%s/%s/%s', get_site_url(), $identification, $zaakIdentification, $this->getClientNamePretty());
     }
 
     protected function identification(): string
