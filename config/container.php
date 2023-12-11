@@ -118,6 +118,9 @@ return [
     'rsin' => function (Container $container) {
         return $container->make('gf.setting', ['-rsin']);
     },
+	'zaak_image' => function (Container $container) {
+        return $container->make('gf.setting', ['-zaak-image']);
+    },
 
     /**
      * Utilize with $container->make('gf.setting', ['setting-name-here']);
