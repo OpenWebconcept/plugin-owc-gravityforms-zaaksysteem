@@ -78,6 +78,7 @@ class GravityFormsAddon extends GFAddOn
     {
         return [
             $this->settingsGeneral(),
+            $this->settingsDescription(),
             $this->settingsOpenZaak(),
             $this->settingsDecosJoin(),
             $this->settingsRxMission(),
@@ -89,8 +90,30 @@ class GravityFormsAddon extends GFAddOn
     protected function settingsGeneral(): array
     {
         return [
-            'title' => esc_html__('Description', 'owc-gravityforms-zaaksysteem'),
-            'description' => esc_html__('Enter the details of the suppliers you would like to use. When configuring the API endpoints don\'t add the endpoint type, e.g. "https://supplier.com/api/v1/eigenschappen" should be "https://supplier.com/api/v1".', 'owc-gravityforms-zaaksysteem'),
+            'title' => esc_html__('Algemene instellingen', 'owc-gravityforms-zaaksysteem'),
+            'fields' => [
+                [
+                    'label' => esc_html__('RSIN-nummer', 'owc-gravityforms-zaaksysteem'),
+                    'type' => 'text',
+                    'class' => 'medium',
+                    'name' => "{$this->prefix}-rsin",
+                    'description' => 'Registratienummer voor organisaties. Wordt door (overheids)organisaties gebruikt om informatie met elkaar uit te wisselen.',
+                ],
+                [
+                    'label' => esc_html__('Zaak afbeelding', 'owc-gravityforms-zaaksysteem'),
+                    'type' => 'text',
+                    'name' => "{$this->prefix}-zaak-image",
+                    'description' => esc_html__('Stel de header-afbeelding in voor een zaak. Laat leeg voor een standaard grijze achtergrond.'),
+                ],
+            ],
+        ];
+    }
+
+    protected function settingsDescription(): array
+    {
+        return [
+            'title' => esc_html__('Toelichting', 'owc-gravityforms-zaaksysteem'),
+            'description' => esc_html__('Voer de gegevens in van de leveranciers die je wilt gebruiken. Voeg geen endpoint-type toe, dus "https://supplier.com/api/v1" in plaats van "https://supplier.com/api/v1/eigenschappen".', 'owc-gravityforms-zaaksysteem'),
             'fields' => [[]],
         ];
     }
@@ -98,7 +121,7 @@ class GravityFormsAddon extends GFAddOn
     protected function settingsOpenZaak(): array
     {
         return [
-            'title'  => esc_html__('OpenZaak', 'owc-gravityforms-zaaksysteem'),
+            'title' => esc_html__('OpenZaak', 'owc-gravityforms-zaaksysteem'),
             'fields' => [
                 [
                     'label' => esc_html__('Catalogi URL', 'owc-gravityforms-zaaksysteem'),
@@ -137,7 +160,7 @@ class GravityFormsAddon extends GFAddOn
     protected function settingsDecosJoin(): array
     {
         return [
-            'title'  => esc_html__('Decos Join', 'owc-gravityforms-zaaksysteem'),
+            'title' => esc_html__('Decos Join', 'owc-gravityforms-zaaksysteem'),
             'fields' => [
                 [
                     'label' => esc_html__('Catalogi URL', 'owc-gravityforms-zaaksysteem'),
@@ -182,7 +205,7 @@ class GravityFormsAddon extends GFAddOn
     protected function settingsRxMission(): array
     {
         return [
-            'title'  => esc_html__('Rx.Mission', 'owc-gravityforms-zaaksysteem'),
+            'title' => esc_html__('Rx.Mission', 'owc-gravityforms-zaaksysteem'),
             'fields' => [
                 [
                     'label' => esc_html__('Catalogi URL', 'owc-gravityforms-zaaksysteem'),
@@ -221,7 +244,7 @@ class GravityFormsAddon extends GFAddOn
     protected function settingsXxllnc(): array
     {
         return [
-            'title'  => esc_html__('Xxllnc', 'owc-gravityforms-zaaksysteem'),
+            'title' => esc_html__('Xxllnc', 'owc-gravityforms-zaaksysteem'),
             'fields' => [
                 [
                     'label' => esc_html__('Catalogi URL', 'owc-gravityforms-zaaksysteem'),

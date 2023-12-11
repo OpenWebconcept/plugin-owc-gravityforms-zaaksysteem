@@ -6,6 +6,7 @@ namespace OWC\Zaaksysteem\Endpoints;
 
 use OWC\Zaaksysteem\Entities\Entity;
 use OWC\Zaaksysteem\Entities\Zaak;
+use OWC\Zaaksysteem\Resolvers\ContainerResolver;
 use OWC\Zaaksysteem\Support\Collection;
 use OWC\Zaaksysteem\Support\PagedCollection;
 
@@ -57,6 +58,7 @@ class ZakenEndpoint extends Endpoint
         $zaak->setValue('information_objects', $zaak->zaakinformatieobjecten);
         $zaak->setValue('status_explanation', $zaak->status->statustoelichting ?? '');
         $zaak->setValue('result', $zaak->resultaat);
+        $zaak->setValue('image', ContainerResolver::make()->get('zaak_image'));
 
         return $zaak;
     }
