@@ -77,26 +77,55 @@ class GravityFormsFormSettings
             return $types;
         }
 
+        $zaaktypen = $this->getTypes($client);
+        $types = $this->prepareTypes($zaaktypen);
+
+        set_transient($transientKey, $types, 500);
+
+        return $types;
+    }
+
+    protected function getTypes(Client $client): array
+    {
         $page = 1;
         $zaaktypen = [];
+        $requestException = '';
 
         while ($page) {
-            $result = $client->zaaktypen()->all((new ResultaattypenFilter())->page($page));
+            try {
+                $result = $client->zaaktypen()->all((new ResultaattypenFilter())->page($page));
+            } catch (Exception $e) {
+                $requestException = $e->getMessage();
+
+                break;
+            }
+
             $zaaktypen = array_merge($zaaktypen, $result->all());
             $page = $result->pageMeta()->getNextPageNumber();
         }
 
-        $types = (array) Collection::collect($zaaktypen)->map(function (Zaaktype $zaaktype) {
+        if (empty($zaaktypen)) {
+            $exceptionMessage = 'No zaaktypen found.';
+
+            if (! empty($requestException)) {
+                $exceptionMessage = sprintf('%s %s', $exceptionMessage, $requestException);
+            }
+
+            throw new Exception($exceptionMessage);
+        }
+
+        return $zaaktypen;
+    }
+
+    protected function prepareTypes(array $zaaktypen): array
+    {
+        return (array) Collection::collect($zaaktypen)->map(function (Zaaktype $zaaktype) {
             return [
                 'name' => $zaaktype->identificatie,
                 'label' => "{$zaaktype->omschrijving} ({$zaaktype->identificatie})",
                 'value' => $zaaktype->identificatie,
             ];
         })->all();
-
-        set_transient($transientKey, $types, 500);
-
-        return $types;
     }
 
     protected function handleNoChoices(): array
