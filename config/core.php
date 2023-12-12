@@ -3,12 +3,12 @@
 declare(strict_types=1);
 
 return [
-    'providers'    => [
+    'providers' => [
         OWC\Zaaksysteem\Blocks\BlocksServiceProvider::class,
         OWC\Zaaksysteem\GravityForms\GravityFormsServiceProvider::class,
         OWC\Zaaksysteem\Templating\TemplatingServiceProvider::class,
         OWC\Zaaksysteem\Validation\ValidationServiceProvider::class,
-        OWC\Zaaksysteem\Routing\RoutingServiceProvider::class
+        OWC\Zaaksysteem\Routing\RoutingServiceProvider::class,
     ],
 
     /**
@@ -36,7 +36,7 @@ return [
             'label'   => 'Yard | GravityForms DigiD',
             'version' => '>=1.0.15',
             'file'    => 'owc-gravityforms-digid/plugin.php',
-        ]
+        ],
     ],
 
     'text_domain' => OWC_GZ_PLUGIN_SLUG,
