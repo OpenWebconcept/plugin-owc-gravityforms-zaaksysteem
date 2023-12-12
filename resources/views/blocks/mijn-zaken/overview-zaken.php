@@ -26,6 +26,7 @@ use function OWC\Zaaksysteem\Foundation\Helpers\view;
     if ($zaak->informationObjects() && $zaak->informationObjects()->count() > 0) {
         echo view('blocks/mijn-zaken/zaak-documents.php', [
             'documents' => $zaak->informationObjects(),
+            'zaak' => $zaak,
         ]);
     }
     ?>
