@@ -6,8 +6,6 @@ namespace OWC\Zaaksysteem\GravityForms;
 
 use GFAddOn;
 
-use function OWC\Zaaksysteem\Foundation\Helpers\config;
-
 class GravityFormsAddon extends GFAddOn
 {
     /**
@@ -84,15 +82,15 @@ class GravityFormsAddon extends GFAddOn
             $this->settingsDecosJoin(),
             $this->settingsRxMission(),
             $this->settingsXxllnc(),
-            $this->RSIN()
+            $this->RSIN(),
         ];
     }
 
     protected function settingsGeneral(): array
     {
         return [
-            'title' => esc_html__('Description', config('core.text_domain')),
-            'description' => esc_html__('Enter the details of the suppliers you would like to use. When configuring the API endpoints don\'t add the endpoint type, e.g. "https://supplier.com/api/v1/eigenschappen" should be "https://supplier.com/api/v1".', config('core.text_domain')),
+            'title' => esc_html__('Description', 'owc-gravityforms-zaaksysteem'),
+            'description' => esc_html__('Enter the details of the suppliers you would like to use. When configuring the API endpoints don\'t add the endpoint type, e.g. "https://supplier.com/api/v1/eigenschappen" should be "https://supplier.com/api/v1".', 'owc-gravityforms-zaaksysteem'),
             'fields' => [[]],
         ];
     }
@@ -100,38 +98,38 @@ class GravityFormsAddon extends GFAddOn
     protected function settingsOpenZaak(): array
     {
         return [
-            'title'  => esc_html__('OpenZaak', config('core.text_domain')),
+            'title'  => esc_html__('OpenZaak', 'owc-gravityforms-zaaksysteem'),
             'fields' => [
                 [
-                    'label' => esc_html__('Catalogi URL', config('core.text_domain')),
+                    'label' => esc_html__('Catalogi URL', 'owc-gravityforms-zaaksysteem'),
                     'type' => 'text',
                     'class' => 'medium',
                     'name' => "{$this->prefix}-openzaak-catalogi-url",
                 ],
                 [
-                    'label' => esc_html__('Documenten URL', config('core.text_domain')),
+                    'label' => esc_html__('Documenten URL', 'owc-gravityforms-zaaksysteem'),
                     'type' => 'text',
                     'class' => 'medium',
                     'name' => "{$this->prefix}-openzaak-documenten-url",
                 ],
                 [
-                    'label' => esc_html__('Zaken URL', config('core.text_domain')),
+                    'label' => esc_html__('Zaken URL', 'owc-gravityforms-zaaksysteem'),
                     'type' => 'text',
                     'class' => 'medium',
                     'name' => "{$this->prefix}-openzaak-zaken-url",
                 ],
                 [
-                    'label' => esc_html__('Client ID', config('core.text_domain')),
+                    'label' => esc_html__('Client ID', 'owc-gravityforms-zaaksysteem'),
                     'type' => 'text',
                     'class' => 'medium',
                     'name' => "{$this->prefix}-openzaak-client-id",
                 ],
                 [
-                    'label' => esc_html__('Client Secret', config('core.text_domain')),
+                    'label' => esc_html__('Client Secret', 'owc-gravityforms-zaaksysteem'),
                     'type' => 'text',
                     'class' => 'medium',
                     'name' => "{$this->prefix}-openzaak-client-secret",
-                ]
+                ],
             ],
         ];
     }
@@ -139,40 +137,40 @@ class GravityFormsAddon extends GFAddOn
     protected function settingsDecosJoin(): array
     {
         return [
-            'title'  => esc_html__('Decos Join', config('core.text_domain')),
+            'title'  => esc_html__('Decos Join', 'owc-gravityforms-zaaksysteem'),
             'fields' => [
                 [
-                    'label' => esc_html__('Catalogi URL', config('core.text_domain')),
+                    'label' => esc_html__('Catalogi URL', 'owc-gravityforms-zaaksysteem'),
                     'type' => 'text',
                     'class' => 'medium',
                     'name' => "{$this->prefix}-decos-join-catalogi-url",
                 ],
                 [
-                    'label' => esc_html__('Documenten URL', config('core.text_domain')),
+                    'label' => esc_html__('Documenten URL', 'owc-gravityforms-zaaksysteem'),
                     'type' => 'text',
                     'class' => 'medium',
                     'name' => "{$this->prefix}-decos-join-documenten-url",
                 ],
                 [
-                    'label' => esc_html__('Zaken URL', config('core.text_domain')),
+                    'label' => esc_html__('Zaken URL', 'owc-gravityforms-zaaksysteem'),
                     'type' => 'text',
                     'class' => 'medium',
                     'name' => "{$this->prefix}-decos-join-zaken-url",
                 ],
                 [
-                    'label' => esc_html__('Client ID', config('core.text_domain')),
+                    'label' => esc_html__('Client ID', 'owc-gravityforms-zaaksysteem'),
                     'type' => 'text',
                     'class' => 'medium',
                     'name' => "{$this->prefix}-decos-join-client-id",
                 ],
                 [
-                    'label' => esc_html__('Client Secret (ZTC)', config('core.text_domain')),
+                    'label' => esc_html__('Client Secret (ZTC)', 'owc-gravityforms-zaaksysteem'),
                     'type' => 'text',
                     'class' => 'medium',
                     'name' => "{$this->prefix}-decos-join-client-secret",
                 ],
                 [
-                    'label' => esc_html__('Client Secret (ZRC)', config('core.text_domain')),
+                    'label' => esc_html__('Client Secret (ZRC)', 'owc-gravityforms-zaaksysteem'),
                     'type' => 'text',
                     'class' => 'medium',
                     'name' => "{$this->prefix}-decos-join-client-secret-zrc",
@@ -184,38 +182,38 @@ class GravityFormsAddon extends GFAddOn
     protected function settingsRxMission(): array
     {
         return [
-            'title'  => esc_html__('Rx.Mission', config('core.text_domain')),
+            'title'  => esc_html__('Rx.Mission', 'owc-gravityforms-zaaksysteem'),
             'fields' => [
                 [
-                    'label' => esc_html__('Catalogi URL', config('core.text_domain')),
+                    'label' => esc_html__('Catalogi URL', 'owc-gravityforms-zaaksysteem'),
                     'type' => 'text',
                     'class' => 'medium',
                     'name' => "{$this->prefix}-rx-mission-catalogi-url",
                 ],
                 [
-                    'label' => esc_html__('Documenten URL', config('core.text_domain')),
+                    'label' => esc_html__('Documenten URL', 'owc-gravityforms-zaaksysteem'),
                     'type' => 'text',
                     'class' => 'medium',
                     'name' => "{$this->prefix}-rx-mission-documenten-url",
                 ],
                 [
-                    'label' => esc_html__('Zaken URL', config('core.text_domain')),
+                    'label' => esc_html__('Zaken URL', 'owc-gravityforms-zaaksysteem'),
                     'type' => 'text',
                     'class' => 'medium',
                     'name' => "{$this->prefix}-rx-mission-zaken-url",
                 ],
                 [
-                    'label' => esc_html__('Client ID', config('core.text_domain')),
+                    'label' => esc_html__('Client ID', 'owc-gravityforms-zaaksysteem'),
                     'type' => 'text',
                     'class' => 'medium',
                     'name' => "{$this->prefix}-rx-mission-client-id",
                 ],
                 [
-                    'label' => esc_html__('Client Secret', config('core.text_domain')),
+                    'label' => esc_html__('Client Secret', 'owc-gravityforms-zaaksysteem'),
                     'type' => 'text',
                     'class' => 'medium',
                     'name' => "{$this->prefix}-rx-mission-client-secret",
-                ]
+                ],
             ],
         ];
     }
@@ -223,38 +221,38 @@ class GravityFormsAddon extends GFAddOn
     protected function settingsXxllnc(): array
     {
         return [
-            'title'  => esc_html__('Xxllnc', config('core.text_domain')),
+            'title'  => esc_html__('Xxllnc', 'owc-gravityforms-zaaksysteem'),
             'fields' => [
                 [
-                    'label' => esc_html__('Catalogi URL', config('core.text_domain')),
+                    'label' => esc_html__('Catalogi URL', 'owc-gravityforms-zaaksysteem'),
                     'type' => 'text',
                     'class' => 'medium',
                     'name' => "{$this->prefix}-xxllnc-catalogi-url",
                 ],
                 [
-                    'label' => esc_html__('Documenten URL', config('core.text_domain')),
+                    'label' => esc_html__('Documenten URL', 'owc-gravityforms-zaaksysteem'),
                     'type' => 'text',
                     'class' => 'medium',
                     'name' => "{$this->prefix}-xxllnc-documenten-url",
                 ],
                 [
-                    'label' => esc_html__('Zaken URL', config('core.text_domain')),
+                    'label' => esc_html__('Zaken URL', 'owc-gravityforms-zaaksysteem'),
                     'type' => 'text',
                     'class' => 'medium',
                     'name' => "{$this->prefix}-xxllnc-zaken-url",
                 ],
                 [
-                    'label' => esc_html__('Client ID', config('core.text_domain')),
+                    'label' => esc_html__('Client ID', 'owc-gravityforms-zaaksysteem'),
                     'type' => 'text',
                     'class' => 'medium',
                     'name' => "{$this->prefix}-xxllnc-client-id",
                 ],
                 [
-                    'label' => esc_html__('Client Secret', config('core.text_domain')),
+                    'label' => esc_html__('Client Secret', 'owc-gravityforms-zaaksysteem'),
                     'type' => 'text',
                     'class' => 'medium',
                     'name' => "{$this->prefix}-xxllnc-client-secret",
-                ]
+                ],
             ],
         ];
     }
@@ -262,15 +260,15 @@ class GravityFormsAddon extends GFAddOn
     protected function RSIN(): array
     {
         return [
-            'title' => esc_html__('Organization', config('core.text_domain')),
+            'title' => esc_html__('Organization', 'owc-gravityforms-zaaksysteem'),
             'fields' => [
                 [
-                    'label' => esc_html__('RSIN', config('core.text_domain')),
+                    'label' => esc_html__('RSIN', 'owc-gravityforms-zaaksysteem'),
                     'type' => 'text',
                     'class' => 'medium',
                     'name' => "{$this->prefix}-rsin",
-                    'description' => 'Registration number for non-natural persons, also known as the counterpart of the citizen service number (BSN).'
-                ]
+                    'description' => 'Registration number for non-natural persons, also known as the counterpart of the citizen service number (BSN).',
+                ],
             ],
         ];
     }
