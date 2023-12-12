@@ -40,6 +40,7 @@ use function OWC\Zaaksysteem\Foundation\Helpers\view;
 			    echo view('blocks/mijn-zaken/tabs-view/zaak-card.php', [
 			        'title' => $zaak->title(),
 			        'date' => $zaak->startDate('j F Y'),
+			        'link' => $zaak->permalink(),
 			    ]);
 			} ?>
 		</div>
