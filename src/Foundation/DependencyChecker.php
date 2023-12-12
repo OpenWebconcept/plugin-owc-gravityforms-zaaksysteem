@@ -68,7 +68,7 @@ class DependencyChecker
     public function notify()
     {
         add_action('admin_notices', function () {
-            $list = '<p>' . sprintf(esc_html__('The following plugins are required for the usage of the %1$s plugin:', 'owc-gravityforms-zaaksysteem'), OWC_GZ_NAME) . '</p><ol>';
+            $list = '<p>' . sprintf(esc_html__('De volgende plug-ins zijn vereist voor het gebruik van de %1$s plugin:', 'owc-gravityforms-zaaksysteem'), OWC_GZ_NAME) . '</p><ol>';
 
             foreach ($this->failed as $dependency) {
                 $info = isset($dependency['message']) ? ' (' . $dependency['message'] . ')' : '';
@@ -106,7 +106,7 @@ class DependencyChecker
     private function checkClass(array $dependency)
     {
         if (! class_exists($dependency['name'])) {
-            $this->markFailed($dependency, esc_html__('Class does not exist', 'owc-gravityforms-zaaksysteem'));
+            $this->markFailed($dependency, esc_html__('Klasse bestaat niet', 'owc-gravityforms-zaaksysteem'));
 
             return;
         }
@@ -126,7 +126,7 @@ class DependencyChecker
         }
 
         if (! is_plugin_active($dependency['file'])) {
-            $this->markFailed($dependency, esc_html__('Inactive', 'owc-gravityforms-zaaksysteem'));
+            $this->markFailed($dependency, esc_html__('Inactief', 'owc-gravityforms-zaaksysteem'));
 
             return;
         }
@@ -134,7 +134,7 @@ class DependencyChecker
         // If there is a version lock set on the dependency...
         if (isset($dependency['version'])) {
             if (! $this->checkVersion($dependency)) {
-                $this->markFailed($dependency, esc_html__('Minimal version:', 'owc-gravityforms-zaaksysteem') . ' <b>' . $dependency['version'] . '</b>');
+                $this->markFailed($dependency, esc_html__('Minimale versie:', 'owc-gravityforms-zaaksysteem') . ' <b>' . $dependency['version'] . '</b>');
             }
         }
     }

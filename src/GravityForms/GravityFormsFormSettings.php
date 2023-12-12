@@ -23,13 +23,13 @@ class GravityFormsFormSettings
                 [
                     'name'    => "{$this->prefix}-form-setting-supplier",
                     'default_value' => "{$this->prefix}-form-setting-supplier-none",
-                    'tooltip' => '<h6>' . __('Select a supplier', 'owc-gravityforms-zaaksysteem') . '</h6>' . __('Choose the Zaaksysteem supplier. Please note that you\'ll also need to configure the credentials in the Gravity Forms main settings.', 'owc-gravityforms-zaaksysteem'),
+                    'tooltip' => '<h6>' . __('Selecteer een leverancier', 'owc-gravityforms-zaaksysteem') . '</h6>' . __('Kies een Zaaksysteem leverancier. Let op dat je ook de instellingen van de leverancier moet configureren in de hoofdinstellingen van Gravity Forms.', 'owc-gravityforms-zaaksysteem'),
                     'type'    => 'select',
-                    'label'   => esc_html__('Select a supplier', 'owc-gravityforms-zaaksysteem'),
+                    'label'   => esc_html__('Selecteer een leverancier', 'owc-gravityforms-zaaksysteem'),
                     'choices' => [
                         [
                             'name'  => "{$this->prefix}-form-setting-supplier-none",
-                            'label' => __('Select supplier', 'owc-gravityforms-zaaksysteem'),
+                            'label' => __('Selecteer leverancier', 'owc-gravityforms-zaaksysteem'),
                             'value' => 'none',
                         ],
                         [
@@ -57,7 +57,7 @@ class GravityFormsFormSettings
                 [
                     'name'    => "{$this->prefix}-form-setting-openzaak-identifier",
                     'type'    => 'select',
-                    'label'   => esc_html__('OpenZaak identifier', 'owc-gravityforms-zaaksysteem'),
+                    'label'   => esc_html__('Zaaktype', 'owc-gravityforms-zaaksysteem'),
                     'dependency' => [
                         'live'   => true,
                         'fields' => [
@@ -72,7 +72,7 @@ class GravityFormsFormSettings
                 [
                     'name'    => "{$this->prefix}-form-setting-decos-join-identifier",
                     'type'    => 'select',
-                    'label'   => esc_html__('Decos Join identifier', 'owc-gravityforms-zaaksysteem'),
+                    'label'   => esc_html__('Zaaktype', 'owc-gravityforms-zaaksysteem'),
                     'dependency' => [
                         'live'   => true,
                         'fields' => [
@@ -87,7 +87,7 @@ class GravityFormsFormSettings
                 [
                     'name'    => "{$this->prefix}-form-setting-rx-mission-identifier",
                     'type'    => 'select',
-                    'label'   => esc_html__('Rx.Mission identifier', 'owc-gravityforms-zaaksysteem'),
+                    'label'   => esc_html__('Zaaktype', 'owc-gravityforms-zaaksysteem'),
                     'dependency' => [
                         'live'   => true,
                         'fields' => [
@@ -102,7 +102,7 @@ class GravityFormsFormSettings
                 [
                     'name'    => "{$this->prefix}-form-setting-xxllnc-identifier",
                     'type'    => 'select',
-                    'label'   => esc_html__('Xxllnc identifier', 'owc-gravityforms-zaaksysteem'),
+                    'label'   => esc_html__('Zaaktype', 'owc-gravityforms-zaaksysteem'),
                     'dependency' => [
                         'live'   => true,
                         'fields' => [

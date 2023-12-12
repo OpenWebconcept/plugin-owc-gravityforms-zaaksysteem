@@ -99,7 +99,7 @@ class ClientAdapter implements ClientInterface
     {
         return [
             [
-                'label' => __('Unable to retrieve "Zaak" types provided by selected supplier.', 'owc-gravityforms-zaaksysteem'),
+                'label' => __('Kan de "Zaaktypen" die horen bij de geselecteerde leverancier niet ophalen.', 'owc-gravityforms-zaaksysteem'),
             ],
         ];
     }
