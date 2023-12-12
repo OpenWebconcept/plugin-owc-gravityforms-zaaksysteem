@@ -112,8 +112,10 @@ class GravityFormsAddon extends GFAddOn
     {
         return [
             'title' => esc_html__('Toelichting', 'owc-gravityforms-zaaksysteem'),
-            'description' => esc_html__('Voer de gegevens in van de leveranciers die je wilt gebruiken. Voeg geen endpoint-type toe, dus "https://supplier.com/api/v1" in plaats van "https://supplier.com/api/v1/eigenschappen".', 'owc-gravityforms-zaaksysteem'),
-            'fields' => [[]],
+            'description' => esc_html__('Voer de gegevens in van de leveranciers die je wilt gebruiken. Voeg geen endpoint-type toe, dus "https://supplier.com/api/v1/" in plaats van "https://supplier.com/api/v1/eigenschappen".', 'owc-gravityforms-zaaksysteem'),
+            'fields' => [[
+                'type' => '',
+            ]],
         ];
     }
 
