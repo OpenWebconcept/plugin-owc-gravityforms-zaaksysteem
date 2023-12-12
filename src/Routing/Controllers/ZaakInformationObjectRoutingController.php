@@ -25,7 +25,7 @@ class ZaakInformationObjectRoutingController extends AbstractRoutingController
      *
      * The implementation for downloading 'zaak' information objects requires:
      * - a page with 'zaak-download' as the slug
-     * - the page to be requested with an identification and supplier in the URI
+     * - the page to be requested with an download identification, zaak identification and a supplier in the URI
      */
     protected function addCustomRewriteRules(): void
     {
@@ -74,6 +74,7 @@ class ZaakInformationObjectRoutingController extends AbstractRoutingController
         if (! $this->checkSupplier($supplier)) {
             return;
         }
+
         $client = $this->container->getApiClient($supplier);
 
         if (! $this->validateZaak($client, $zaakIdentification)) {
@@ -81,7 +82,6 @@ class ZaakInformationObjectRoutingController extends AbstractRoutingController
         }
 
         try {
-            // Zaak ophalen op basis van de identifier en BSN.
             $binary = $client->enkelvoudiginformatieobjecten()->download($downloadIdentification);
         } catch(Exception $e) {
             return;
