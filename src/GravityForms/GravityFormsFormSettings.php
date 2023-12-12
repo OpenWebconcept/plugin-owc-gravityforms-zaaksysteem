@@ -6,7 +6,6 @@ use Exception;
 use OWC\Zaaksysteem\Contracts\Client;
 use OWC\Zaaksysteem\Endpoints\Filter\ResultaattypenFilter;
 use OWC\Zaaksysteem\Entities\Zaaktype;
-use function OWC\Zaaksysteem\Foundation\Helpers\config;
 use OWC\Zaaksysteem\Resolvers\ContainerResolver;
 
 use OWC\Zaaksysteem\Support\Collection;
@@ -132,7 +131,7 @@ class GravityFormsFormSettings
     {
         return [
             [
-                'label' => __('Unable to retrieve "Zaak" types provided by selected supplier.', config('core.text_domain')),
+                'label' => __('Unable to retrieve "Zaak" types provided by selected supplier.', 'owc-gravityforms-zaaksysteem'),
             ],
         ];
     }
@@ -143,38 +142,38 @@ class GravityFormsFormSettings
     public function addFormSettings(array $fields): array
     {
         $fields[] = [
-            'title'  => esc_html__('Zaaksysteem', config('core.text_domain')),
+            'title'  => esc_html__('Zaaksysteem', 'owc-gravityforms-zaaksysteem'),
             'fields' => [
                 [
                     'name'    => "{$this->prefix}-form-setting-supplier",
                     'default_value' => "{$this->prefix}-form-setting-supplier-none",
-                    'tooltip' => '<h6>' . __('Select a supplier', config('core.text_domain')) . '</h6>' . __('Choose the Zaaksysteem supplier. Please note that you\'ll also need to configure the credentials in the Gravity Forms main settings.', config('core.text_domain')),
+                    'tooltip' => '<h6>' . __('Select a supplier', 'owc-gravityforms-zaaksysteem') . '</h6>' . __('Choose the Zaaksysteem supplier. Please note that you\'ll also need to configure the credentials in the Gravity Forms main settings.', 'owc-gravityforms-zaaksysteem'),
                     'type'    => 'select',
-                    'label'   => esc_html__('Select a supplier', config('core.text_domain')),
+                    'label'   => esc_html__('Select a supplier', 'owc-gravityforms-zaaksysteem'),
                     'choices' => [
                         [
                             'name'  => "{$this->prefix}-form-setting-supplier-none",
-                            'label' => __('Select supplier', config('core.text_domain')),
+                            'label' => __('Select supplier', 'owc-gravityforms-zaaksysteem'),
                             'value' => 'none',
                         ],
                         [
                             'name'  => "{$this->prefix}-form-setting-supplier-openzaak",
-                            'label' => __('OpenZaak', config('core.text_domain')),
+                            'label' => __('OpenZaak', 'owc-gravityforms-zaaksysteem'),
                             'value' => 'openzaak',
                         ],
                         [
                             'name'  => "{$this->prefix}-form-setting-supplier-decos-join",
-                            'label' => __('Decos Join', config('core.text_domain')),
+                            'label' => __('Decos Join', 'owc-gravityforms-zaaksysteem'),
                             'value' => 'decos-join',
                         ],
                         [
                             'name'  => "{$this->prefix}-form-setting-supplier-rx-mission",
-                            'label' => __('Rx.Mission', config('core.text_domain')),
+                            'label' => __('Rx.Mission', 'owc-gravityforms-zaaksysteem'),
                             'value' => 'rx-mission',
                         ],
                         [
                             'name'  => "{$this->prefix}-form-setting-supplier-xxllnc",
-                            'label' => __('Xxllnc', config('core.text_domain')),
+                            'label' => __('Xxllnc', 'owc-gravityforms-zaaksysteem'),
                             'value' => 'xxllnc',
                         ],
                     ],
@@ -183,7 +182,7 @@ class GravityFormsFormSettings
                 [
                     'name'    => "{$this->prefix}-form-setting-openzaak-identifier",
                     'type'    => 'select',
-                    'label'   => esc_html__('OpenZaak identifier', config('core.text_domain')),
+                    'label'   => esc_html__('OpenZaak identifier', 'owc-gravityforms-zaaksysteem'),
                     'dependency' => [
                         'live'   => true,
                         'fields' => [
@@ -198,7 +197,7 @@ class GravityFormsFormSettings
                 [
                     'name'    => "{$this->prefix}-form-setting-decos-join-identifier",
                     'type'    => 'select',
-                    'label'   => esc_html__('Decos Join identifier', config('core.text_domain')),
+                    'label'   => esc_html__('Decos Join identifier', 'owc-gravityforms-zaaksysteem'),
                     'dependency' => [
                         'live'   => true,
                         'fields' => [
@@ -213,7 +212,7 @@ class GravityFormsFormSettings
                 [
                     'name'    => "{$this->prefix}-form-setting-rx-mission-identifier",
                     'type'    => 'select',
-                    'label'   => esc_html__('Rx.Mission identifier', config('core.text_domain')),
+                    'label'   => esc_html__('Rx.Mission identifier', 'owc-gravityforms-zaaksysteem'),
                     'dependency' => [
                         'live'   => true,
                         'fields' => [
@@ -228,7 +227,7 @@ class GravityFormsFormSettings
                 [
                     'name'    => "{$this->prefix}-form-setting-xxllnc-identifier",
                     'type'    => 'select',
-                    'label'   => esc_html__('Xxllnc identifier', config('core.text_domain')),
+                    'label'   => esc_html__('Xxllnc identifier', 'owc-gravityforms-zaaksysteem'),
                     'dependency' => [
                         'live'   => true,
                         'fields' => [
