@@ -8,7 +8,6 @@ use Exception;
 use OWC\Zaaksysteem\Endpoints\Filter\ZakenFilter;
 use OWC\Zaaksysteem\Entities\Zaak;
 use function OWC\Zaaksysteem\Foundation\Helpers\resolve;
-use OWC\Zaaksysteem\Support\Collection;
 use WP_Rewrite;
 
 class SingleZaakRoutingController extends AbstractRoutingController
@@ -94,15 +93,6 @@ class SingleZaakRoutingController extends AbstractRoutingController
             $zaak = null;
         }
 
-        if (empty($zaak)) {
-            return null;
-        }
-
-        // Enrich the 'zaak' with additional values.
-        $zaak->setValue('steps', is_object($zaak->zaaktype) && $zaak->zaaktype->statustypen instanceof Collection ? $zaak->zaaktype->statustypen->sortByAttribute('volgnummer') : []);
-        $zaak->setValue('status_history', $zaak->statussen);
-        $zaak->setValue('information_objects', $zaak->zaakinformatieobjecten);
-
-        return $zaak;
+        return $zaak instanceof Zaak ? $zaak : null;
     }
 }

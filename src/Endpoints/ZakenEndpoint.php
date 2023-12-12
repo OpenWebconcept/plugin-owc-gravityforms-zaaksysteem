@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace OWC\Zaaksysteem\Endpoints;
 
+use OWC\Zaaksysteem\Entities\Entity;
 use OWC\Zaaksysteem\Entities\Zaak;
+use OWC\Zaaksysteem\Support\Collection;
 use OWC\Zaaksysteem\Support\PagedCollection;
 
 class ZakenEndpoint extends Endpoint
@@ -41,6 +43,22 @@ class ZakenEndpoint extends Endpoint
         );
 
         return $this->getPagedCollection($this->handleResponse($response));
+    }
+
+    protected function buildEntity($data): Entity
+    {
+        $class = $this->entityClass;
+
+        $zaak = new $class($data, $this->client::CALLABLE_NAME, $this->client::CLIENT_NAME);
+
+        $zaak->setValue('leverancier', $zaak->getClientNamePretty());
+        $zaak->setValue('steps', is_object($zaak->zaaktype) && $zaak->zaaktype->statustypen instanceof Collection ? $zaak->zaaktype->statustypen->sortByAttribute('volgnummer') : []);
+        $zaak->setValue('status_history', $zaak->statussen);
+        $zaak->setValue('information_objects', $zaak->zaakinformatieobjecten);
+        $zaak->setValue('status_explanation', $zaak->status->statustoelichting ?? '');
+        $zaak->setValue('result', $zaak->resultaat);
+
+        return $zaak;
     }
 
     public function create(Zaak $model): Zaak

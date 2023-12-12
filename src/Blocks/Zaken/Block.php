@@ -8,12 +8,9 @@ use Exception;
 use OWC\Zaaksysteem\Contracts\Client;
 use OWC\Zaaksysteem\Endpoints\Filter\ResultaattypenFilter;
 use OWC\Zaaksysteem\Endpoints\Filter\ZakenFilter;
-use OWC\Zaaksysteem\Entities\Zaak;
 use OWC\Zaaksysteem\Entities\Zaaktype;
 use function OWC\Zaaksysteem\Foundation\Helpers\resolve;
-
 use function OWC\Zaaksysteem\Foundation\Helpers\view;
-
 use OWC\Zaaksysteem\Resolvers\ContainerResolver;
 use OWC\Zaaksysteem\Support\Collection;
 
@@ -90,11 +87,7 @@ class Block
         $filter = $this->handleFilterBSN($filter, $attributes);
         $filter = $this->handleFilterZaaktype($filter, $attributes);
 
-        $zaken = $this->client->zaken()->filter($filter);
-
-        return $zaken->map(function ($zaak) {
-            return $this->enrichZaak($zaak, $this->client);
-        });
+        return $this->client->zaken()->filter($filter);
     }
 
     protected function getCombinedZaken(array $attributes): Collection
@@ -110,9 +103,7 @@ class Block
             $filter = $this->handleFilterZaaktype($filter, $attributes, $client);
 
             try {
-                $zaken[] = $client->zaken()->filter($filter)->map(function ($zaak) use ($client) {
-                    return $this->enrichZaak($zaak, $this->client);
-                })->all();
+                $zaken[] = $client->zaken()->filter($filter)->all();
             } catch(Exception $e) {
                 continue;
             }
@@ -127,22 +118,6 @@ class Block
 
             return $carry;
         }, []);
-    }
-
-    /**
-     * Set additional values to the 'Zaak'.
-     * This way class methods, which are stored in the transient as well, can be used in the views.
-     */
-    protected function enrichZaak(Zaak $zaak, Client $client): Zaak
-    {
-        $zaak->setValue('leverancier', $client->getClientNamePretty());
-        $zaak->setValue('steps', is_object($zaak->zaaktype) && $zaak->zaaktype->statustypen instanceof Collection ? $zaak->zaaktype->statustypen->sortByAttribute('volgnummer') : []);
-        $zaak->setValue('status_history', $zaak->statussen);
-        $zaak->setValue('information_objects', $zaak->zaakinformatieobjecten);
-        $zaak->setValue('status_explanation', $zaak->status->statustoelichting ?? '');
-        $zaak->setValue('result', $zaak->resultaat);
-
-        return $zaak;
     }
 
     protected function handleFilterBSN(ZakenFilter $filter, array $attributes): ZakenFilter
