@@ -25,9 +25,9 @@ This route requires the following conditions:
 
 ### Downloading Zaak information objects routing
 
-The entity OWC\Zaaksysteem\Entities\Enkelvoudiginformatieobject includes a method called 'downloadUrl'. The method 'downloadUrl' returns an URL that is picked up by the added custom routing. (www.domain.extension/zaak-download/{identification}/{supplier})
+The entity OWC\Zaaksysteem\Entities\Enkelvoudiginformatieobject includes a method called 'downloadUrl'. The method 'downloadUrl' returns an URL that is picked up by the added custom routing. (www.domain.extension/zaak-download/{download-identification}/{zaak-identification}/{supplier})
 
 This route requires the following conditions:
 
 -   A page with the slug 'zaak-download.' In this case, there is no need for a connected template since there is no page to be opened. The download will initiate in a new tab but will close immediately after the download is completed.
--   The page should be requested with an identification and supplier in the URI.
+-   The page should be requested with an download identification, zaak identification and supplier in the URI.
