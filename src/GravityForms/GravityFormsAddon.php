@@ -83,7 +83,6 @@ class GravityFormsAddon extends GFAddOn
             $this->settingsDecosJoin(),
             $this->settingsRxMission(),
             $this->settingsXxllnc(),
-            $this->RSIN(),
         ];
     }
 
@@ -275,22 +274,6 @@ class GravityFormsAddon extends GFAddOn
                     'type' => 'text',
                     'class' => 'medium',
                     'name' => "{$this->prefix}-xxllnc-client-secret",
-                ],
-            ],
-        ];
-    }
-
-    protected function RSIN(): array
-    {
-        return [
-            'title' => esc_html__('Organization', 'owc-gravityforms-zaaksysteem'),
-            'fields' => [
-                [
-                    'label' => esc_html__('RSIN', 'owc-gravityforms-zaaksysteem'),
-                    'type' => 'text',
-                    'class' => 'medium',
-                    'name' => "{$this->prefix}-rsin",
-                    'description' => 'Registration number for non-natural persons, also known as the counterpart of the citizen service number (BSN).',
                 ],
             ],
         ];
