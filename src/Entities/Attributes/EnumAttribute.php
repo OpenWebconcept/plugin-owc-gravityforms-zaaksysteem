@@ -22,7 +22,7 @@ abstract class EnumAttribute
         $this->value = $value;
     }
 
-    public static function isValidValue(string $value): bool
+    public static function isValidValue(?string $value): bool
     {
         return in_array($value, static::VALID_MEMBERS);
     }
