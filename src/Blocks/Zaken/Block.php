@@ -27,7 +27,7 @@ class Block
     public function render($attributes, $rendered, $editor)
     {
         // Bail early when in editor.
-        if (is_admin()) {
+        if (is_admin() || defined('REST_REQUEST')) {
             return;
         }
 
