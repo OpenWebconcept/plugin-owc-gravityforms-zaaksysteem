@@ -49,18 +49,59 @@ class ZakenEndpoint extends Endpoint
     protected function buildEntity($data): Entity
     {
         $class = $this->entityClass;
-
         $zaak = new $class($data, $this->client::CALLABLE_NAME, $this->client::CLIENT_NAME);
 
+        $statusToelichting = $zaak->status->statustoelichting ?? '';
+
         $zaak->setValue('leverancier', $zaak->getClientNamePretty());
-        $zaak->setValue('steps', is_object($zaak->zaaktype) && $zaak->zaaktype->statustypen instanceof Collection ? $zaak->zaaktype->statustypen->sortByAttribute('volgnummer') : []);
+        $zaak->setValue('steps', $this->addProcessStatusses($this->getStatussenSorted($zaak), $statusToelichting));
         $zaak->setValue('status_history', $zaak->statussen);
         $zaak->setValue('information_objects', $zaak->zaakinformatieobjecten);
-        $zaak->setValue('status_explanation', $zaak->status->statustoelichting ?? '');
+        $zaak->setValue('status_explanation', $statusToelichting);
         $zaak->setValue('result', $zaak->resultaat);
         $zaak->setValue('image', ContainerResolver::make()->get('zaak_image'));
 
         return $zaak;
+    }
+
+    protected function getStatussenSorted(Entity $zaak): Collection
+    {
+        $zaakType = $zaak->zaaktype;
+        $statusTypen = is_object($zaakType) ? $zaakType->statustypen : null;
+
+        return $statusTypen instanceof Collection ? $statusTypen->sortByAttribute('volgnummer') : Collection::collect([]);
+    }
+
+    protected function addProcessStatusses(Collection $statussen, string $statusToelichting): Collection
+    {
+        if ($statussen->isEmpty() || empty($statusToelichting)) {
+            return $statussen;
+        }
+
+        $filtered = $statussen->filter(function ($status) use ($statusToelichting) {
+            return strtolower($status->statusExplanation()) === strtolower($statusToelichting);
+        });
+
+        $current = $filtered->first() ? $filtered->first()->volgnummer() : null;
+
+        if (empty($current)) {
+            return $statussen;
+        }
+
+        return $statussen->map(function ($status) use ($current) {
+            $volgnummer = (int) $status->volgnummer();
+            $currentNum = (int) $current;
+
+            if ($volgnummer < $currentNum) {
+                $status->setValue('processStatus', 'past');
+            } elseif ($volgnummer === $currentNum) {
+                $status->setValue('processStatus', 'current');
+            } else {
+                $status->setValue('processStatus', 'future');
+            }
+
+            return $status;
+        });
     }
 
     public function create(Zaak $model): Zaak

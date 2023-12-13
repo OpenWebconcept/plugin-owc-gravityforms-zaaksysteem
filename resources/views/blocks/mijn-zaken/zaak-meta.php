@@ -27,7 +27,7 @@ echo view('blocks/mijn-zaken/zaak-meta-item.php', [
 
 $label = 'Status';
 $status = $zaak->statusExplanation() ?: false;
-if ($zaak->result()) {
+if ($zaak->result() && $zaak->resultExplanation()) {
     $label = 'Resultaat';
     $status = $zaak->resultExplanation();
 }

@@ -10,10 +10,10 @@ $isPastIcon = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-
 
 <li class="zaak-process-steps__step <?= $vars['isCurrent'] ? 'zaak-process-steps__step--current' : ''; ?><?= $vars['isPast'] ? 'zaak-process-steps__step--past' : ''; ?>" aria-current="">
     <span class="zaak-process-steps__step-marker">
-        <?= $vars['isPast'] ? $isPastIcon : $vars['step']->volgnummer; ?>
+        <?= $vars['isPast'] ? $isPastIcon : $vars['step']->volgnummer(); ?>
     </span>
     <span class="zaak-process-steps__step-heading-label">
-        <?php echo $vars['step']->omschrijving ?> 
+        <?php echo $vars['step']->statusExplanation() ?>
         <?php if ($vars['stepUpdate']) : ?>
             <small>(<?= $vars['stepUpdate']->datumStatusGezet->format('d-m-Y'); ?>)</small>
         <?php endif; ?>
