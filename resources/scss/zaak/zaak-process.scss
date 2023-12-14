@@ -6,38 +6,45 @@ $process-steps: 'zaak-process-steps';
 }
 
 .#{$process-steps}{
-  --zaak-process-steps-border-width: 2px; 
-  --zaak-process-steps-color: #f2f2f2;
-  --zaak-process-steps-color-succes: #0d8228;
-  --zaak-process-steps-spacer: 1.75rem; 
-
+	--zaak-process-steps-background-color: #fff;
+  --zaak-process-steps-border-width: 2px;
+	--zaak-process-steps-border-color: #D2D2D2;
+  --zaak-process-steps-color-success: #0d8228;
+  --zaak-process-steps-spacer: 1.75rem;
+	--zaak-process-steps-gap: 0.5rem;
+	--zaak-process-steps-size: 32px;
+	--zaak-process-steps-font-weight: 700;
   list-style: none;
-  padding-left: 0.75rem; 
+  padding-left: 0.75rem;
 
   &__step {
     position: relative;
     margin-bottom: var(--zaak-process-steps-spacer);
-    font-weight: 700;
+		display: flex;
+		align-items: center;
+    font-weight: var(--zaak-process-steps-font-weight);
 
     &:first-child {
       .#{$process-steps}__step-marker::before {
-        content: none; 
+        content: none;
       }
     }
   }
 
   &__step-marker {
     position: relative;
-    $size: 30px;
-    width: $size;
-    height: $size;
-    margin-right: 1rem;
-    display: inline-block;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+    width: var(--zaak-process-steps-size);
+    height: var(--zaak-process-steps-size);
+		min-width: var(--zaak-process-steps-size);
+		min-height: var(--zaak-process-steps-size);
+    margin-right: var(--zaak-process-steps-gap);
     text-align: center;
     border-radius: 50%;
-    font-size: 1rem;
-    border: var(--zaak-process-steps-border-width) solid var(--zaak-process-steps-color);
-    background-color: var(--zaak-process-steps-color);
+    border: var(--zaak-process-steps-border-width) solid var(--zaak-process-steps-border-color);
+    background-color: var(--zaak-process-steps-background-color);
 
     &::before {
       position: absolute;
@@ -46,30 +53,29 @@ $process-steps: 'zaak-process-steps';
       height: var(--zaak-process-steps-spacer);
       width: var(--zaak-process-steps-border-width);
       content: "";
-      background-color: var(--zaak-process-steps-color);
+			background: repeating-linear-gradient(to bottom, var(--zaak-process-steps-border-color), var(--zaak-process-steps-border-color) 2px, transparent 2px, transparent 4px);
+
     }
 
     svg {
-      fill: var(--zaak-process-steps-color-succes); 
-      transform: scale(0.6);
-      padding-bottom: 0.2rem;
+      fill: var(--zaak-process-steps-color-success);
     }
   }
 
   &__step--past {
     .#{$process-steps}__step-marker {
-      border-color: var(--zaak-process-steps-color-succes);
-      color: var(--zaak-process-steps-color-succes);
+      border-color: var(--zaak-process-steps-color-success);
+      color: var(--zaak-process-steps-color-success);
       background-color: #fff;
     }
   }
 
   &__step--current {
-    color: var(--zaak-process-steps-color-succes); 
+    color: var(--zaak-process-steps-color-success);
 
     .#{$process-steps}__step-marker {
-      border-color: var(--zaak-process-steps-color-succes);
-      background-color: var(--zaak-process-steps-color-succes);
+      border-color: var(--zaak-process-steps-color-success);
+      background-color: var(--zaak-process-steps-color-success);
       color: #fff;
     }
   }
@@ -77,7 +83,7 @@ $process-steps: 'zaak-process-steps';
   &__step--past,
   &__step--current{
     .#{$process-steps}__step-marker::before {
-      background-color: var(--zaak-process-steps-color-succes);
+      background: var(--zaak-process-steps-color-success);
     }
   }
 }
