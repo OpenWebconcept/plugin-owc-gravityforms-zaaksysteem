@@ -30,12 +30,21 @@ return [
             'label'   => 'Gravity Forms',
             'version' => '>=2.7.15',
             'file'    => 'gravityforms/gravityforms.php',
+            'optional' => false,
+        ],
+        [
+            'type'    => 'plugin',
+            'label'   => 'Gravity PDF',
+            'version' => '>=6.7.4',
+            'file'    => 'gravity-forms-pdf-extended/pdf.php',
+            'optional' => true,
         ],
         [
             'type'    => 'plugin',
             'label'   => 'Yard | GravityForms DigiD',
             'version' => '>=1.0.15',
             'file'    => 'owc-gravityforms-digid/plugin.php',
+            'optional' => false,
         ],
     ],
 
