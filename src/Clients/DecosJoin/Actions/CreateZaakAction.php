@@ -10,6 +10,7 @@ use OWC\Zaaksysteem\Entities\Zaak;
 
 class CreateZaakAction extends AbstractCreateZaakAction
 {
+    public const CLIENT_NAME = 'decos-join';
     public const CALLABLE_NAME = 'dj.client';
     public const CLIENT_CATALOGI_URL = 'dj.catalogi_uri';
     public const CLIENT_ZAKEN_URL = 'dj.zaken_uri';
@@ -33,12 +34,12 @@ class CreateZaakAction extends AbstractCreateZaakAction
         }
 
         $client = $this->getApiClient();
-
         $args = $this->mappedArgs($rsin, $zaaktype, $form, $entry);
         $zaak = $client->zaken()->create(new Zaak($args, $client->getClientName(), $client->getClientNamePretty()));
 
         // REFERENCE POINT: Mike, adding 'Rol' and 'Zaak Eigenschappen' does not work yet.
-        //$this->addRolToZaak($zaak, $zaaktype['url']); // -> returns 'Bad request "zaaktype mandatory parameter not provided."
+        // Complement Zaak.
+        // $this->addRolToZaak($zaak, $zaaktype['url']); // -> returns 'Bad request "zaaktype mandatory parameter not provided."
         // $this->addZaakEigenschappen($zaak, $form['fields'], $entry); -> returns 'Bad request "zaaktype mandatory parameter not provided."
 
         return $zaak;

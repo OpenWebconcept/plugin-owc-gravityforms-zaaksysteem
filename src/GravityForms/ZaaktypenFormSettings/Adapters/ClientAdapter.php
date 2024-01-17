@@ -2,9 +2,11 @@
 
 namespace OWC\Zaaksysteem\GravityForms\ZaaktypenFormSettings\Adapters;
 
+use Closure;
 use Exception;
 use OWC\Zaaksysteem\Contracts\Client;
 use OWC\Zaaksysteem\Endpoints\Filter\ResultaattypenFilter;
+use OWC\Zaaksysteem\Entities\Informatieobjecttype;
 use OWC\Zaaksysteem\Entities\Zaaktype;
 use OWC\Zaaksysteem\GravityForms\ZaaktypenFormSettings\Clients\ClientInterface;
 use OWC\Zaaksysteem\Support\Collection;
@@ -18,12 +20,43 @@ class ClientAdapter implements ClientInterface
         $this->client = $client;
     }
 
+    public function informatieobjecttypen(): array
+    {
+        try {
+            return $this->getTypes(
+                sprintf('%s-form-settings-information-object-type', $this->getClientNamePretty()), // Unique transient key.
+                'informatieobjecttypen',
+                function (Informatieobjecttype $objecttype) {
+                    return [
+                        'name'  => $objecttype->url,
+                        'label' => "{$objecttype->omschrijving} ({$objecttype->vertrouwelijkheidaanduiding})",
+                        'value' => $objecttype->url,
+                    ];
+                },
+                'No information object typen found.'
+            );
+        } catch (Exception $e) {
+            return $this->handleNoChoices('informatieobjecttypen');
+        }
+    }
+
     public function zaaktypen(): array
     {
         try {
-            return $this->getTypesByClient($this->client);
-        } catch(Exception $e) {
-            return $this->handleNoChoices();
+            return $this->getTypes(
+                sprintf('%s-form-settings-zaaktypen', $this->getClientNamePretty()), // Unique transient key.
+                'zaaktypen',
+                function (Zaaktype $zaaktype) {
+                    return [
+                        'name'  => $zaaktype->identificatie,
+                        'label' => "{$zaaktype->omschrijving} ({$zaaktype->identificatie})",
+                        'value' => $zaaktype->identificatie,
+                    ];
+                },
+                'No zaaktypen found.'
+            );
+        } catch (Exception $e) {
+            return $this->handleNoChoices('zaaktypen');
         }
     }
 
@@ -32,47 +65,55 @@ class ClientAdapter implements ClientInterface
         return $this->client->getClientNamePretty();
     }
 
-    /**
-     * Return types by client, includes pagination.
-     */
-    protected function getTypesByClient(Client $client): array
+    protected function getTypes(string $transientKey, string $endpoint, Closure $prepareCallback, string $emptyMessage): array
     {
-        $transientKey = sprintf('%s-form-settings-zaaktypen', $client->getClientNamePretty());
         $types = get_transient($transientKey);
 
         if (is_array($types) && $types) {
             return $types;
         }
 
-        $zaaktypen = $this->getTypes($client);
-        $types = $this->prepareTypes($zaaktypen);
+        $types = $this->fetchTypes($emptyMessage, $endpoint);
+        $types = $this->prepareTypes($types, $prepareCallback);
 
         set_transient($transientKey, $types, 500);
 
         return $types;
     }
 
-    protected function getTypes(Client $client): array
+    protected function fetchTypes(string $emptyMessage, string $endpoint): array
     {
         $page = 1;
-        $zaaktypen = [];
+        $types = [];
         $requestException = '';
 
         while ($page) {
             try {
-                $result = $client->zaaktypen()->all((new ResultaattypenFilter())->page($page));
+                $result = $this->client->$endpoint()->all((new ResultaattypenFilter())->page($page));
             } catch (Exception $e) {
                 $requestException = $e->getMessage();
 
                 break;
             }
 
-            $zaaktypen = array_merge($zaaktypen, $result->all());
+            $types = array_merge($types, $result->all());
             $page = $result->pageMeta()->getNextPageNumber();
         }
 
-        if (empty($zaaktypen)) {
-            $exceptionMessage = 'No zaaktypen found.';
+        $this->handleEmptyResult($types, $emptyMessage, $requestException);
+
+        return $types;
+    }
+
+    protected function prepareTypes(array $types, Closure $prepareCallback): array
+    {
+        return (array) Collection::collect($types)->map($prepareCallback)->all();
+    }
+
+    protected function handleEmptyResult(array $types, string $emptyMessage, string $requestException): void
+    {
+        if (empty($types)) {
+            $exceptionMessage = $emptyMessage;
 
             if (! empty($requestException)) {
                 $exceptionMessage = sprintf('%s %s', $exceptionMessage, $requestException);
@@ -80,26 +121,13 @@ class ClientAdapter implements ClientInterface
 
             throw new Exception($exceptionMessage);
         }
-
-        return $zaaktypen;
     }
 
-    protected function prepareTypes(array $zaaktypen): array
-    {
-        return (array) Collection::collect($zaaktypen)->map(function (Zaaktype $zaaktype) {
-            return [
-                'name' => $zaaktype->identificatie,
-                'label' => "{$zaaktype->omschrijving} ({$zaaktype->identificatie})",
-                'value' => $zaaktype->identificatie,
-            ];
-        })->all();
-    }
-
-    protected function handleNoChoices(): array
+    protected function handleNoChoices(string $endpoint): array
     {
         return [
             [
-                'label' => __('Kan de "Zaaktypen" die horen bij de geselecteerde leverancier niet ophalen.', 'owc-gravityforms-zaaksysteem'),
+                'label' => __('Kan de "' . $endpoint . '" die horen bij de geselecteerde leverancier niet ophalen.', 'owc-gravityforms-zaaksysteem'),
             ],
         ];
     }

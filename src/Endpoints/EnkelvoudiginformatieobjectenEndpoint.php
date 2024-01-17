@@ -21,6 +21,17 @@ class EnkelvoudiginformatieobjectenEndpoint extends Endpoint
         return $this->getSingleEntity($this->handleResponse($response));
     }
 
+    public function create(Enkelvoudiginformatieobject $model): Enkelvoudiginformatieobject
+    {
+        $response = $this->httpClient->post(
+            $this->buildUri($this->endpoint),
+            $model->toJson(),
+            $this->buildRequestOptions()
+        );
+
+        return $this->getSingleEntity($this->handleResponse($response));
+    }
+
     /**
      * Return the binary data of a document.
      */

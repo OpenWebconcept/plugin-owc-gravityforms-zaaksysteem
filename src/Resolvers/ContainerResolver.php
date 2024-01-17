@@ -27,6 +27,13 @@ class ContainerResolver
         return $this->container->get($key) ?? null;
     }
 
+    public function rsin(): string
+    {
+        $rsin = $this->get('rsin');
+
+        return ! empty($rsin) && is_string($rsin) ? $rsin : '';
+    }
+
     public function getApiClient(string $client): Client
     {
         switch ($client) {

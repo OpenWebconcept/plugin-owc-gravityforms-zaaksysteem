@@ -6,10 +6,10 @@ namespace OWC\Zaaksysteem\GravityForms;
 
 use Exception;
 use OWC\Zaaksysteem\Entities\Zaak;
-use OWC\Zaaksysteem\Http\Errors\ResourceNotFoundError;
-
+use OWC\Zaaksysteem\Entities\Zaakinformatieobject;
 use function OWC\Zaaksysteem\Foundation\Helpers\get_supplier;
 use function OWC\Zaaksysteem\Foundation\Helpers\view;
+use OWC\Zaaksysteem\Http\Errors\ResourceNotFoundError;
 
 class GravityForms
 {
@@ -36,18 +36,20 @@ class GravityForms
         }
 
         try {
-            $result = $this->createZaak($entry, $form);
+            $zaak = $this->createZaak($entry, $form);
         } catch(Exception $e) {
-            $result = [
-                'error' => $e->getMessage()
+            $zaak = [
+                'error' => $e->getMessage(),
             ];
         }
 
-        if (! empty($result['error'])) {
-            echo view('form-submission-failed.php', $result);
+        if (! empty($zaak['error'])) {
+            echo view('form-submission-failed.php', $zaak);
 
             exit;
         }
+
+        $this->createSubmissionPDF($entry, $form, $zaak);
 
         return $form;
     }
@@ -60,11 +62,31 @@ class GravityForms
         $action = sprintf('OWC\Zaaksysteem\Clients\%s\Actions\CreateZaakAction', $this->supplier);
 
         if (! class_exists($action)) {
-            throw new ResourceNotFoundError(sprintf('Class "%s" does not exists. Verify if the selected supplier has an action class', $action));
+            throw new ResourceNotFoundError(sprintf('Class "%s" does not exists. Verify if the selected supplier has the required action class', $action));
         }
 
         $instance = new $action();
 
         return $instance->addZaak($entry, $form);
+    }
+
+    /**
+     * Create a new Zaak.
+     */
+    protected function createSubmissionPDF(array $entry, array $form, ?Zaak $zaak): ?Zaakinformatieobject
+    {
+        if (! $zaak) {
+            return null;
+        }
+
+        $action = sprintf('OWC\Zaaksysteem\Clients\%s\Actions\CreateSubmissionPDFAction', $this->supplier);
+
+        if (! class_exists($action)) {
+            throw new ResourceNotFoundError(sprintf('Class "%s" does not exists. Verify if the selected supplier has the required action class', $action));
+        }
+
+        $instance = new $action($entry, $form, $zaak);
+
+        return $instance->addSubmissionPDF();
     }
 }

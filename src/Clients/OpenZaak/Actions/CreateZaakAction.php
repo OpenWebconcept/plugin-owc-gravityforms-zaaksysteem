@@ -12,6 +12,7 @@ use OWC\Zaaksysteem\Support\PagedCollection;
 
 class CreateZaakAction extends AbstractCreateZaakAction
 {
+    public const CLIENT_NAME = 'openzaak';
     public const CALLABLE_NAME = 'oz.client';
     public const CLIENT_CATALOGI_URL = 'oz.catalogi_uri';
     public const CLIENT_ZAKEN_URL = 'oz.zaken_uri';
@@ -52,6 +53,7 @@ class CreateZaakAction extends AbstractCreateZaakAction
         $args = $this->mappedArgs($rsin, $zaaktype, $form, $entry);
         $zaak = $client->zaken()->create(new Zaak($args, $client->getClientName(), $client->getClientNamePretty()));
 
+        // Complement Zaak.
         $this->addRolToZaak($zaak, $zaaktype['url']);
         $this->addZaakEigenschappen($zaak, $form['fields'], $entry);
 
