@@ -100,12 +100,17 @@ class Plugin
         $this->loader = resolve('loader');
 
         $dependencyChecker = new DependencyChecker($this->config->get('core.dependencies'));
+        $dependencyChecker->execute();
 
         if ($dependencyChecker->failed()) {
-            $dependencyChecker->notify();
+            $dependencyChecker->notifyFailed();
             deactivate_plugins(plugin_basename($this->rootPath . '/' . $this->getName() . '.php'));
 
             return false;
+        }
+
+        if ($dependencyChecker->optional()) {
+            $dependencyChecker->notifyOptional();
         }
 
         // Set up service providers
@@ -122,6 +127,7 @@ class Plugin
     public function resourceUrl(string $file, string $directory = ''): string
     {
         $directory = ! empty($directory) ? $directory . '/' : '';
+
         return plugins_url("resources/{$directory}/{$file}", OWC_GZ_PLUGIN_SLUG . '/plugin.php');
     }
 
