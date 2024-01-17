@@ -6,18 +6,19 @@ namespace OWC\Zaaksysteem\Contracts;
 
 use DateTime;
 use Exception;
-use function OWC\Zaaksysteem\Foundation\Helpers\resolve;
 use OWC\Zaaksysteem\Endpoints\Filter\RoltypenFilter;
 use OWC\Zaaksysteem\Entities\Rol;
 use OWC\Zaaksysteem\Entities\Zaak;
 use OWC\Zaaksysteem\Entities\Zaakeigenschap;
 use OWC\Zaaksysteem\Entities\Zaaktype;
+use function OWC\Zaaksysteem\Foundation\Helpers\resolve;
 use OWC\Zaaksysteem\Http\Errors\BadRequestError;
 use OWC\Zaaksysteem\Resolvers\ContainerResolver;
 use OWC\Zaaksysteem\Support\PagedCollection;
 
 abstract class AbstractCreateZaakAction
 {
+    public const CLIENT_NAME = '';
     public const CALLABLE_NAME = '';
     public const CLIENT_CATALOGI_URL = '';
     public const CLIENT_ZAKEN_URL = '';
@@ -25,14 +26,12 @@ abstract class AbstractCreateZaakAction
 
     protected function getApiClient(): Client
     {
-        return ContainerResolver::make()->getApiClient(static::CALLABLE_NAME);
+        return ContainerResolver::make()->getApiClient(static::CLIENT_NAME);
     }
 
     protected function getRSIN(): string
     {
-        $rsin = ContainerResolver::make()->get('rsin');
-
-        return ! empty($rsin) && is_string($rsin) ? $rsin : '';
+        return ContainerResolver::make()->rsin();
     }
 
     /**

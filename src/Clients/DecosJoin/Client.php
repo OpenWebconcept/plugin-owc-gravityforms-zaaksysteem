@@ -6,6 +6,9 @@ namespace OWC\Zaaksysteem\Clients\DecosJoin;
 
 use OWC\Zaaksysteem\Contracts\AbstractClient;
 use OWC\Zaaksysteem\Endpoints\EigenschappenEndpoint;
+use OWC\Zaaksysteem\Endpoints\EnkelvoudiginformatieobjectenEndpoint;
+use OWC\Zaaksysteem\Endpoints\InformatieobjecttypenEndpoint;
+use OWC\Zaaksysteem\Endpoints\ObjectinformatieEndpoint;
 use OWC\Zaaksysteem\Endpoints\RollenEndpoint;
 use OWC\Zaaksysteem\Endpoints\RoltypenEndpoint;
 use OWC\Zaaksysteem\Endpoints\StatussenEndpoint;
@@ -32,7 +35,12 @@ class Client extends AbstractClient
         'zaaktypen' => [ZaaktypenEndpoint::class, 'catalogi'],
         'statustypen' => [StatustypenEndpoint::class, 'catalogi'],
         'roltypen' => [RoltypenEndpoint::class, 'catalogi'],
+        'informatieobjecttypen' => [InformatieobjecttypenEndpoint::class, 'catalogi'],
         'eigenschappen' => [EigenschappenEndpoint::class, 'catalogi'],
+
+        // Documenten API
+        'objectinformatieobjecten' => [ObjectinformatieEndpoint::class, 'documenten'],
+        'enkelvoudiginformatieobjecten' => [EnkelvoudiginformatieobjectenEndpoint::class, 'documenten'],
 
         /**
          * Not yet implemented

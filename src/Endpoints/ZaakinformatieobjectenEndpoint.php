@@ -32,6 +32,17 @@ class ZaakinformatieobjectenEndpoint extends Endpoint
         return $this->getSingleEntity($this->handleResponse($response));
     }
 
+    public function create(Zaakinformatieobject $model): Zaakinformatieobject
+    {
+        $response = $this->httpClient->post(
+            $this->buildUri($this->endpoint),
+            $model->prepareCreateJsonArgs(),
+            $this->buildRequestOptions()
+        );
+
+        return $this->getSingleEntity($this->handleResponse($response));
+    }
+
     public function filter(Filter\ZaakinformatieobjectenFilter $filter): Collection
     {
         $response = $this->httpClient->get(

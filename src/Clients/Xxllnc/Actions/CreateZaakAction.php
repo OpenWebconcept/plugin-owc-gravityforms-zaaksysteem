@@ -10,6 +10,7 @@ use OWC\Zaaksysteem\Entities\Zaak;
 
 class CreateZaakAction extends AbstractCreateZaakAction
 {
+    public const CLIENT_NAME = 'xxllnc';
     public const CALLABLE_NAME = 'xxllnc.client';
     public const CLIENT_CATALOGI_URL = 'xxllnc.catalogi_uri';
     public const CLIENT_ZAKEN_URL = 'xxllnc.zaken_uri';
@@ -37,6 +38,7 @@ class CreateZaakAction extends AbstractCreateZaakAction
         $args = $this->mappedArgs($rsin, $zaaktype, $form, $entry);
         $zaak = $client->zaken()->create(new Zaak($args, $client->getClientName(), $client->getClientNamePretty()));
 
+        // Complement Zaak.
         $this->addRolToZaak($zaak, $zaaktype['url']);
         $this->addZaakEigenschappen($zaak, $form['fields'], $entry);
 

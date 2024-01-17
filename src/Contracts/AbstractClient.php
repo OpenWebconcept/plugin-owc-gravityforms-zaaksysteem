@@ -125,7 +125,7 @@ abstract class AbstractClient implements Client
             return $this;
         }
 
-        if ('zaken' === $type) {
+        if ('zaken' === $type || 'documenten' === $type) {
             $secret = resolve('dj.client_secret_zrc');
         } else {
             $secret = resolve('dj.client_secret');
