@@ -51,7 +51,7 @@ class ZakenEndpoint extends Endpoint
         $class = $this->entityClass;
         $zaak = new $class($data, $this->client::CALLABLE_NAME, $this->client::CLIENT_NAME);
 
-        $statusToelichting = $zaak->status->statustoelichting ?? '';
+        $statusToelichting = $zaak->status->statustype->statusExplanation();
 
         $zaak->setValue('leverancier', $zaak->getClientNamePretty());
         $zaak->setValue('steps', $this->addProcessStatusses($this->getStatussenSorted($zaak), $statusToelichting));
