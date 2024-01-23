@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace OWC\Zaaksysteem\Entities;
 
+use DateTime;
+use Exception;
+
 class Enkelvoudiginformatieobject extends Entity
 {
     protected array $casts = [
@@ -64,6 +67,51 @@ class Enkelvoudiginformatieobject extends Entity
     public function size(): int
     {
         return $this->getValue('bestandsomvang', 0);
+    }
+
+    public function creationDate(): string
+    {
+        $date = $this->getValue('creatiedatum', '');
+
+        if (empty($date)) {
+            return '';
+        }
+
+        try {
+            $date = new DateTime($date);
+        } catch(Exception $e) {
+            return '';
+        }
+
+        return $date->format('d-m-Y');
+    }
+
+    public function formatType(): string
+    {
+        $type = $this->getValue('formaat', '');
+
+        if (empty($type)) {
+            return '';
+        }
+
+        $parts = explode('/', $type);
+
+        return end($parts) ?: '';
+    }
+
+    public function formattedMetaData(): string
+    {
+        $meta = array_filter([
+            $this->formatType(),
+            $this->sizeFormatted(),
+            $this->creationDate(),
+        ]);
+
+        if (empty($meta)) {
+            return '';
+        }
+
+        return implode(', ', $meta);
     }
 
     public function downloadUrl(string $zaakIdentification): string
