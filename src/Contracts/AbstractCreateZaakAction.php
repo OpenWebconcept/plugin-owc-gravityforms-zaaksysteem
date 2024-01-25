@@ -69,7 +69,6 @@ abstract class AbstractCreateZaakAction
     {
         $defaults = [
             'bronorganisatie' => $rsin,
-            'informatieobject' => '',
             'omschrijving' => '',
             'registratiedatum' => date('Y-m-d'),
             'startdatum' => date('Y-m-d'),
