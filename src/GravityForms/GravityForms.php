@@ -30,9 +30,12 @@ class GravityForms
     {
         $this->setSupplier($form);
 
-        // if there is no supplier set just return the form.
         if (empty($this->supplier)) {
-            return $form;
+            echo view('form-submission-create-zaak-failed.php', [
+                'error' => sprintf('Formulier (%s) is niet correct ingesteld om een zaak te kunnen aanmaken.', $form['title']),
+            ]);
+
+            exit;
         }
 
         try {
@@ -44,19 +47,28 @@ class GravityForms
         }
 
         if (! empty($zaak['error'])) {
-            echo view('form-submission-failed.php', $zaak);
+            echo view('form-submission-create-zaak-failed.php', $zaak);
 
             exit;
         }
 
-        $this->createSubmissionPDF($entry, $form, $zaak);
+        if (! $this->createUploadedDocuments($entry, $form, $zaak)) {
+            echo view('form-submission-uploads-failed.php');
+
+            exit;
+        }
+
+        if (! $this->createSubmissionPDF($entry, $form, $zaak)) {
+            echo view('form-submission-create-zaak-failed.php', [
+                'error' => 'Uw zaak is succesvol aangemaakt, echter is het document met de originele aanvraag niet gegenereerd. Excuses voor het ongemak. De zaak is wel in goede orde ontvangen.',
+            ]);
+
+            exit;
+        }
 
         return $form;
     }
 
-    /**
-     * Create a new Zaak.
-     */
     protected function createZaak(array $entry, array $form): ?Zaak
     {
         $action = sprintf('OWC\Zaaksysteem\Clients\%s\Actions\CreateZaakAction', $this->supplier);
@@ -71,7 +83,8 @@ class GravityForms
     }
 
     /**
-     * Create a new Zaak.
+     * Generated PDF based on the submission used for creating a Zaak.
+     * PDF is created as a information object and is connected to the Zaak as a Zaakinformatieobject.
      */
     protected function createSubmissionPDF(array $entry, array $form, ?Zaak $zaak): ?Zaakinformatieobject
     {
@@ -88,5 +101,26 @@ class GravityForms
         $instance = new $action($entry, $form, $zaak);
 
         return $instance->addSubmissionPDF();
+    }
+
+    /**
+     * Uploads uploaded by a resident.
+     * These uploads are created as information objects and are connected to the Zaak as a Zaakinformatieobject.
+     */
+    protected function createUploadedDocuments(array $entry, array $form, ?Zaak $zaak): bool
+    {
+        if (! $zaak) {
+            return false;
+        }
+
+        $action = sprintf('OWC\Zaaksysteem\Clients\%s\Actions\CreateUploadedDocumentsAction', $this->supplier);
+
+        if (! class_exists($action)) {
+            throw new ResourceNotFoundError(sprintf('Class "%s" does not exists. Verify if the selected supplier has the required action class', $action));
+        }
+
+        $instance = new $action($entry, $form, $zaak);
+
+        return $instance->addUploadedDocuments();
     }
 }
