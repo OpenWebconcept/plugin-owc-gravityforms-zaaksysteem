@@ -2,6 +2,12 @@
 
 ## v2.0.0-beta.1
 
+- Refactor: general improvements and cleaning-up
+- Feat: support uploads made by resident by using upload form fields
+- Feat: add Collection class method take()
+- Feat: handle and display errors after creating a 'Zaak'
+- Feat: Zaken block, view with current Zaken only. Amount of items is configurable
+- Feat: download all types of Zaak information objects instead of hardcoded PDF support only
 - Feat: display additional meta of information object connect to a Zaak
 - Feat: mark dependencies as optional within the configuration file
 - Feat: dependency checker now displays informative notice when optional plugins are not activated
