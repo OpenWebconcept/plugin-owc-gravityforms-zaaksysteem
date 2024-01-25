@@ -186,6 +186,20 @@ class Block
             return view('blocks/mijn-zaken/overview-zaken-tabs.php', ['zaken' => $zaken]);
         }
 
+        if ('current' === $attributes['view']) {
+            /**
+             * Before reviewing this clause, it's important to note the limitations of the Zaken endpoint.
+             * The Zaken endpoint lacks native support for limiting results by a specific number.
+             * Consequently, the 'take' method is used. However, it's worth noting that this approach may not be efficient,
+             * especially when a resident has a substantial number of 'zaken'.
+             *
+             * Ideally, we would be able to apply additional filtering based on the status of Zaken, such as 'current' and 'closed'.
+             */
+            $limit = $attributes['numberOfItems'] ?? 2;
+
+            return view('blocks/mijn-zaken/overview-zaken-current.php', ['zaken' => $zaken->take((int) $limit)]);
+        }
+
         return view('blocks/mijn-zaken/overview-zaken.php', ['zaken' => $zaken]);
     }
 }
