@@ -6,9 +6,7 @@ namespace OWC\Zaaksysteem\GravityForms;
 
 use GFAddOn;
 use GFForms;
-use OWC\Zaaksysteem\Foundation\Plugin;
 use OWC\Zaaksysteem\Foundation\ServiceProvider;
-use OWC\Zaaksysteem\GravityForms\GravityFormsFieldSettings;
 
 class GravityFormsServiceProvider extends ServiceProvider
 {
