@@ -2,24 +2,19 @@
 
 namespace OWC\Zaaksysteem\Traits;
 
+use Exception;
+
 trait InformationObject
 {
     public function informationObjectToBase64(string $url): string
     {
-        $file = file_get_contents($url, false, $this->streamContext());
+        try {
+            $file = file_get_contents($url, false, $this->streamContext());
+        } catch(Exception $e) {
+            $file = '';
+        }
 
         return $file ? base64_encode($file) : '';
-    }
-
-    /**
-     * Format the title based on a URL.
-     * Replaces soft hyphens on the go.
-     */
-    public function getInformationObjectTitle(string $url = ''): string
-    {
-        $basename = htmlentities(basename($url));
-
-        return str_replace('&shy;', '-', $basename);
     }
 
     public function getContentLength(string $url): string
@@ -32,6 +27,14 @@ trait InformationObject
         }
 
         return $contentLength ?: '';
+    }
+
+    public function getExtension(string $url): string
+    {
+        $type = $this->getContentType($url);
+        $parts = explode('/', $type);
+
+        return end($parts);
     }
 
     public function getContentType(string $url): string
@@ -52,7 +55,11 @@ trait InformationObject
             return [];
         }
 
-        $response = get_headers($url, 1, $this->streamContext());
+        try {
+            $response = get_headers($url, 1, $this->streamContext());
+        } catch(Exception $e) {
+            return [];
+        }
 
         return $response ?: [];
     }
@@ -63,7 +70,7 @@ trait InformationObject
      */
     protected function streamContext()
     {
-        if (($_ENV['APP_ENV'] ?? '') !== 'development') {
+        if ('development' !== ($_ENV['APP_ENV'] ?? '')) {
             return null;
         }
 
