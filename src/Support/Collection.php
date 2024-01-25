@@ -39,6 +39,11 @@ class Collection extends Enumerable implements CollectionInterface
         return $this->data;
     }
 
+    public function take($limit): iterable
+    {
+        return array_slice($this->data, 0, $limit);
+    }
+
     public function push($item): CollectionInterface
     {
         $this->data[] = $item;
