@@ -76,7 +76,7 @@ class ClientAdapter implements ClientInterface
         $types = $this->fetchTypes($emptyMessage, $endpoint);
         $types = $this->prepareTypes($types, $prepareCallback);
 
-        set_transient($transientKey, $types, 500);
+        set_transient($transientKey, $types, 500); // Increase expiration? Sometimes this one takes a while to request when the response is not likely to change a lot.
 
         return $types;
     }
