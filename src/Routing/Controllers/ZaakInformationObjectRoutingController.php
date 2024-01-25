@@ -82,19 +82,18 @@ class ZaakInformationObjectRoutingController extends AbstractRoutingController
         }
 
         try {
-            $binary = $client->enkelvoudiginformatieobjecten()->download($downloadIdentification);
+            $response = $client->enkelvoudiginformatieobjecten()->download($downloadIdentification);
         } catch(Exception $e) {
             return;
         }
 
-        $file = sprintf('%s.pdf', $downloadIdentification);
-        file_put_contents($file, $binary);
+        file_put_contents($downloadIdentification, $response->getBody());
 
-        if (! file_exists($file)) {
+        if (! file_exists($downloadIdentification)) {
             return;
         }
 
-        $this->initiateFileDownload($file);
+        $this->initiateFileDownload($downloadIdentification, $response->getContentType());
     }
 
     protected function validateZaak(Client $client, string $zaakIdentification): ?Zaak
@@ -114,11 +113,10 @@ class ZaakInformationObjectRoutingController extends AbstractRoutingController
     /**
      * Send headers, read file and finish with removing the file from temporary location.
      */
-    protected function initiateFileDownload(string $file): void
+    protected function initiateFileDownload(string $file, string $contentType): void
     {
         header('Content-Description: File Transfer');
-        header('Content-Type: application/octet-stream');
-        header('Content-Disposition: attachment; filename="' . basename($file) . '"');
+        header(sprintf('Content-Disposition: attachment; filename="%s"', $this->formatFileName(basename($file))));
         header('Expires: 0');
         header('Cache-Control: must-revalidate');
         header('Pragma: public');
@@ -126,5 +124,32 @@ class ZaakInformationObjectRoutingController extends AbstractRoutingController
         readfile($file);
         unlink($file);
         exit;
+    }
+
+    /**
+     * Adds an extension to the file name.
+     */
+    protected function formatFileName(string $file): string
+    {
+        $parts = [
+            $file,
+            $this->getExtension($file),
+        ];
+
+        return implode('.', array_filter($parts));
+    }
+
+    protected function getExtension(string $file): string
+    {
+        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+        $mimeType = finfo_file($finfo, $file);
+
+        if (! $mimeType) {
+            return '';
+        }
+
+        $parts = explode('/', $mimeType);
+
+        return end($parts) ?: '';
     }
 }
