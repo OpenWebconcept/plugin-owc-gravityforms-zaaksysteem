@@ -23,24 +23,28 @@ class Zaken extends AbstractBlock
                     'type'    => 'string',
                     'default' => [],
                     'items'   => [
-                        'type' => 'object'
-                    ]
+                        'type' => 'object',
+                    ],
                 ],
                 'updateMePlease' => [
                     'type' => 'boolean',
-                    'default' => true
+                    'default' => true,
                 ],
                 'combinedClients' => [
                     'type' => 'boolean',
-                    'default' => false
+                    'default' => false,
                 ],
                 'byBSN' => [
                     'type' => 'boolean',
-                    'default' => true
+                    'default' => true,
                 ],
                 'view' => [
                     'type' => 'string',
                     'default' => 'default',
+                ],
+                'numberOfItems' => [
+                    'type' => 'number',
+                    'default' => 2,
                 ],
                 'title' => 'Mijn Zaken',
                 'style' => 'swf-extended-blocks-style',

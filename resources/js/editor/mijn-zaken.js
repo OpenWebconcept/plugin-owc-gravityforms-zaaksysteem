@@ -21,6 +21,7 @@ const {
 	IconButton,
 	SelectControl,
 	CheckboxControl,
+	RangeControl,
 } = wp.components;
 
 const { Fragment } = wp.element;
@@ -36,6 +37,7 @@ registerBlockType( 'owc/mijn-zaken', {
 		combinedClients: { type: 'boolean', default: false },
 		byBSN: { type: 'boolean', default: true },
 		view: { type: 'string', default: 'default' },
+		numberOfItems: { type: 'number', default: 2 },
 	},
 	edit: ( { attributes, setAttributes } ) => {
 		const blockProps = useBlockProps();
@@ -153,13 +155,39 @@ registerBlockType( 'owc/mijn-zaken', {
 								Voeg een Zaaktype identificatie toe
 							</Button>
 						</PanelBody>
+						{ attributes.view === 'current' && (
+							<PanelBody>
+								<RangeControl
+									min={ 1 }
+									max={ 20 }
+									label="Aantal"
+									help="Het aantal zaken dat getoond moeten worden."
+									value={ attributes.numberOfItems }
+									onChange={ ( value ) =>
+										setAttributes( {
+											numberOfItems: value,
+										} )
+									}
+								/>
+							</PanelBody>
+						) }
 						<PanelBody title="Weergave" initialOpen={ false }>
 							<SelectControl
 								label="Selecteer de weergave van de zaken"
 								value={ attributes.view }
 								options={ [
-									{ label: 'Standaard', value: 'default' },
-									{ label: 'Tabbladen', value: 'tabs' },
+									{
+										label: 'Standaard',
+										value: 'default',
+									},
+									{
+										label: 'Tabbladen',
+										value: 'tabs',
+									},
+									{
+										label: 'Lopende Zaken',
+										value: 'current',
+									},
 								] }
 								onChange={ ( newView ) =>
 									setAttributes( { view: newView } )
