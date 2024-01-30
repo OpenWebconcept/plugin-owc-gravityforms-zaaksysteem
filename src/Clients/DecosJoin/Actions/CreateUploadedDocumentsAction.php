@@ -11,12 +11,12 @@ class CreateUploadedDocumentsAction extends AbstractCreateUploadedDocumentsActio
 {
     public const CLIENT_NAME = 'decos-join';
 
-    public function addUploadedDocuments(): bool
+    public function addUploadedDocuments(): ?bool
     {
         $mappedArgs = $this->mapArgs($this->form, $this->entry);
 
         if (empty($mappedArgs['informatieobject'])) {
-            return false;
+            return null;
         }
 
         $count = count($mappedArgs['informatieobject']);

@@ -36,27 +36,41 @@ class GravityForms
 
         try {
             $zaak = $this->createZaak($entry, $form);
+
+            if (! $zaak instanceof Zaak) { // Fallback.
+                throw new Exception('Het verwachte resultaat na het aanmaken van een Zaak voldoet niet.');
+            }
         } catch(Exception $e) {
-            $zaak = [
-                'error' => $e->getMessage(),
-            ];
-        }
-
-        if (! empty($zaak['error'])) {
-            echo view('form-submission-create-zaak-failed.php', $zaak);
-
-            exit;
-        }
-
-        if (! $this->createUploadedDocuments($entry, $form, $zaak)) {
-            echo view('form-submission-uploads-failed.php');
-
-            exit;
-        }
-
-        if (! $this->createSubmissionPDF($entry, $form, $zaak)) {
             echo view('form-submission-create-zaak-failed.php', [
-                'error' => 'Uw zaak is succesvol aangemaakt, echter is het document met de originele aanvraag niet gegenereerd. Excuses voor het ongemak. De zaak is wel in goede orde ontvangen.',
+                'error' => $e->getMessage(),
+            ]);
+
+            exit;
+        }
+
+        try {
+            $uploadsResult = $this->createUploadedDocuments($entry, $form, $zaak);
+
+            if (false === $uploadsResult) { // Fallback.
+                throw new Exception('Één of meerdere bestanden konden niet toegevoegd worden aan uw zaak.');
+            }
+        } catch(Exception $e) {
+            echo view('form-submission-uploads-failed.php', [
+                'error' => $e->getMessage(),
+            ]);
+
+            exit;
+        }
+
+        try {
+            $pdfResult = $this->createSubmissionPDF($entry, $form, $zaak);
+
+            if (! $pdfResult instanceof Zaakinformatieobject) { // Fallback.
+                throw new Exception('Het verwachte resultaat na het toevoegen van het document met de originele aanvraag voldoet niet.');
+            }
+        } catch(Exception $e) {
+            echo view('form-submission-pdf-failed.php', [
+                'error' => $e->getMessage(),
             ]);
 
             exit;
@@ -79,36 +93,11 @@ class GravityForms
     }
 
     /**
-     * Generated PDF based on the submission used for creating a Zaak.
-     * PDF is created as a information object and is connected to the Zaak as a Zaakinformatieobject.
-     */
-    protected function createSubmissionPDF(array $entry, array $form, ?Zaak $zaak): ?Zaakinformatieobject
-    {
-        if (! $zaak) {
-            return null;
-        }
-
-        $action = sprintf('OWC\Zaaksysteem\Clients\%s\Actions\CreateSubmissionPDFAction', $this->supplier);
-
-        if (! class_exists($action)) {
-            throw new ResourceNotFoundError(sprintf('Class "%s" does not exists. Verify if the selected supplier has the required action class', $action));
-        }
-
-        $instance = new $action($entry, $form, $zaak);
-
-        return $instance->addSubmissionPDF();
-    }
-
-    /**
      * Uploads uploaded by a resident.
      * These uploads are created as information objects and are connected to the Zaak as a Zaakinformatieobject.
      */
-    protected function createUploadedDocuments(array $entry, array $form, ?Zaak $zaak): bool
+    protected function createUploadedDocuments(array $entry, array $form, Zaak $zaak): ?bool
     {
-        if (! $zaak) {
-            return false;
-        }
-
         $action = sprintf('OWC\Zaaksysteem\Clients\%s\Actions\CreateUploadedDocumentsAction', $this->supplier);
 
         if (! class_exists($action)) {
@@ -118,5 +107,22 @@ class GravityForms
         $instance = new $action($entry, $form, $zaak);
 
         return $instance->addUploadedDocuments();
+    }
+
+    /**
+     * Generated PDF based on the submission used for creating a Zaak.
+     * PDF is created as a information object and is connected to the Zaak as a Zaakinformatieobject.
+     */
+    protected function createSubmissionPDF(array $entry, array $form, Zaak $zaak): ?Zaakinformatieobject
+    {
+        $action = sprintf('OWC\Zaaksysteem\Clients\%s\Actions\CreateSubmissionPDFAction', $this->supplier);
+
+        if (! class_exists($action)) {
+            throw new ResourceNotFoundError(sprintf('Class "%s" does not exists. Verify if the selected supplier has the required action class', $action));
+        }
+
+        $instance = new $action($entry, $form, $zaak);
+
+        return $instance->addSubmissionPDF();
     }
 }
