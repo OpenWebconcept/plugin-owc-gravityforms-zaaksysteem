@@ -32,7 +32,7 @@ abstract class AbstractCreateUploadedDocumentsAction
         $this->client = ContainerResolver::make()->getApiClient(static::CLIENT_NAME);
     }
 
-    abstract public function addUploadedDocuments(): bool;
+    abstract public function addUploadedDocuments(): ?bool;
 
     /**
      * Extract values from fields which are connected to the 'informatieobject' mapping field.

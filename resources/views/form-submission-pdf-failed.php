@@ -20,7 +20,7 @@ get_header(); ?>
             <div class="content">
                 <div id="readspeaker">
                     <p class="mb-1">
-                        Het aanmaken van uw zaak is gelukt. Het toevoegen van de geüploade bestanden aan uw zaak helaas niet.
+						Uw zaak is succesvol aangemaakt, echter is het document met de originele aanvraag niet gegenereerd. Excuses voor het ongemak. De zaak is wel in goede orde ontvangen.
                     </p>
 					<?php if (! empty($vars['error'])) : ?>
                         <p>Gebruik het volgende bericht in uw correspondentie met ons: "<?= $vars['error']; ?>"</p>
