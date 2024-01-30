@@ -139,13 +139,15 @@ abstract class AbstractCreateUploadedDocumentsAction
         }
 
         $fileName = $this->createFileName($objectURL);
+        $bestandsomvang = $this->getContentLength($objectURL);
+        $inhoud = $this->informationObjectToBase64($objectURL);
 
         $args = [];
         $args['titel'] = $fileName;
         $args['formaat'] = $this->getContentType($objectURL);
         $args['bestandsnaam'] = sprintf('%s.%s', \sanitize_title($fileName), $this->getExtension($objectURL));
-        $args['bestandsomvang'] = (int) $this->getContentLength($objectURL);
-        $args['inhoud'] = $this->informationObjectToBase64($objectURL);
+        $args['bestandsomvang'] = $bestandsomvang ? (int) $bestandsomvang : strlen($inhoud);
+        $args['inhoud'] = $inhoud;
         $args['vertrouwelijkheidaanduiding'] = 'vertrouwelijk'; // Maybe 'zaakvertrouwelijk'? Still waiting on an answer.
         $args['auteur'] = 'OWC';
         $args['status'] = 'gearchiveerd';

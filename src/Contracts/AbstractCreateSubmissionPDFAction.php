@@ -107,12 +107,15 @@ abstract class AbstractCreateSubmissionPDFAction
             return [];
         }
 
+        $bestandsomvang = $this->getContentLength($pdfURL);
+        $inhoud = $this->informationObjectToBase64($pdfURL);
+
         $args = [];
         $args['titel'] = $fileName;
         $args['formaat'] = $this->getContentType($pdfURL);
         $args['bestandsnaam'] = sprintf('%s.pdf', \sanitize_title($fileName));
-        $args['bestandsomvang'] = (int) $this->getContentLength($pdfURL);
-        $args['inhoud'] = $this->informationObjectToBase64($pdfURL);
+        $args['bestandsomvang'] = $bestandsomvang ? (int) $bestandsomvang : strlen($inhoud);
+        $args['inhoud'] = $inhoud;
         $args['vertrouwelijkheidaanduiding'] = 'vertrouwelijk';
         $args['auteur'] = 'OWC';
         $args['status'] = 'gearchiveerd';
