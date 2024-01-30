@@ -31,11 +31,7 @@ class GravityForms
         $this->setSupplier($form);
 
         if (empty($this->supplier)) {
-            echo view('form-submission-create-zaak-failed.php', [
-                'error' => sprintf('Formulier (%s) is niet correct ingesteld om een zaak te kunnen aanmaken.', $form['title']),
-            ]);
-
-            exit;
+            return $form;
         }
 
         try {
