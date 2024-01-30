@@ -4,7 +4,7 @@ namespace OWC\Zaaksysteem\Traits;
 
 trait CheckURL
 {
-    public function checkURL($url, $test = false): bool
+    public function checkURL($url): bool
     {
         if (! $this->isValidUrl($url)) {
             return false;

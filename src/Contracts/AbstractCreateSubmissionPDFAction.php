@@ -78,12 +78,18 @@ abstract class AbstractCreateSubmissionPDFAction
 
         $pdfURL = $this->gravityPdfSettings->pdfURL();
 
-        if (empty($pdfURL) || ! $this->checkURL($pdfURL)) {
+        if (empty($pdfURL)) {
             return [];
         }
 
         // Enable the public access setting so the args can be prepared.
         $this->gravityPdfSettings->updatePublicAccessSettingPDF('enable');
+
+        if (! $this->checkURL($pdfURL)) {
+            $this->gravityPdfSettings->updatePublicAccessSettingPDF();
+
+            return [];
+        }
 
         $args = $this->prepareFormSubmissionArgsPDF('Aanvraag - eFormulier', $pdfURL);
 
