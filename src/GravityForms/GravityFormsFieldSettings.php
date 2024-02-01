@@ -87,7 +87,7 @@ class GravityFormsFieldSettings
             return [];
         }
 
-        set_transient($transientKey, $types, 43200); // 12 hours.
+        set_transient($transientKey, $types, 64800); // 18 hours.
 
         return $types;
     }
