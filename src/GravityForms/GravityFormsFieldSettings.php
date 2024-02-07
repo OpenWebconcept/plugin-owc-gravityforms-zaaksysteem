@@ -2,9 +2,7 @@
 
 namespace OWC\Zaaksysteem\GravityForms;
 
-use Exception;
 use OWC\Zaaksysteem\Endpoints\Filter\EigenschappenFilter;
-use OWC\Zaaksysteem\Endpoints\Filter\ResultaattypenFilter;
 use OWC\Zaaksysteem\Entities\Informatieobjecttype;
 use OWC\Zaaksysteem\Entities\Zaaktype;
 use function OWC\Zaaksysteem\Foundation\Helpers\get_supplier;
@@ -16,6 +14,8 @@ use OWC\Zaaksysteem\Support\PagedCollection;
 
 class GravityFormsFieldSettings
 {
+    protected const TRANSIENT_LIFETIME_IN_SECONDS = 64800; // 18 hours.
+
     /**
      * Use the selected `zaaktype identifier` to retrieve the `zaaktype`.
      *
@@ -25,9 +25,23 @@ class GravityFormsFieldSettings
      */
     public function getZaakType(string $supplier, string $zaaktypeIdentifier): ?Zaaktype
     {
-        $client = ContainerResolver::make()->getApiClient($supplier);
+        $transientKey = sprintf('%s-%s', sanitize_title($supplier), sanitize_title($zaaktypeIdentifier));
+        $zaaktype = get_transient($transientKey);
 
-        return $client->zaaktypen()->byIdentifier($zaaktypeIdentifier);
+        if ($zaaktype instanceof Zaaktype) {
+            return $zaaktype;
+        }
+
+        $client = ContainerResolver::make()->getApiClient($supplier);
+        $zaaktype = $client->zaaktypen()->byIdentifier($zaaktypeIdentifier);
+
+        if (! $zaaktype instanceof Zaaktype) {
+            return null;
+        }
+
+        set_transient($transientKey, $zaaktype, self::TRANSIENT_LIFETIME_IN_SECONDS);
+
+        return $zaaktype;
     }
 
     /**
@@ -59,40 +73,27 @@ class GravityFormsFieldSettings
         return array_filter((array) $options);
     }
 
-    public function getInformatieObjectTypen(string $supplier)
+    public function getInformatieObjectTypen(Zaaktype $zaaktype, $zaaktypeIdentification)
     {
-        $client = ContainerResolver::make()->getApiClient($supplier);
-        $transientKey = sprintf('%s-form-field-mapping-information-object-type', $client->getClientNamePretty()); // Unique transient key.
+        $transientKey = sprintf('zaaktype-%s-mapping-information-object-types', sanitize_title($zaaktypeIdentification));
         $types = get_transient($transientKey);
 
         if (is_array($types) && $types) {
             return $types;
         }
 
-        $page = 1;
-        $types = [];
-
-        while ($page) {
-            try {
-                $result = $client->informatieobjecttypen()->all((new ResultaattypenFilter())->page($page));
-            } catch (Exception $e) {
-                break;
-            }
-
-            $types = array_merge($types, $result->all());
-            $page = $result->pageMeta()->getNextPageNumber();
-        }
+        $types = $zaaktype->informatieobjecttypen->all();
 
         if (empty($types)) {
             return [];
         }
 
-        set_transient($transientKey, $types, 64800); // 18 hours.
+        set_transient($transientKey, $types, self::TRANSIENT_LIFETIME_IN_SECONDS);
 
         return $types;
     }
 
-    protected function prepareObjectTypesOptions(array $types): array
+    protected function prepareObjectTypesOptions(array $types, $zaaktypeIdentification): array
     {
         if (empty($types)) {
             return [];
@@ -144,9 +145,11 @@ class GravityFormsFieldSettings
             $properties = $this->getZaaktypenEigenschappen($supplier, $zaaktype->url);
         }
 
+        $zaaktypeIdentification = $zaaktype->identificatie;
+
         echo view('partials/gf-field-options.php', [
             'properties' => $properties instanceof PagedCollection ? $this->preparePropertiesOptions($properties) : [],
-            'objecttypes' => $this->prepareObjectTypesOptions($this->getInformatieObjectTypen($supplier)),
+            'objecttypes' => $this->prepareObjectTypesOptions($this->getInformatieObjectTypen($zaaktype, $zaaktypeIdentification), $zaaktypeIdentification),
         ]);
     }
 }
