@@ -33,7 +33,16 @@ class GravityFormsFieldSettings
         }
 
         $client = ContainerResolver::make()->getApiClient($supplier);
-        $zaaktype = $client->zaaktypen()->byIdentifier($zaaktypeIdentifier);
+
+        /**
+         * Decos API is very slow.
+         * For demostration purposes we match on 'Zaaktype' identifier to ensure some speed.
+         */
+        if ($client->getClientNamePretty() === 'decosjoin') {
+            $zaaktype = $client->zaaktypen()->get($zaaktypeIdentifier);
+        } else {
+            $zaaktype = $client->zaaktypen()->byIdentifier($zaaktypeIdentifier);
+        }
 
         if (! $zaaktype instanceof Zaaktype) {
             return null;

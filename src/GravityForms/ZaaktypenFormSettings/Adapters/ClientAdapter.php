@@ -102,6 +102,14 @@ class ClientAdapter implements ClientInterface
 
             $types = array_merge($types, $result->all());
             $page = $result->pageMeta()->getNextPageNumber();
+
+            /**
+             * Decos API is very slow.
+             * For demostration purposes we only fetch the first 10 pages so ensure some speed.
+             */
+            if ($this->getClientNamePretty() === 'decosjoin' && 10 <= $page) {
+                $page = false;
+            }
         }
 
         $this->handleEmptyResult($types, $emptyMessage, $requestException);
