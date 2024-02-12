@@ -213,6 +213,8 @@ abstract class AbstractCreateZaakAction
             } catch (Exception | BadRequestError $e) {
                 $e->getInvalidParameters();
             }
+
+            break;
         }
 
         return $rol;
