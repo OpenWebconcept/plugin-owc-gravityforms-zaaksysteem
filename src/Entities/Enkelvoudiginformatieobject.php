@@ -78,12 +78,10 @@ class Enkelvoudiginformatieobject extends Entity
         }
 
         try {
-            $date = new DateTime($date);
+            return (new DateTime($date))->format('d-m-Y');
         } catch(Exception $e) {
             return '';
         }
-
-        return $date->format('d-m-Y');
     }
 
     public function formatType(): string
@@ -167,6 +165,20 @@ class Enkelvoudiginformatieobject extends Entity
     public function confidentialityDesignation(): string
     {
         return $this->getValue('vertrouwelijkheidaanduiding', '');
+    }
+
+    public function isCaseConfidential(): bool
+    {
+        $designation = $this->confidentialityDesignation();
+
+        return 'zaakvertrouwelijk' === $designation;
+    }
+
+    public function isConfidential(): bool
+    {
+        $designation = $this->confidentialityDesignation();
+
+        return 'vertrouwelijk' === $designation;
     }
 
     public function isClassified(): bool
