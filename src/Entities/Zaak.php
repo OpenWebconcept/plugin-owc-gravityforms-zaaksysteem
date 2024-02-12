@@ -58,9 +58,12 @@ class Zaak extends Entity
      */
     public function title(): string
     {
-        $title = $this->getValue('omschrijving', '');
+        return $this->getValue('identificatie', '');
+    }
 
-        return $title ? $title : $this->getValue('identificatie', '');
+    public function description(): string
+    {
+        return $this->getValue('omschrijving', '');
     }
 
     /**
