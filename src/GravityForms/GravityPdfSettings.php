@@ -20,14 +20,20 @@ class GravityPdfSettings
      */
     public function pdfFormSettingID(): string
     {
-        if (empty($this->form['gfpdf_form_settings']) || ! is_array($this->form['gfpdf_form_settings'])) {
-            return '';
-        }
-
-        $pdfFormSettings = array_keys($this->form['gfpdf_form_settings']);
+        $pdfFormSettings = array_keys($this->getPdfFormSettings([]));
 
         return $pdfFormSettings[0] ?? '';
     }
+
+    protected function getPdfFormSettings($default = null)
+    {
+        if (empty($this->form['gfpdf_form_settings']) || ! is_array($this->form['gfpdf_form_settings'])) {
+            return $default;
+        }
+
+        return $this->form['gfpdf_form_settings'];
+    }
+
 
     public function pdfFormSettingIsActive(): bool
     {
