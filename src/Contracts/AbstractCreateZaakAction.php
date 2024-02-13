@@ -106,7 +106,7 @@ abstract class AbstractCreateZaakAction
         return $args;
     }
 
-    abstract public function addZaak($entry, $form): ?Zaak;
+    abstract public function addZaak($entry, $form): Zaak;
 
     /**
      * Add "zaak" properties.

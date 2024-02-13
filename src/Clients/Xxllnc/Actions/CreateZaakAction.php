@@ -19,7 +19,7 @@ class CreateZaakAction extends AbstractCreateZaakAction
     /**
      * Create "zaak".
      */
-    public function addZaak($entry, $form): ?Zaak
+    public function addZaak($entry, $form): Zaak
     {
         $rsin = $this->getRSIN();
 
