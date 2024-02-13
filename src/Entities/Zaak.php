@@ -53,17 +53,21 @@ class Zaak extends Entity
     ];
 
     /**
-     * Returns the 'Zaak' description.
      * When the description is empty the 'Zaak' identification is returned.
      */
     public function title(): string
     {
-        return $this->getValue('identificatie', '');
+        return $this->getValue('omschrijving', '') ?: $this->getValue('identificatie', '');
     }
 
-    public function description(): string
+    public function clarification(): string
     {
-        return $this->getValue('omschrijving', '');
+        return $this->getValue('toelichting', '');
+    }
+
+    public function identification(): string
+    {
+        return $this->getValue('identificatie', '');
     }
 
     /**
