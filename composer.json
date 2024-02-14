@@ -25,8 +25,8 @@
     "phpunit/phpunit": "^9.0",
     "10up/wp_mock": "^0.5.0",
     "friendsofphp/php-cs-fixer": "^3.0",
-    "phpstan/phpstan": "^0.12",
-    "szepeviktor/phpstan-wordpress": "^0.6.0"
+    "phpstan/phpstan": "^1.0",
+    "szepeviktor/phpstan-wordpress": "^1.0"
   },
   "autoload": {
     "psr-4": {
@@ -41,6 +41,6 @@
   "scripts": {
     "test": "clear && ./vendor/bin/phpunit  --testsuite 'Unit Test Suite' --colors=always",
     "format": "vendor/bin/php-cs-fixer fix",
-    "phpstan": "./vendor/bin/phpstan analyse"
+    "phpstan": "./vendor/bin/phpstan analyse -c phpstan.neon --memory-limit 1g"
   }
 }
