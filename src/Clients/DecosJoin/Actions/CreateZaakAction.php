@@ -21,6 +21,14 @@ class CreateZaakAction extends AbstractCreateZaakAction
      */
     public function addZaak($entry, $form): Zaak
     {
+        /**
+         * Needs to be removed when Buren has a domain instead of a ip-address.
+         */
+        add_filter('http_request_args', function ($r, $url) {
+            $r['sslverify'] = false;
+
+            return $r;
+        }, 10, 2);
         $rsin = $this->getRSIN();
 
         if (empty($rsin)) {
@@ -37,10 +45,9 @@ class CreateZaakAction extends AbstractCreateZaakAction
         $args = $this->mappedArgs($rsin, $zaaktype, $form, $entry);
         $zaak = $client->zaken()->create(new Zaak($args, $client->getClientName(), $client->getClientNamePretty()));
 
-        // REFERENCE POINT: Mike, adding 'Rol' and 'Zaak Eigenschappen' does not work yet.
         // Complement Zaak.
-        // $this->addRolToZaak($zaak, $zaaktype['url']); // -> returns 'Bad request "zaaktype mandatory parameter not provided."
-        // $this->addZaakEigenschappen($zaak, $form['fields'], $entry); -> returns 'Bad request "zaaktype mandatory parameter not provided."
+        $this->addRolToZaak($zaak, $zaaktype['url']);
+        $this->addZaakEigenschappen($zaak, $form['fields'], $entry);
 
         return $zaak;
     }
