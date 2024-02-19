@@ -6,6 +6,15 @@ trait CheckURL
 {
     public function checkURL($url): bool
     {
+        /**
+         * Needs to be removed when Buren has a domain instead of a ip-address.
+         */
+        add_filter('http_request_args', function ($r, $url) {
+            $r['sslverify'] = false;
+
+            return $r;
+        }, 10, 2);
+
         if (! $this->isValidUrl($url)) {
             return false;
         }
