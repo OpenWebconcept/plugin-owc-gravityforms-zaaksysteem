@@ -46,7 +46,6 @@ class Zaak extends Entity
         'archiefactiedatum' => Casts\NullableDate::class,
         'resultaat' => Casts\Lazy\Resultaat::class,
         // 'opdrachtgevendeOrganisatie'    => SomeClass::class,
-
         'statussen' => Casts\Related\Statussen::class,
         'zaakinformatieobjecten' => Casts\Related\Zaakinformatieobjecten::class,
         'rollen' => Casts\Related\Rollen::class,
@@ -150,11 +149,39 @@ class Zaak extends Entity
         return date_i18n($format, $registerDate->getTimestamp());
     }
 
+
+    public function endDate(string $format = 'j F Y'): string
+    {
+        $startDate = $this->getValue('einddatum', null);
+
+        if (! $startDate instanceof DateTimeImmutable) {
+            return 'Onbekend';
+        }
+
+        return date_i18n($format, $startDate->getTimestamp());
+    }
+
     public function hasEndDate(): bool
     {
         $endDate = $this->getValue('einddatum', null);
 
         return $endDate instanceof DateTimeImmutable;
+    }
+
+    public function zaaktypeDescription(): string
+    {
+        return $this->getValue('zaaktype_description', '');
+    }
+
+    public function endDatePlanned(string $format = 'j F Y')
+    {
+        $endDatePlanned = $this->getValue('einddatumGepland', null);
+
+        if (! $endDatePlanned instanceof DateTimeImmutable) {
+            return 'Onbekend';
+        }
+
+        return date_i18n($format, $endDatePlanned->getTimestamp());
     }
 
     /**
