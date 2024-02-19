@@ -42,7 +42,7 @@ abstract class AbstractCreateZaakAction
         $client = $this->getApiClient();
 
         $filter = new RoltypenFilter();
-        $filter->get('zaaktype', $zaaktype);
+        $filter->add('zaaktype', $zaaktype);
 
         return $client->roltypen()->filter($filter);
     }
@@ -58,6 +58,11 @@ abstract class AbstractCreateZaakAction
     {
         $client = $this->getApiClient();
         $zaaktypeIdentifier = $form[sprintf('%s-form-setting-%s-identifier', OWC_GZ_PLUGIN_SLUG, static::FORM_SETTING_SUPPLIER_KEY)];
+
+        // Remove when the @todo of this method is implemented.
+        if ($client->getClientNamePretty() === 'decosjoin') {
+            return $client->zaaktypen()->get($zaaktypeIdentifier);
+        }
 
         return $client->zaaktypen()->byIdentifier($zaaktypeIdentifier);
     }
