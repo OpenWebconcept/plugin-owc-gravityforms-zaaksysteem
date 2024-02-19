@@ -8,10 +8,10 @@ use function OWC\Zaaksysteem\Foundation\Helpers\view;
         <?php
             echo view('blocks/mijn-zaken/zaak-collapse-button.php', [
                 'title' => $zaak->title(),
-                'id' => $zaak->identificatie,
+                'id' => $zaak->identification(),
             ]);
     ?>
-        <div class="collapse" id="collapse-<?php echo $zaak->identificatie; ?>">
+        <div class="collapse" id="collapse-<?php echo $zaak->identification(); ?>">
             <div class="zaak-content">
                 <?php
                 echo view('blocks/mijn-zaken/zaak-meta.php', compact('zaak'));

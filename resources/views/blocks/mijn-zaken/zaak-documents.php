@@ -5,9 +5,9 @@
     <?php else : ?>
         <ul>
             <?php foreach ($vars['documents'] as $document) : ?>
-				<?php if (! empty($document->informatieobject->downloadUrl($vars['zaak']->getValue('identificatie', '')))) : ?>
+				<?php if (! empty($document->informatieobject->downloadUrl($vars['zaak']->identification()))) : ?>
 					<li>
-						<a href="<?= $document->informatieobject->downloadUrl($vars['zaak']->getValue('identificatie', '')); ?>">
+						<a href="<?= $document->informatieobject->downloadUrl($vars['zaak']->identification()); ?>">
 							<?= $document->informatieobject->fileName(); ?> <?php if ($document->informatieobject->formattedMetaData()): ?>(<?= $document->informatieobject->formattedMetaData(); ?>) <?php endif ?>
 						</a>
 					</li>

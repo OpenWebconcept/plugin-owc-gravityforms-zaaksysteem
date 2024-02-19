@@ -53,7 +53,6 @@ class ZakenEndpoint extends Endpoint
         $zaak = new $class($data, $this->client::CALLABLE_NAME, $this->client::CLIENT_NAME);
 
         $statusToelichting = $zaak->status instanceof Status ? $zaak->status->statustype->statusExplanation() : '';
-
         $zaak->setValue('leverancier', $zaak->getClientNamePretty());
         $zaak->setValue('steps', $this->addProcessStatusses($this->getStatussenSorted($zaak), $statusToelichting));
         $zaak->setValue('status_history', $zaak->statussen);
@@ -61,6 +60,7 @@ class ZakenEndpoint extends Endpoint
         $zaak->setValue('status_explanation', $statusToelichting);
         $zaak->setValue('result', $zaak->resultaat);
         $zaak->setValue('image', ContainerResolver::make()->get('zaak_image'));
+        $zaak->setValue('zaaktype_description', $zaak->zaaktype->omschrijvingGeneriek ?? '');
 
         return $zaak;
     }

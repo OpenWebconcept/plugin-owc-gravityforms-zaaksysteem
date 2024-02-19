@@ -148,7 +148,7 @@ abstract class AbstractCreateUploadedDocumentsAction
         $args['bestandsnaam'] = sprintf('%s.%s', \sanitize_title($fileName), $this->getExtension($objectURL));
         $args['bestandsomvang'] = $bestandsomvang ? (int) $bestandsomvang : strlen($inhoud);
         $args['inhoud'] = $inhoud;
-        $args['vertrouwelijkheidaanduiding'] = 'vertrouwelijk'; // Maybe 'zaakvertrouwelijk'? Still waiting on an answer.
+        $args['vertrouwelijkheidaanduiding'] = 'vertrouwelijk';
         $args['auteur'] = 'OWC';
         $args['status'] = 'gearchiveerd';
         $args['taal'] = 'nld';
