@@ -40,7 +40,7 @@ trait InformationObject
     public function getContentType(string $url): string
     {
         $headers = $this->getHeaders($url);
-        $contentType = $headers['Content-Type'] ?? '';
+        $contentType = $headers['content-type'] ?? $headers['Content-Type'] ?? '';
 
         if (is_array($contentType) && ! empty($contentType[0])) {
             return $contentType[0];
