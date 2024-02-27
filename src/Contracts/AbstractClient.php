@@ -136,7 +136,7 @@ abstract class AbstractClient implements Client
         return $this;
     }
 
-    protected function getEndpointUrlByType(string $type): string
+    public function getEndpointUrlByType(string $type): string
     {
         switch ($type) {
             case 'zaken':

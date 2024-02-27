@@ -37,40 +37,35 @@ abstract class AbstractCreateZaakAction
     /**
      * Get all available "roltypen".
      */
-    public function getRolTypen(string $zaaktype): PagedCollection
+    public function getRolTypen(string $zaaktypeURL): PagedCollection
     {
         $client = $this->getApiClient();
 
         $filter = new RoltypenFilter();
-        $filter->add('zaaktype', $zaaktype);
+        $filter->add('zaaktype', $zaaktypeURL);
 
         return $client->roltypen()->filter($filter);
     }
 
     /**
-     * Use the selected `zaaktype identifier` to retrieve the `zaaktype`.
-     *
-     * @todo we cannot use the zaaktype URI to retrieve a zaaktype because it is bound to change when the zaaktype is updated. There doesn't seem to be a way to retrieve the zaaktype by identifier, so we have to get all the zaaktypen first and then filter them by identifier. We should change this when the API supports this.
-     *
-     * @see https://github.com/OpenWebconcept/plugin-owc-gravityforms-zaaksysteem/issues/13#issue-1697256063
+     * Use the selected `zaaktype identifier` to compose the url to the 'zaaktype'.
      */
-    public function getZaakType($form): ?Zaaktype
+    public function getZaakTypeURL($form): ?string
     {
         $client = $this->getApiClient();
-        $zaaktypeIdentifier = $form[sprintf('%s-form-setting-%s-identifier', OWC_GZ_PLUGIN_SLUG, static::FORM_SETTING_SUPPLIER_KEY)];
+        $zaaktypeIdentifier = $form[sprintf('%s-form-setting-%s-identifier', OWC_GZ_PLUGIN_SLUG, static::FORM_SETTING_SUPPLIER_KEY)] ?? null;
 
-        // Remove when the @todo of this method is implemented.
-        if ($client->getClientNamePretty() === 'decosjoin') {
-            return $client->zaaktypen()->get($zaaktypeIdentifier);
+        if (empty($zaaktypeIdentifier)) {
+            return null;
         }
 
-        return $client->zaaktypen()->byIdentifier($zaaktypeIdentifier);
+        return sprintf('%s/%s/%s', untrailingslashit($client->getEndpointUrlByType('catalogi')), 'zaaktypen', $zaaktypeIdentifier);
     }
 
     /**
      * Merge mapped arguments with defaults.
      */
-    protected function mappedArgs(string $rsin, Zaaktype $zaaktype, array $form, array $entry): array
+    protected function mappedArgs(string $rsin, string $zaaktypeURL, array $form, array $entry): array
     {
         $defaults = [
             'bronorganisatie' => $rsin,
@@ -78,7 +73,7 @@ abstract class AbstractCreateZaakAction
             'registratiedatum' => date('Y-m-d'),
             'startdatum' => date('Y-m-d'),
             'verantwoordelijkeOrganisatie' => $rsin,
-            'zaaktype' => $zaaktype['url'],
+            'zaaktype' => $zaaktypeURL,
         ];
 
         return $this->mapArgs($defaults, $form, $entry);
@@ -182,9 +177,9 @@ abstract class AbstractCreateZaakAction
     /**
      * Assign a submitter to the "zaak".
      */
-    public function addRolToZaak(Zaak $zaak, string $zaaktype): ?Rol
+    public function addRolToZaak(Zaak $zaak, string $zaaktypeURL): ?Rol
     {
-        $rolTypen = $this->getRolTypen($zaaktype);
+        $rolTypen = $this->getRolTypen($zaaktypeURL);
 
         if ($rolTypen->isEmpty()) {
             throw new Exception('Er zijn geen roltypen gevonden voor dit zaaktype');

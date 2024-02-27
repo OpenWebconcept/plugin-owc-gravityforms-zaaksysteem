@@ -27,19 +27,19 @@ class CreateZaakAction extends AbstractCreateZaakAction
             throw new Exception('Het RSIN is niet ingesteld in de Gravity Forms instellingen');
         }
 
-        $zaaktype = $this->getZaakType($form);
+        $zaaktypeURL = $this->getZaakTypeURL($form);
 
-        if (empty($zaaktype)) {
+        if (empty($zaaktypeURL)) {
             throw new Exception('Het zaaktype is niet ingesteld in de Gravity Forms instellingen');
         }
 
         $client = $this->getApiClient();
 
-        $args = $this->mappedArgs($rsin, $zaaktype, $form, $entry);
+        $args = $this->mappedArgs($rsin, $zaaktypeURL, $form, $entry);
         $zaak = $client->zaken()->create(new Zaak($args, $client->getClientName(), $client->getClientNamePretty()));
 
         // Complement Zaak.
-        $this->addRolToZaak($zaak, $zaaktype['url']);
+        $this->addRolToZaak($zaak, $zaaktypeURL);
         $this->addZaakEigenschappen($zaak, $form['fields'], $entry);
 
         return $zaak;
