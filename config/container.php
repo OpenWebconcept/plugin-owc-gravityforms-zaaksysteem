@@ -236,8 +236,8 @@ return [
      * HTTP Message logging
      */
     'message.logger.active' => false,
-    'message.logger.detail' => fn () => Http\Logger\MessageDetail::BLACK_BOX,
-    'message.logger.path' => fn () => WP_CONTENT_DIR . '/uploads/owc/messages.json',
+    'message.logger.detail' => Http\Logger\MessageDetail::BLACK_BOX,
+    'message.logger.path' => dirname(ABSPATH).'/owc-http-messages.json',
     'message.logger' => function (Container $container) {
         $logger = new \Monolog\Logger('owc_http_log');
         
