@@ -132,7 +132,7 @@ class Zaak extends Entity
         $startDate = $this->getValue('startdatum', null);
 
         if (! $startDate instanceof DateTimeImmutable) {
-            return 'Onbekend';
+            return '';
         }
 
         return date_i18n($format, $startDate->getTimestamp());
@@ -143,7 +143,7 @@ class Zaak extends Entity
         $registerDate = $this->getValue('registratiedatum', null);
 
         if (! $registerDate instanceof DateTimeImmutable) {
-            return 'Onbekend';
+            return '';
         }
 
         return date_i18n($format, $registerDate->getTimestamp());
@@ -155,7 +155,7 @@ class Zaak extends Entity
         $startDate = $this->getValue('einddatum', null);
 
         if (! $startDate instanceof DateTimeImmutable) {
-            return 'Onbekend';
+            return '';
         }
 
         return date_i18n($format, $startDate->getTimestamp());
@@ -178,7 +178,7 @@ class Zaak extends Entity
         $endDatePlanned = $this->getValue('einddatumGepland', null);
 
         if (! $endDatePlanned instanceof DateTimeImmutable) {
-            return 'Onbekend';
+            return '';
         }
 
         return date_i18n($format, $endDatePlanned->getTimestamp());
