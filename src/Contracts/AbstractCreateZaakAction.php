@@ -11,10 +11,10 @@ use OWC\Zaaksysteem\Entities\Rol;
 use OWC\Zaaksysteem\Entities\Zaak;
 use OWC\Zaaksysteem\Entities\Zaakeigenschap;
 use OWC\Zaaksysteem\Entities\Zaaktype;
-use function OWC\Zaaksysteem\Foundation\Helpers\resolve;
 use OWC\Zaaksysteem\Http\Errors\BadRequestError;
 use OWC\Zaaksysteem\Resolvers\ContainerResolver;
 use OWC\Zaaksysteem\Support\PagedCollection;
+use function OWC\Zaaksysteem\Foundation\Helpers\resolve;
 
 abstract class AbstractCreateZaakAction
 {
@@ -59,7 +59,15 @@ abstract class AbstractCreateZaakAction
             return null;
         }
 
-        return sprintf('%s/%s/%s', untrailingslashit($client->getEndpointUrlByType('catalogi')), 'zaaktypen', $zaaktypeIdentifier);
+        /**
+         * In previous versions the UUID of a 'Zaaktype' was saved instead of its URL.
+         * This check is here to support backwards compatibility.
+         */
+        if (! filter_var($zaaktypeIdentifier, FILTER_VALIDATE_URL)) {
+            return sprintf('%s/%s/%s', untrailingslashit($client->getEndpointUrlByType('catalogi')), 'zaaktypen', $zaaktypeIdentifier);
+        }
+
+        return $zaaktypeIdentifier;
     }
 
     /**

@@ -50,7 +50,7 @@ class ClientAdapter implements ClientInterface
                     return [
                         'name'  => $zaaktype->identificatie,
                         'label' => "{$zaaktype->omschrijving} ({$zaaktype->identificatie})",
-                        'value' => $zaaktype->identificatie,
+                        'value' => $zaaktype->url,
                     ];
                 },
                 'No zaaktypen found.'
