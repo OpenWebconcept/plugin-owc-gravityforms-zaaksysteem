@@ -2,6 +2,7 @@
 
 namespace OWC\Zaaksysteem\GravityForms;
 
+use Exception;
 use OWC\Zaaksysteem\Endpoints\Filter\EigenschappenFilter;
 use OWC\Zaaksysteem\Entities\Informatieobjecttype;
 use OWC\Zaaksysteem\Entities\Zaaktype;
@@ -34,14 +35,10 @@ class GravityFormsFieldSettings
 
         $client = ContainerResolver::make()->getApiClient($supplier);
 
-        /**
-         * Decos API is very slow.
-         * For demostration purposes we match on 'Zaaktype' identifier to ensure some speed.
-         */
-        if ($client->getClientNamePretty() === 'decosjoin') {
-            $zaaktype = $client->zaaktypen()->get($zaaktypeIdentifier);
-        } else {
-            $zaaktype = $client->zaaktypen()->byIdentifier($zaaktypeIdentifier);
+        try {
+            $zaaktype = $this->getZaaktypeByClient($client, $zaaktypeIdentifier);
+        } catch(Exception $e) {
+            $zaaktype = null;
         }
 
         if (! $zaaktype instanceof Zaaktype) {
@@ -49,6 +46,30 @@ class GravityFormsFieldSettings
         }
 
         set_transient($transientKey, $zaaktype, self::TRANSIENT_LIFETIME_IN_SECONDS);
+
+        return $zaaktype;
+    }
+
+    /**
+     * Decos API is very slow.
+     * For demostration purposes we match on 'Zaaktype' identifier to ensure some speed.
+     */
+    protected function getZaaktypeByClient($client, string $zaaktypeIdentifier): ?Zaaktype
+    {
+        /**
+         * In previous versions the UUID of a 'Zaaktype' was saved instead of its URL.
+         * This check takes the last part of the URL, the identifier, and is here to support backwards compatibility.
+         */
+        if (filter_var($zaaktypeIdentifier, FILTER_VALIDATE_URL)) {
+            $explode = explode('/', $zaaktypeIdentifier) ?: [];
+            $zaaktypeIdentifier = end($explode);
+        }
+
+        if ($client->getClientNamePretty() === 'decosjoin') {
+            $zaaktype = $client->zaaktypen()->get($zaaktypeIdentifier);
+        } else {
+            $zaaktype = $client->zaaktypen()->byIdentifier($zaaktypeIdentifier);
+        }
 
         return $zaaktype;
     }
@@ -81,7 +102,6 @@ class GravityFormsFieldSettings
 
         return array_filter((array) $options);
     }
-
     public function getInformatieObjectTypen(Zaaktype $zaaktype, $zaaktypeIdentification)
     {
         $transientKey = sprintf('zaaktype-%s-mapping-information-object-types', sanitize_title($zaaktypeIdentification));
@@ -147,6 +167,11 @@ class GravityFormsFieldSettings
 
         // Get the zaaktype belonging to the chosen zaaktype identifier.
         $zaaktype = $this->getZaakType($supplier, $zaaktypeIdentifier);
+
+        // Without a zaaktype there is no point in continuing.
+        if (! $zaaktype) {
+            return;
+        }
 
         if (empty($zaaktype['url'])) {
             $properties = [];
