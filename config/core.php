@@ -9,6 +9,7 @@ return [
         OWC\Zaaksysteem\Templating\TemplatingServiceProvider::class,
         OWC\Zaaksysteem\Validation\ValidationServiceProvider::class,
         OWC\Zaaksysteem\Routing\RoutingServiceProvider::class,
+        OWC\Zaaksysteem\Http\Logger\LoggerServiceProvider::class,
     ],
 
     /**
