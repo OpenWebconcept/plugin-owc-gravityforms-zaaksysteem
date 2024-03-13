@@ -3,12 +3,12 @@
 namespace OWC\Zaaksysteem;
 
 use DI\Container;
-
 use OWC\Zaaksysteem\Resolvers\DigiDBsnResolver;
 
 /**
  * Link interfaces to their concretions.
  */
+
 return [
     /**
      * OpenZaak configuration.
@@ -118,7 +118,7 @@ return [
     'rsin' => function (Container $container) {
         return $container->make('gf.setting', ['-rsin']);
     },
-	'zaak_image' => function (Container $container) {
+    'zaak_image' => function (Container $container) {
         return $container->make('gf.setting', ['-zaak-image']);
     },
 
@@ -231,4 +231,28 @@ return [
             ])
         );
     },
+
+    /**
+     * HTTP Message logging
+     */
+    'message.logger.active' => false,
+    'message.logger.detail' => Http\Logger\MessageDetail::BLACK_BOX,
+    'message.logger.path' => dirname(ABSPATH).'/owc-http-messages.json',
+    'message.logger' => function (Container $container) {
+        $logger = new \Monolog\Logger('owc_http_log');
+        
+        $handler = new \Monolog\Handler\StreamHandler(
+            $container->get('message.logger.path'), 
+            \Monolog\Logger::DEBUG
+        );
+
+        $handler->setFormatter(new \Monolog\Formatter\JsonFormatter());
+        $logger->pushHandler($handler);
+
+        $logger->pushProcessor(new \Monolog\Processor\WebProcessor());
+        $logger->pushProcessor(new Http\Logger\LogDetailProcessor($container->get('message.logger.detail')));
+        $logger->pushProcessor(new Http\Logger\FilterBsnProcessor());
+
+        return $logger;
+    }
 ];

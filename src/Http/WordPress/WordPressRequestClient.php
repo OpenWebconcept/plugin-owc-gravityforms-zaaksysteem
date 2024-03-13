@@ -58,6 +58,8 @@ class WordPressRequestClient implements RequestClientInterface
 
     protected function mergeRequestOptions(?RequestOptions $options = null): RequestOptions
     {
+        $this->options->addHeader('_owc_request_logging', microtime(true));
+
         if (! $options) {
             return $this->options;
         }

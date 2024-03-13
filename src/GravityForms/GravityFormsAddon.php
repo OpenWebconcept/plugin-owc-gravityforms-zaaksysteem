@@ -76,14 +76,14 @@ class GravityFormsAddon extends GFAddOn
      */
     public function plugin_settings_fields()
     {
-        return [
+        return apply_filters('owc_gravityforms_zaaksysteem_gf_settings', [
             $this->settingsGeneral(),
             $this->settingsDescription(),
             $this->settingsOpenZaak(),
             $this->settingsDecosJoin(),
             $this->settingsRxMission(),
             $this->settingsXxllnc(),
-        ];
+        ]);
     }
 
     protected function settingsGeneral(): array

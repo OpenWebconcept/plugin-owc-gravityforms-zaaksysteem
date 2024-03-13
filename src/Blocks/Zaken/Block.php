@@ -17,12 +17,6 @@ use OWC\Zaaksysteem\Support\Collection;
 class Block
 {
     protected Client $client;
-    protected string $currentUserBsn;
-
-    public function __construct()
-    {
-        $this->currentUserBsn = resolve('digid.current_user_bsn');
-    }
 
     public function render($attributes, $rendered, $editor)
     {
@@ -31,7 +25,7 @@ class Block
             return;
         }
 
-        if (empty($this->currentUserBsn)) {
+        if (! $this->getCurrentUserBsn()) {
             return 'Er is geen geldig BSN gevonden waardoor er geen zaken opgehaald kunnen worden.';
         }
 
@@ -62,6 +56,11 @@ class Block
         return $this->returnView($attributes, $zaken);
     }
 
+    protected function getCurrentUserBsn(): string
+    {
+        return resolve('digid.current_user_bsn');
+    }
+
     protected function handleZaken(array $attributes): Collection
     {
         if (! $attributes['combinedClients']) {
@@ -76,7 +75,7 @@ class Block
      */
     protected function uniqueTransientKey(array $attributes): string
     {
-        $attributes['bsnCurrentUser'] = $this->currentUserBsn;
+        $attributes['bsnCurrentUser'] = $this->getCurrentUserBsn();
 
         return md5(json_encode($attributes));
     }
@@ -126,7 +125,7 @@ class Block
             return $filter;
         }
 
-        $filter->byBsn($this->currentUserBsn);
+        $filter->byBsn($this->getCurrentUserBsn());
 
         return $filter;
     }
