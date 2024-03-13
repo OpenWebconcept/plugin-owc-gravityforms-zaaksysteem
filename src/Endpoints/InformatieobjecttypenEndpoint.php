@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace OWC\Zaaksysteem\Endpoints;
 
+use OWC\Zaaksysteem\Endpoints\Filter\AbstractFilter;
 use OWC\Zaaksysteem\Entities\Informatieobjecttype;
 use OWC\Zaaksysteem\Support\PagedCollection;
 
@@ -12,10 +13,10 @@ class InformatieobjecttypenEndpoint extends Endpoint
     protected string $endpoint = 'informatieobjecttypen';
     protected string $entityClass = Informatieobjecttype::class;
 
-    public function all(): PagedCollection
+    public function all(?AbstractFilter $filter = null): PagedCollection
     {
         $response = $this->httpClient->get(
-            $this->buildUri($this->endpoint),
+            $filter ? $this->buildUri($this->endpoint, $filter) : $this->buildUri($this->endpoint),
             $this->buildRequestOptions()
         );
 

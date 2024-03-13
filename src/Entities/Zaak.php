@@ -46,21 +46,27 @@ class Zaak extends Entity
         'archiefactiedatum' => Casts\NullableDate::class,
         'resultaat' => Casts\Lazy\Resultaat::class,
         // 'opdrachtgevendeOrganisatie'    => SomeClass::class,
-
         'statussen' => Casts\Related\Statussen::class,
         'zaakinformatieobjecten' => Casts\Related\Zaakinformatieobjecten::class,
         'rollen' => Casts\Related\Rollen::class,
     ];
 
     /**
-     * Returns the 'Zaak' description.
      * When the description is empty the 'Zaak' identification is returned.
      */
     public function title(): string
     {
-        $title = $this->getValue('omschrijving', '');
+        return $this->getValue('omschrijving', '') ?: $this->getValue('identificatie', '');
+    }
 
-        return $title ? $title : $this->getValue('identificatie', '');
+    public function clarification(): string
+    {
+        return $this->getValue('toelichting', '');
+    }
+
+    public function identification(): string
+    {
+        return $this->getValue('identificatie', '');
     }
 
     /**
@@ -126,7 +132,7 @@ class Zaak extends Entity
         $startDate = $this->getValue('startdatum', null);
 
         if (! $startDate instanceof DateTimeImmutable) {
-            return 'Onbekend';
+            return '';
         }
 
         return date_i18n($format, $startDate->getTimestamp());
@@ -137,10 +143,22 @@ class Zaak extends Entity
         $registerDate = $this->getValue('registratiedatum', null);
 
         if (! $registerDate instanceof DateTimeImmutable) {
-            return 'Onbekend';
+            return '';
         }
 
         return date_i18n($format, $registerDate->getTimestamp());
+    }
+
+
+    public function endDate(string $format = 'j F Y'): string
+    {
+        $startDate = $this->getValue('einddatum', null);
+
+        if (! $startDate instanceof DateTimeImmutable) {
+            return '';
+        }
+
+        return date_i18n($format, $startDate->getTimestamp());
     }
 
     public function hasEndDate(): bool
@@ -148,6 +166,22 @@ class Zaak extends Entity
         $endDate = $this->getValue('einddatum', null);
 
         return $endDate instanceof DateTimeImmutable;
+    }
+
+    public function zaaktypeDescription(): string
+    {
+        return $this->getValue('zaaktype_description', '');
+    }
+
+    public function endDatePlanned(string $format = 'j F Y')
+    {
+        $endDatePlanned = $this->getValue('einddatumGepland', null);
+
+        if (! $endDatePlanned instanceof DateTimeImmutable) {
+            return '';
+        }
+
+        return date_i18n($format, $endDatePlanned->getTimestamp());
     }
 
     /**

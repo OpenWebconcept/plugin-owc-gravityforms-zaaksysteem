@@ -11,37 +11,29 @@ class DependencyChecker
 {
     /**
      * Plugins that need to be checked for.
-     *
-     * @var array
      */
-    private $dependencies;
+    private array $dependencies;
 
     /**
      * Build up array of failed plugins, either because
      * they have the wrong version or are inactive.
-     *
-     * @var array
      */
-    private $failed = [];
+    private array $failed = [];
+
+    /**
+     * Build up array of optional plugins.
+     */
+    private array $optional = [];
 
     /**
      * Determine which plugins need to be present.
-     *
-     * @param array $dependencies
-     *
-     * @return void
      */
     public function __construct(array $dependencies)
     {
         $this->dependencies = $dependencies;
     }
 
-    /**
-     * Determines if the dependencies are not met.
-     *
-     * @return bool
-     */
-    public function failed(): bool
+    public function execute(): void
     {
         foreach ($this->dependencies as $dependency) {
             switch ($dependency['type']) {
@@ -55,17 +47,29 @@ class DependencyChecker
                     break;
             }
         }
+    }
 
+    /**
+     * Determines if the dependencies are not met.
+     */
+    public function failed(): bool
+    {
         return 0 < count($this->failed);
+    }
+
+    /**
+     * Determines if there are optional dependencies are not met.
+     */
+    public function optional(): bool
+    {
+        return 0 < count($this->optional);
     }
 
     /**
      * Notifies the administrator which plugins need to be enabled,
      * or which plugins have the wrong version.
-     *
-     * @return void
      */
-    public function notify()
+    public function notifyFailed(): void
     {
         add_action('admin_notices', function () {
             $list = '<p>' . sprintf(esc_html__('De volgende plug-ins zijn vereist voor het gebruik van de %1$s plugin:', 'owc-gravityforms-zaaksysteem'), OWC_GZ_NAME) . '</p><ol>';
@@ -81,15 +85,26 @@ class DependencyChecker
         });
     }
 
+    public function notifyOptional(): void
+    {
+        add_action('admin_notices', function () {
+            $list = '<p>' . sprintf(esc_html__('De volgende plug-ins zijn niet vereist voor het gebruik van de %1$s plugin maar worden wel aangeraden om te gebruiken:', 'owc-gravityforms-zaaksysteem'), OWC_GZ_NAME) . '</p><ol>';
+
+            foreach ($this->optional as $dependency) {
+                $info = isset($dependency['message']) ? ' (' . $dependency['message'] . ')' : '';
+                $list .= sprintf('<li>%s%s</li>', $dependency['label'], $info);
+            }
+
+            $list .= '</ol>';
+
+            printf('<div class="notice notice-info"><p>%s</p></div>', $list);
+        });
+    }
+
     /**
      * Marks a dependency as failed.
-     *
-     * @param array  $dependency
-     * @param string $defaultMessage
-     *
-     * @return void
      */
-    private function markFailed(array $dependency, string $defaultMessage)
+    private function markFailed(array $dependency, string $defaultMessage): void
     {
         $this->failed[] = array_merge([
             'message' => $dependency['message'] ?? $defaultMessage,
@@ -97,13 +112,19 @@ class DependencyChecker
     }
 
     /**
-     * Checks if required class exists.
-     *
-     * @param array $dependency
-     *
-     * @return void
+     * Marks a dependency as optional.
      */
-    private function checkClass(array $dependency)
+    private function markOptional(array $dependency, string $defaultMessage): void
+    {
+        $this->optional[] = array_merge([
+            'message' => $dependency['message'] ?? $defaultMessage,
+        ], $dependency);
+    }
+
+    /**
+     * Checks if required class exists.
+     */
+    private function checkClass(array $dependency): void
     {
         if (! class_exists($dependency['name'])) {
             $this->markFailed($dependency, esc_html__('Klasse bestaat niet', 'owc-gravityforms-zaaksysteem'));
@@ -114,15 +135,17 @@ class DependencyChecker
 
     /**
      * Check if a plugin is enabled and has the correct version.
-     *
-     * @param array $dependency
-     *
-     * @return void
      */
-    private function checkPlugin(array $dependency)
+    private function checkPlugin(array $dependency): void
     {
         if (! function_exists('is_plugin_active')) {
             include_once ABSPATH . 'wp-admin/includes/plugin.php';
+        }
+
+        if (! empty($dependency['optional']) && ! is_plugin_active($dependency['file'])) {
+            $this->markOptional($dependency, esc_html__('Optioneel', 'owc-gravityforms-zaaksysteem'));
+
+            return;
         }
 
         if (! is_plugin_active($dependency['file'])) {
@@ -141,10 +164,6 @@ class DependencyChecker
 
     /**
      * Checks the installed version of the plugin.
-     *
-     * @param array $dependency
-     *
-     * @return bool
      */
     private function checkVersion(array $dependency): bool
     {

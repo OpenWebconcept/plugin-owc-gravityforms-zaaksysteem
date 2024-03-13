@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace OWC\Zaaksysteem\Endpoints;
 
 use OWC\Zaaksysteem\Entities\Entity;
+use OWC\Zaaksysteem\Entities\Status;
 use OWC\Zaaksysteem\Entities\Zaak;
 use OWC\Zaaksysteem\Resolvers\ContainerResolver;
 use OWC\Zaaksysteem\Support\Collection;
@@ -51,8 +52,7 @@ class ZakenEndpoint extends Endpoint
         $class = $this->entityClass;
         $zaak = new $class($data, $this->client::CALLABLE_NAME, $this->client::CLIENT_NAME);
 
-        $statusToelichting = $zaak->status->statustoelichting ?? '';
-
+        $statusToelichting = $zaak->status instanceof Status ? $zaak->status->statustype->statusExplanation() : '';
         $zaak->setValue('leverancier', $zaak->getClientNamePretty());
         $zaak->setValue('steps', $this->addProcessStatusses($this->getStatussenSorted($zaak), $statusToelichting));
         $zaak->setValue('status_history', $zaak->statussen);
@@ -60,6 +60,7 @@ class ZakenEndpoint extends Endpoint
         $zaak->setValue('status_explanation', $statusToelichting);
         $zaak->setValue('result', $zaak->resultaat);
         $zaak->setValue('image', ContainerResolver::make()->get('zaak_image'));
+        $zaak->setValue('zaaktype_description', $zaak->zaaktype->omschrijvingGeneriek ?? '');
 
         return $zaak;
     }

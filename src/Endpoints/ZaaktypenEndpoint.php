@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace OWC\Zaaksysteem\Endpoints;
 
+use Exception;
 use OWC\Zaaksysteem\Endpoints\Filter\AbstractFilter;
 use OWC\Zaaksysteem\Endpoints\Filter\ResultaattypenFilter;
 use OWC\Zaaksysteem\Entities\Zaaktype;
@@ -51,7 +52,12 @@ class ZaaktypenEndpoint extends Endpoint
         $zaaktypen = [];
 
         while ($page) {
-            $result = $this->all((new ResultaattypenFilter())->page($page));
+            try {
+                $result = $this->all((new ResultaattypenFilter())->page($page));
+            } catch (Exception $e) {
+                break;
+            }
+
             $zaaktypen = array_merge($zaaktypen, $result->all());
             $page = $result->pageMeta()->getNextPageNumber();
         }

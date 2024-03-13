@@ -17,12 +17,6 @@ use OWC\Zaaksysteem\Support\Collection;
 class Block
 {
     protected Client $client;
-    protected string $currentUserBsn;
-
-    public function __construct()
-    {
-        $this->currentUserBsn = resolve('digid.current_user_bsn');
-    }
 
     public function render($attributes, $rendered, $editor)
     {
@@ -31,7 +25,7 @@ class Block
             return;
         }
 
-        if (empty($this->currentUserBsn)) {
+        if (! $this->getCurrentUserBsn()) {
             return 'Er is geen geldig BSN gevonden waardoor er geen zaken opgehaald kunnen worden.';
         }
 
@@ -62,6 +56,11 @@ class Block
         return $this->returnView($attributes, $zaken);
     }
 
+    protected function getCurrentUserBsn(): string
+    {
+        return resolve('digid.current_user_bsn');
+    }
+
     protected function handleZaken(array $attributes): Collection
     {
         if (! $attributes['combinedClients']) {
@@ -76,7 +75,7 @@ class Block
      */
     protected function uniqueTransientKey(array $attributes): string
     {
-        $attributes['bsnCurrentUser'] = $this->currentUserBsn;
+        $attributes['bsnCurrentUser'] = $this->getCurrentUserBsn();
 
         return md5(json_encode($attributes));
     }
@@ -126,7 +125,7 @@ class Block
             return $filter;
         }
 
-        $filter->byBsn($this->currentUserBsn);
+        $filter->byBsn($this->getCurrentUserBsn());
 
         return $filter;
     }
@@ -184,6 +183,20 @@ class Block
     {
         if ('tabs' === $attributes['view']) {
             return view('blocks/mijn-zaken/overview-zaken-tabs.php', ['zaken' => $zaken]);
+        }
+
+        if ('current' === $attributes['view']) {
+            /**
+             * Before reviewing this clause, it's important to note the limitations of the Zaken endpoint.
+             * The Zaken endpoint lacks native support for limiting results by a specific number.
+             * Consequently, the 'take' method is used. However, it's worth noting that this approach may not be efficient,
+             * especially when a resident has a substantial number of 'zaken'.
+             *
+             * Ideally, we would be able to apply additional filtering based on the status of Zaken, such as 'current' and 'closed'.
+             */
+            $limit = $attributes['numberOfItems'] ?? 2;
+
+            return view('blocks/mijn-zaken/overview-zaken-current.php', ['zaken' => $zaken->take((int) $limit)]);
         }
 
         return view('blocks/mijn-zaken/overview-zaken.php', ['zaken' => $zaken]);

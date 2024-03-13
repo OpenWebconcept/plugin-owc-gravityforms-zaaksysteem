@@ -70,6 +70,21 @@ class GravityFormsFormSettings
                     'choices' => (new OpenZaakClient(ContainerResolver::make()->getApiClient('openzaak')))->zaaktypen(),
                 ],
                 [
+                    'name'    => "{$this->prefix}-form-setting-openzaak-information-object-type",
+                    'type'    => 'select',
+                    'label'   => esc_html__('Informatie object type', 'owc-gravityforms-zaaksysteem'),
+                    'dependency' => [
+                        'live'   => true,
+                        'fields' => [
+                            [
+                                'field' => "{$this->prefix}-form-setting-supplier",
+                                'values' => ['openzaak'],
+                            ],
+                        ],
+                    ],
+                    'choices' => (new OpenZaakClient(ContainerResolver::make()->getApiClient('openzaak')))->informatieobjecttypen(),
+                ],
+                [
                     'name'    => "{$this->prefix}-form-setting-decos-join-identifier",
                     'type'    => 'select',
                     'label'   => esc_html__('Zaaktype', 'owc-gravityforms-zaaksysteem'),
@@ -83,6 +98,21 @@ class GravityFormsFormSettings
                         ],
                     ],
                     'choices' => (new DecosClient(ContainerResolver::make()->getApiClient('decos')))->zaaktypen(),
+                ],
+                [
+                    'name'    => "{$this->prefix}-form-setting-decos-join-information-object-type",
+                    'type'    => 'select',
+                    'label'   => esc_html__('Informatie object type', 'owc-gravityforms-zaaksysteem'),
+                    'dependency' => [
+                        'live'   => true,
+                        'fields' => [
+                            [
+                                'field' => "{$this->prefix}-form-setting-supplier",
+                                'values' => ['decos-join'],
+                            ],
+                        ],
+                    ],
+                    'choices' => (new DecosClient(ContainerResolver::make()->getApiClient('decos')))->informatieobjecttypen(),
                 ],
                 [
                     'name'    => "{$this->prefix}-form-setting-rx-mission-identifier",
@@ -100,6 +130,21 @@ class GravityFormsFormSettings
                     'choices' => (new RxMissionClient(ContainerResolver::make()->getApiClient('rx-mission')))->zaaktypen(),
                 ],
                 [
+                    'name'    => "{$this->prefix}-form-setting-rx-mission-information-object-type",
+                    'type'    => 'select',
+                    'label'   => esc_html__('Informatie object type', 'owc-gravityforms-zaaksysteem'),
+                    'dependency' => [
+                        'live'   => true,
+                        'fields' => [
+                            [
+                                'field' => "{$this->prefix}-form-setting-supplier",
+                                'values' => ['rx-mission'],
+                            ],
+                        ],
+                    ],
+                    'choices' => (new RxMissionClient(ContainerResolver::make()->getApiClient('rx-mission')))->informatieobjecttypen(),
+                ],
+                [
                     'name'    => "{$this->prefix}-form-setting-xxllnc-identifier",
                     'type'    => 'select',
                     'label'   => esc_html__('Zaaktype', 'owc-gravityforms-zaaksysteem'),
@@ -113,6 +158,21 @@ class GravityFormsFormSettings
                         ],
                     ],
                     'choices' => (new XxllncClient(ContainerResolver::make()->getApiClient('xxllnc')))->zaaktypen(),
+                ],
+                [
+                    'name'    => "{$this->prefix}-form-setting-xxllnc-information-object-type",
+                    'type'    => 'select',
+                    'label'   => esc_html__('Informatie object type', 'owc-gravityforms-zaaksysteem'),
+                    'dependency' => [
+                        'live'   => true,
+                        'fields' => [
+                            [
+                                'field' => "{$this->prefix}-form-setting-supplier",
+                                'values' => ['xxllnc'],
+                            ],
+                        ],
+                    ],
+                    'choices' => (new XxllncClient(ContainerResolver::make()->getApiClient('xxllnc')))->informatieobjecttypen(),
                 ],
             ],
         ];

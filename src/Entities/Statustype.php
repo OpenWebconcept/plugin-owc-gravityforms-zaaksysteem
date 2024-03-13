@@ -24,7 +24,9 @@ class Statustype extends Entity
 
     public function volgnummer(): string
     {
-        return (string) $this->getValue('volgnummer', '');
+        $volgnummer = (string) $this->getValue('volgnummer', '');
+
+        return ltrim($volgnummer, '0');
     }
 
     public function processStatus(): string

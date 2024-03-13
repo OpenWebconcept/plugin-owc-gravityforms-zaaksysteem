@@ -6,7 +6,6 @@ namespace OWC\Zaaksysteem\Contracts;
 
 use DateTime;
 use Exception;
-use function OWC\Zaaksysteem\Foundation\Helpers\resolve;
 use OWC\Zaaksysteem\Endpoints\Filter\RoltypenFilter;
 use OWC\Zaaksysteem\Entities\Rol;
 use OWC\Zaaksysteem\Entities\Zaak;
@@ -15,9 +14,11 @@ use OWC\Zaaksysteem\Entities\Zaaktype;
 use OWC\Zaaksysteem\Http\Errors\BadRequestError;
 use OWC\Zaaksysteem\Resolvers\ContainerResolver;
 use OWC\Zaaksysteem\Support\PagedCollection;
+use function OWC\Zaaksysteem\Foundation\Helpers\resolve;
 
 abstract class AbstractCreateZaakAction
 {
+    public const CLIENT_NAME = '';
     public const CALLABLE_NAME = '';
     public const CLIENT_CATALOGI_URL = '';
     public const CLIENT_ZAKEN_URL = '';
@@ -25,57 +26,62 @@ abstract class AbstractCreateZaakAction
 
     protected function getApiClient(): Client
     {
-        return ContainerResolver::make()->getApiClient(static::CALLABLE_NAME);
+        return ContainerResolver::make()->getApiClient(static::CLIENT_NAME);
     }
 
     protected function getRSIN(): string
     {
-        $rsin = ContainerResolver::make()->get('rsin');
-
-        return ! empty($rsin) && is_string($rsin) ? $rsin : '';
+        return ContainerResolver::make()->rsin();
     }
 
     /**
      * Get all available "roltypen".
      */
-    public function getRolTypen(string $zaaktype): PagedCollection
+    public function getRolTypen(string $zaaktypeURL): PagedCollection
     {
         $client = $this->getApiClient();
 
         $filter = new RoltypenFilter();
-        $filter->get('zaaktype', $zaaktype);
+        $filter->add('zaaktype', $zaaktypeURL);
 
         return $client->roltypen()->filter($filter);
     }
 
     /**
-     * Use the selected `zaaktype identifier` to retrieve the `zaaktype`.
-     *
-     * @todo we cannot use the zaaktype URI to retrieve a zaaktype because it is bound to change when the zaaktype is updated. There doesn't seem to be a way to retrieve the zaaktype by identifier, so we have to get all the zaaktypen first and then filter them by identifier. We should change this when the API supports this.
-     *
-     * @see https://github.com/OpenWebconcept/plugin-owc-gravityforms-zaaksysteem/issues/13#issue-1697256063
+     * Use the selected `zaaktype identifier` to compose the url to the 'zaaktype'.
      */
-    public function getZaakType($form): ?Zaaktype
+    public function getZaakTypeURL($form): ?string
     {
         $client = $this->getApiClient();
-        $zaaktypeIdentifier = $form[sprintf('%s-form-setting-%s-identifier', OWC_GZ_PLUGIN_SLUG, static::FORM_SETTING_SUPPLIER_KEY)];
+        $zaaktypeIdentifier = $form[sprintf('%s-form-setting-%s-identifier', OWC_GZ_PLUGIN_SLUG, static::FORM_SETTING_SUPPLIER_KEY)] ?? null;
 
-        return $client->zaaktypen()->byIdentifier($zaaktypeIdentifier);
+        if (empty($zaaktypeIdentifier)) {
+            return null;
+        }
+
+        /**
+         * In previous versions the UUID of a 'Zaaktype' was saved instead of its URL.
+         * This check is here to support backwards compatibility.
+         */
+        if (! filter_var($zaaktypeIdentifier, FILTER_VALIDATE_URL)) {
+            return sprintf('%s/%s/%s', untrailingslashit($client->getEndpointUrlByType('catalogi')), 'zaaktypen', $zaaktypeIdentifier);
+        }
+
+        return $zaaktypeIdentifier;
     }
 
     /**
      * Merge mapped arguments with defaults.
      */
-    protected function mappedArgs(string $rsin, Zaaktype $zaaktype, array $form, array $entry): array
+    protected function mappedArgs(string $rsin, string $zaaktypeURL, array $form, array $entry): array
     {
         $defaults = [
             'bronorganisatie' => $rsin,
-            'informatieobject' => '',
             'omschrijving' => '',
             'registratiedatum' => date('Y-m-d'),
             'startdatum' => date('Y-m-d'),
             'verantwoordelijkeOrganisatie' => $rsin,
-            'zaaktype' => $zaaktype['url'],
+            'zaaktype' => $zaaktypeURL,
         ];
 
         return $this->mapArgs($defaults, $form, $entry);
@@ -108,7 +114,7 @@ abstract class AbstractCreateZaakAction
         return $args;
     }
 
-    abstract public function addZaak($entry, $form): ?Zaak;
+    abstract public function addZaak($entry, $form): Zaak;
 
     /**
      * Add "zaak" properties.
@@ -179,9 +185,9 @@ abstract class AbstractCreateZaakAction
     /**
      * Assign a submitter to the "zaak".
      */
-    public function addRolToZaak(Zaak $zaak, string $zaaktype): ?Rol
+    public function addRolToZaak(Zaak $zaak, string $zaaktypeURL): ?Rol
     {
-        $rolTypen = $this->getRolTypen($zaaktype);
+        $rolTypen = $this->getRolTypen($zaaktypeURL);
 
         if ($rolTypen->isEmpty()) {
             throw new Exception('Er zijn geen roltypen gevonden voor dit zaaktype');
@@ -215,6 +221,8 @@ abstract class AbstractCreateZaakAction
             } catch (Exception | BadRequestError $e) {
                 $e->getInvalidParameters();
             }
+
+            break;
         }
 
         return $rol;

@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace OWC\Zaaksysteem\Entities;
 
+use DateTime;
+use Exception;
+
 class Enkelvoudiginformatieobject extends Entity
 {
     protected array $casts = [
@@ -66,6 +69,49 @@ class Enkelvoudiginformatieobject extends Entity
         return $this->getValue('bestandsomvang', 0);
     }
 
+    public function creationDate(): string
+    {
+        $date = $this->getValue('creatiedatum', '');
+
+        if (empty($date)) {
+            return '';
+        }
+
+        try {
+            return (new DateTime($date))->format('d-m-Y');
+        } catch(Exception $e) {
+            return '';
+        }
+    }
+
+    public function formatType(): string
+    {
+        $type = $this->getValue('formaat', '');
+
+        if (empty($type)) {
+            return '';
+        }
+
+        $parts = explode('/', $type);
+
+        return end($parts) ?: '';
+    }
+
+    public function formattedMetaData(): string
+    {
+        $meta = array_filter([
+            $this->formatType(),
+            $this->sizeFormatted(),
+            $this->creationDate(),
+        ]);
+
+        if (empty($meta)) {
+            return '';
+        }
+
+        return implode(', ', $meta);
+    }
+
     public function downloadUrl(string $zaakIdentification): string
     {
         if ($this->isClassified() || ! $this->hasFinalStatus()) {
@@ -119,6 +165,20 @@ class Enkelvoudiginformatieobject extends Entity
     public function confidentialityDesignation(): string
     {
         return $this->getValue('vertrouwelijkheidaanduiding', '');
+    }
+
+    public function isCaseConfidential(): bool
+    {
+        $designation = $this->confidentialityDesignation();
+
+        return 'zaakvertrouwelijk' === $designation;
+    }
+
+    public function isConfidential(): bool
+    {
+        $designation = $this->confidentialityDesignation();
+
+        return 'vertrouwelijk' === $designation;
     }
 
     public function isClassified(): bool

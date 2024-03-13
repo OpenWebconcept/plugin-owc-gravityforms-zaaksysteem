@@ -26,6 +26,11 @@ class Response
         return $this->headers;
     }
 
+    public function getContentType(): string
+    {
+        return $this->headers['content-type'] ?? '';
+    }
+
     public function getResponse(): array
     {
         return $this->response;

@@ -22,6 +22,7 @@ use function OWC\Zaaksysteem\Foundation\Helpers\view;
 			    }
 			    echo view('blocks/mijn-zaken/tabs-view/zaak-card.php', [
 			        'title' => $zaak->title(),
+			        'identification' => $zaak->identification(),
 			        'date' => $zaak->startDate('j F Y'),
 			        // 'tag' => '1 taak open', // Dummy data
 			        'isActive' => true,
@@ -39,6 +40,7 @@ use function OWC\Zaaksysteem\Foundation\Helpers\view;
 			    }
 			    echo view('blocks/mijn-zaken/tabs-view/zaak-card.php', [
 			        'title' => $zaak->title(),
+			        'identification' => $zaak->identification(),
 			        'date' => $zaak->startDate('j F Y'),
 			        'link' => $zaak->permalink(),
 			    ]);

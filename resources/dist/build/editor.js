@@ -25,7 +25,8 @@ var _wp$components = wp.components,
   TextControl = _wp$components.TextControl,
   IconButton = _wp$components.IconButton,
   SelectControl = _wp$components.SelectControl,
-  CheckboxControl = _wp$components.CheckboxControl;
+  CheckboxControl = _wp$components.CheckboxControl,
+  RangeControl = _wp$components.RangeControl;
 var Fragment = wp.element.Fragment;
 registerBlockType('owc/mijn-zaken', {
   apiVersion: 2,
@@ -55,6 +56,10 @@ registerBlockType('owc/mijn-zaken', {
     view: {
       type: 'string',
       "default": 'default'
+    },
+    numberOfItems: {
+      type: 'number',
+      "default": 2
     }
   },
   edit: function edit(_ref) {
@@ -156,7 +161,18 @@ registerBlockType('owc/mijn-zaken', {
       isDefault: true,
       icon: "plus",
       onClick: addZTFilter.bind(_this)
-    }, "Voeg een Zaaktype identificatie toe")), /*#__PURE__*/React.createElement(PanelBody, {
+    }, "Voeg een Zaaktype identificatie toe")), attributes.view === 'current' && /*#__PURE__*/React.createElement(PanelBody, null, /*#__PURE__*/React.createElement(RangeControl, {
+      min: 1,
+      max: 20,
+      label: "Aantal",
+      help: "Het aantal zaken dat getoond moeten worden.",
+      value: attributes.numberOfItems,
+      onChange: function onChange(value) {
+        return setAttributes({
+          numberOfItems: value
+        });
+      }
+    })), /*#__PURE__*/React.createElement(PanelBody, {
       title: "Weergave",
       initialOpen: false
     }, /*#__PURE__*/React.createElement(SelectControl, {
@@ -168,6 +184,9 @@ registerBlockType('owc/mijn-zaken', {
       }, {
         label: 'Tabbladen',
         value: 'tabs'
+      }, {
+        label: 'Lopende Zaken',
+        value: 'current'
       }],
       onChange: function onChange(newView) {
         return setAttributes({

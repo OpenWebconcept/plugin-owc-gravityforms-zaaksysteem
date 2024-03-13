@@ -5,6 +5,7 @@ $date = $vars['date'] ?? '';
 $tag = $vars['tag'] ?? '';
 $zaak = $vars['zaak'] ?? '';
 $link = $vars['link'] ?? '';
+$identification = $vars['identification'] ?? '';
 ?>
 <div class="zaak-card <?php echo $isActive ? 'active' : ''; ?>">
 	<svg class="zaak-card-svg" width="385" height="200" viewBox="0 0 385 200" fill="#F1F1F1" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
@@ -15,6 +16,7 @@ $link = $vars['link'] ?? '';
 			<?php echo $title ?>
 		</a>
 	</h2>
+	<small><?php echo $identification; ?></small>
 	<div class="zaak-card-footer">
 		<?php if ($date) : ?>
 			<div class="zaak-card-date">
