@@ -20,7 +20,7 @@ use OWC\Zaaksysteem\Endpoints\ZakenEndpoint;
 
 class Client extends AbstractClient
 {
-    public const CLIENT_NAME = 'decosjoin';
+    public const CLIENT_NAME = 'decos-join';
     public const CALLABLE_NAME = 'dj.client';
 
     public const AVAILABLE_ENDPOINTS = [

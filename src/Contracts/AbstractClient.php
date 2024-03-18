@@ -121,7 +121,7 @@ abstract class AbstractClient implements Client
      */
     protected function setClientSecretByType(string $type): self
     {
-        if ($this->getClientNamePretty() !== 'decosjoin') {
+        if ($this->getClientNamePretty() !== 'decos-join') {
             return $this;
         }
 
