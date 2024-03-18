@@ -29,7 +29,7 @@ class CreateZaakAction extends AbstractCreateZaakAction
 
         $zaaktypeURL = $this->getZaakTypeURL($form);
 
-        if (empty($zaaktype)) {
+        if (empty($zaaktypeURL)) {
             throw new Exception('Het zaaktype is niet ingesteld in de Gravity Forms instellingen');
         }
 
