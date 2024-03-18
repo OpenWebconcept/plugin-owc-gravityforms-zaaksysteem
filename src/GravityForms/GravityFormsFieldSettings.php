@@ -65,11 +65,13 @@ class GravityFormsFieldSettings
             $zaaktypeIdentifier = end($explode);
         }
 
-        if ($client->getClientNamePretty() === 'decos-join') {
-            $zaaktype = $client->zaaktypen()->get($zaaktypeIdentifier);
-        } else {
-            $zaaktype = $client->zaaktypen()->byIdentifier($zaaktypeIdentifier);
-        }
+        $zaaktype = $client->zaaktypen()->get($zaaktypeIdentifier);
+
+        /**
+         * When the API supports filtering on zaaktype identification this line should be used.
+         * Fow now the 'byIdentifier' method is quite memory-intensive.
+         */
+        // $zaaktype = $client->zaaktypen()->byIdentifier($zaaktypeIdentifier);
 
         return $zaaktype;
     }
