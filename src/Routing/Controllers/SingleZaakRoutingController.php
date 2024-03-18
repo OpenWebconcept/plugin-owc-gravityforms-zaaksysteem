@@ -31,7 +31,7 @@ class SingleZaakRoutingController extends AbstractRoutingController
     {
         add_action('generate_rewrite_rules', function (WP_Rewrite $rewrite) {
             $rules = [
-                'zaak/([a-zA-Z0-9-]+)/([a-zA-Z-]+)/?$' => 'index.php?pagename=zaak&zaak_identification=$matches[1]&zaak_supplier=$matches[2]',
+                'zaak/([a-zA-Z0-9.-]+)/([a-zA-Z-]+)/?$' => 'index.php?pagename=zaak&zaak_identification=$matches[1]&zaak_supplier=$matches[2]',
             ];
 
             $rewrite->rules = $rules + $rewrite->rules;
