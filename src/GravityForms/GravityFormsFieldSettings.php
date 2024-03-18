@@ -65,7 +65,7 @@ class GravityFormsFieldSettings
             $zaaktypeIdentifier = end($explode);
         }
 
-        if ($client->getClientNamePretty() === 'decosjoin') {
+        if ($client->getClientNamePretty() === 'decos-join') {
             $zaaktype = $client->zaaktypen()->get($zaaktypeIdentifier);
         } else {
             $zaaktype = $client->zaaktypen()->byIdentifier($zaaktypeIdentifier);
