@@ -132,9 +132,9 @@ abstract class AbstractCreateUploadedDocumentsAction
         return $this->client->zaakinformatieobjecten()->create(new Zaakinformatieobject($object->toArray(), $this->client->getClientName(), $this->client->getClientNamePretty())); // What to do when this one fails?
     }
 
-    protected function prepareInformationObjectArgs(string $objectURL, string $informationObectType): array
+    protected function prepareInformationObjectArgs(string $objectURL, string $informationObjectType): array
     {
-        if (empty($informationObectType)) {
+        if (empty($informationObjectType)) {
             return [];
         }
 
@@ -155,7 +155,7 @@ abstract class AbstractCreateUploadedDocumentsAction
         $args['versie'] = 1;
         $args['bronorganisatie'] = ContainerResolver::make()->rsin();
         $args['creatiedatum'] = date('Y-m-d');
-        $args['informatieobjecttype'] = $informationObectType;
+        $args['informatieobjecttype'] = $informationObjectType;
 
         return $args;
     }
