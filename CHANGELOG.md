@@ -2,6 +2,7 @@
 
 ## v2.0.0-beta.1
 
+- Feat: manual configuration of form settings, besides selecting retrieved settings from external source
 - Refactor: general improvements and cleaning-up
 - Feat: support uploads made by resident by using upload form fields
 - Feat: add Collection class method take()

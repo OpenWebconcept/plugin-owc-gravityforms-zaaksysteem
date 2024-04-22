@@ -15,9 +15,12 @@ use function OWC\Zaaksysteem\Foundation\Helpers\resolve;
 use OWC\Zaaksysteem\Http\Errors\BadRequestError;
 use OWC\Zaaksysteem\Resolvers\ContainerResolver;
 use OWC\Zaaksysteem\Support\PagedCollection;
+use OWC\Zaaksysteem\Traits\FormSetting;
 
 abstract class AbstractCreateZaakAction
 {
+    use FormSetting;
+
     public const CLIENT_NAME = '';
     public const CALLABLE_NAME = '';
     public const CLIENT_CATALOGI_URL = '';
@@ -53,7 +56,7 @@ abstract class AbstractCreateZaakAction
     public function getZaakTypeURL($form): ?string
     {
         $client = $this->getApiClient();
-        $zaaktypeIdentifier = $form[sprintf('%s-form-setting-%s-identifier', OWC_GZ_PLUGIN_SLUG, static::FORM_SETTING_SUPPLIER_KEY)] ?? null;
+        $zaaktypeIdentifier = $this->zaaktypeIdentifierFormSetting($form, static::FORM_SETTING_SUPPLIER_KEY);
 
         if (empty($zaaktypeIdentifier)) {
             return null;
