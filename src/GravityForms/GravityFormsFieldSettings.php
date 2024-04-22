@@ -9,12 +9,14 @@ use OWC\Zaaksysteem\Entities\Zaaktype;
 use function OWC\Zaaksysteem\Foundation\Helpers\get_supplier;
 use function OWC\Zaaksysteem\Foundation\Helpers\view;
 use OWC\Zaaksysteem\Resolvers\ContainerResolver;
-
 use OWC\Zaaksysteem\Support\Collection;
 use OWC\Zaaksysteem\Support\PagedCollection;
+use OWC\Zaaksysteem\Traits\FormSetting;
 
 class GravityFormsFieldSettings
 {
+    use FormSetting;
+
     protected const TRANSIENT_LIFETIME_IN_SECONDS = 64800; // 18 hours.
 
     /**
@@ -165,7 +167,7 @@ class GravityFormsFieldSettings
         }
 
         // Get the selected zaaktype identifier from the form's settings.
-        $zaaktypeIdentifier = $form[sprintf('%s-form-setting-%s-identifier', OWC_GZ_PLUGIN_SLUG, $supplier)];
+        $zaaktypeIdentifier = $this->zaaktypeIdentifierFormSetting($form, $supplier);
 
         // Get the zaaktype belonging to the chosen zaaktype identifier.
         $zaaktype = $this->getZaakType($supplier, $zaaktypeIdentifier);

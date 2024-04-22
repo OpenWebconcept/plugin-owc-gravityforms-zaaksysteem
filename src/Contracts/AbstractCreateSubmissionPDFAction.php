@@ -10,11 +10,13 @@ use OWC\Zaaksysteem\Entities\Zaakinformatieobject;
 use OWC\Zaaksysteem\GravityForms\GravityPdfSettings;
 use OWC\Zaaksysteem\Resolvers\ContainerResolver;
 use OWC\Zaaksysteem\Traits\CheckURL;
+use OWC\Zaaksysteem\Traits\FormSetting;
 use OWC\Zaaksysteem\Traits\InformationObject;
 
 abstract class AbstractCreateSubmissionPDFAction
 {
     use CheckURL;
+    use FormSetting;
     use InformationObject;
 
     public const CLIENT_NAME = '';
@@ -39,7 +41,7 @@ abstract class AbstractCreateSubmissionPDFAction
 
     public function getInformationObjectType(): string
     {
-        return $this->form[sprintf('%s-form-setting-%s-information-object-type', OWC_GZ_PLUGIN_SLUG, static::FORM_SETTING_SUPPLIER_KEY)] ?? '';
+        return $this->informationObjectTypeFormSetting($this->form, static::FORM_SETTING_SUPPLIER_KEY);
     }
 
     public function createSubmissionPDF(array $pdfSubmissionArgs): ?Enkelvoudiginformatieobject
