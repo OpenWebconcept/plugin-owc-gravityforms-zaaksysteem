@@ -38,6 +38,7 @@ registerBlockType( 'owc/mijn-zaken', {
 		byBSN: { type: 'boolean', default: true },
 		view: { type: 'string', default: 'default' },
 		numberOfItems: { type: 'number', default: 2 },
+		orderBy: { type: 'string', default: 'startdatum' },
 	},
 	edit: ( { attributes, setAttributes } ) => {
 		const blockProps = useBlockProps();
@@ -47,6 +48,7 @@ registerBlockType( 'owc/mijn-zaken', {
 			updateMePlease,
 			combinedClients,
 			byBSN,
+			orderBy,
 		} = attributes;
 		const zaaktypeFilterArr = JSON.parse( zaaktypeFilter );
 
@@ -137,6 +139,38 @@ registerBlockType( 'owc/mijn-zaken', {
 								checked={ byBSN }
 								onChange={ ( byBSN ) =>
 									setAttributes( { byBSN } )
+								}
+							/>
+							<SelectControl
+								label="Sorteer op"
+								value={ orderBy }
+								options={ [
+									{
+										label: 'Startdatum',
+										value: 'startdatum',
+									},
+									{ label: 'Einddatum', value: 'einddatum' },
+									{
+										label: 'Publicatiedatum',
+										value: 'publicatiedatum',
+									},
+									{
+										label: 'Archiefactiedatum',
+										value: 'archiefactiedatum',
+									},
+									{
+										label: 'Registratiedatum',
+										value: 'registratiedatum',
+									},
+									{
+										label: 'Identificatie',
+										value: 'identificatie',
+									},
+								] }
+								onChange={ ( neworderBy ) =>
+									setAttributes( {
+										orderBy: neworderBy,
+									} )
 								}
 							/>
 						</PanelBody>

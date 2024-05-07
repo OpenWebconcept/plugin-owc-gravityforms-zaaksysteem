@@ -30,6 +30,28 @@ class ZakenFilter extends AbstractFilter
         return $this->add('zaaktype', $zaaktype->url);
     }
 
+    public function orderBy(string $orderBy)
+    {
+        /**
+         * Might be used in other places, in that case
+         * move to config/container.
+         */
+        $orderByParams = [
+            'startdatum',
+            'einddatum',
+            'publicatiedatum',
+            'archiefactiedatum',
+            'registratiedatum',
+            'identificatie',
+        ];
+
+        if (! in_array($orderBy, $orderByParams)) {
+            return $this;
+        }
+
+        return $this->add('ordering', $orderBy);
+    }
+
     public function byZaaktypeIdentification(Zaaktype $zaaktype)
     {
         return $this->add('identificatie', $zaaktype->identificatie);

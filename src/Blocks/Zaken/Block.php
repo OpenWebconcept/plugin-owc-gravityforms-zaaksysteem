@@ -83,6 +83,7 @@ class Block
     protected function getZaken(array $attributes): Collection
     {
         $filter = new ZakenFilter();
+        $filter = $this->handleFilterOrdering($filter, $attributes);
         $filter = $this->handleFilterBSN($filter, $attributes);
         $filter = $this->handleFilterZaaktype($filter, $attributes);
 
@@ -98,6 +99,7 @@ class Block
             $client = ContainerResolver::make()->getApiClient($supplier);
 
             $filter = new ZakenFilter();
+            $filter = $this->handleFilterOrdering($filter, $attributes);
             $filter = $this->handleFilterBSN($filter, $attributes);
             $filter = $this->handleFilterZaaktype($filter, $attributes, $client);
 
@@ -117,6 +119,17 @@ class Block
 
             return $carry;
         }, []);
+    }
+
+    protected function handleFilterOrdering(ZakenFilter $filter, array $attributes): ZakenFilter
+    {
+        if (empty($attributes['orderBy'])) {
+            return $filter;
+        }
+
+        $filter->orderBy($attributes['orderBy']);
+
+        return $filter;
     }
 
     protected function handleFilterBSN(ZakenFilter $filter, array $attributes): ZakenFilter

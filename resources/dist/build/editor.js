@@ -60,6 +60,10 @@ registerBlockType('owc/mijn-zaken', {
     numberOfItems: {
       type: 'number',
       "default": 2
+    },
+    orderBy: {
+      type: 'string',
+      "default": 'startdatum'
     }
   },
   edit: function edit(_ref) {
@@ -70,7 +74,8 @@ registerBlockType('owc/mijn-zaken', {
       zaaktypeFilter = attributes.zaaktypeFilter,
       updateMePlease = attributes.updateMePlease,
       combinedClients = attributes.combinedClients,
-      byBSN = attributes.byBSN;
+      byBSN = attributes.byBSN,
+      orderBy = attributes.orderBy;
     var zaaktypeFilterArr = JSON.parse(zaaktypeFilter);
     var addZTFilter = function addZTFilter() {
       zaaktypeFilterArr.push('');
@@ -152,6 +157,33 @@ registerBlockType('owc/mijn-zaken', {
       onChange: function onChange(byBSN) {
         return setAttributes({
           byBSN: byBSN
+        });
+      }
+    }), /*#__PURE__*/React.createElement(SelectControl, {
+      label: "Sorteer op",
+      value: orderBy,
+      options: [{
+        label: 'Startdatum',
+        value: 'startdatum'
+      }, {
+        label: 'Einddatum',
+        value: 'einddatum'
+      }, {
+        label: 'Publicatiedatum',
+        value: 'publicatiedatum'
+      }, {
+        label: 'Archiefactiedatum',
+        value: 'archiefactiedatum'
+      }, {
+        label: 'Registratiedatum',
+        value: 'registratiedatum'
+      }, {
+        label: 'Identificatie',
+        value: 'identificatie'
+      }],
+      onChange: function onChange(neworderBy) {
+        return setAttributes({
+          orderBy: neworderBy
         });
       }
     })), /*#__PURE__*/React.createElement(PanelBody, {
