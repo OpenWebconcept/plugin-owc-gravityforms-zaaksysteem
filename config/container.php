@@ -8,13 +8,12 @@ use OWC\Zaaksysteem\Resolvers\DigiDBsnResolver;
 /**
  * Link interfaces to their concretions.
  */
-
 return [
     /**
      * OpenZaak configuration.
      */
     'openzaak.abbr' => 'oz',
-    'oz.client' => fn(Container $container) => $container->get(Clients\OpenZaak\Client::class),
+    'oz.client' => fn (Container $container) => $container->get(Clients\OpenZaak\Client::class),
     'oz.catalogi_uri' => function (Container $container) {
         return $container->make('gf.setting', ['-openzaak-catalogi-url']);
     },
@@ -38,7 +37,7 @@ return [
      * Decos JOIN configuration.
      */
     'decosjoin.abbr' => 'dj',
-    'dj.client' => fn(Container $container) => $container->get(Clients\DecosJoin\Client::class),
+    'dj.client' => fn (Container $container) => $container->get(Clients\DecosJoin\Client::class),
     'dj.catalogi_uri' => function (Container $container) {
         return $container->make('gf.setting', ['-decos-join-catalogi-url']);
     },
@@ -68,7 +67,7 @@ return [
      * RX.Mission configuration.
      */
     'rx-mission.abbr' => 'rx',
-    'rx.client' => fn(Container $container) => $container->get(Clients\RxMission\Client::class),
+    'rx.client' => fn (Container $container) => $container->get(Clients\RxMission\Client::class),
     'rx.catalogi_uri' => function (Container $container) {
         return $container->make('gf.setting', ['-rx-mission-catalogi-url']);
     },
@@ -92,7 +91,7 @@ return [
      * Xxllnc configuration.
      */
     'xxllnc.abbr' => 'xxllnc',
-    'xxllnc.client' => fn(Container $container) => $container->get(Clients\Xxllnc\Client::class),
+    'xxllnc.client' => fn (Container $container) => $container->get(Clients\Xxllnc\Client::class),
     'xxllnc.catalogi_uri' => function (Container $container) {
         return $container->make('gf.setting', ['-xxllnc-catalogi-url']);
     },
@@ -227,7 +226,7 @@ return [
                     'Accept-Crs'    => 'EPSG:4326',
                     'Content-Crs'   => 'EPSG:4326',
                     'Content-Type'  => 'application/json',
-                ]
+                ],
             ])
         );
     },
@@ -240,9 +239,9 @@ return [
     'message.logger.path' => dirname(ABSPATH).'/owc-http-messages.json',
     'message.logger' => function (Container $container) {
         $logger = new \Monolog\Logger('owc_http_log');
-        
+
         $handler = new \Monolog\Handler\StreamHandler(
-            $container->get('message.logger.path'), 
+            $container->get('message.logger.path'),
             \Monolog\Logger::DEBUG
         );
 
@@ -254,5 +253,5 @@ return [
         $logger->pushProcessor(new Http\Logger\FilterBsnProcessor());
 
         return $logger;
-    }
+    },
 ];
