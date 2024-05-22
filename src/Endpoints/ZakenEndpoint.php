@@ -70,7 +70,19 @@ class ZakenEndpoint extends Endpoint
         $zaakType = $zaak->zaaktype;
         $statusTypen = is_object($zaakType) ? $zaakType->statustypen : null;
 
-        return $statusTypen instanceof Collection ? $statusTypen->sortByAttribute('volgnummer') : Collection::collect([]);
+        if (! $statusTypen instanceof Collection) {
+            return Collection::collect([]);
+        }
+
+        return $statusTypen->sortByAttribute('volgnummer')->mapWithKeys(function ($key, $statusType) {
+            /**
+             * Ensures uniform usage of 'volgnummers' across different clients.
+             * Set the 'volgnummer' attribute of the statustype to its position in the collection (1-based index).
+             */
+            $statusType->setValue('volgnummer', $key + 1);
+
+            return $statusType;
+        });
     }
 
     protected function addProcessStatusses(Collection $statussen, string $statusToelichting): Collection
