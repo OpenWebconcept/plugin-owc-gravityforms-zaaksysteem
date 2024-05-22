@@ -54,7 +54,7 @@ class ZakenEndpoint extends Endpoint
 
         $statusToelichting = $zaak->status instanceof Status ? $zaak->status->statustype->statusExplanation() : '';
         $zaak->setValue('leverancier', $zaak->getClientNamePretty());
-        $zaak->setValue('steps', $this->addProcessStatusses($this->getStatussenSorted($zaak), $statusToelichting));
+        $zaak->setValue('steps', $this->handleProcessStatusses($this->getStatussenSorted($zaak), $statusToelichting));
         $zaak->setValue('status_history', $zaak->statussen);
         $zaak->setValue('information_objects', $zaak->zaakinformatieobjecten);
         $zaak->setValue('status_explanation', $statusToelichting);
@@ -85,25 +85,38 @@ class ZakenEndpoint extends Endpoint
         });
     }
 
-    protected function addProcessStatusses(Collection $statussen, string $statusToelichting): Collection
+    protected function handleProcessStatusses(Collection $statussen, string $statusToelichting): Collection
     {
-        if ($statussen->isEmpty() || empty($statusToelichting)) {
+        if ($statussen->isEmpty()) {
             return $statussen;
         }
 
+        // Not possible to match with a status connected to a 'Zaak', set the first status as current.
+        if (empty($statusToelichting)) {
+            $currentVolgnummer = $statussen->first()->volgnummer();
+
+            return $this->addProcessStatusses($statussen, $currentVolgnummer);
+        }
+
+        // Get the current status which matches with the status connected to a 'Zaak'.
         $filtered = $statussen->filter(function ($status) use ($statusToelichting) {
             return strtolower($status->statusExplanation()) === strtolower($statusToelichting);
         });
 
-        $current = $filtered->first() ? $filtered->first()->volgnummer() : null;
+        $currentVolgnummer = $filtered->first() ? $filtered->first()->volgnummer() : null;
 
-        if (empty($current)) {
+        if (empty($currentVolgnummer)) {
             return $statussen;
         }
 
-        return $statussen->map(function ($status) use ($current) {
+        return $this->addProcessStatusses($statussen, $currentVolgnummer);
+    }
+
+    protected function addProcessStatusses(Collection $statussen, string $currentVolgnummer)
+    {
+        return $statussen->map(function ($status) use ($currentVolgnummer) {
             $volgnummer = (int) $status->volgnummer();
-            $currentNum = (int) $current;
+            $currentNum = (int) $currentVolgnummer;
 
             if ($volgnummer < $currentNum) {
                 $status->setValue('processStatus', 'past');
