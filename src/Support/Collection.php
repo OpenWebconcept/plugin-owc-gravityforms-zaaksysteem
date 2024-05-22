@@ -96,6 +96,11 @@ class Collection extends Enumerable implements CollectionInterface
         return static::collect(array_map($callback, $this->data));
     }
 
+    public function mapWithKeys(Closure $callback): CollectionInterface
+    {
+        return static::collect(array_map($callback, array_keys($this->data), $this->data));
+    }
+
     public function flatten(Closure $callback, $initial = null)
     {
         return array_reduce($this->data, $callback, $initial);
