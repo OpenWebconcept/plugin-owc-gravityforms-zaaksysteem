@@ -2,8 +2,9 @@
 
 ## v2.0.0-beta.1
 
+- Fix: multiple catch statements in AbstractCreateZaakAction class
 - Refactor: use roltype property 'omschrijvingGeneriek' as 'roltoelichting' when creating 'Zaak'
-- Feat: Mark the first proces status of a 'Zaak' as current when a 'Zaak' does not have a active status
+- Feat: mark the first proces status of a 'Zaak' as current when a 'Zaak' does not have a active status
 - Feat: ensure uniform usage of 'volgnummers' across different clients
 - Feat: enable filtering on orderBy in gutenberg block
 - Feat: manual configuration of form settings, besides selecting retrieved settings from external source

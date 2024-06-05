@@ -10,7 +10,6 @@ use OWC\Zaaksysteem\Endpoints\Filter\RoltypenFilter;
 use OWC\Zaaksysteem\Entities\Rol;
 use OWC\Zaaksysteem\Entities\Zaak;
 use OWC\Zaaksysteem\Entities\Zaakeigenschap;
-use OWC\Zaaksysteem\Entities\Zaaktype;
 use function OWC\Zaaksysteem\Foundation\Helpers\resolve;
 use OWC\Zaaksysteem\Http\Errors\BadRequestError;
 use OWC\Zaaksysteem\Resolvers\ContainerResolver;
@@ -108,7 +107,7 @@ abstract class AbstractCreateZaakAction
             }
 
             if ('date' === $field->type) {
-                $fieldValue = (new \DateTime($fieldValue))->format('Y-m-d');
+                $fieldValue = (new DateTime($fieldValue))->format('Y-m-d');
             }
 
             $args[$field->linkedFieldValueZGW] = $fieldValue;
@@ -145,6 +144,8 @@ abstract class AbstractCreateZaakAction
                 );
             } catch (BadRequestError $e) {
                 $e->getInvalidParameters();
+            } catch(Exception $e) {
+                // Fail silently.
             }
         }
     }
@@ -221,8 +222,10 @@ abstract class AbstractCreateZaakAction
 
             try {
                 $rol = $client->rollen()->create(new Rol($args, $client->getClientName(), $client->getClientNamePretty()));
-            } catch (Exception | BadRequestError $e) {
+            } catch (BadRequestError $e) {
                 $e->getInvalidParameters();
+            } catch(Exception $e) {
+                // Fail silently.
             }
 
             break;
