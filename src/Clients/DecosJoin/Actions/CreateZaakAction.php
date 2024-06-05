@@ -21,14 +21,6 @@ class CreateZaakAction extends AbstractCreateZaakAction
      */
     public function addZaak($entry, $form): Zaak
     {
-        /**
-         * Needs to be removed when Buren has a domain instead of a ip-address.
-         */
-        add_filter('http_request_args', function ($r, $url) {
-            $r['sslverify'] = false;
-
-            return $r;
-        }, 10, 2);
         $rsin = $this->getRSIN();
 
         if (empty($rsin)) {

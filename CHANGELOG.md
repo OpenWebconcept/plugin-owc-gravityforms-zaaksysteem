@@ -1,5 +1,9 @@
 # Changelog
 
+## v2.0.1
+
+- Chore: enable sslverify again inside CreateZaakAction (Decos)
+
 ## v2.0.0
 
 - Chore: remove readspeaker from plug-in views
