@@ -1,7 +1,8 @@
 # Changelog
 
-## v2.0.0-beta.1
+## v2.0.0
 
+- Chore: remove readspeaker from plug-in views
 - Fix: multiple catch statements in AbstractCreateZaakAction class
 - Refactor: use roltype property 'omschrijvingGeneriek' as 'roltoelichting' when creating 'Zaak'
 - Feat: mark the first proces status of a 'Zaak' as current when a 'Zaak' does not have a active status
