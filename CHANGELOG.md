@@ -2,6 +2,7 @@
 
 ## v2.0.0-beta.1
 
+- Refactor: use roltype property 'omschrijvingGeneriek' as 'roltoelichting' when creating 'Zaak'
 - Feat: Mark the first proces status of a 'Zaak' as current when a 'Zaak' does not have a active status
 - Feat: ensure uniform usage of 'volgnummers' across different clients
 - Feat: enable filtering on orderBy in gutenberg block
