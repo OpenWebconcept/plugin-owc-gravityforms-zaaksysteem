@@ -214,7 +214,7 @@ abstract class AbstractCreateZaakAction
                     'inpBsn' => $currentBsn,
                 ],
                 'betrokkeneType' => 'natuurlijk_persoon',
-                'roltoelichting' => 'De indiener van de zaak.',
+                'roltoelichting' => $rolType['omschrijvingGeneriek'],
                 'roltype' => $rolType['url'],
                 'zaak' => $zaak->url,
             ];
