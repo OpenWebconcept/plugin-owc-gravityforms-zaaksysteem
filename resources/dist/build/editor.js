@@ -135,6 +135,9 @@ registerBlockType('owc/mijn-zaken', {
       }, {
         label: 'xxllnc',
         value: 'xxllnc'
+      }, {
+        label: 'Procura',
+        value: 'procura'
       }],
       onChange: function onChange(newzaakClient) {
         return setAttributes({

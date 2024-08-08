@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace OWC\Zaaksysteem\GravityForms;
 
 use Exception;
+use GFAPI;
 use OWC\Zaaksysteem\Endpoints\Filter\EigenschappenFilter;
 use OWC\Zaaksysteem\Entities\Informatieobjecttype;
 use OWC\Zaaksysteem\Entities\Zaaktype;
@@ -39,7 +42,7 @@ class GravityFormsFieldSettings
 
         try {
             $zaaktype = $this->getZaaktypeByClient($client, $zaaktypeIdentifier);
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             $zaaktype = null;
         }
 
@@ -115,7 +118,7 @@ class GravityFormsFieldSettings
             return $types;
         }
 
-        $types = $zaaktype->informatieobjecttypen->all();
+        $types = $zaaktype->informatieobjecttypen ? $zaaktype->informatieobjecttypen->all() : [];
 
         if (empty($types)) {
             return [];
@@ -155,11 +158,11 @@ class GravityFormsFieldSettings
      */
     public function addSelect($position, $formId): void
     {
-        if (! class_exists('\GFAPI')) {
+        if (! class_exists('GFAPI')) {
             return;
         }
 
-        $form = \GFAPI::get_form($formId);
+        $form = GFAPI::get_form($formId);
         $supplier = get_supplier($form, true);
 
         if (0 !== $position || empty($supplier)) {

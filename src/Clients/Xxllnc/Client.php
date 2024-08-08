@@ -29,13 +29,13 @@ class Client extends AbstractClient
 
     public const AVAILABLE_ENDPOINTS = [
         // Zaken API
-        'zaken'                     => [ZakenEndpoint::class, 'zaken'],
-        'statussen'                 => [StatussenEndpoint::class, 'zaken'],
-        'rollen'                    => [RollenEndpoint::class, 'zaken'],
-        'resultaten'                => [ResultatenEndpoint::class, 'zaken'],
-        'zaakeigenschappen'         => [ZaakeigenschappenEndpoint::class, 'zaken'],
-        'zaakinformatieobjecten'    => [ZaakinformatieobjectenEndpoint::class, 'zaken'],
-        'zaakobjecten'              => [ZaakobjectenEndpoint::class, 'zaken'],
+        'zaken' => [ZakenEndpoint::class, 'zaken'],
+        'statussen' => [StatussenEndpoint::class, 'zaken'],
+        'rollen' => [RollenEndpoint::class, 'zaken'],
+        'resultaten' => [ResultatenEndpoint::class, 'zaken'],
+        'zaakeigenschappen' => [ZaakeigenschappenEndpoint::class, 'zaken'],
+        'zaakinformatieobjecten' => [ZaakinformatieobjectenEndpoint::class, 'zaken'],
+        'zaakobjecten' => [ZaakobjectenEndpoint::class, 'zaken'],
 
         /**
          * Not yet implemented
@@ -44,11 +44,11 @@ class Client extends AbstractClient
         // 'zaakverzoeken' => Endpoint::class,
 
         // Catalogi API
-        'zaaktypen'         => [ZaaktypenEndpoint::class, 'catalogi'],
-        'statustypen'       => [StatustypenEndpoint::class, 'catalogi'],
-        'roltypen'          => [RoltypenEndpoint::class, 'catalogi'],
-        'catalogussen'      => [CatalogussenEndpoint::class, 'catalogi'],
-        'resultaattypen'    => [ResultaattypenEndpoint::class, 'catalogi'],
+        'zaaktypen' => [ZaaktypenEndpoint::class, 'catalogi'],
+        'statustypen' => [StatustypenEndpoint::class, 'catalogi'],
+        'roltypen' => [RoltypenEndpoint::class, 'catalogi'],
+        'catalogussen' => [CatalogussenEndpoint::class, 'catalogi'],
+        'resultaattypen' => [ResultaattypenEndpoint::class, 'catalogi'],
         'informatieobjecttypen' => [InformatieobjecttypenEndpoint::class, 'catalogi'],
         'eigenschappen' => [EigenschappenEndpoint::class, 'catalogi'],
 

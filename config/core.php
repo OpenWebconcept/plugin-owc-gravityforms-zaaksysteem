@@ -10,6 +10,7 @@ return [
         OWC\Zaaksysteem\Validation\ValidationServiceProvider::class,
         OWC\Zaaksysteem\Routing\RoutingServiceProvider::class,
         OWC\Zaaksysteem\Http\Logger\LoggerServiceProvider::class,
+        OWC\Zaaksysteem\WPCron\WPCronServiceProvider::class,
     ],
 
     /**
@@ -27,24 +28,24 @@ return [
      */
     'dependencies' => [
         [
-            'type'    => 'plugin',
-            'label'   => 'Gravity Forms',
+            'type' => 'plugin',
+            'label' => 'Gravity Forms',
             'version' => '>=2.7.15',
-            'file'    => 'gravityforms/gravityforms.php',
+            'file' => 'gravityforms/gravityforms.php',
             'optional' => false,
         ],
         [
-            'type'    => 'plugin',
-            'label'   => 'Gravity PDF',
+            'type' => 'plugin',
+            'label' => 'Gravity PDF',
             'version' => '>=6.7.4',
-            'file'    => 'gravity-forms-pdf-extended/pdf.php',
+            'file' => 'gravity-forms-pdf-extended/pdf.php',
             'optional' => true,
         ],
         [
-            'type'    => 'plugin',
-            'label'   => 'Yard | GravityForms DigiD',
+            'type' => 'plugin',
+            'label' => 'Yard | GravityForms DigiD',
             'version' => '>=1.0.15',
-            'file'    => 'owc-gravityforms-digid/plugin.php',
+            'file' => 'owc-gravityforms-digid/plugin.php',
             'optional' => false,
         ],
     ],

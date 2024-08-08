@@ -4,6 +4,7 @@ namespace OWC\Zaaksysteem\GravityForms;
 
 use OWC\Zaaksysteem\GravityForms\ZaaktypenFormSettings\Clients\DecosClient;
 use OWC\Zaaksysteem\GravityForms\ZaaktypenFormSettings\Clients\OpenZaakClient;
+use OWC\Zaaksysteem\GravityForms\ZaaktypenFormSettings\Clients\ProcuraClient;
 use OWC\Zaaksysteem\GravityForms\ZaaktypenFormSettings\Clients\RxMissionClient;
 use OWC\Zaaksysteem\GravityForms\ZaaktypenFormSettings\Clients\XxllncClient;
 use OWC\Zaaksysteem\Resolvers\ContainerResolver;
@@ -18,57 +19,62 @@ class GravityFormsFormSettings
     public function addFormSettings(array $fields, array $form): array
     {
         $fields['owc-gravityforms-zaaksysteem'] = [
-            'title'  => esc_html__('Zaaksysteem', 'owc-gravityforms-zaaksysteem'),
+            'title' => esc_html__('Zaaksysteem', 'owc-gravityforms-zaaksysteem'),
             'description' => esc_html__('Om de snelheid te verhogen worden de instellingen van leveranciers pas opgehaald na het kiezen van een leverancier. Dit betekent dat de pagina herladen moet worden na het selecteren van een leverancier.', 'owc-gravityforms-zaaksysteem'),
             'fields' => [
                 [
                     'name' => "{$this->prefix}-form-setting-supplier",
                     'default_value' => "{$this->prefix}-form-setting-supplier-none",
                     'tooltip' => '<h6>' . __('Selecteer een leverancier', 'owc-gravityforms-zaaksysteem') . '</h6>' . __('Kies een Zaaksysteem leverancier. Let op dat je ook de instellingen van de leverancier moet configureren in de hoofdinstellingen van Gravity Forms.', 'owc-gravityforms-zaaksysteem'),
-                    'type'    => 'select',
-                    'label'   => esc_html__('Selecteer een leverancier', 'owc-gravityforms-zaaksysteem'),
+                    'type' => 'select',
+                    'label' => esc_html__('Selecteer een leverancier', 'owc-gravityforms-zaaksysteem'),
                     'choices' => [
                         [
-                            'name'  => "{$this->prefix}-form-setting-supplier-none",
+                            'name' => "{$this->prefix}-form-setting-supplier-none",
                             'label' => __('Selecteer leverancier', 'owc-gravityforms-zaaksysteem'),
                             'value' => 'none',
                         ],
                         [
-                            'name'  => "{$this->prefix}-form-setting-supplier-openzaak",
+                            'name' => "{$this->prefix}-form-setting-supplier-openzaak",
                             'label' => __('OpenZaak', 'owc-gravityforms-zaaksysteem'),
                             'value' => 'openzaak',
                         ],
                         [
-                            'name'  => "{$this->prefix}-form-setting-supplier-decos-join",
+                            'name' => "{$this->prefix}-form-setting-supplier-decos-join",
                             'label' => __('Decos Join', 'owc-gravityforms-zaaksysteem'),
                             'value' => 'decos-join',
                         ],
                         [
-                            'name'  => "{$this->prefix}-form-setting-supplier-rx-mission",
+                            'name' => "{$this->prefix}-form-setting-supplier-rx-mission",
                             'label' => __('Rx.Mission', 'owc-gravityforms-zaaksysteem'),
                             'value' => 'rx-mission',
                         ],
                         [
-                            'name'  => "{$this->prefix}-form-setting-supplier-xxllnc",
+                            'name' => "{$this->prefix}-form-setting-supplier-xxllnc",
                             'label' => __('Xxllnc', 'owc-gravityforms-zaaksysteem'),
                             'value' => 'xxllnc',
+                        ],
+                        [
+                            'name' => "{$this->prefix}-form-setting-supplier-procura",
+                            'label' => __('Procura', 'owc-gravityforms-zaaksysteem'),
+                            'value' => 'procura',
                         ],
                     ],
                 ],
                 [
                     'name' => "{$this->prefix}-form-setting-supplier-manually",
-                    'default_value' => "0",
+                    'default_value' => "1",
                     'tooltip' => '<h6>' . __('Leverancier instellingen', 'owc-gravityforms-zaaksysteem') . '</h6>' . __('Kies hoe de leverancier instellingen geconfigureerd moeten worden.', 'owc-gravityforms-zaaksysteem'),
-                    'type'    => 'radio',
-                    'label'   => esc_html__('Leverancier instellingen', 'owc-gravityforms-zaaksysteem'),
+                    'type' => 'radio',
+                    'label' => esc_html__('Leverancier instellingen', 'owc-gravityforms-zaaksysteem'),
                     'choices' => [
                         [
-                            'name'  => "{$this->prefix}-form-setting-supplier-manually-disabled",
+                            'name' => "{$this->prefix}-form-setting-supplier-manually-disabled",
                             'label' => __('Selecteer instellingen (opgehaald vanuit zaaksysteem)', 'owc-gravityforms-zaaksysteem'),
                             'value' => '0',
                         ],
                         [
-                            'name'  => "{$this->prefix}-form-setting-supplier-manually-enabled",
+                            'name' => "{$this->prefix}-form-setting-supplier-manually-enabled",
                             'label' => __('Configureer instellingen handmatig (invoeren van URL\'s)', 'owc-gravityforms-zaaksysteem'),
                             'value' => '1',
                         ],
@@ -108,11 +114,11 @@ class GravityFormsFormSettings
             'openzaak' => [
                 'select_setting' => [
                     [
-                        'name'    => "{$this->prefix}-form-setting-openzaak-identifier",
-                        'type'    => 'select',
-                        'label'   => esc_html__('Zaaktype', 'owc-gravityforms-zaaksysteem'),
+                        'name' => "{$this->prefix}-form-setting-openzaak-identifier",
+                        'type' => 'select',
+                        'label' => esc_html__('Zaaktype', 'owc-gravityforms-zaaksysteem'),
                         'dependency' => [
-                            'live'   => true,
+                            'live' => true,
                             'fields' => [
                                 [
                                     'field' => "{$this->prefix}-form-setting-supplier",
@@ -127,11 +133,11 @@ class GravityFormsFormSettings
                         'choices' => (new OpenZaakClient(ContainerResolver::make()->getApiClient('openzaak')))->zaaktypen(),
                     ],
                     [
-                        'name'    => "{$this->prefix}-form-setting-openzaak-information-object-type",
-                        'type'    => 'select',
-                        'label'   => esc_html__('Informatie object type', 'owc-gravityforms-zaaksysteem'),
+                        'name' => "{$this->prefix}-form-setting-openzaak-information-object-type",
+                        'type' => 'select',
+                        'label' => esc_html__('Informatie object type', 'owc-gravityforms-zaaksysteem'),
                         'dependency' => [
-                            'live'   => true,
+                            'live' => true,
                             'fields' => [
                                 [
                                     'field' => "{$this->prefix}-form-setting-supplier",
@@ -148,11 +154,11 @@ class GravityFormsFormSettings
                 ],
                 'manual_setting' => [
                     [
-                        'name'    => "{$this->prefix}-form-setting-openzaak-identifier-manual",
-                        'type'    => 'text',
-                        'label'   => esc_html__('Zaaktype', 'owc-gravityforms-zaaksysteem'),
+                        'name' => "{$this->prefix}-form-setting-openzaak-identifier-manual",
+                        'type' => 'text',
+                        'label' => esc_html__('Zaaktype', 'owc-gravityforms-zaaksysteem'),
                         'dependency' => [
-                            'live'   => true,
+                            'live' => true,
                             'fields' => [
                                 [
                                     'field' => "{$this->prefix}-form-setting-supplier",
@@ -166,11 +172,11 @@ class GravityFormsFormSettings
                         ],
                     ],
                     [
-                        'name'    => "{$this->prefix}-form-setting-openzaak-information-object-type-manual",
-                        'type'    => 'text',
-                        'label'   => esc_html__('Informatie object type', 'owc-gravityforms-zaaksysteem'),
+                        'name' => "{$this->prefix}-form-setting-openzaak-information-object-type-manual",
+                        'type' => 'text',
+                        'label' => esc_html__('Informatie object type', 'owc-gravityforms-zaaksysteem'),
                         'dependency' => [
-                            'live'   => true,
+                            'live' => true,
                             'fields' => [
                                 [
                                     'field' => "{$this->prefix}-form-setting-supplier",
@@ -188,11 +194,11 @@ class GravityFormsFormSettings
             'decos-join' => [
                 'select_setting' => [
                     [
-                        'name'    => "{$this->prefix}-form-setting-decos-join-identifier",
-                        'type'    => 'select',
-                        'label'   => esc_html__('Zaaktype', 'owc-gravityforms-zaaksysteem'),
+                        'name' => "{$this->prefix}-form-setting-decos-join-identifier",
+                        'type' => 'select',
+                        'label' => esc_html__('Zaaktype', 'owc-gravityforms-zaaksysteem'),
                         'dependency' => [
-                            'live'   => true,
+                            'live' => true,
                             'fields' => [
                                 [
                                     'field' => "{$this->prefix}-form-setting-supplier",
@@ -207,11 +213,11 @@ class GravityFormsFormSettings
                         'choices' => (new DecosClient(ContainerResolver::make()->getApiClient('decos')))->zaaktypen(),
                     ],
                     [
-                        'name'    => "{$this->prefix}-form-setting-decos-join-information-object-type",
-                        'type'    => 'select',
-                        'label'   => esc_html__('Informatie object type', 'owc-gravityforms-zaaksysteem'),
+                        'name' => "{$this->prefix}-form-setting-decos-join-information-object-type",
+                        'type' => 'select',
+                        'label' => esc_html__('Informatie object type', 'owc-gravityforms-zaaksysteem'),
                         'dependency' => [
-                            'live'   => true,
+                            'live' => true,
                             'fields' => [
                                 [
                                     'field' => "{$this->prefix}-form-setting-supplier",
@@ -228,11 +234,11 @@ class GravityFormsFormSettings
                 ],
                 'manual_setting' => [
                     [
-                        'name'    => "{$this->prefix}-form-setting-decos-join-identifier-manual",
-                        'type'    => 'text',
-                        'label'   => esc_html__('Zaaktype', 'owc-gravityforms-zaaksysteem'),
+                        'name' => "{$this->prefix}-form-setting-decos-join-identifier-manual",
+                        'type' => 'text',
+                        'label' => esc_html__('Zaaktype', 'owc-gravityforms-zaaksysteem'),
                         'dependency' => [
-                            'live'   => true,
+                            'live' => true,
                             'fields' => [
                                 [
                                     'field' => "{$this->prefix}-form-setting-supplier",
@@ -246,11 +252,11 @@ class GravityFormsFormSettings
                         ],
                     ],
                     [
-                        'name'    => "{$this->prefix}-form-setting-decos-join-information-object-type-manual",
-                        'type'    => 'text',
-                        'label'   => esc_html__('Informatie object type', 'owc-gravityforms-zaaksysteem'),
+                        'name' => "{$this->prefix}-form-setting-decos-join-information-object-type-manual",
+                        'type' => 'text',
+                        'label' => esc_html__('Informatie object type', 'owc-gravityforms-zaaksysteem'),
                         'dependency' => [
-                            'live'   => true,
+                            'live' => true,
                             'fields' => [
                                 [
                                     'field' => "{$this->prefix}-form-setting-supplier",
@@ -268,11 +274,11 @@ class GravityFormsFormSettings
             'rx-mission' => [
                 'select_setting' => [
                     [
-                        'name'    => "{$this->prefix}-form-setting-rx-mission-identifier",
-                        'type'    => 'select',
-                        'label'   => esc_html__('Zaaktype', 'owc-gravityforms-zaaksysteem'),
+                        'name' => "{$this->prefix}-form-setting-rx-mission-identifier",
+                        'type' => 'select',
+                        'label' => esc_html__('Zaaktype', 'owc-gravityforms-zaaksysteem'),
                         'dependency' => [
-                            'live'   => true,
+                            'live' => true,
                             'fields' => [
                                 [
                                     'field' => "{$this->prefix}-form-setting-supplier",
@@ -287,11 +293,11 @@ class GravityFormsFormSettings
                         'choices' => (new RxMissionClient(ContainerResolver::make()->getApiClient('rx-mission')))->zaaktypen(),
                     ],
                     [
-                        'name'    => "{$this->prefix}-form-setting-rx-mission-information-object-type",
-                        'type'    => 'select',
-                        'label'   => esc_html__('Informatie object type', 'owc-gravityforms-zaaksysteem'),
+                        'name' => "{$this->prefix}-form-setting-rx-mission-information-object-type",
+                        'type' => 'select',
+                        'label' => esc_html__('Informatie object type', 'owc-gravityforms-zaaksysteem'),
                         'dependency' => [
-                            'live'   => true,
+                            'live' => true,
                             'fields' => [
                                 [
                                     'field' => "{$this->prefix}-form-setting-supplier",
@@ -308,11 +314,11 @@ class GravityFormsFormSettings
                 ],
                 'manual_setting' => [
                     [
-                        'name'    => "{$this->prefix}-form-setting-rx-mission-identifier-manual",
-                        'type'    => 'text',
-                        'label'   => esc_html__('Zaaktype', 'owc-gravityforms-zaaksysteem'),
+                        'name' => "{$this->prefix}-form-setting-rx-mission-identifier-manual",
+                        'type' => 'text',
+                        'label' => esc_html__('Zaaktype', 'owc-gravityforms-zaaksysteem'),
                         'dependency' => [
-                            'live'   => true,
+                            'live' => true,
                             'fields' => [
                                 [
                                     'field' => "{$this->prefix}-form-setting-supplier",
@@ -326,11 +332,11 @@ class GravityFormsFormSettings
                         ],
                     ],
                     [
-                        'name'    => "{$this->prefix}-form-setting-rx-mission-information-object-type-manual",
-                        'type'    => 'text',
-                        'label'   => esc_html__('Informatie object type', 'owc-gravityforms-zaaksysteem'),
+                        'name' => "{$this->prefix}-form-setting-rx-mission-information-object-type-manual",
+                        'type' => 'text',
+                        'label' => esc_html__('Informatie object type', 'owc-gravityforms-zaaksysteem'),
                         'dependency' => [
-                            'live'   => true,
+                            'live' => true,
                             'fields' => [
                                 [
                                     'field' => "{$this->prefix}-form-setting-supplier",
@@ -348,11 +354,11 @@ class GravityFormsFormSettings
             'xxllnc' => [
                 'select_setting' => [
                     [
-                        'name'    => "{$this->prefix}-form-setting-xxllnc-identifier",
-                        'type'    => 'select',
-                        'label'   => esc_html__('Zaaktype', 'owc-gravityforms-zaaksysteem'),
+                        'name' => "{$this->prefix}-form-setting-xxllnc-identifier",
+                        'type' => 'select',
+                        'label' => esc_html__('Zaaktype', 'owc-gravityforms-zaaksysteem'),
                         'dependency' => [
-                            'live'   => true,
+                            'live' => true,
                             'fields' => [
                                 [
                                     'field' => "{$this->prefix}-form-setting-supplier",
@@ -367,11 +373,11 @@ class GravityFormsFormSettings
                         'choices' => (new XxllncClient(ContainerResolver::make()->getApiClient('xxllnc')))->zaaktypen(),
                     ],
                     [
-                        'name'    => "{$this->prefix}-form-setting-xxllnc-information-object-type",
-                        'type'    => 'select',
-                        'label'   => esc_html__('Informatie object type', 'owc-gravityforms-zaaksysteem'),
+                        'name' => "{$this->prefix}-form-setting-xxllnc-information-object-type",
+                        'type' => 'select',
+                        'label' => esc_html__('Informatie object type', 'owc-gravityforms-zaaksysteem'),
                         'dependency' => [
-                            'live'   => true,
+                            'live' => true,
                             'fields' => [
                                 [
                                     'field' => "{$this->prefix}-form-setting-supplier",
@@ -388,11 +394,11 @@ class GravityFormsFormSettings
                 ],
                 'manual_setting' => [
                     [
-                        'name'    => "{$this->prefix}-form-setting-xxllnc-identifier-manual",
-                        'type'    => 'text',
-                        'label'   => esc_html__('Zaaktype', 'owc-gravityforms-zaaksysteem'),
+                        'name' => "{$this->prefix}-form-setting-xxllnc-identifier-manual",
+                        'type' => 'text',
+                        'label' => esc_html__('Zaaktype', 'owc-gravityforms-zaaksysteem'),
                         'dependency' => [
-                            'live'   => true,
+                            'live' => true,
                             'fields' => [
                                 [
                                     'field' => "{$this->prefix}-form-setting-supplier",
@@ -406,15 +412,95 @@ class GravityFormsFormSettings
                         ],
                     ],
                     [
-                        'name'    => "{$this->prefix}-form-setting-xxllnc-information-object-type-manual",
-                        'type'    => 'text',
-                        'label'   => esc_html__('Informatie object type', 'owc-gravityforms-zaaksysteem'),
+                        'name' => "{$this->prefix}-form-setting-xxllnc-information-object-type-manual",
+                        'type' => 'text',
+                        'label' => esc_html__('Informatie object type', 'owc-gravityforms-zaaksysteem'),
                         'dependency' => [
-                            'live'   => true,
+                            'live' => true,
                             'fields' => [
                                 [
                                     'field' => "{$this->prefix}-form-setting-supplier",
                                     'values' => ['xxllnc'],
+                                ],
+                                [
+                                    'field' => "{$this->prefix}-form-setting-supplier-manually",
+                                    'values' => ['1'],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'procura' => [
+                'select_setting' => [
+                    [
+                        'name' => "{$this->prefix}-form-setting-procura-identifier",
+                        'type' => 'select',
+                        'label' => esc_html__('Zaaktype', 'owc-gravityforms-zaaksysteem'),
+                        'dependency' => [
+                            'live' => true,
+                            'fields' => [
+                                [
+                                    'field' => "{$this->prefix}-form-setting-supplier",
+                                    'values' => ['procura'],
+                                ],
+                                [
+                                    'field' => "{$this->prefix}-form-setting-supplier-manually",
+                                    'values' => ['0'],
+                                ],
+                            ],
+                        ],
+                        'choices' => (new ProcuraClient(ContainerResolver::make()->getApiClient('procura')))->zaaktypen(),
+                    ],
+                    [
+                        'name' => "{$this->prefix}-form-setting-procura-information-object-type",
+                        'type' => 'select',
+                        'label' => esc_html__('Informatie object type', 'owc-gravityforms-zaaksysteem'),
+                        'dependency' => [
+                            'live' => true,
+                            'fields' => [
+                                [
+                                    'field' => "{$this->prefix}-form-setting-supplier",
+                                    'values' => ['procura'],
+                                ],
+                                [
+                                    'field' => "{$this->prefix}-form-setting-supplier-manually",
+                                    'values' => ['0'],
+                                ],
+                            ],
+                        ],
+                        'choices' => (new ProcuraClient(ContainerResolver::make()->getApiClient('procura')))->informatieobjecttypen(),
+                    ],
+                ],
+                'manual_setting' => [
+                    [
+                        'name' => "{$this->prefix}-form-setting-procura-identifier-manual",
+                        'type' => 'text',
+                        'label' => esc_html__('Zaaktype', 'owc-gravityforms-zaaksysteem'),
+                        'dependency' => [
+                            'live' => true,
+                            'fields' => [
+                                [
+                                    'field' => "{$this->prefix}-form-setting-supplier",
+                                    'values' => ['procura'],
+                                ],
+                                [
+                                    'field' => "{$this->prefix}-form-setting-supplier-manually",
+                                    'values' => ['1'],
+                                ],
+                            ],
+                        ],
+                    ],
+                    [
+                        'name' => "{$this->prefix}-form-setting-procura-information-object-type-manual",
+                        'type' => 'text',
+                        'label' => esc_html__('Informatie object type', 'owc-gravityforms-zaaksysteem'),
+                        'dependency' => [
+                            'live' => true,
+                            'fields' => [
+                                [
+                                    'field' => "{$this->prefix}-form-setting-supplier",
+                                    'values' => ['procura'],
                                 ],
                                 [
                                     'field' => "{$this->prefix}-form-setting-supplier-manually",

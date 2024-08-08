@@ -5,4 +5,5 @@ return [
     'decos-join' => 'DecosJoin',
     'rx-mission' => 'RxMission',
     'xxllnc' => 'Xxllnc',
+    'procura' => 'Procura',
 ];
