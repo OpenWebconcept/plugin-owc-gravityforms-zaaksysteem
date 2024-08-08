@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace OWC\Zaaksysteem\Clients\OpenZaak;
+namespace OWC\Zaaksysteem\Clients\Procura;
 
 use OWC\Zaaksysteem\Contracts\AbstractClient;
 use OWC\Zaaksysteem\Endpoints\CatalogussenEndpoint;
@@ -24,8 +24,8 @@ use OWC\Zaaksysteem\Endpoints\ZakenEndpoint;
 
 class Client extends AbstractClient
 {
-    public const CLIENT_NAME = 'openzaak';
-    public const CALLABLE_NAME = 'oz.client';
+    public const CLIENT_NAME = 'procura';
+    public const CALLABLE_NAME = 'procura.client';
 
     public const AVAILABLE_ENDPOINTS = [
         // Zaken API

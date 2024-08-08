@@ -61,10 +61,6 @@ abstract class Entity implements
         if ($this->hasCast($name)) {
             $caster = $this->getCaster($name);
 
-            /**
-             * REFERENCE POINT: Mike
-             * Added because decos sometimes have empty fields which caused an exception
-             */
             try {
                 $value = $caster->set($this, $name, $value);
             } catch(Exception $e) {

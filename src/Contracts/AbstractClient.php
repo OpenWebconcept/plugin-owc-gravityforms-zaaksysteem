@@ -9,7 +9,6 @@ use OWC\Zaaksysteem\Endpoints\Endpoint;
 use function OWC\Zaaksysteem\Foundation\Helpers\resolve;
 use OWC\Zaaksysteem\Http\Errors\ResourceNotFoundError;
 use OWC\Zaaksysteem\Http\Errors\ServerError;
-
 use OWC\Zaaksysteem\Http\RequestClientInterface;
 
 abstract class AbstractClient implements Client

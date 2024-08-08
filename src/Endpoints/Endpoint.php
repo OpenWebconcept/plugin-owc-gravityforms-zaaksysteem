@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace OWC\Zaaksysteem\Endpoints;
 
 use OWC\Zaaksysteem\Contracts\Client;
@@ -44,7 +46,7 @@ abstract class Endpoint
     protected function buildRequestOptions(): RequestOptions
     {
         return new RequestOptions([
-            'headers'   => [
+            'headers' => [
                 'Authorization' => $this->authenticator->getAuthString(),
             ],
         ]);

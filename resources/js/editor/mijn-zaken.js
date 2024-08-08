@@ -118,6 +118,7 @@ registerBlockType( 'owc/mijn-zaken', {
 										value: 'rx-mission',
 									},
 									{ label: 'xxllnc', value: 'xxllnc' },
+									{ label: 'Procura', value: 'procura' },
 								] }
 								onChange={ ( newzaakClient ) =>
 									setAttributes( {

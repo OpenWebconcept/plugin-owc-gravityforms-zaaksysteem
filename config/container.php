@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace OWC\Zaaksysteem;
 
 use DI\Container;
@@ -112,6 +114,30 @@ return [
     },
 
     /**
+     * Procura configuration.
+     */
+    'procura.abbr' => 'procura',
+    'procura.client' => fn (Container $container) => $container->get(Clients\Procura\Client::class),
+    'procura.catalogi_uri' => function (Container $container) {
+        return $container->make('gf.setting', ['-procura-catalogi-url']);
+    },
+    'procura.documenten_uri' => function (Container $container) {
+        return $container->make('gf.setting', ['-procura-documenten-url']);
+    },
+    'procura.zaken_uri' => function (Container $container) {
+        return $container->make('gf.setting', ['-procura-zaken-url']);
+    },
+    'procura.client_id' => function (Container $container) {
+        return $container->make('gf.setting', ['-procura-client-id']);
+    },
+    'procura.client_secret' => function (Container $container) {
+        return $container->make('gf.setting', ['-procura-client-secret']);
+    },
+    'procura.authenticator' => function (Container $container) {
+        return $container->get(Clients\Procura\Authenticator::class);
+    },
+
+    /**
      * General configuration
      */
     'rsin' => function (Container $container) {
@@ -184,6 +210,18 @@ return [
         );
     },
 
+    Clients\Procura\Client::class => function (Container $container) {
+        return new Clients\Procura\Client(
+            $container->make(
+                Http\WordPress\WordPressRequestClient::class,
+            )->applyCurlSslCertificates(),
+            $container->get('procura.authenticator'),
+            $container->get('procura.zaken_uri'),
+            $container->get('procura.catalogi_uri'),
+            $container->get('procura.documenten_uri'),
+        );
+    },
+
     /**
      * Authenticators
      */
@@ -215,6 +253,13 @@ return [
         );
     },
 
+    Clients\Procura\Authenticator::class => function (Container $container) {
+        return new Clients\Procura\Authenticator(
+            $container->get('procura.client_id'),
+            $container->get('procura.client_secret')
+        );
+    },
+
     /**
      * HTTP clients
      */
@@ -223,9 +268,9 @@ return [
             new Http\RequestOptions([
                 'timeout' => 15,
                 'headers' => [
-                    'Accept-Crs'    => 'EPSG:4326',
-                    'Content-Crs'   => 'EPSG:4326',
-                    'Content-Type'  => 'application/json',
+                    'Accept-Crs' => 'EPSG:4326',
+                    'Content-Crs' => 'EPSG:4326',
+                    'Content-Type' => 'application/json',
                 ],
             ])
         );

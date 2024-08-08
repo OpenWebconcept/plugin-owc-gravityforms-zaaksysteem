@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace OWC\Zaaksysteem\Entities\Casts;
 
 use InvalidArgumentException;
-use OWC\Zaaksysteem\Entities\Entity;
-use OWC\Zaaksysteem\Entities\Attributes\EnumAttribute;
 use OWC\Zaaksysteem\Entities\Attributes\Confidentiality as ConfidentialityAttribute;
+use OWC\Zaaksysteem\Entities\Attributes\EnumAttribute;
+use OWC\Zaaksysteem\Entities\Entity;
 
 class Confidentiality extends AbstractCast
 {
@@ -22,7 +22,7 @@ class Confidentiality extends AbstractCast
 
     public function get(Entity $model, string $key, $value): ?ConfidentialityAttribute
     {
-        return new ConfidentialityAttribute($value);
+        return is_string($value) ? new ConfidentialityAttribute($value) : null;
     }
 
     public function serialize(string $name, $value): string
