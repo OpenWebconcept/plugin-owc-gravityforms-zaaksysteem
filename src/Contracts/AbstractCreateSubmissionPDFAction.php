@@ -122,7 +122,6 @@ abstract class AbstractCreateSubmissionPDFAction
         $args['auteur'] = 'OWC';
         $args['status'] = 'gearchiveerd';
         $args['taal'] = 'nld';
-        $args['versie'] = 1;
         $args['bronorganisatie'] = ContainerResolver::make()->rsin();
         $args['creatiedatum'] = date('Y-m-d');
         $args['informatieobjecttype'] = $informationObectType;

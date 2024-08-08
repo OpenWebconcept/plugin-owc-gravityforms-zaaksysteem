@@ -83,6 +83,7 @@ class GravityFormsAddon extends GFAddOn
             $this->settingsDecosJoin(),
             $this->settingsRxMission(),
             $this->settingsXxllnc(),
+            $this->settingsProcura(),
         ]);
     }
 
@@ -276,6 +277,45 @@ class GravityFormsAddon extends GFAddOn
                     'type' => 'text',
                     'class' => 'medium',
                     'name' => "{$this->prefix}-xxllnc-client-secret",
+                ],
+            ],
+        ];
+    }
+
+    protected function settingsProcura(): array
+    {
+        return [
+            'title' => esc_html__('Procura', 'owc-gravityforms-zaaksysteem'),
+            'fields' => [
+                [
+                    'label' => esc_html__('Catalogi URL', 'owc-gravityforms-zaaksysteem'),
+                    'type' => 'text',
+                    'class' => 'medium',
+                    'name' => "{$this->prefix}-procura-catalogi-url",
+                ],
+                [
+                    'label' => esc_html__('Documenten URL', 'owc-gravityforms-zaaksysteem'),
+                    'type' => 'text',
+                    'class' => 'medium',
+                    'name' => "{$this->prefix}-procura-documenten-url",
+                ],
+                [
+                    'label' => esc_html__('Zaken URL', 'owc-gravityforms-zaaksysteem'),
+                    'type' => 'text',
+                    'class' => 'medium',
+                    'name' => "{$this->prefix}-procura-zaken-url",
+                ],
+                [
+                    'label' => esc_html__('Client ID', 'owc-gravityforms-zaaksysteem'),
+                    'type' => 'text',
+                    'class' => 'medium',
+                    'name' => "{$this->prefix}-procura-client-id",
+                ],
+                [
+                    'label' => esc_html__('Client Secret', 'owc-gravityforms-zaaksysteem'),
+                    'type' => 'text',
+                    'class' => 'medium',
+                    'name' => "{$this->prefix}-procura-client-secret",
                 ],
             ],
         ];

@@ -48,6 +48,9 @@ class GravityForms
             exit;
         }
 
+        // Store the generated zaak URL in the entry's metadata for future reference after form submission.
+        gform_update_meta($entry['id'], 'owc_gz_created_zaak_url', $zaak->url);
+
         try {
             $uploadsResult = $this->createUploadedDocuments($entry, $form, $zaak);
 

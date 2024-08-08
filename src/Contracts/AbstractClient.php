@@ -9,11 +9,16 @@ use OWC\Zaaksysteem\Endpoints\Endpoint;
 use function OWC\Zaaksysteem\Foundation\Helpers\resolve;
 use OWC\Zaaksysteem\Http\Errors\ResourceNotFoundError;
 use OWC\Zaaksysteem\Http\Errors\ServerError;
-
 use OWC\Zaaksysteem\Http\RequestClientInterface;
+use function Yard\DigiD\Foundation\Helpers\config;
 
 abstract class AbstractClient implements Client
 {
+    /**
+     * Some clients require the use of SSL certificates.
+     */
+    public const USE_SSL_CERTIFICATES = false;
+
     public const CLIENT_NAME = 'abstract';
 
     /**
@@ -92,7 +97,31 @@ abstract class AbstractClient implements Client
             $this->container[$key] = $endpoint;
         }
 
+        $this->applySslCertificates();
+
         return $this->container[$key];
+    }
+
+    /**
+     * Apply SSL certificates when client requires them.
+     */
+    protected function applySslCertificates(): void
+    {
+        if (! static::USE_SSL_CERTIFICATES) {
+            return;
+        }
+
+        $sslPublicCert = config('digid.certificate.public');
+        $sslPrivateCert = config('digid.certificate.private');
+
+        if (empty($sslPublicCert) || empty($sslPrivateCert)) {
+            return;
+        }
+
+        add_action('http_api_curl', function ($handle) use ($sslPublicCert, $sslPrivateCert) {
+            curl_setopt($handle, CURLOPT_SSLCERT, $sslPublicCert);
+            curl_setopt($handle, CURLOPT_SSLKEY, $sslPrivateCert);
+        });
     }
 
     protected function validateEndpoint(string $key): array

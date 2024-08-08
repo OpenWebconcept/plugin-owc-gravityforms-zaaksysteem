@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace OWC\Zaaksysteem\GravityForms;
 
 use GPDFAPI;
@@ -31,17 +33,21 @@ class GravityPdfSettings
             return $default;
         }
 
-        return $this->form['gfpdf_form_settings'];
+        return array_filter($this->form['gfpdf_form_settings'], function ($pdfFormSetting) {
+            return ! empty($pdfFormSetting['active']);
+        });
     }
 
 
     public function pdfFormSettingIsActive(): bool
     {
-        if (empty($this->form['gfpdf_form_settings']) || ! is_array($this->form['gfpdf_form_settings'])) {
+        $pdfFormSettings = $this->getPdfFormSettings();
+
+        if (empty($pdfFormSettings)) {
             return false;
         }
 
-        $pdfFormSettings = reset($this->form['gfpdf_form_settings']);
+        $pdfFormSettings = reset($pdfFormSettings);
 
         return $pdfFormSettings['active'] ?? false;
     }

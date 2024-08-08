@@ -44,6 +44,8 @@ class ContainerResolver
                 return $this->container->get('rx.client');
             case 'xxllnc':
                 return $this->container->get('xxllnc.client');
+            case 'procura':
+                return $this->container->get('procura.client');
             case 'openzaak': // fallthrough.
             default:
                 return $this->container->get('oz.client');

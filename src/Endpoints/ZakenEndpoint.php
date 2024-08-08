@@ -7,6 +7,7 @@ namespace OWC\Zaaksysteem\Endpoints;
 use OWC\Zaaksysteem\Entities\Entity;
 use OWC\Zaaksysteem\Entities\Status;
 use OWC\Zaaksysteem\Entities\Zaak;
+use OWC\Zaaksysteem\Http\Response;
 use OWC\Zaaksysteem\Resolvers\ContainerResolver;
 use OWC\Zaaksysteem\Support\Collection;
 use OWC\Zaaksysteem\Support\PagedCollection;
@@ -150,5 +151,15 @@ class ZakenEndpoint extends Endpoint
         );
 
         return $this->getSingleEntity($this->handleResponse($response));
+    }
+
+    public function delete(string $zaakURL): Response
+    {
+        $response = $this->httpClient->delete(
+            $zaakURL,
+            $this->buildRequestOptions()
+        );
+
+        return $this->handleResponse($response);
     }
 }

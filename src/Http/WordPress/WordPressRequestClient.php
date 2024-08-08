@@ -47,6 +47,18 @@ class WordPressRequestClient implements RequestClientInterface
         return $this->handleResponse($response);
     }
 
+    public function delete(string $uri, ?RequestOptions $options = null): Response
+    {
+        $options->set('method', 'DELETE');
+
+        $response = wp_remote_request(
+            $this->buildUri($uri),
+            $this->mergeRequestOptions($options)->toArray()
+        );
+
+        return $this->handleResponse($response);
+    }
+
     protected function handleResponse($response): Response
     {
         if (is_wp_error($response)) {

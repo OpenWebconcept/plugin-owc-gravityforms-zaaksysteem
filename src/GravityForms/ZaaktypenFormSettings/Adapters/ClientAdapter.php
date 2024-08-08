@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace OWC\Zaaksysteem\GravityForms\ZaaktypenFormSettings\Adapters;
 
 use Closure;
@@ -28,7 +30,7 @@ class ClientAdapter implements ClientInterface
                 'informatieobjecttypen',
                 function (Informatieobjecttype $objecttype) {
                     return [
-                        'name'  => $objecttype->url,
+                        'name' => $objecttype->url,
                         'label' => "{$objecttype->omschrijving} ({$objecttype->vertrouwelijkheidaanduiding})",
                         'value' => $objecttype->url,
                     ];
@@ -48,7 +50,7 @@ class ClientAdapter implements ClientInterface
                 'zaaktypen',
                 function (Zaaktype $zaaktype) {
                     return [
-                        'name'  => $zaaktype->identificatie,
+                        'name' => $zaaktype->identificatie,
                         'label' => "{$zaaktype->omschrijving} ({$zaaktype->identificatie})",
                         'value' => $zaaktype->url, // -> when the api supports filtering on zaaktype identification this line should be updated to $zaaktype->identificatie.
                     ];
