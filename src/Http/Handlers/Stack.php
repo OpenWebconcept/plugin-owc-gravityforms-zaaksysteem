@@ -15,6 +15,7 @@ class Stack
         $stack->push(new ResourceNotFoundHandler(), 'notfound');
         $stack->push(new BadRequestHandler(), 'badrequest');
         $stack->push(new ServerErrorHandler(), 'servererror');
+        $stack->push(new ExpandRequestHandler(), 'expand');
 
         return $stack;
     }
