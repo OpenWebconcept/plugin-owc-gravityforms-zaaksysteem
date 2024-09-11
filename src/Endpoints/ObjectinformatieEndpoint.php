@@ -15,7 +15,7 @@ class ObjectinformatieEndpoint extends Endpoint
     public function all(): PagedCollection
     {
         $response = $this->httpClient->get(
-            $this->buildUri($this->endpoint),
+            $this->buildUriWithExpand($this->endpoint),
             $this->buildRequestOptions()
         );
 
@@ -25,7 +25,7 @@ class ObjectinformatieEndpoint extends Endpoint
     public function get(string $identifier): ?Objectinformatie
     {
         $response = $this->httpClient->get(
-            $this->buildUri($this->endpoint . '/' . $identifier),
+            $this->buildUriWithExpand($this->endpoint . '/' . $identifier),
             $this->buildRequestOptions()
         );
 
@@ -35,7 +35,7 @@ class ObjectinformatieEndpoint extends Endpoint
     public function filter(Filter\ObjectinformatieobjectenFilter $filter): PagedCollection
     {
         $response = $this->httpClient->get(
-            $this->buildUri($this->endpoint, $filter),
+            $this->buildUriWithExpand($this->endpoint, $filter),
             $this->buildRequestOptions($filter)
         );
 
