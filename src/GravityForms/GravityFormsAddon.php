@@ -105,6 +105,25 @@ class GravityFormsAddon extends GFAddOn
                     'name' => "{$this->prefix}-zaak-image",
                     'description' => esc_html__('Stel de header-afbeelding in voor een zaak. Laat leeg voor een standaard grijze achtergrond.'),
                 ],
+                [
+                    'name' => "{$this->prefix}-zgw-expand",
+                    'default_value' => '0',
+                    'tooltip' => '<h6>' . __('Expand functionaliteit', 'owc-gravityforms-zaaksysteem') . '</h6>' . __('Verhoog de laadsnelheid door de expand functionaliteit te activeren. Dit vereist dat de gekoppelde zaaksystemen ZGW 1.5 ondersteunen.', 'owc-gravityforms-zaaksysteem'),
+                    'type' => 'radio',
+                    'label' => esc_html__('Expand functionaliteit', 'owc-gravityforms-zaaksysteem'),
+                    'choices' => [
+                        [
+                            'name' => "{$this->prefix}-zgw-expand-disabled",
+                            'label' => __('Uitgeschakeld', 'owc-gravityforms-zaaksysteem'),
+                            'value' => '0',
+                        ],
+                        [
+                            'name' => "{$this->prefix}-zgw-expand-enabled",
+                            'label' => __('Ingeschakeld (let op: vereist ZGW 1.5 of hoger!)', 'owc-gravityforms-zaaksysteem'),
+                            'value' => '1',
+                        ],
+                    ],
+                ],
             ],
         ];
     }

@@ -8,6 +8,7 @@ use OWC\Zaaksysteem\Resolvers\DigiDBsnResolver;
 /**
  * Link interfaces to their concretions.
  */
+
 return [
     /**
      * OpenZaak configuration.
@@ -144,6 +145,9 @@ return [
     'zaak_image' => function (Container $container) {
         return $container->make('gf.setting', ['-zaak-image']);
     },
+    'expand_enabled' => function (Container $container) {
+        return (bool) $container->make('gf.setting', ['-zgw-expand']);
+    },
 
     /**
      * Utilize with $container->make('gf.setting', ['setting-name-here']);
@@ -279,7 +283,7 @@ return [
      */
     'message.logger.active' => false,
     'message.logger.detail' => Http\Logger\MessageDetail::BLACK_BOX,
-    'message.logger.path' => dirname(ABSPATH).'/owc-http-messages.json',
+    'message.logger.path' => dirname(ABSPATH) . '/owc-http-messages.json',
     'message.logger' => function (Container $container) {
         $logger = new \Monolog\Logger('owc_http_log');
 
