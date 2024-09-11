@@ -10,6 +10,8 @@ use function OWC\Zaaksysteem\Foundation\Helpers\resolve;
 
 class Zaak extends Resource
 {
+    protected string $resourceType = ZaakEntity::class;
+
     protected function resolveResource(string $uuid): ?ZaakEntity
     {
         return resolve($this->clientName)->zaken()->get($uuid);

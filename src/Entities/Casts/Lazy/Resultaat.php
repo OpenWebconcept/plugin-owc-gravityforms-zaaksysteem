@@ -10,6 +10,8 @@ use function OWC\Zaaksysteem\Foundation\Helpers\resolve;
 
 class Resultaat extends Resource
 {
+    protected string $resourceType = ResultaatEntity::class;
+
     protected function resolveResource(string $uuid): ?ResultaatEntity
     {
         return resolve($this->clientName)->resultaten()->get($uuid);

@@ -10,6 +10,8 @@ use function OWC\Zaaksysteem\Foundation\Helpers\resolve;
 
 class Catalogus extends Resource
 {
+    protected string $resourceType = CatalogusEntity::class;
+
     protected function resolveResource(string $uuid): ?CatalogusEntity
     {
         return resolve($this->clientName)->catalogussen()->get($uuid);
