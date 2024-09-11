@@ -10,10 +10,18 @@ use OWC\Zaaksysteem\Entities\Casts\AbstractCast;
 
 abstract class Resource extends AbstractCast
 {
+    protected string $resourceType = Entity::class;
+
     public function set(Entity $model, string $key, $value)
     {
         if (is_null($value) || is_string($value) || (is_object($value) && $value instanceof Entity)) {
             return $value;
+        }
+
+        // Build an entity from the given data. This usually happens when a
+        // resource has beeen included through the expand functionality.
+        if (is_array($value)) {
+            return $this->buildResource($value);
         }
 
         throw new InvalidArgumentException(sprintf(
@@ -51,6 +59,11 @@ abstract class Resource extends AbstractCast
     }
 
     abstract protected function resolveResource(string $uuid): ?Entity;
+
+    protected function buildResource(array $itemData = []): Entity
+    {
+        return new $this->resourceType($itemData, $this->clientName, $this->clientNamePretty);
+    }
 
     protected function isUrl(string $value): bool
     {

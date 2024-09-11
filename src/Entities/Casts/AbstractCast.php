@@ -9,10 +9,12 @@ use OWC\Zaaksysteem\Entities\Entity;
 abstract class AbstractCast implements CastsAttributes
 {
     protected string $clientName;
+    protected string $clientNamePretty;
 
-    public function __construct(string $clientName)
+    public function __construct(string $clientName, string $clientNamePretty)
     {
         $this->clientName = $clientName;
+        $this->clientNamePretty = $clientNamePretty;
     }
 
     public function get(Entity $model, string $key, $value)
