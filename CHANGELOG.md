@@ -1,12 +1,13 @@
 # Changelog
 
-## v2.1
+## v2.1.0
 
 - Feat: add Procura as supplier
 - Feat: implement SSL certificate application based on client requirements
 - Feat: store the generated zaak URL in the entry's metadata for future reference after form submission
 - Refactor: get first enabled PDF form setting
 - Refactor: remove version argument from PDF submission args since it is not used
+- Feat: scheduled a WP_Cron event to automatically delete ‘Zaken’ of entries where a payment was required but the payment status has been pending for an extended period.
 
 ## v2.0.1
 

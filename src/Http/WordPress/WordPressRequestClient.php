@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace OWC\Zaaksysteem\Http\WordPress;
 
+use InvalidArgumentException;
 use OWC\Zaaksysteem\Http\RequestClientInterface;
 use OWC\Zaaksysteem\Http\RequestOptions;
 use OWC\Zaaksysteem\Http\Response;
+use function Yard\DigiD\Foundation\Helpers\config;
 
 class WordPressRequestClient implements RequestClientInterface
 {
@@ -15,6 +17,23 @@ class WordPressRequestClient implements RequestClientInterface
     public function __construct(?RequestOptions $options = null)
     {
         $this->options = $options ?: new RequestOptions([]);
+    }
+
+    public function applyCurlSslCertificates(): self
+    {
+        $sslPublicCert = config('digid.certificate.public');
+        $sslPrivateCert = config('digid.certificate.private');
+
+        if (empty($sslPublicCert) || empty($sslPrivateCert)) {
+            throw new InvalidArgumentException('Missing SSL certificates: both public and private certificates are required for WordPressRequestClient configuration.');
+        }
+
+        add_action('http_api_curl', function ($handle) use ($sslPublicCert, $sslPrivateCert) {
+            curl_setopt($handle, CURLOPT_SSLCERT, $sslPublicCert);
+            curl_setopt($handle, CURLOPT_SSLKEY, $sslPrivateCert);
+        });
+
+        return $this;
     }
 
     public function setRequestOptions(RequestOptions $options): self

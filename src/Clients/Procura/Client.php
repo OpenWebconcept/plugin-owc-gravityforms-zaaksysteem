@@ -24,7 +24,6 @@ use OWC\Zaaksysteem\Endpoints\ZakenEndpoint;
 
 class Client extends AbstractClient
 {
-    public const USE_SSL_CERTIFICATES = true;
     public const CLIENT_NAME = 'procura';
     public const CALLABLE_NAME = 'procura.client';
 

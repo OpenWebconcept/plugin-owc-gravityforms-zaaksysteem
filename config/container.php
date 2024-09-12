@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace OWC\Zaaksysteem;
 
 use DI\Container;
@@ -215,8 +217,8 @@ return [
     Clients\Procura\Client::class => function (Container $container) {
         return new Clients\Procura\Client(
             $container->make(
-                Http\WordPress\WordPressRequestClient::class
-            ),
+                Http\WordPress\WordPressRequestClient::class,
+            )->applyCurlSslCertificates(),
             $container->get('procura.authenticator'),
             $container->get('procura.zaken_uri'),
             $container->get('procura.catalogi_uri'),
