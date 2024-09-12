@@ -10,6 +10,8 @@ use function OWC\Zaaksysteem\Foundation\Helpers\resolve;
 
 class Status extends Resource
 {
+    protected string $resourceType = StatusEntity::class;
+
     protected function resolveResource(string $uuid): ?StatusEntity
     {
         return resolve($this->clientName)->statussen()->get($uuid);

@@ -51,6 +51,13 @@ class Response
         return $this->body;
     }
 
+    public function modify(array $json): static
+    {
+        $this->json = $json;
+
+        return $this;
+    }
+
     public function getParsedJson(): array
     {
         return $this->json;

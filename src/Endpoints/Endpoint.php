@@ -4,19 +4,22 @@ declare(strict_types=1);
 
 namespace OWC\Zaaksysteem\Endpoints;
 
-use OWC\Zaaksysteem\Contracts\Client;
-use OWC\Zaaksysteem\Contracts\TokenAuthenticator;
-use OWC\Zaaksysteem\Entities\Entity;
-use OWC\Zaaksysteem\Http\Handlers\Stack;
 use OWC\Zaaksysteem\Http\PageMeta;
-use OWC\Zaaksysteem\Http\RequestClientInterface;
-use OWC\Zaaksysteem\Http\RequestOptions;
 use OWC\Zaaksysteem\Http\Response;
+use OWC\Zaaksysteem\Entities\Entity;
+use OWC\Zaaksysteem\Contracts\Client;
 use OWC\Zaaksysteem\Support\Collection;
+use OWC\Zaaksysteem\Http\Handlers\Stack;
+use OWC\Zaaksysteem\Http\RequestOptions;
 use OWC\Zaaksysteem\Support\PagedCollection;
+use OWC\Zaaksysteem\Http\RequestClientInterface;
+use OWC\Zaaksysteem\Contracts\TokenAuthenticator;
+use OWC\Zaaksysteem\Endpoints\Traits\SupportsExpand;
 
 abstract class Endpoint
 {
+    use SupportsExpand;
+
     protected Client $client;
     protected string $endpointURL = '';
     protected RequestClientInterface $httpClient;
@@ -58,6 +61,19 @@ abstract class Endpoint
 
         if ($filter) {
             $uri = \add_query_arg($filter->getParameters(), $uri);
+        }
+
+        return $uri;
+    }
+
+    protected function buildUriWithExpand(string $uri, ?Filter\AbstractFilter $filter = null): string
+    {
+        $uri = $this->buildUri($uri, $filter);
+
+        if ($this->endpointSupportsExpand() && $this->expandIsEnabled()) {
+            $uri = add_query_arg([
+                'expand' => implode(',', $this->getExpandableResources())
+            ], $uri);
         }
 
         return $uri;

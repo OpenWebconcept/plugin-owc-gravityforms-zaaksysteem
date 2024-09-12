@@ -15,7 +15,7 @@ class EnkelvoudiginformatieobjectenEndpoint extends Endpoint
     public function get(string $identifier): ?Enkelvoudiginformatieobject
     {
         $response = $this->httpClient->get(
-            $this->buildUri($this->endpoint . '/' . $identifier),
+            $this->buildUriWithExpand($this->endpoint . '/' . $identifier),
             $this->buildRequestOptions()
         );
 

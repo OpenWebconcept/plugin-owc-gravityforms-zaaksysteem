@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace OWC\Zaaksysteem\Endpoints;
 
+use OWC\Zaaksysteem\Http\Response;
+use OWC\Zaaksysteem\Entities\Zaak;
 use OWC\Zaaksysteem\Entities\Entity;
 use OWC\Zaaksysteem\Entities\Status;
-use OWC\Zaaksysteem\Entities\Zaak;
-use OWC\Zaaksysteem\Http\Response;
-use OWC\Zaaksysteem\Resolvers\ContainerResolver;
 use OWC\Zaaksysteem\Support\Collection;
 use OWC\Zaaksysteem\Support\PagedCollection;
+use OWC\Zaaksysteem\Resolvers\ContainerResolver;
 
 class ZakenEndpoint extends Endpoint
 {
@@ -21,7 +21,7 @@ class ZakenEndpoint extends Endpoint
     public function all(): PagedCollection
     {
         $response = $this->httpClient->get(
-            $this->buildUri($this->endpoint),
+            $this->buildUriWithExpand($this->endpoint),
             $this->buildRequestOptions()
         );
 
@@ -31,7 +31,7 @@ class ZakenEndpoint extends Endpoint
     public function get(string $identifier): ?Zaak
     {
         $response = $this->httpClient->get(
-            $this->buildUri(sprintf('%s/%s', $this->endpoint, $identifier)),
+            $this->buildUriWithExpand(sprintf('%s/%s', $this->endpoint, $identifier)),
             $this->buildRequestOptions()
         );
 
@@ -41,7 +41,7 @@ class ZakenEndpoint extends Endpoint
     public function filter(Filter\ZakenFilter $filter): PagedCollection
     {
         $response = $this->httpClient->get(
-            $this->buildUri($this->endpoint, $filter),
+            $this->buildUriWithExpand($this->endpoint, $filter),
             $this->buildRequestOptions($filter)
         );
 
