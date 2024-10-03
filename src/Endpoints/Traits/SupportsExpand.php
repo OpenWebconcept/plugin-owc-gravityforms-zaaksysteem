@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace OWC\Zaaksysteem\Endpoints\Traits;
 
-use OWC\Zaaksysteem\Foundation\Plugin;
 use OWC\Zaaksysteem\Endpoints\ZakenEndpoint;
+use OWC\Zaaksysteem\Foundation\Plugin;
 
 trait SupportsExpand
 {
@@ -45,46 +45,46 @@ trait SupportsExpand
             Plugin::getInstance()->getContainer()->get('expand_enabled');
     }
 
-    public function expandAll(): static
+    public function expandAll(): self
     {
         $this->expandEnabled = true;
 
         return $this;
     }
 
-    public function expandNone(): static
+    public function expandNone(): self
     {
         $this->expandEnabled = false;
 
         return $this;
     }
 
-    public function expandExcept(array $resources): static
+    public function expandExcept(array $resources): self
     {
         if ($this->endpointSupportsExpand() === false) {
             return $this;
         }
 
-        $this->expandSupport[$this::class] = array_diff($this->expandSupport[$this::class], $resources);
+        $this->expandSupport[get_class($this)] = array_diff($this->expandSupport[get_class($this)], $resources);
 
         return $this;
     }
 
-    public function expandOnly(array $resources): static
+    public function expandOnly(array $resources): self
     {
         if ($this->endpointSupportsExpand() === false) {
             return $this;
         }
 
-        $this->expandSupport[$this::class] = array_intersect($this->expandSupport[$this::class], $resources);
+        $this->expandSupport[get_class($this)] = array_intersect($this->expandSupport[get_class($this)], $resources);
 
         return $this;
     }
 
     protected function endpointSupportsExpand(): bool
     {
-        return isset($this->expandSupport[$this::class])
-            && ! empty($this->expandSupport[$this::class]);
+        return isset($this->expandSupport[get_class($this)])
+            && ! empty($this->expandSupport[get_class($this)]);
     }
 
     protected function getExpandableResources(): array
@@ -93,6 +93,6 @@ trait SupportsExpand
             return [];
         }
 
-        return $this->expandSupport[$this::class];
+        return $this->expandSupport[get_class($this)];
     }
 }

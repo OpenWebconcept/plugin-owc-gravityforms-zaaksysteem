@@ -51,7 +51,7 @@ class Response
         return $this->body;
     }
 
-    public function modify(array $json): static
+    public function modify(array $json): self
     {
         $this->json = $json;
 
