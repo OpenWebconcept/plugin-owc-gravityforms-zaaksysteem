@@ -42,11 +42,8 @@ return [
             'optional' => true,
         ],
         [
-            'type' => 'plugin',
-            'label' => 'Yard | GravityForms DigiD',
-            'version' => '>=1.0.15',
-            'file' => 'owc-gravityforms-digid/plugin.php',
-            'optional' => false,
+            'type' => 'class',
+            'name' => \OWC\IdpUserData\DigiDUserDataInterface::class,
         ],
     ],
 
