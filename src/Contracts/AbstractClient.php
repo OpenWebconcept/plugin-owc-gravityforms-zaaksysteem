@@ -6,10 +6,10 @@ namespace OWC\Zaaksysteem\Contracts;
 
 use InvalidArgumentException;
 use OWC\Zaaksysteem\Endpoints\Endpoint;
+use function OWC\Zaaksysteem\Foundation\Helpers\resolve;
 use OWC\Zaaksysteem\Http\Errors\ResourceNotFoundError;
 use OWC\Zaaksysteem\Http\Errors\ServerError;
 use OWC\Zaaksysteem\Http\RequestClientInterface;
-use function OWC\Zaaksysteem\Foundation\Helpers\resolve;
 
 abstract class AbstractClient implements Client
 {
@@ -33,6 +33,7 @@ abstract class AbstractClient implements Client
     protected string $zakenEndpointUrl;
     protected string $catalogiEndpointUrl;
     protected string $documentenEndpointUrl;
+    protected string $takenEndpointUrl;
 
     // Does every API require token authentication? Maybe replace with interface
     public function __construct(
@@ -40,13 +41,15 @@ abstract class AbstractClient implements Client
         TokenAuthenticator $authenticator,
         string $zakenEndpointUrl,
         string $catalogiEndpointUrl,
-        string $documentenEndpointUrl
+        string $documentenEndpointUrl,
+        string $takenEndpointUrl = '' // Optional for now.
     ) {
         $this->client = $client;
         $this->authenticator = $authenticator;
         $this->zakenEndpointUrl = $zakenEndpointUrl;
         $this->catalogiEndpointUrl = $catalogiEndpointUrl;
         $this->documentenEndpointUrl = $documentenEndpointUrl;
+        $this->takenEndpointUrl = $takenEndpointUrl;
     }
 
     public function __call($name, $arguments)
@@ -103,6 +106,9 @@ abstract class AbstractClient implements Client
 
     /**
      * Apply SSL certificates when client requires them.
+     * This method should be chained inside the container configuration
+     * (container.php) when initializing the client class to ensure that the certificates
+     * are included for authentication.
      */
     protected function applySslCertificates(): void
     {
@@ -177,6 +183,8 @@ abstract class AbstractClient implements Client
                 return $this->catalogiEndpointUrl;
             case 'documenten':
                 return $this->documentenEndpointUrl;
+            case 'taken':
+                return $this->takenEndpointUrl;
             default:
                 throw new InvalidArgumentException("Unknown endpoint type {$type}");
         }

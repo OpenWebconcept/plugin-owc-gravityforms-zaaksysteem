@@ -96,6 +96,12 @@ return [
     'rx.client_secret' => function (Container $container) {
         return $container->make('gf.setting', ['-rx-mission-client-secret']);
     },
+    'rx.mijn_taken_uri' => function (Container $container) {
+        return $container->make('gf.setting', ['-rx-mission-mijn-taken-url']);
+    },
+    'rx.mijn_taken_api_key' => function (Container $container) {
+        return $container->make('gf.setting', ['-rx-mission-mijn-taken-api-key']);
+    },
     'rx.authenticator' => function (Container $container) {
         return $container->get(Clients\RxMission\Authenticator::class);
     },
@@ -122,6 +128,12 @@ return [
     },
     'xxllnc.client_secret' => function (Container $container) {
         return $container->make('gf.setting', ['-xxllnc-client-secret']);
+    },
+    'xxllnc.mijn_taken_uri' => function (Container $container) {
+        return $container->make('gf.setting', ['-xxllnc-mijn-taken-url']);
+    },
+    'xxllnc.mijn_taken_api_key' => function (Container $container) {
+        return $container->make('gf.setting', ['-xxllnc-mijn-taken-api-key']);
     },
     'xxllnc.authenticator' => function (Container $container) {
         return $container->get(Clients\Xxllnc\Authenticator::class);
@@ -230,6 +242,7 @@ return [
             $container->get('rx.zaken_uri'),
             $container->get('rx.catalogi_uri'),
             $container->get('rx.documenten_uri'),
+            $container->get('rx.mijn_taken_uri')
         );
     },
 
@@ -242,6 +255,7 @@ return [
             $container->get('xxllnc.zaken_uri'),
             $container->get('xxllnc.catalogi_uri'),
             $container->get('xxllnc.documenten_uri'),
+            $container->get('xxllnc.mijn_taken_uri')
         );
     },
 
@@ -277,14 +291,16 @@ return [
     Clients\RxMission\Authenticator::class => function (Container $container) {
         return new Clients\RxMission\Authenticator(
             $container->get('rx.client_id'),
-            $container->get('rx.client_secret')
+            $container->get('rx.client_secret'),
+            $container->get('rx.mijn_taken_api_key')
         );
     },
 
     Clients\Xxllnc\Authenticator::class => function (Container $container) {
         return new Clients\Xxllnc\Authenticator(
             $container->get('xxllnc.client_id'),
-            $container->get('xxllnc.client_secret')
+            $container->get('xxllnc.client_secret'),
+            $container->get('xxllnc.mijn_taken_api_key')
         );
     },
 
