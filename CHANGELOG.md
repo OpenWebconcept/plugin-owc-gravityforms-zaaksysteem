@@ -1,5 +1,9 @@
 # Changelog
 
+## v2.1.1
+
+- Refactor: php8 syntax to php7 syntax
+
 ## v2.1.0
 
 - Feat: add Procura as supplier
