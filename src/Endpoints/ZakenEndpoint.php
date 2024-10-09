@@ -14,7 +14,6 @@ use OWC\Zaaksysteem\Support\PagedCollection;
 
 class ZakenEndpoint extends Endpoint
 {
-    protected string $apiType = 'zaken';
     protected string $endpoint = 'zaken';
     protected string $entityClass = Zaak::class;
 
