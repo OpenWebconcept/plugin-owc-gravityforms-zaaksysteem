@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "84123a45e45afe1c86f56a2a1476a545",
+    "content-hash": "78b1822c0a944d1cbeff5d8b406e76f9",
     "packages": [
         {
             "name": "firebase/php-jwt",
@@ -230,6 +230,42 @@
                 }
             ],
             "time": "2023-10-27T15:25:26+00:00"
+        },
+        {
+            "name": "owc/idp-userdata",
+            "version": "v1.0.1",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:OpenWebconcept/idp-userdata.git",
+                "reference": "ad046c97bf2eb1d575da78c981f7f4ff685a659e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/OpenWebconcept/idp-userdata/zipball/ad046c97bf2eb1d575da78c981f7f4ff685a659e",
+                "reference": "ad046c97bf2eb1d575da78c981f7f4ff685a659e",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.4"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "OWC\\IdpUserdata\\": "src/"
+                }
+            },
+            "authors": [
+                {
+                    "name": "Yard | Digital Agency",
+                    "email": "info@yard.nl"
+                }
+            ],
+            "description": "Common interfaces for IDP userdata (DigiD, eHerkenning)",
+            "support": {
+                "source": "https://github.com/OpenWebconcept/idp-userdata/tree/v1.0.1",
+                "issues": "https://github.com/OpenWebconcept/idp-userdata/issues"
+            },
+            "time": "2024-10-04T08:37:21+00:00"
         },
         {
             "name": "php-di/invoker",
@@ -4375,5 +4411,5 @@
         "php": "^7.4|^8.0"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.6.0"
 }

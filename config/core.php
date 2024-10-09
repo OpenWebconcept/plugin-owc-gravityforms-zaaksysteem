@@ -41,13 +41,6 @@ return [
             'file' => 'gravity-forms-pdf-extended/pdf.php',
             'optional' => true,
         ],
-        [
-            'type' => 'plugin',
-            'label' => 'Yard | GravityForms DigiD',
-            'version' => '>=1.0.15',
-            'file' => 'owc-gravityforms-digid/plugin.php',
-            'optional' => false,
-        ],
     ],
 
     'text_domain' => OWC_GZ_PLUGIN_SLUG,
