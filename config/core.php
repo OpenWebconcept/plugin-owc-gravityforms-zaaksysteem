@@ -41,10 +41,6 @@ return [
             'file' => 'gravity-forms-pdf-extended/pdf.php',
             'optional' => true,
         ],
-        [
-            'type' => 'class',
-            'name' => \OWC\IdpUserData\DigiDUserDataInterface::class,
-        ],
     ],
 
     'text_domain' => OWC_GZ_PLUGIN_SLUG,
