@@ -95,7 +95,7 @@ abstract class AbstractClient implements Client
 
             $this->setClientSecretByType($type);
 
-            $endpoint = new $class($this, $this->getEndpointUrlByType($type));
+            $endpoint = new $class($this, $this->getEndpointUrlByType($type), $type);
             $this->container[$key] = $endpoint;
         }
 
