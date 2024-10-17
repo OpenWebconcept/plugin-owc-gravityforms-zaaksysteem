@@ -34,7 +34,7 @@ class ValidationServiceProvider extends ServiceProvider
              *
              * @param array $templatesToValidate Template names to validate
              */
-            $templatesToValidate = apply_filters('owc_gravityforms_zaaksysteem_templates_to_validate', ['template-openzaak']);
+            $templatesToValidate = apply_filters('owc_gravityforms_zaaksysteem_templates_to_validate', ['template-openzaak', 'template-mijn-taken']);
 
             if (! in_array($templateName, $templatesToValidate)) {
                 return $template;
