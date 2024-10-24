@@ -1,5 +1,9 @@
 # Changelog
 
+## v2.2.0
+
+- Chore: add fallback for SAML digid plugin
+
 ## v2.1.1
 
 - Refactor: php8 syntax to php7 syntax
