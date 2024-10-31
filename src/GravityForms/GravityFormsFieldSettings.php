@@ -9,12 +9,11 @@ use GFAPI;
 use OWC\Zaaksysteem\Endpoints\Filter\EigenschappenFilter;
 use OWC\Zaaksysteem\Entities\Informatieobjecttype;
 use OWC\Zaaksysteem\Entities\Zaaktype;
-use function OWC\Zaaksysteem\Foundation\Helpers\get_supplier;
-use function OWC\Zaaksysteem\Foundation\Helpers\view;
 use OWC\Zaaksysteem\Resolvers\ContainerResolver;
 use OWC\Zaaksysteem\Support\Collection;
-use OWC\Zaaksysteem\Support\PagedCollection;
 use OWC\Zaaksysteem\Traits\FormSetting;
+use function OWC\Zaaksysteem\Foundation\Helpers\get_supplier;
+use function OWC\Zaaksysteem\Foundation\Helpers\view;
 
 class GravityFormsFieldSettings
 {
@@ -84,17 +83,29 @@ class GravityFormsFieldSettings
     /**
      * Get the `zaakeigenschappen` belonging to the chosen `zaaktype`.
      */
-    public function getZaaktypenEigenschappen(string $supplier, string $zaaktypeUrl): PagedCollection
+    public function getZaaktypenEigenschappen(string $supplier, string $zaaktypeUrl): Collection
     {
         $client = ContainerResolver::make()->getApiClient($supplier);
 
-        $filter = new EigenschappenFilter();
-        $filter->add('zaaktype', $zaaktypeUrl);
+        $filter = (new EigenschappenFilter())->add('zaaktype', $zaaktypeUrl);
+        $types = [];
+        $page = 1;
 
-        return $client->eigenschappen()->filter($filter);
+        while ($page) {
+            try {
+                $result = $client->eigenschappen()->filter($filter->page($page));
+                $types = array_merge($types, $result->all());
+                $page = $result->pageMeta()->getNextPageNumber();
+            } catch (Exception $e) {
+                break;
+            }
+        }
+
+        // Returns collected results if pagination is successful; if an error occurred during pagination, retrieves non-paginated results as a fallback.
+        return count($types) ? Collection::collect($types) : $client->eigenschappen()->filter($filter);
     }
 
-    protected function preparePropertiesOptions(PagedCollection $properties): array
+    protected function preparePropertiesOptions(Collection $properties): array
     {
         $options = $properties->map(function ($property) {
             if (empty($property['naam']) || empty($property['url'])) {
@@ -189,7 +200,7 @@ class GravityFormsFieldSettings
         $zaaktypeIdentification = $zaaktype->identificatie;
 
         echo view('partials/gf-field-options.php', [
-            'properties' => $properties instanceof PagedCollection ? $this->preparePropertiesOptions($properties) : [],
+            'properties' => $properties instanceof Collection ? $this->preparePropertiesOptions($properties) : [],
             'objecttypes' => $this->prepareObjectTypesOptions($this->getInformatieObjectTypen($zaaktype, $zaaktypeIdentification), $zaaktypeIdentification),
         ]);
     }
