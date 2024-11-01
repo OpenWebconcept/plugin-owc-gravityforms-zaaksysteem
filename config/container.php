@@ -150,6 +150,15 @@ return [
     'expand_enabled' => function (Container $container) {
         return (bool) $container->make('gf.setting', ['-zgw-expand']);
     },
+    'expand_version' => function (Container $container) {
+        switch ($container->make('gf.setting', ['-zgw-expand'])) {
+            case '1':
+                return '1.5.0';
+            case '2':
+                return '1.5.1';
+        }
+        return false;
+    },
 
     /**
      * Utilize with $container->make('gf.setting', ['setting-name-here']);
