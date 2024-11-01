@@ -10,25 +10,44 @@ class ExpandRequestHandler implements HandlerInterface
 {
     public function handle(Response $response): Response
     {
-        $json = $response->getParsedJson();
+        $data = $response->getParsedJson();
 
-        if (! $this->hasExpandedEntities($json)) {
+        if (! $this->hasExpandedEntities($data)) {
             return $response;
         }
 
-        foreach ($json['_expand'] as $type => $expandedEntity) {
-            $json[$type] = $expandedEntity;
-        }
+        $data = $this->mergeExpandData($data);
 
-        unset($json['_expand']);
-
-        $response->modify($json);
+        $response->modify($data);
 
         return $response;
     }
 
-    protected function hasExpandedEntities(array $json): bool
+    protected function mergeExpandData(array $data): array
     {
-        return isset($json['_expand']) && !empty($json['_expand']);
+        if (! isset($data['_expand'])) {
+            return $data;
+        }
+
+        foreach ($data['_expand'] as $name => $expandedValue) {
+            if (is_array($expandedValue)) {
+                if (!isset($data[$name]) || !is_array($data[$name])) {
+                    $data[$name] = [];
+                }
+
+                $data[$name] = $this->mergeExpandData(array_merge($data[$name], $expandedValue));
+            } else {
+                $data[$name] = $expandedValue;
+            }
+        }
+
+        unset($data['_expand']);
+
+        return $data;
+    }
+
+    protected function hasExpandedEntities(array $data): bool
+    {
+        return isset($data['_expand']) && ! empty($data['_expand']);
     }
 }
