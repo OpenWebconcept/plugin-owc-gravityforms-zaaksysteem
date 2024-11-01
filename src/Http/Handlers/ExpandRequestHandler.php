@@ -30,14 +30,22 @@ class ExpandRequestHandler implements HandlerInterface
         }
 
         foreach ($data['_expand'] as $name => $expandedValue) {
-            if (is_array($expandedValue)) {
-                if (!isset($data[$name]) || !is_array($data[$name])) {
-                    $data[$name] = [];
-                }
-
-                $data[$name] = $this->mergeExpandData(array_merge($data[$name], $expandedValue));
-            } else {
+            // If the original entry looks like an URL, replace it with the expanded object.
+            if (isset($data[$name]) && is_string($data[$name]) && strpos($data[$name], 'http') !== false) {
                 $data[$name] = $expandedValue;
+            }
+
+            // If it's an array however, we'll merge it recursively.
+            if (is_array($expandedValue)) {
+                $data[$name] = $this->mergeExpandData($expandedValue);
+            }
+        }
+
+        // Some expanded entities (which by now are merged into the main $data array)
+        // contain another expanded entity. We have to recursivly merge them.
+        foreach ($data as &$value) {
+            if (is_array($value)) {
+                $value = $this->mergeExpandData($value);
             }
         }
 
