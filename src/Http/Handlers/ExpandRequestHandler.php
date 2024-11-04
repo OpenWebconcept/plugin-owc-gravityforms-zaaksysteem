@@ -56,6 +56,6 @@ class ExpandRequestHandler implements HandlerInterface
 
     protected function hasExpandedEntities(array $data): bool
     {
-        return isset($data['_expand']) && ! empty($data['_expand']);
+        return ! empty($data['_expand']);
     }
 }

@@ -14,15 +14,13 @@ trait SupportsExpand
 
     /**
      * The current resources that will be expanded
-     * @var array
      */
-    protected $expandCurrent = [
+    protected array $expandCurrent = [
         ZakenEndpoint::class => ['zaaktype', 'status']
     ];
 
     /**
      * All supported expandable resources, subdivided by endpoint and ZGW version.
-     * @var array
      */
     protected array $expandSupport = [
         ZakenEndpoint::class => [
