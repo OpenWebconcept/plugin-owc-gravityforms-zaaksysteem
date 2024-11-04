@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace OWC\Zaaksysteem\Endpoints\Traits;
 
-use OWC\Zaaksysteem\Endpoints\ZakenEndpoint;
 use OWC\Zaaksysteem\Foundation\Plugin;
+use OWC\Zaaksysteem\Endpoints\ZakenEndpoint;
+use OWC\Zaaksysteem\Resolvers\ContainerResolver;
 
 trait SupportsExpand
 {
@@ -87,14 +88,14 @@ trait SupportsExpand
     public function expandIsEnabled(): bool
     {
         return $this->expandEnabled &&
-            Plugin::getInstance()->getContainer()->get('expand_enabled');
+            ContainerResolver::make()->get('expand_enabled');
     }
 
     public function expandAll(): self
     {
         $this->expandEnabled = true;
 
-        $expandVersion = Plugin::getInstance()->getContainer()->get('expand_version');
+        $expandVersion = ContainerResolver::make()->get('expand_version');
 
         $this->expandCurrent[get_class($this)] = $this->expandSupport[get_class($this)][$expandVersion];
 
@@ -114,7 +115,7 @@ trait SupportsExpand
             return $this;
         }
 
-        $expandVersion = Plugin::getInstance()->getContainer()->get('expand_version');
+        $expandVersion = ContainerResolver::make()->get('expand_version');
 
         $this->expandCurrent[get_class($this)] = array_diff(
             $this->expandSupport[get_class($this)][$expandVersion],
@@ -130,7 +131,7 @@ trait SupportsExpand
             return $this;
         }
 
-        $expandVersion = Plugin::getInstance()->getContainer()->get('expand_version');
+        $expandVersion = ContainerResolver::make()->get('expand_version');
 
         $this->expandCurrent[get_class($this)] = array_intersect(
             $this->expandSupport[get_class($this)][$expandVersion],
