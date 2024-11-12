@@ -1,5 +1,9 @@
 # Changelog
 
+## v2.2.2
+
+- Fix: check if DigiD userdata is not null before retrieving BSN
+
 ## v2.2.1
 
 - Feat: retrieve zaaktype eigenschappen paginated in form settings
