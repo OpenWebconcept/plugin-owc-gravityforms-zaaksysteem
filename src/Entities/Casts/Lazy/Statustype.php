@@ -10,7 +10,7 @@ use function OWC\Zaaksysteem\Foundation\Helpers\resolve;
 
 class Statustype extends Resource
 {
-    protected string $resourceType = ZaakEntity::class;
+    protected string $resourceType = StatustypeEntity::class;
 
     protected function resolveResource(string $uuid): ?StatustypeEntity
     {

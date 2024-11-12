@@ -10,11 +10,19 @@ class WordPressClientResponse extends Response
 {
     public static function fromResponse(array $response): self
     {
+        $requestUrl = '';
+        if (isset($response['http_response']) && is_object($response['http_response'])) {
+            $respObj = $response['http_response']->get_response_object();
+
+            $requestUrl = $respObj->url;
+        }
+
         return new self(
             isset($response['headers']) ? $response['headers']->getAll() : [],
             $response['response'] ?? [],
             $response['body'] ?? '',
             $response['cookies'] ?? [],
+            $requestUrl
         );
     }
 }

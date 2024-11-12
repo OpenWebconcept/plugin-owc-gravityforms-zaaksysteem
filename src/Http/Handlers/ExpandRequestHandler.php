@@ -10,25 +10,52 @@ class ExpandRequestHandler implements HandlerInterface
 {
     public function handle(Response $response): Response
     {
-        $json = $response->getParsedJson();
+        $data = $response->getParsedJson();
 
-        if (! $this->hasExpandedEntities($json)) {
+        if (! $this->hasExpandedEntities($data)) {
             return $response;
         }
 
-        foreach ($json['_expand'] as $type => $expandedEntity) {
-            $json[$type] = $expandedEntity;
-        }
+        $data = $this->mergeExpandData($data);
 
-        unset($json['_expand']);
-
-        $response->modify($json);
+        $response->modify($data);
 
         return $response;
     }
 
-    protected function hasExpandedEntities(array $json): bool
+    protected function mergeExpandData(array $data): array
     {
-        return isset($json['_expand']) && !empty($json['_expand']);
+        if (! isset($data['_expand'])) {
+            return $data;
+        }
+
+        foreach ($data['_expand'] as $name => $expandedValue) {
+            // If the original entry looks like a URL, replace it with the expanded object.
+            if (isset($data[$name]) && is_string($data[$name]) && strpos($data[$name], 'http') !== false) {
+                $data[$name] = $expandedValue;
+            }
+
+            // If it's an array however, we'll merge it recursively.
+            if (is_array($expandedValue)) {
+                $data[$name] = $this->mergeExpandData($expandedValue);
+            }
+        }
+
+        // Some expanded entities (which by now are merged into the main $data array)
+        // contain another expanded entity. We have to recursively merge them.
+        foreach ($data as &$value) {
+            if (is_array($value)) {
+                $value = $this->mergeExpandData($value);
+            }
+        }
+
+        unset($data['_expand']);
+
+        return $data;
+    }
+
+    protected function hasExpandedEntities(array $data): bool
+    {
+        return ! empty($data['_expand']);
     }
 }

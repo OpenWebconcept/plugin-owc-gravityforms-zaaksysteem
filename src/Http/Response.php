@@ -11,14 +11,21 @@ class Response
     protected string $body;
     protected array $cookies;
     protected array $json;
+    protected string $requestUrl;
 
-    public function __construct(array $headers, array $response, string $body, array $cookies = [])
-    {
+    public function __construct(
+        array $headers,
+        array $response,
+        string $body,
+        array $cookies,
+        string $requestUrl
+    ) {
         $this->headers = $headers;
         $this->response = $response;
         $this->body = $body;
         $this->cookies = $cookies;
         $this->json = $this->parseAsJson($this->body);
+        $this->requestUrl = $requestUrl;
     }
 
     public function getHeaders(): array
@@ -61,6 +68,11 @@ class Response
     public function getParsedJson(): array
     {
         return $this->json;
+    }
+
+    public function getRequestUrl(): string
+    {
+        return $this->requestUrl;
     }
 
     protected function parseAsJson(string $body): array
