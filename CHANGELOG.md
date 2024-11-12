@@ -1,5 +1,9 @@
 # Changelog
 
+## v2.2.1
+
+- Feat: retrieve zaaktype eigenschappen paginated in form settings
+
 ## v2.2.0
 
 - Chore: add fallback for SAML digid plugin
