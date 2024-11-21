@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace OWC\Zaaksysteem\Endpoints;
 
-use OWC\Zaaksysteem\Http\PageMeta;
-use OWC\Zaaksysteem\Http\Response;
-use OWC\Zaaksysteem\Entities\Entity;
 use OWC\Zaaksysteem\Contracts\Client;
-use OWC\Zaaksysteem\Support\Collection;
-use OWC\Zaaksysteem\Http\Handlers\Stack;
-use OWC\Zaaksysteem\Http\RequestOptions;
-use OWC\Zaaksysteem\Support\PagedCollection;
-use OWC\Zaaksysteem\Http\RequestClientInterface;
 use OWC\Zaaksysteem\Contracts\TokenAuthenticator;
 use OWC\Zaaksysteem\Endpoints\Traits\SupportsExpand;
+use OWC\Zaaksysteem\Entities\Entity;
+use OWC\Zaaksysteem\Http\Handlers\Stack;
+use OWC\Zaaksysteem\Http\PageMeta;
+use OWC\Zaaksysteem\Http\RequestClientInterface;
+use OWC\Zaaksysteem\Http\RequestOptions;
+use OWC\Zaaksysteem\Http\Response;
+use OWC\Zaaksysteem\Support\Collection;
+use OWC\Zaaksysteem\Support\PagedCollection;
 
 abstract class Endpoint
 {
@@ -22,16 +22,18 @@ abstract class Endpoint
 
     protected Client $client;
     protected string $endpointURL = '';
+    protected string $apiType = '';
     protected RequestClientInterface $httpClient;
     protected TokenAuthenticator $authenticator;
     protected Stack $responseHandlers;
 
     protected string $entityClass = Entity::class;
 
-    public function __construct(Client $client, string $endpointURL)
+    public function __construct(Client $client, string $endpointURL, string $apiType)
     {
         $this->client = $client;
         $this->endpointURL = $endpointURL;
+        $this->apiType = $apiType;
         $this->httpClient = $client->getRequestClient();
         $this->authenticator = $client->getAuthenticator();
         $this->responseHandlers = Stack::create();
@@ -50,7 +52,7 @@ abstract class Endpoint
     {
         return new RequestOptions([
             'headers' => [
-                'Authorization' => $this->authenticator->getAuthString(),
+                'Authorization' => 'taken' === $this->apiType || $this->client->getClientNamePretty() === 'rx-mission' ? $this->authenticator->getApiKeyMijnTaken() : $this->authenticator->getAuthString(),
             ],
         ]);
     }
@@ -72,7 +74,7 @@ abstract class Endpoint
 
         if ($this->endpointSupportsExpand() && $this->expandIsEnabled()) {
             $uri = add_query_arg([
-                'expand' => implode(',', $this->getExpandableResources())
+                'expand' => implode(',', $this->getExpandableResources()),
             ], $uri);
         }
 
@@ -104,9 +106,11 @@ abstract class Endpoint
 
     protected function mapEntities(array $data): array
     {
-        return array_map(function ($item) {
-            return $this->buildEntity($item);
+        $entities = array_map(function ($item) {
+            return is_array($item) ? $this->buildEntity($item) : null;
         }, $data);
+
+        return array_filter($entities);
     }
 
     protected function buildEntity($data): Entity

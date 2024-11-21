@@ -30,6 +30,20 @@ class DigiDBsnResolver implements BsnResolver
 
         $bsn = resolve('session')->getSegment('digid')->get('bsn');
 
+        /**
+         * TEMP: signicat plugin has some changes pending which requires another implementation.
+         */
+        if (empty($bsn)) {
+            $isLoggedIn = apply_filters('owc_digid_is_logged_in', false, 'digid');
+
+            if ($isLoggedIn) {
+                $userInfo = apply_filters('owc_digid_userdata', null, 'digid');
+                $bsn = $userInfo->getBsn();
+            }
+
+            return ! empty($bsn) && is_string($bsn) ? $bsn : '';
+        }
+
         return ! empty($bsn) && is_string($bsn) ? decrypt($bsn) : '';
 
     }

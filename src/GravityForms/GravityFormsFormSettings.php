@@ -18,6 +18,7 @@ class GravityFormsFormSettings
      */
     public function addFormSettings(array $fields, array $form): array
     {
+        // return $form;
         $fields['owc-gravityforms-zaaksysteem'] = [
             'title' => esc_html__('Zaaksysteem', 'owc-gravityforms-zaaksysteem'),
             'description' => esc_html__('Om de snelheid te verhogen worden de instellingen van leveranciers pas opgehaald na het kiezen van een leverancier. Dit betekent dat de pagina herladen moet worden na het selecteren van een leverancier.', 'owc-gravityforms-zaaksysteem'),

@@ -8,6 +8,7 @@ use InvalidArgumentException;
 use OWC\Zaaksysteem\Http\RequestClientInterface;
 use OWC\Zaaksysteem\Http\RequestOptions;
 use OWC\Zaaksysteem\Http\Response;
+
 use function Yard\DigiD\Foundation\Helpers\config;
 
 class WordPressRequestClient implements RequestClientInterface
@@ -62,6 +63,20 @@ class WordPressRequestClient implements RequestClientInterface
     {
         $options = $this->mergeRequestOptions($options)->set('body', $body);
         $response = wp_remote_post($this->buildUri($uri), $options->toArray());
+
+        return $this->handleResponse($response);
+    }
+
+    public function update(string $uri, $body, ?RequestOptions $options = null): Response
+    {
+        $options = $this->mergeRequestOptions($options);
+        $options->set('body', json_encode($body));
+        $options->set('method', 'PATCH');
+
+        $response = wp_remote_request(
+            $uri,
+            $options->toArray()
+        );
 
         return $this->handleResponse($response);
     }
