@@ -136,23 +136,23 @@ class GravityFormsAddon extends GFAddOn
                     'choices' => [
                         [
                             'label' => 'Decos Join',
-                            'name' => 'decos-join',
+                            'name' => "{$this->prefix}-suppliers-decos-join-enabled",
                         ],
                         [
                             'label' => 'OpenZaak',
-                            'name' => 'openzaak',
+                            'name' => "{$this->prefix}-suppliers-openzaak-enabled",
                         ],
                         [
                             'label' => 'Procura',
-                            'name' => 'procura',
+                            'name' => "{$this->prefix}-suppliers-procura-enabled",
                         ],
                         [
                             'label' => 'Rx.Mission',
-                            'name' => 'rx-mission',
+                            'name' => "{$this->prefix}-suppliers-rx-mission-enabled",
                         ],
                         [
                             'label' => 'Xxllnc',
-                            'name' => 'xxllnc',
+                            'name' => "{$this->prefix}-suppliers-xxllnc-enabled",
                         ],
                     ],
                 ],
@@ -180,7 +180,7 @@ class GravityFormsAddon extends GFAddOn
                 'fields' => [
                     [
                         'field' => "{$this->prefix}-suppliers",
-                        'values' => ['openzaak'],
+                        'values' => ["{$this->prefix}-suppliers-openzaak-enabled"],
                     ],
                 ],
             ],
@@ -233,7 +233,7 @@ class GravityFormsAddon extends GFAddOn
                 'fields' => [
                     [
                         'field' => "{$this->prefix}-suppliers",
-                        'values' => ['decos-join'],
+                        'values' => ["{$this->prefix}-suppliers-decos-join-enabled"],
                     ],
                 ],
             ],
@@ -293,7 +293,7 @@ class GravityFormsAddon extends GFAddOn
                 'fields' => [
                     [
                         'field' => "{$this->prefix}-suppliers",
-                        'values' => ['rx-mission'],
+                        'values' => ["{$this->prefix}-suppliers-rx-mission-enabled"],
                     ],
                 ],
             ],
@@ -346,7 +346,7 @@ class GravityFormsAddon extends GFAddOn
                 'fields' => [
                     [
                         'field' => "{$this->prefix}-suppliers",
-                        'values' => ['xxllnc'],
+                        'values' => ["{$this->prefix}-suppliers-xxllnc-enabled"],
                     ],
                 ],
             ],
@@ -399,7 +399,7 @@ class GravityFormsAddon extends GFAddOn
                 'fields' => [
                     [
                         'field' => "{$this->prefix}-suppliers",
-                        'values' => ['procura'],
+                        'values' => ["{$this->prefix}-suppliers-procura-enabled"],
                     ],
                 ],
             ],
