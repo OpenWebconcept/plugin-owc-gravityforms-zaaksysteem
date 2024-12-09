@@ -131,23 +131,23 @@ class GravityFormsAddon extends GFAddOn
                     'choices' => [
                         [
                             'label' => 'Decos Join',
-                            'name' => 'decos-join',
+                            'name' => "{$this->prefix}-suppliers-decos-join-enabled",
                         ],
                         [
                             'label' => 'OpenZaak',
-                            'name' => 'openzaak',
+                            'name' => "{$this->prefix}-suppliers-openzaak-enabled",
                         ],
                         [
                             'label' => 'Procura',
-                            'name' => 'procura',
+                            'name' => "{$this->prefix}-suppliers-procura-enabled",
                         ],
                         [
                             'label' => 'Rx.Mission',
-                            'name' => 'rx-mission',
+                            'name' => "{$this->prefix}-suppliers-rx-mission-enabled",
                         ],
                         [
                             'label' => 'Xxllnc',
-                            'name' => 'xxllnc',
+                            'name' => "{$this->prefix}-suppliers-xxllnc-enabled",
                         ],
                     ],
                 ],
