@@ -1,5 +1,10 @@
 # Changelog
 
+## v2.3.0
+
+- Feat: add supplier selection
+- Feat: filter options on enabled suppliers
+
 ## v2.2.2
 
 - Fix: check if DigiD userdata is not null before retrieving BSN
