@@ -1,40 +1,43 @@
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
-const path = require("path");
+const MiniCssExtractPlugin = require( 'mini-css-extract-plugin' );
+const CssMinimizerPlugin = require( 'css-minimizer-webpack-plugin' );
+const path = require( 'path' );
 
 module.exports = {
-	entry: { 
-        "zaak-frontend": "./resources/js/frontend/index.js",
-        "editor": "./resources/js/editor/index.js",
-        "zaak-styles": "./resources/scss/style.scss"
-    },
+	mode: 'production',
+	entry: {
+		'zaak-frontend': './resources/js/frontend/index.js',
+		editor: './resources/js/editor/index.js',
+		'zaak-styles': './resources/scss/style.scss',
+	},
 	output: {
-		path: path.resolve(__dirname, "resources/dist/build"),
+		path: path.resolve( __dirname, 'resources/dist/build' ),
 	},
 	module: {
 		rules: [
 			{
 				test: /\.(js|jsx)$/,
-				loader: "babel-loader",
-				exclude: "/node_modules/",
+				loader: 'babel-loader',
+				exclude: '/node_modules/',
 				options: {
-					presets: ["@babel/preset-react", "@babel/preset-env"],
+					presets: [ '@babel/preset-react', '@babel/preset-env' ],
 				},
 			},
-            {
-                test: /.s?css$/,
-                use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"],
-            },
+			{
+				test: /.s?css$/,
+				use: [
+					MiniCssExtractPlugin.loader,
+					'css-loader',
+					'sass-loader',
+				],
+			},
 		],
 	},
-    optimization: {
-        minimizer: [
-            new CssMinimizerPlugin(),
-        ],
-    },
-	externals: {
-		react: "React",
-		"react-dom": "ReactDOM",
+	optimization: {
+		minimizer: [ new CssMinimizerPlugin() ],
 	},
-    plugins: [new MiniCssExtractPlugin()],
+	externals: {
+		react: 'React',
+		'react-dom': 'ReactDOM',
+	},
+	plugins: [ new MiniCssExtractPlugin() ],
 };
