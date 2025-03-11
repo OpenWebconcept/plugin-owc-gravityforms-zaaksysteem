@@ -15,32 +15,12 @@ use function OWC\Zaaksysteem\Foundation\Helpers\resolve;
  */
 class Plugin
 {
-    /**
-     * Name of the plugin.
-     */
     public const NAME = OWC_GZ_PLUGIN_SLUG;
-
-    /**
-     * Version of the plugin.
-     * Used for setting versions of enqueue scripts and styles.
-     */
     public const VERSION = OWC_GZ_VERSION;
 
-    /**
-     * Path to the root of the plugin.
-     */
     protected string $rootPath;
-
-    /**
-     * Instance of the configuration repository.
-     */
     public Config $config;
-
-    /**
-     * Instance of the Hook loader.
-     */
     public Loader $loader;
-
     protected Container $container;
 
     /**
@@ -57,8 +37,6 @@ class Plugin
         require_once __DIR__ . '/Helpers.php';
 
         $this->buildContainer();
-
-        load_plugin_textdomain($this->getName(), false, $this->getName() . '/languages/');
     }
 
     /**
@@ -77,12 +55,12 @@ class Plugin
     {
         $builder = new ContainerBuilder();
         $builder->addDefinitions([
-            'app'       => $this,
+            'app' => $this,
             self::class => $this,
-            'config'    => function () {
-                return new Config($this->rootPath . '/config');
+            'config' => function () {
+                return (new Config($this->rootPath . '/config'))->setProtectedNodes(['core']);
             },
-            'loader'    => Loader::getInstance(),
+            'loader' => Loader::getInstance(),
 
         ]);
         $builder->addDefinitions($this->rootPath . '/config/container.php');
@@ -99,6 +77,9 @@ class Plugin
         $this->config = resolve('config');
         $this->loader = resolve('loader');
 
+        $this->loadTextDomain();
+        $this->config->boot();
+
         $dependencyChecker = new DependencyChecker($this->config->get('core.dependencies'));
         $dependencyChecker->execute();
 
@@ -113,12 +94,16 @@ class Plugin
             $dependencyChecker->notifyOptional();
         }
 
-        // Set up service providers
         $this->callServiceProviders('boot');
 
         $this->loader->register();
 
         return true;
+    }
+
+    public function loadTextDomain(): void
+    {
+        load_plugin_textdomain('owc-gravityforms-zaaksysteem', false, 'owc-gravityforms-zaaksysteem' . '/languages/');
     }
 
     /**

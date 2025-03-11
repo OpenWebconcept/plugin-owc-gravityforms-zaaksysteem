@@ -11,22 +11,16 @@ class Config
 {
     /**
      * Directory where config files are located.
-     *
-     * @var string $path
      */
     protected string $path;
 
     /**
      * Array with names of protected nodes in the config-items.
-     *
-     * @var array $protectNodes
      */
     protected array $protectedNodes = [];
 
     /**
      * Array with all the config values.
-     *
-     * @var array $items
      */
     protected array $items = [];
 
@@ -45,7 +39,6 @@ class Config
     {
         $this->path = $path;
         $this->items = $items;
-        $this->scanDirectory($this->getPath());
     }
 
     /**
@@ -103,7 +96,7 @@ class Config
                 // If the key doesn't exist at this depth, we will just create an empty array
                 // to hold the next value, allowing us to create the arrays to hold final
                 // values at the correct depth. Then we'll keep digging into the array.
-                if (!isset($tempItems[$part]) || !is_array($tempItems[$part])) {
+                if (! isset($tempItems[$part]) || ! is_array($tempItems[$part])) {
                     $tempItems[$part] = [];
                 }
                 $tempItems = &$tempItems[$part];
@@ -141,6 +134,7 @@ class Config
     public function setPath($path): self
     {
         $this->path = $path;
+
         return $this;
     }
 
@@ -152,6 +146,7 @@ class Config
     public function setProtectedNodes($nodes = [])
     {
         $this->protectedNodes = $nodes;
+
         return $this;
     }
 
@@ -176,6 +171,7 @@ class Config
                 // If its in the first directory just add the file.
                 if ($path == $this->path) {
                     $this->items[$name] = $value;
+
                     continue;
                 }
 

@@ -5,7 +5,7 @@ declare(strict_types=1);
 /**
  * Plugin Name:       OWC GravityForms Zaaksysteem
  * Plugin URI:        https://www.openwebconcept.nl/
- * Description:       Combine one or more 'zaaksystemen' with Gravity Forms and WordPress
+ * Description:       Combineer één of meer ‘zaaksystemen’ met Gravity Forms en WordPress.
  * Version:           2.3.0
  * Author:            Yard | Digital Agency
  * Author URI:        https://www.yard.nl/
@@ -56,6 +56,10 @@ register_activation_hook(__FILE__, function () {
  * plugin overrides. The plugins_loaded action hook fires early, and precedes the setup_theme, after_setup_theme, init
  * and wp_loaded action hooks.
  */
-\add_action('plugins_loaded', function () {
-    Foundation\Plugin::getInstance(__DIR__)->boot();
+add_action('plugins_loaded', function () {
+    $plugin = Foundation\Plugin::getInstance(__DIR__);
+
+    add_action('after_setup_theme', function () use ($plugin) {
+        $plugin->boot();
+    });
 }, 10);
