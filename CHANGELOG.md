@@ -1,5 +1,11 @@
 # Changelog
 
+## v2.3.1
+
+- Refactor: improve validation on status explanation
+- Refactor: encode/decode slashes in zaak identification, ensure routing system compatibility
+- Fix: translations just in time error
+
 ## v2.3.0
 
 - Feat: add supplier selection
