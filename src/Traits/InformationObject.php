@@ -10,7 +10,7 @@ trait InformationObject
     {
         try {
             $file = file_get_contents($url, false, $this->streamContext());
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             $file = '';
         }
 
@@ -32,9 +32,21 @@ trait InformationObject
     public function getExtension(string $url): string
     {
         $type = $this->getContentType($url);
-        $parts = explode('/', $type);
 
-        return end($parts);
+        $mimeMap = [
+            'application/pdf' => 'pdf',
+            'application/msword' => 'doc',
+            'application/vnd.openxmlformats-officedocument.wordprocessingml.document' => 'docx',
+            'application/vnd.ms-excel' => 'xls',
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' => 'xlsx',
+            'text/plain' => 'txt',
+            'text/csv' => 'csv',
+            'text/html' => 'html',
+            'application/json' => 'json',
+            'application/xml' => 'xml',
+        ];
+
+        return $mimeMap[$type] ?? '';
     }
 
     public function getContentType(string $url): string
@@ -57,7 +69,7 @@ trait InformationObject
 
         try {
             $response = get_headers($url, 1, $this->streamContext());
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             return [];
         }
 
