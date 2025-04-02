@@ -79,7 +79,7 @@ class Enkelvoudiginformatieobject extends Entity
 
         try {
             return (new DateTime($date))->format('d-m-Y');
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             return '';
         }
     }
@@ -152,6 +152,10 @@ class Enkelvoudiginformatieobject extends Entity
 
     public function hasFinalStatus(): bool
     {
+        if ($this->hasReceiptDate()) {
+            return true;
+        }
+
         $status = $this->status();
 
         $finalStatusses = [
@@ -160,6 +164,11 @@ class Enkelvoudiginformatieobject extends Entity
         ];
 
         return in_array($status, $finalStatusses);
+    }
+
+    public function hasReceiptDate(): bool
+    {
+        return ! empty($this->getValue('ontvangstdatum', ''));
     }
 
     public function confidentialityDesignation(): string
