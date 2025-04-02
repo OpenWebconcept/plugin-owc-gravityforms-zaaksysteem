@@ -31,7 +31,7 @@ class ZaakInformationObjectRoutingController extends AbstractRoutingController
     {
         add_action('generate_rewrite_rules', function (WP_Rewrite $rewrite) {
             $rules = [
-                'zaak-download/([a-zA-Z0-9-]+)/([a-zA-Z0-9-]+)/([a-zA-Z-]+)/?$' => 'index.php?pagename=zaak-download&zaak_download_identification=$matches[1]&zaak_identification=$matches[2]&zaak_supplier=$matches[3]',
+                'zaak-download/([a-zA-Z0-9-]+)/([a-zA-Z0-9-\\.]+)/([a-zA-Z-]+)/?$' => 'index.php?pagename=zaak-download&zaak_download_identification=$matches[1]&zaak_identification=$matches[2]&zaak_supplier=$matches[3]',
             ];
 
             $rewrite->rules = $rules + $rewrite->rules;
@@ -83,7 +83,7 @@ class ZaakInformationObjectRoutingController extends AbstractRoutingController
 
         try {
             $response = $client->enkelvoudiginformatieobjecten()->download($downloadIdentification);
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             return;
         }
 
@@ -103,7 +103,7 @@ class ZaakInformationObjectRoutingController extends AbstractRoutingController
             $filter->add('identificatie', $zaakIdentification);
             $filter->byBsn(resolve('digid.current_user_bsn'));
             $zaak = $client->zaken()->filter($filter)->first() ?: null;
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             $zaak = null;
         }
 
