@@ -148,18 +148,11 @@ class ZaakInformationObjectRoutingController extends AbstractRoutingController
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
         $mimeType = finfo_file($finfo, $file);
 
-        $mimeMap = [
-            'application/pdf' => 'pdf',
-            'application/msword' => 'doc',
-            'application/vnd.openxmlformats-officedocument.wordprocessingml.document' => 'docx',
-            'application/vnd.ms-excel' => 'xls',
-            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' => 'xlsx',
-            'text/plain' => 'txt',
-            'text/csv' => 'csv',
-            'text/html' => 'html',
-            'application/json' => 'json',
-            'application/xml' => 'xml',
-        ];
+        if (! is_string($mimeType) || 1 > strlen($mimeType)) {
+            return '';
+        }
+
+        $mimeMap = resolve('mime.mapping');
 
         return $mimeMap[$mimeType] ?? '';
     }
