@@ -9,11 +9,11 @@ use GFAPI;
 use OWC\Zaaksysteem\Endpoints\Filter\EigenschappenFilter;
 use OWC\Zaaksysteem\Entities\Informatieobjecttype;
 use OWC\Zaaksysteem\Entities\Zaaktype;
+use function OWC\Zaaksysteem\Foundation\Helpers\get_supplier;
+use function OWC\Zaaksysteem\Foundation\Helpers\view;
 use OWC\Zaaksysteem\Resolvers\ContainerResolver;
 use OWC\Zaaksysteem\Support\Collection;
 use OWC\Zaaksysteem\Traits\FormSetting;
-use function OWC\Zaaksysteem\Foundation\Helpers\get_supplier;
-use function OWC\Zaaksysteem\Foundation\Helpers\view;
 
 class GravityFormsFieldSettings
 {
@@ -203,5 +203,6 @@ class GravityFormsFieldSettings
             'properties' => $properties instanceof Collection ? $this->preparePropertiesOptions($properties) : [],
             'objecttypes' => $this->prepareObjectTypesOptions($this->getInformatieObjectTypen($zaaktype, $zaaktypeIdentification), $zaaktypeIdentification),
         ]);
+        echo view('partials/gf-upload-field-options.php');
     }
 }
