@@ -15,10 +15,12 @@ use OWC\Zaaksysteem\Http\Errors\BadRequestError;
 use OWC\Zaaksysteem\Resolvers\ContainerResolver;
 use OWC\Zaaksysteem\Support\PagedCollection;
 use OWC\Zaaksysteem\Traits\FormSetting;
+use OWC\Zaaksysteem\Traits\MergeTags;
 
 abstract class AbstractCreateZaakAction
 {
     use FormSetting;
+    use MergeTags;
 
     public const CLIENT_NAME = '';
     public const CALLABLE_NAME = '';
@@ -110,7 +112,7 @@ abstract class AbstractCreateZaakAction
                 $fieldValue = (new DateTime($fieldValue))->format('Y-m-d');
             }
 
-            $args[$field->linkedFieldValueZGW] = $fieldValue;
+            $args[$field->linkedFieldValueZGW] = $this->handleMergeTags($entry, $fieldValue);
         }
 
         return $args;
@@ -144,7 +146,7 @@ abstract class AbstractCreateZaakAction
                 );
             } catch (BadRequestError $e) {
                 $e->getInvalidParameters();
-            } catch(Exception $e) {
+            } catch (Exception $e) {
                 // Fail silently.
             }
         }
@@ -224,7 +226,7 @@ abstract class AbstractCreateZaakAction
                 $rol = $client->rollen()->create(new Rol($args, $client->getClientName(), $client->getClientNamePretty()));
             } catch (BadRequestError $e) {
                 $e->getInvalidParameters();
-            } catch(Exception $e) {
+            } catch (Exception $e) {
                 // Fail silently.
             }
 
