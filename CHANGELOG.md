@@ -1,5 +1,9 @@
 # Changelog
 
+## v2.3.2
+
+- Feat: encode/decode slashes in zaak identification in Enkelvoudiginformatieobject
+
 ## v2.3.1
 
 - Refactor: improve validation on status explanation
