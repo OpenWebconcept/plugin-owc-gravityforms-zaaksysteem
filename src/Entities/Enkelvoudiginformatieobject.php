@@ -6,9 +6,12 @@ namespace OWC\Zaaksysteem\Entities;
 
 use DateTime;
 use Exception;
+use OWC\Zaaksysteem\Traits\ZaakIdentification;
 
 class Enkelvoudiginformatieobject extends Entity
 {
+    use ZaakIdentification;
+
     protected array $casts = [
         // url
         // identificatie
@@ -79,7 +82,7 @@ class Enkelvoudiginformatieobject extends Entity
 
         try {
             return (new DateTime($date))->format('d-m-Y');
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             return '';
         }
     }
@@ -124,7 +127,7 @@ class Enkelvoudiginformatieobject extends Entity
             return '';
         }
 
-        return sprintf('%s/zaak-download/%s/%s/%s', get_site_url(), $identification, $zaakIdentification, $this->getClientNamePretty());
+        return sprintf('%s/zaak-download/%s/%s/%s', get_site_url(), $identification, $this->encodeZaakIdentification($zaakIdentification), $this->getClientNamePretty());
     }
 
     protected function identification(): string
