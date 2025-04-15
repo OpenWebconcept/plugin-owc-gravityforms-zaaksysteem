@@ -9,10 +9,13 @@ use OWC\Zaaksysteem\Contracts\Client;
 use OWC\Zaaksysteem\Endpoints\Filter\ZakenFilter;
 use OWC\Zaaksysteem\Entities\Zaak;
 use function OWC\Zaaksysteem\Foundation\Helpers\resolve;
+use OWC\Zaaksysteem\Traits\ZaakIdentification;
 use WP_Rewrite;
 
 class ZaakInformationObjectRoutingController extends AbstractRoutingController
 {
+    use ZaakIdentification;
+
     public function register(): void
     {
         $this->addCustomRewriteRules();
@@ -76,6 +79,7 @@ class ZaakInformationObjectRoutingController extends AbstractRoutingController
         }
 
         $client = $this->container->getApiClient($supplier);
+        $zaakIdentification = $this->decodeZaakIdentification($zaakIdentification);
 
         if (! $this->validateZaak($client, $zaakIdentification)) {
             return;
