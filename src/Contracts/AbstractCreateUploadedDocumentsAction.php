@@ -149,7 +149,7 @@ abstract class AbstractCreateUploadedDocumentsAction
         $args['formaat'] = $this->getContentType($objectURL);
         $args['bestandsnaam'] = sprintf('%s.%s', \sanitize_title($fileName), $this->getExtension($objectURL));
         $args['bestandsomvang'] = $bestandsomvang ? (int) $bestandsomvang : strlen($inhoud);
-        $args['beschrijving'] = 0 < strlen($objectDescription) ? $this->handleMergeTags($this->entry, $objectDescription) : $fileName;
+        $args['beschrijving'] = 0 < strlen($objectDescription) ? $this->handleMergeTags($this->entry, $this->form, $objectDescription) : $fileName;
         $args['inhoud'] = $inhoud;
         $args['vertrouwelijkheidaanduiding'] = 'vertrouwelijk';
         $args['auteur'] = 'OWC';
