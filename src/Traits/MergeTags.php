@@ -10,19 +10,19 @@ use GF_Field;
 
 trait MergeTags
 {
-    public function handleMergeTags(array $entry, string $value)
+    public function handleMergeTags(array $entry, array $form, string $value)
     {
-        return preg_replace_callback('/\[[^\]]*\]/', function ($matches) use ($entry) {
+        return preg_replace_callback('/\[[^\]]*\]/', function ($matches) use ($entry, $form) {
             $fieldID = str_replace(['[', ']'], '', $matches[0]);
             $fieldValue = null;
 
-            if ($field = $this->checkFieldType($fieldID, 'checkbox')) {
+            if ($field = $this->checkFieldType($form, $fieldID, 'checkbox')) {
                 $fieldValue = [];
 
                 foreach ($field->inputs as $input) {
                     $fieldValue[] = rgar($entry, $input['id']);
                 }
-            } elseif ($this->checkFieldType($fieldID, 'multiselect')) {
+            } elseif ($this->checkFieldType($form, $fieldID, 'multiselect')) {
                 $fieldValue = json_decode(rgar($entry, $fieldID), true) ?: [];
             } else {
                 $fieldValue = rgar($entry, $fieldID);
@@ -42,9 +42,9 @@ trait MergeTags
         }, $value);
     }
 
-    protected function checkFieldType(string $fieldID, string $fieldType): ?GF_Field
+    protected function checkFieldType(array $form, string $fieldID, string $fieldType): ?GF_Field
     {
-        $fields = array_filter($this->form['fields'], function ($field) use ($fieldID, $fieldType) {
+        $fields = array_filter($form['fields'], function ($field) use ($fieldID, $fieldType) {
             return $field->id == $fieldID && $fieldType === $field->type;
         });
 
