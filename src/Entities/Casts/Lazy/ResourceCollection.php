@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace OWC\Zaaksysteem\Entities\Casts\Lazy;
 
-use RuntimeException;
+use Exception;
 use InvalidArgumentException;
+use OWC\Zaaksysteem\Entities\Casts\AbstractCast;
 use OWC\Zaaksysteem\Entities\Entity;
 use OWC\Zaaksysteem\Support\Collection;
-use OWC\Zaaksysteem\Entities\Casts\AbstractCast;
+use RuntimeException;
 
 abstract class ResourceCollection extends AbstractCast
 {
@@ -51,7 +52,13 @@ abstract class ResourceCollection extends AbstractCast
 
             $uuid = $this->isUrl($item) ? $this->getUuidFromUrl($item) : $item;
 
-            return $this->resolveResource($uuid);
+            try {
+                return $this->resolveResource($uuid);
+            } catch (Exception $e) {
+                return null;
+            }
+        })->filter(function ($item) {
+            return $item instanceof Entity;
         });
 
         // Assign the resolved zaaktype back to the model, so we won't
