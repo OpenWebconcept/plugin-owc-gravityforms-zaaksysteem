@@ -1,5 +1,9 @@
 # Changelog
 
+## v2.3.3
+
+- Refactor: handle failure of retrieving single entity in ResourceCollection class
+
 ## v2.3.2
 
 - Feat: encode/decode slashes in zaak identification in Enkelvoudiginformatieobject
