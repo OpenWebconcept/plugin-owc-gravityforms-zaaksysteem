@@ -27,6 +27,7 @@
     "webpack-cli": "^5.1.0"
   },
   "dependencies": {
+    "@gemeente-denhaag/case-card-element": "^1.1.1",
     "@wordpress/blocks": "^11.5.1",
     "@wordpress/server-side-render": "^3.4.1",
     "bootstrap": "^5.3.3",

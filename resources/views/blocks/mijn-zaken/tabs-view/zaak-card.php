@@ -7,6 +7,8 @@ $zaak = $vars['zaak'] ?? '';
 $link = $vars['link'] ?? '';
 $identification = $vars['identification'] ?? '';
 ?>
+
+
 <div class="zaak-card <?php echo $isActive ? 'active' : ''; ?>">
 	<svg class="zaak-card-svg" width="385" height="200" viewBox="0 0 385 200" fill="#F1F1F1" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
 		<path d="M260.532 17.39L249.736 1.32659C249.179 0.497369 248.246 0 247.246 0H3C1.34315 0 0 1.34314 0 3V197C0 198.657 1.34315 200 3.00001 200H381.485C383.142 200 384.485 198.657 384.485 197V109.358V21.7166C384.485 20.0597 383.142 18.7166 381.485 18.7166H263.022C262.023 18.7166 261.089 18.2192 260.532 17.39Z" />
@@ -33,3 +35,9 @@ $identification = $vars['identification'] ?? '';
 		</svg>
 	</div>
 </div>
+
+<denhaag-case-card datetime="<?php echo $date ?>" href="<?= $link; ?>" linkLabel="<?php echo $title; ?>">
+  <span slot="heading"><?php echo $title ?></span>
+  <span slot="subtitle"><?php echo $identification; ?></span>
+</denhaag-case-card>
+

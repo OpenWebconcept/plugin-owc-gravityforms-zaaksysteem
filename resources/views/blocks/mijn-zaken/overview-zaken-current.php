@@ -11,9 +11,10 @@ use function OWC\Zaaksysteem\Foundation\Helpers\view;
 	    }
 	    echo view('blocks/mijn-zaken/tabs-view/zaak-card.php', [
 	        'title' => $zaak->title(),
-	        'date' => $zaak->startDate('j F Y'),
+	        'date' => $zaak->startDate('Y-m-d\TH:i:s.v\Z'),
 	        'isActive' => true,
 	        'link' => $zaak->permalink(),
+			'identification' => $zaak->identification(),
 	    ]);
 	} ?>
 </div>
