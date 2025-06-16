@@ -1,8 +1,7 @@
 // External
 import 'bootstrap/js/dist/collapse';
 import 'bootstrap/js/dist/tab';
-
-// import '@gemeente-denhaag/case-card-element/dist/index.mjs'; // @TODO
+import '@gemeente-denhaag/case-card-element/dist/index.mjs';
 
 const app = () => {};
 

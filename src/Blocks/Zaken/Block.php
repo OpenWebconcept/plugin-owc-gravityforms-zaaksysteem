@@ -194,8 +194,6 @@ class Block
 
     protected function returnView(array $attributes, Collection $zaken)
     {
-		$this->enqueueScripts();
-
         if ('tabs' === $attributes['view']) {
             return view('blocks/mijn-zaken/overview-zaken-tabs.php', ['zaken' => $zaken]);
         }
@@ -216,10 +214,4 @@ class Block
 
         return view('blocks/mijn-zaken/overview-zaken.php', ['zaken' => $zaken]);
     }
-
-
-	private function enqueueScripts()
-	{
-		wp_enqueue_script_module('gemeente-denhaag-case-card-element', 'https://unpkg.com/@gemeente-denhaag/case-card-element@1.1.1/dist/index.js', [], null, true);
-	}
 }

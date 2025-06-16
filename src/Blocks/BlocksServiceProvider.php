@@ -62,7 +62,8 @@ class BlocksServiceProvider extends ServiceProvider
             'zaak-frontend',
             Plugin::getInstance()->resourceUrl('zaak-frontend.js', 'dist/build'),
             [],
-            time()
+            time(),
+			true
         );
     }
 }
