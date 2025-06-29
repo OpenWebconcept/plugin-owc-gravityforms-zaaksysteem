@@ -40,7 +40,7 @@ class ValidationServiceProvider extends ServiceProvider
                 return $template;
             }
 
-            if (empty(ContainerResolver::make()->get('digid.current_user_bsn'))) {
+            if (1 > strlen(ContainerResolver::make()->get('digid.current_user_bsn')) && 1 > strlen(ContainerResolver::make()->get('eherkenning.current_user_kvk'))) {
                 return $this->returnForbidden();
             }
 
