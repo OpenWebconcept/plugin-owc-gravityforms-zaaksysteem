@@ -6,6 +6,7 @@ namespace OWC\Zaaksysteem;
 
 use DI\Container;
 use OWC\Zaaksysteem\Resolvers\DigiDBsnResolver;
+use OWC\Zaaksysteem\Resolvers\eHerkenningResolver;
 
 /**
  * Link interfaces to their concretions.
@@ -172,6 +173,7 @@ return [
             case '2':
                 return '1.5.1';
         }
+
         return false;
     },
 
@@ -185,7 +187,12 @@ return [
     /**
      * Resolved BSN of logged in user.
      */
-    'digid.current_user_bsn' => DigiDBsnResolver::make()->bsn(),
+    'digid.current_user_bsn' => DigiDBsnResolver::make()->get(),
+
+    /**
+     * Resolved KVK of logged in user.
+     */
+    'eherkenning.current_user_kvk' => eHerkenningResolver::make()->get(),
 
     /**
      * Configure API Clients

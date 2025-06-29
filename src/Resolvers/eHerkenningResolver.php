@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace OWC\Zaaksysteem\Resolvers;
 
-use OWC\IdpUserData\DigiDSession;
+use OWC\IdpUserData\eHerkenningSession;
 use OWC\Zaaksysteem\Contracts\IdentificationResolver;
 
-class DigiDBsnResolver implements IdentificationResolver
+class eHerkenningResolver implements IdentificationResolver
 {
-
     public static function make(): self
     {
         return new static();
@@ -17,12 +16,12 @@ class DigiDBsnResolver implements IdentificationResolver
 
     public function get(): string
     {
-        if (! DigiDSession::isLoggedIn()) {
+        if (! eHerkenningSession::isLoggedIn()) {
             return '';
         }
 
-        $userData = DigiDSession::getUserData();
+        $userData = eHerkenningSession::getUserData();
 
-        return ! is_null($userData) ? $userData->getBsn() : '';
+        return ! is_null($userData) ? $userData->getKvk() : '';
     }
 }

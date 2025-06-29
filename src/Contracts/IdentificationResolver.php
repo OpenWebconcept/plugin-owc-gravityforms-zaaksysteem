@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace OWC\Zaaksysteem\Contracts;
 
-interface BsnResolver
+interface IdentificationResolver
 {
     public static function make(): self;
-    public function bsn(): string;
+    public function get(): string;
 }
