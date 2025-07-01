@@ -20,6 +20,11 @@ class CreateSubmissionPDFAction extends AbstractCreateSubmissionPDFAction
             return null;
         }
 
-        return $this->connectZaakToSubmissionPDF($this->createSubmissionPDF($args));
+        try {
+            return $this->connectZaakToSubmissionPDF($this->createSubmissionPDF($args));
+        } catch (\Exception $e) {
+            error_log('Creating submission PDF failed. Arguments: ' . json_encode($args));
+            throw $e;
+        }
     }
 }
