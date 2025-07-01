@@ -1,5 +1,9 @@
 # Changelog
 
+## v2.4.0
+
+- Feat: validate protected templates with eHerkenning
+
 ## v2.3.3
 
 - Refactor: handle failure of retrieving single entity in ResourceCollection class
