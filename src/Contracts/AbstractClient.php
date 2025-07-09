@@ -6,11 +6,10 @@ namespace OWC\Zaaksysteem\Contracts;
 
 use InvalidArgumentException;
 use OWC\Zaaksysteem\Endpoints\Endpoint;
-use function OWC\Zaaksysteem\Foundation\Helpers\resolve;
 use OWC\Zaaksysteem\Http\Errors\ResourceNotFoundError;
 use OWC\Zaaksysteem\Http\Errors\ServerError;
 use OWC\Zaaksysteem\Http\RequestClientInterface;
-use function Yard\DigiD\Foundation\Helpers\config;
+use function OWC\Zaaksysteem\Foundation\Helpers\resolve;
 
 abstract class AbstractClient implements Client
 {
@@ -111,10 +110,14 @@ abstract class AbstractClient implements Client
             return;
         }
 
-        $sslPublicCert = config('digid.certificate.public');
-        $sslPrivateCert = config('digid.certificate.private');
+        if (! function_exists('\\Yard\\DigiD\\Foundation\\Helpers\\config')) {
+            return;
+        }
 
-        if (empty($sslPublicCert) || empty($sslPrivateCert)) {
+        $sslPublicCert = \Yard\DigiD\Foundation\Helpers\config('digid.certificate.public');
+        $sslPrivateCert = \Yard\DigiD\Foundation\Helpers\config('digid.certificate.private');
+
+        if (! file_exists($sslPublicCert) || ! file_exists($sslPrivateCert)) {
             return;
         }
 
