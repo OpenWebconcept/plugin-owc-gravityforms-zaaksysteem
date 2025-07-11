@@ -155,6 +155,10 @@ class Enkelvoudiginformatieobject extends Entity
 
     public function hasFinalStatus(): bool
     {
+        if ($this->hasReceiptDate()) {
+            return true;
+        }
+
         $status = $this->status();
 
         $finalStatusses = [
@@ -163,6 +167,11 @@ class Enkelvoudiginformatieobject extends Entity
         ];
 
         return in_array($status, $finalStatusses);
+    }
+
+    public function hasReceiptDate(): bool
+    {
+        return ! empty($this->getValue('ontvangstdatum', ''));
     }
 
     public function confidentialityDesignation(): string
