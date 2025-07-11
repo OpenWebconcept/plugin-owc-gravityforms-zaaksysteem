@@ -1,5 +1,11 @@
 # Changelog
 
+## v2.4.1
+
+- Refactor: check receipt date of information object first before checking final status
+- Fix: validation when applying ssl certificates
+- Feat: add displayAllowedByConfidentialityDesignation validation method in Enkelvoudiginformatieobject class
+
 ## v2.4.0
 
 - Feat: validate protected templates with eHerkenning
