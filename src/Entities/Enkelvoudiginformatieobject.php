@@ -184,6 +184,20 @@ class Enkelvoudiginformatieobject extends Entity
         return 'vertrouwelijk' === $designation;
     }
 
+    public function displayAllowedByConfidentialityDesignation(): bool
+    {
+        $designation = $this->confidentialityDesignation();
+
+        $allowedDesignations = [
+            'openbaar',
+            'beperkt_openbaar',
+            'intern',
+            'zaakvertrouwelijk',
+        ];
+
+        return in_array(strtolower($designation), $allowedDesignations, true);
+    }
+
     public function isClassified(): bool
     {
         $designation = $this->confidentialityDesignation();
