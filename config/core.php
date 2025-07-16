@@ -38,7 +38,7 @@ return [
             'type' => 'plugin',
             'label' => 'Gravity PDF',
             'version' => '>=6.7.4',
-            'file' => 'gravity-forms-pdf-extended/pdf.php',
+            'file' => 'gravity-pdf/pdf.php',
             'optional' => true,
         ],
     ],
