@@ -6,7 +6,7 @@ declare(strict_types=1);
  * Plugin Name:       OWC GravityForms Zaaksysteem
  * Plugin URI:        https://www.openwebconcept.nl/
  * Description:       Combineer één of meer ‘zaaksystemen’ met Gravity Forms en WordPress.
- * Version:           2.4.1
+ * Version:           2.4.2
  * Author:            Yard | Digital Agency
  * Author URI:        https://www.yard.nl/
  * License:           GPL-3.0
@@ -29,11 +29,11 @@ define('OWC_GZ_NAME', 'OWC GravityForms Zaaksysteem');
 define('OWC_GZ_SHORT_NAME', 'OWC Zaaksysteem');
 define('OWC_GZ_PLUGIN_SLUG', 'owc-gravityforms-zaaksysteem');
 define('OWC_GZ_ROOT_PATH', __DIR__);
-define('OWC_GZ_VERSION', '2.4.1');
+define('OWC_GZ_VERSION', '2.4.2');
 
 /**
  * Not all the members of the OpenWebconcept are using composer in the root of their project.
- * Therefore they are required to run a composer install inside this plugin directory.
+ * Therefore, they are required to run a composer install inside this plugin directory.
  * In this case the composer autoload file needs to be required.
  */
 $composerAutoload = __DIR__ . '/vendor/autoload.php';

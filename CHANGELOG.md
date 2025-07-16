@@ -1,5 +1,9 @@
 # Changelog
 
+## v2.4.2
+
+- Fix: gravity-pdf dependency has different folder name now
+
 ## v2.4.1
 
 - Refactor: check receipt date of information object first before checking final status
