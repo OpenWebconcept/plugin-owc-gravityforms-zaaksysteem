@@ -74,11 +74,19 @@ class ZakenFilter extends AbstractFilter
         return $this->add('identificatie', $zaaktype->identificatie);
     }
 
-    public function byBsn(string $bsn)
+    public function byBsn(string $bsn): self
     {
         return $this->add(
             'rol__betrokkeneIdentificatie__natuurlijkPersoon__inpBsn',
             $bsn
+        );
+    }
+
+    public function byKVK(string $kvk): self
+    {
+        return $this->add(
+            'rol__betrokkeneIdentificatie__vestiging__vestigingsNummer',
+            $kvk
         );
     }
 

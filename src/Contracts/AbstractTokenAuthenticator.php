@@ -11,16 +11,16 @@ abstract class AbstractTokenAuthenticator implements TokenAuthenticator
     abstract public function generateToken(): string;
 
     /**
-     * REFERENCE POINT: Mike -> This method is needed for the decos implementation.
-     * 2 different api's are being used which both requires a different token for now?
+     * Some implementations may require multiple client secrets based on the API used.
+     * This method allows setting a client secret dynamically.
      */
     public function setClientSecret(string $clientSecret): self
     {
-        if (empty($clientSecret)) {
+        if ('' === trim($clientSecret)) {
             return $this;
         }
 
-        $this->clientSecret = $clientSecret;
+        $this->clientSecret = trim($clientSecret);
 
         return $this;
     }

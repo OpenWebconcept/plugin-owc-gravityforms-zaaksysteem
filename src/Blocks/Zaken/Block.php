@@ -9,10 +9,10 @@ use OWC\Zaaksysteem\Contracts\Client;
 use OWC\Zaaksysteem\Endpoints\Filter\ResultaattypenFilter;
 use OWC\Zaaksysteem\Endpoints\Filter\ZakenFilter;
 use OWC\Zaaksysteem\Entities\Zaaktype;
-use function OWC\Zaaksysteem\Foundation\Helpers\resolve;
-use function OWC\Zaaksysteem\Foundation\Helpers\view;
 use OWC\Zaaksysteem\Resolvers\ContainerResolver;
 use OWC\Zaaksysteem\Support\Collection;
+use function OWC\Zaaksysteem\Foundation\Helpers\resolve;
+use function OWC\Zaaksysteem\Foundation\Helpers\view;
 
 class Block
 {
@@ -25,8 +25,11 @@ class Block
             return;
         }
 
-        if (! $this->getCurrentUserBsn()) {
-            return view('blocks/mijn-zaken/zaak-error.php', ['message' => 'Er is geen geldig BSN gevonden waardoor er geen zaken opgehaald kunnen worden.']);
+        if (! $this->getCurrentUserBSN() && ! $this->getCurrentUserKVK()) {
+            return __(
+                'Er is geen geldig BSN nummer of KVK nummer gevonden waardoor er geen zaken opgehaald kunnen worden.',
+                'owc-gravityforms-zaaksysteem'
+            );
         }
 
         $this->client = ContainerResolver::make()->getApiClient($attributes['zaakClient'] ?? 'openzaak');
@@ -56,9 +59,14 @@ class Block
         return $this->returnView($attributes, $zaken);
     }
 
-    protected function getCurrentUserBsn(): string
+    protected function getCurrentUserBSN(): string
     {
-        return resolve('digid.current_user_bsn');
+        return resolve('digid.current_user_bsn') ?: '';
+    }
+
+    protected function getCurrentUserKVK(): string
+    {
+        return resolve('eherkenning.current_user_kvk') ?: '';
     }
 
     protected function handleZaken(array $attributes): Collection
@@ -75,7 +83,11 @@ class Block
      */
     protected function uniqueTransientKey(array $attributes): string
     {
-        $attributes['bsnCurrentUser'] = $this->getCurrentUserBsn();
+        if ($bsn = $this->getCurrentUserBSN()) {
+            $attributes['bsnCurrentUser'] = $bsn;
+        } elseif ($kvk = $this->getCurrentUserKVK()) {
+            $attributes['kvkCurrentUser'] = $kvk;
+        }
 
         return md5(json_encode($attributes));
     }
@@ -85,6 +97,7 @@ class Block
         $filter = new ZakenFilter();
         $filter = $this->handleFilterOrdering($filter, $attributes);
         $filter = $this->handleFilterBSN($filter, $attributes);
+		$filter = $this->handleFilterKVK($filter, $attributes);
         $filter = $this->handleFilterZaaktype($filter, $attributes);
 
         return $this->client->zaken()->filter($filter);
@@ -101,6 +114,7 @@ class Block
             $filter = new ZakenFilter();
             $filter = $this->handleFilterOrdering($filter, $attributes);
             $filter = $this->handleFilterBSN($filter, $attributes);
+			$filter = $this->handleFilterKVK($filter, $attributes);
             $filter = $this->handleFilterZaaktype($filter, $attributes, $client);
 
             try {
@@ -138,11 +152,26 @@ class Block
 
     protected function handleFilterBSN(ZakenFilter $filter, array $attributes): ZakenFilter
     {
-        if (true !== ($attributes['byBSN'] ?? false)) {
+        $bsn = $this->getCurrentUserBSN();
+
+        if (! $attributes['byBSN'] || '' === $bsn) {
             return $filter;
         }
 
-        $filter->byBsn($this->getCurrentUserBsn());
+        $filter->byBsn($bsn);
+
+        return $filter;
+    }
+
+    protected function handleFilterKVK(ZakenFilter $filter, array $attributes): ZakenFilter
+    {
+        $kvk = $this->getCurrentUserKVK();
+
+        if (! $attributes['byKVK'] || '' === $kvk) {
+            return $filter;
+        }
+
+        $filter->byKVK($kvk);
 
         return $filter;
     }

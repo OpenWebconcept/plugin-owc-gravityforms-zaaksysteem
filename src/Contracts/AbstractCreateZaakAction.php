@@ -200,9 +200,10 @@ abstract class AbstractCreateZaakAction
         }
 
         $currentBsn = resolve('digid.current_user_bsn');
+        $currentKVK = resolve('eherkenning.current_user_kvk');
 
-        if (empty($currentBsn)) {
-            throw new Exception('Deze sessie lijkt geen BSN te hebben');
+        if (empty($currentBsn) && empty($currentKVK)) {
+            throw new Exception('Deze sessie lijkt geen BSN nummer of KVK nummer te hebben');
         }
 
         $client = $this->getApiClient();
@@ -213,14 +214,18 @@ abstract class AbstractCreateZaakAction
             }
 
             $args = [
-                'betrokkeneIdentificatie' => [
-                    'inpBsn' => $currentBsn,
-                ],
-                'betrokkeneType' => 'natuurlijk_persoon',
                 'roltoelichting' => $rolType['omschrijvingGeneriek'],
                 'roltype' => $rolType['url'],
                 'zaak' => $zaak->url,
             ];
+
+            if (is_string($currentBsn) && '' !== $currentBsn) {
+                $args['betrokkeneIdentificatie']['inpBsn'] = $currentBsn;
+                $args['betrokkeneType'] = 'natuurlijk_persoon';
+            } elseif (is_string($currentKVK) && '' !== $currentKVK) {
+                $args['betrokkeneIdentificatie']['kvkNummer'] = $currentKVK;
+                $args['betrokkeneType'] = 'vestiging';
+            }
 
             try {
                 $rol = $client->rollen()->create(new Rol($args, $client->getClientName(), $client->getClientNamePretty()));

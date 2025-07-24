@@ -39,11 +39,15 @@ msgstr ""
 msgid "https://www.yard.nl/"
 msgstr ""
 
-#: src/Blocks/Zaken/Block.php:35
+#: src/Blocks/Zaken/Block.php:29
+msgid "Er is geen geldig BSN nummer of KVK nummer gevonden waardoor er geen zaken opgehaald kunnen worden."
+msgstr ""
+
+#: src/Blocks/Zaken/Block.php:38
 msgid "Het Mijn Zaken overzicht is niet beschikbaar."
 msgstr ""
 
-#: src/Blocks/Zaken/Block.php:51
+#: src/Blocks/Zaken/Block.php:54
 msgid "Er zijn op dit moment geen zaken beschikbaar."
 msgstr ""
 

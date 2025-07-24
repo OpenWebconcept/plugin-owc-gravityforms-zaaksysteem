@@ -53,6 +53,10 @@ registerBlockType('owc/mijn-zaken', {
       type: 'boolean',
       "default": true
     },
+    byKVK: {
+      type: 'boolean',
+      "default": false
+    },
     view: {
       type: 'string',
       "default": 'default'
@@ -79,6 +83,7 @@ registerBlockType('owc/mijn-zaken', {
       updateMePlease = attributes.updateMePlease,
       combinedClients = attributes.combinedClients,
       byBSN = attributes.byBSN,
+      byKVK = attributes.byKVK,
       orderBy = attributes.orderBy,
       orderByDirection = attributes.orderByDirection;
     var zaaktypeFilterArr = JSON.parse(zaaktypeFilter);
@@ -170,7 +175,18 @@ registerBlockType('owc/mijn-zaken', {
       checked: byBSN,
       onChange: function onChange(byBSN) {
         return setAttributes({
-          byBSN: byBSN
+          byBSN: byBSN,
+          byKVK: byBSN ? false : attributes.byKVK
+        });
+      }
+    }), /*#__PURE__*/React.createElement(CheckboxControl, {
+      label: "Filter op KVK",
+      help: "Filter zaken die aangemaakt zijn door de ingelogde gebruiker op basis van het KVK nummer.",
+      checked: byKVK,
+      onChange: function onChange(byKVK) {
+        return setAttributes({
+          byKVK: byKVK,
+          byBSN: byKVK ? false : attributes.byBSN
         });
       }
     }), /*#__PURE__*/React.createElement(SelectControl, {
