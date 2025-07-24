@@ -36,6 +36,7 @@ registerBlockType( 'owc/mijn-zaken', {
 		updateMePlease: { type: 'boolean', default: true },
 		combinedClients: { type: 'boolean', default: false },
 		byBSN: { type: 'boolean', default: true },
+		byKVK: { type: 'boolean', default: false },
 		view: { type: 'string', default: 'default' },
 		numberOfItems: { type: 'number', default: 2 },
 		orderBy: { type: 'string', default: 'startdatum' },
@@ -49,6 +50,7 @@ registerBlockType( 'owc/mijn-zaken', {
 			updateMePlease,
 			combinedClients,
 			byBSN,
+			byKVK,
 			orderBy,
 			orderByDirection,
 		} = attributes;
@@ -143,7 +145,21 @@ registerBlockType( 'owc/mijn-zaken', {
 								help="Filter zaken die aangemaakt zijn door de ingelogde gebruiker op basis van het BSN nummer."
 								checked={ byBSN }
 								onChange={ ( byBSN ) =>
-									setAttributes( { byBSN } )
+									setAttributes( {
+										byBSN,
+										byKVK: byBSN ? false : attributes.byKVK,
+									} )
+								}
+							/>
+							<CheckboxControl
+								label="Filter op KVK"
+								help="Filter zaken die aangemaakt zijn door de ingelogde gebruiker op basis van het KVK nummer."
+								checked={ byKVK }
+								onChange={ ( byKVK ) =>
+									setAttributes( {
+										byKVK,
+										byBSN: byKVK ? false : attributes.byBSN,
+									} )
 								}
 							/>
 							<SelectControl

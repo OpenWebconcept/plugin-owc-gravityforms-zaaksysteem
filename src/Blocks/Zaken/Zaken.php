@@ -38,6 +38,10 @@ class Zaken extends AbstractBlock
                     'type' => 'boolean',
                     'default' => true,
                 ],
+                'byKVK' => [
+                    'type' => 'boolean',
+                    'default' => false,
+                ],
                 'view' => [
                     'type' => 'string',
                     'default' => 'default',
