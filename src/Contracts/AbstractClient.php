@@ -6,18 +6,13 @@ namespace OWC\Zaaksysteem\Contracts;
 
 use InvalidArgumentException;
 use OWC\Zaaksysteem\Endpoints\Endpoint;
+use function OWC\Zaaksysteem\Foundation\Helpers\resolve;
 use OWC\Zaaksysteem\Http\Errors\ResourceNotFoundError;
 use OWC\Zaaksysteem\Http\Errors\ServerError;
 use OWC\Zaaksysteem\Http\RequestClientInterface;
-use function OWC\Zaaksysteem\Foundation\Helpers\resolve;
 
 abstract class AbstractClient implements Client
 {
-    /**
-     * Some clients require the use of SSL certificates.
-     */
-    public const USE_SSL_CERTIFICATES = false;
-
     public const CLIENT_NAME = 'abstract';
 
     /**
@@ -96,35 +91,7 @@ abstract class AbstractClient implements Client
             $this->container[$key] = $endpoint;
         }
 
-        $this->applySslCertificates();
-
         return $this->container[$key];
-    }
-
-    /**
-     * Apply SSL certificates when client requires them.
-     */
-    protected function applySslCertificates(): void
-    {
-        if (! static::USE_SSL_CERTIFICATES) {
-            return;
-        }
-
-        if (! function_exists('\\Yard\\DigiD\\Foundation\\Helpers\\config')) {
-            return;
-        }
-
-        $sslPublicCert = \Yard\DigiD\Foundation\Helpers\config('digid.certificate.public');
-        $sslPrivateCert = \Yard\DigiD\Foundation\Helpers\config('digid.certificate.private');
-
-        if (! file_exists($sslPublicCert) || ! file_exists($sslPrivateCert)) {
-            return;
-        }
-
-        add_action('http_api_curl', function ($handle) use ($sslPublicCert, $sslPrivateCert) {
-            curl_setopt($handle, CURLOPT_SSLCERT, $sslPublicCert);
-            curl_setopt($handle, CURLOPT_SSLKEY, $sslPrivateCert);
-        });
     }
 
     protected function validateEndpoint(string $key): array
