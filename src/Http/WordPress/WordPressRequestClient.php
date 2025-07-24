@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace OWC\Zaaksysteem\Http\WordPress;
 
-use InvalidArgumentException;
 use OWC\Zaaksysteem\Http\RequestClientInterface;
 use OWC\Zaaksysteem\Http\RequestOptions;
 use OWC\Zaaksysteem\Http\Response;
-use function Yard\DigiD\Foundation\Helpers\config;
 
 class WordPressRequestClient implements RequestClientInterface
 {
@@ -21,11 +19,15 @@ class WordPressRequestClient implements RequestClientInterface
 
     public function applyCurlSslCertificates(): self
     {
-        $sslPublicCert = config('digid.certificate.public');
-        $sslPrivateCert = config('digid.certificate.private');
+        if (! function_exists('\\Yard\\DigiD\\Foundation\\Helpers\\config')) {
+            return $this;
+        }
 
-        if (empty($sslPublicCert) || empty($sslPrivateCert)) {
-            throw new InvalidArgumentException('Missing SSL certificates: both public and private certificates are required for WordPressRequestClient configuration.');
+        $sslPublicCert = \Yard\DigiD\Foundation\Helpers\config('digid.certificate.public');
+        $sslPrivateCert = \Yard\DigiD\Foundation\Helpers\config('digid.certificate.private');
+
+        if (! file_exists($sslPublicCert) || ! file_exists($sslPrivateCert)) {
+            return $this;
         }
 
         add_action('http_api_curl', function ($handle) use ($sslPublicCert, $sslPrivateCert) {
