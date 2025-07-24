@@ -5,7 +5,7 @@ declare(strict_types=1);
 $finder = PhpCsFixer\Finder::create()
     ->notPath('vendor')
     ->notPath('node_modules')
-    ->notPath('./resources/views')
+    ->notPath('resources/views')
     ->in(__DIR__)
     ->name('*.php')
     ->notName('*.blade.php')

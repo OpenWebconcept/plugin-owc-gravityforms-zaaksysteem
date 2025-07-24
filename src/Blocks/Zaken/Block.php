@@ -25,8 +25,11 @@ class Block
             return;
         }
 
-        if (! $this->getCurrentUserBsn()) {
-            return 'Er is geen geldig BSN gevonden waardoor er geen zaken opgehaald kunnen worden.';
+        if (! $this->getCurrentUserBSN() && ! $this->getCurrentUserKVK()) {
+            return __(
+                'Er is geen geldig BSN nummer of KVK nummer gevonden waardoor er geen zaken opgehaald kunnen worden.',
+                'owc-gravityforms-zaaksysteem'
+            );
         }
 
         $this->client = ContainerResolver::make()->getApiClient($attributes['zaakClient'] ?? 'openzaak');
@@ -56,9 +59,14 @@ class Block
         return $this->returnView($attributes, $zaken);
     }
 
-    protected function getCurrentUserBsn(): string
+    protected function getCurrentUserBSN(): string
     {
-        return resolve('digid.current_user_bsn');
+        return resolve('digid.current_user_bsn') ?: '';
+    }
+
+    protected function getCurrentUserKVK(): string
+    {
+        return resolve('digid.current_user_bsn') ?: '';
     }
 
     protected function handleZaken(array $attributes): Collection
@@ -75,7 +83,11 @@ class Block
      */
     protected function uniqueTransientKey(array $attributes): string
     {
-        $attributes['bsnCurrentUser'] = $this->getCurrentUserBsn();
+        if ($bsn = $this->getCurrentUserBSN()) {
+            $attributes['bsnCurrentUser'] = $bsn;
+        } elseif ($kvk = $this->getCurrentUserKVK()) {
+            $attributes['kvkCurrentUser'] = $kvk;
+        }
 
         return md5(json_encode($attributes));
     }
@@ -134,11 +146,26 @@ class Block
 
     protected function handleFilterBSN(ZakenFilter $filter, array $attributes): ZakenFilter
     {
-        if (! $attributes['byBSN']) {
+        $bsn = $this->getCurrentUserBSN();
+
+        if (! $attributes['byBSN'] || '' === $bsn) {
             return $filter;
         }
 
-        $filter->byBsn($this->getCurrentUserBsn());
+        $filter->byBsn($bsn);
+
+        return $filter;
+    }
+
+    protected function handleFilterKVK(ZakenFilter $filter, array $attributes): ZakenFilter
+    {
+        $kvk = $this->getCurrentUserKVK();
+
+        if (! $attributes['byKVK'] || '' === $kvk) {
+            return $filter;
+        }
+
+        $filter->byKVK($kvk);
 
         return $filter;
     }
