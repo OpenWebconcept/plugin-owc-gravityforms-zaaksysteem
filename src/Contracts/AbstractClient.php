@@ -130,7 +130,7 @@ abstract class AbstractClient implements Client
             $secret = resolve('dj.client_secret');
         }
 
-        $this->getAuthenticator()->setClientSecret($secret);
+        $this->getAuthenticator()->setClientSecret((string) $secret);
 
         return $this;
     }
