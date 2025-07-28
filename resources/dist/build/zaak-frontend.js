@@ -1,1069 +1,106 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 832:
-/***/ (function(module, exports, __webpack_require__) {
-
-var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;function _createForOfIteratorHelper(r, e) { var t = "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (!t) { if (Array.isArray(r) || (t = _unsupportedIterableToArray(r)) || e && r && "number" == typeof r.length) { t && (r = t); var _n = 0, F = function F() {}; return { s: F, n: function n() { return _n >= r.length ? { done: !0 } : { done: !1, value: r[_n++] }; }, e: function e(r) { throw r; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var o, a = !0, u = !1; return { s: function s() { t = t.call(r); }, n: function n() { var r = t.next(); return a = r.done, r; }, e: function e(r) { u = !0, o = r; }, f: function f() { try { a || null == t["return"] || t["return"](); } finally { if (u) throw o; } } }; }
-function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
-function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
-function _classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
-function _defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, _toPropertyKey(o.key), o); } }
-function _createClass(e, r, t) { return r && _defineProperties(e.prototype, r), t && _defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
-function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
-function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-function _callSuper(t, o, e) { return o = _getPrototypeOf(o), _possibleConstructorReturn(t, _isNativeReflectConstruct() ? Reflect.construct(o, e || [], _getPrototypeOf(t).constructor) : o.apply(t, e)); }
-function _possibleConstructorReturn(t, e) { if (e && ("object" == _typeof(e) || "function" == typeof e)) return e; if (void 0 !== e) throw new TypeError("Derived constructors may only return object or undefined"); return _assertThisInitialized(t); }
-function _assertThisInitialized(e) { if (void 0 === e) throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); return e; }
-function _isNativeReflectConstruct() { try { var t = !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); } catch (t) {} return (_isNativeReflectConstruct = function _isNativeReflectConstruct() { return !!t; })(); }
-function _getPrototypeOf(t) { return _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function (t) { return t.__proto__ || Object.getPrototypeOf(t); }, _getPrototypeOf(t); }
-function _inherits(t, e) { if ("function" != typeof e && null !== e) throw new TypeError("Super expression must either be null or a function"); t.prototype = Object.create(e && e.prototype, { constructor: { value: t, writable: !0, configurable: !0 } }), Object.defineProperty(t, "prototype", { writable: !1 }), e && _setPrototypeOf(t, e); }
-function _setPrototypeOf(t, e) { return _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function (t, e) { return t.__proto__ = e, t; }, _setPrototypeOf(t, e); }
-function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
-/*!
-  * Bootstrap base-component.js v5.3.3 (https://getbootstrap.com/)
-  * Copyright 2011-2024 The Bootstrap Authors (https://github.com/twbs/bootstrap/graphs/contributors)
-  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
-  */
-(function (global, factory) {
-  ( false ? 0 : _typeof(exports)) === 'object' && "object" !== 'undefined' ? module.exports = factory(__webpack_require__(814), __webpack_require__(441), __webpack_require__(44), __webpack_require__(552)) :  true ? !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(814), __webpack_require__(441), __webpack_require__(44), __webpack_require__(552)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
-		__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
-		(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
-		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)) : (0);
-})(this, function (Data, EventHandler, Config, index_js) {
-  'use strict';
-
-  /**
-   * --------------------------------------------------------------------------
-   * Bootstrap base-component.js
-   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
-   * --------------------------------------------------------------------------
-   */
-
-  /**
-   * Constants
-   */
-  var VERSION = '5.3.3';
-
-  /**
-   * Class definition
-   */
-  var BaseComponent = /*#__PURE__*/function (_Config) {
-    function BaseComponent(element, config) {
-      var _this;
-      _classCallCheck(this, BaseComponent);
-      _this = _callSuper(this, BaseComponent);
-      element = index_js.getElement(element);
-      if (!element) {
-        return _possibleConstructorReturn(_this);
-      }
-      _this._element = element;
-      _this._config = _this._getConfig(config);
-      Data.set(_this._element, _this.constructor.DATA_KEY, _this);
-      return _this;
-    }
-
-    // Public
-    _inherits(BaseComponent, _Config);
-    return _createClass(BaseComponent, [{
-      key: "dispose",
-      value: function dispose() {
-        Data.remove(this._element, this.constructor.DATA_KEY);
-        EventHandler.off(this._element, this.constructor.EVENT_KEY);
-        var _iterator = _createForOfIteratorHelper(Object.getOwnPropertyNames(this)),
-          _step;
-        try {
-          for (_iterator.s(); !(_step = _iterator.n()).done;) {
-            var propertyName = _step.value;
-            this[propertyName] = null;
-          }
-        } catch (err) {
-          _iterator.e(err);
-        } finally {
-          _iterator.f();
-        }
-      }
-    }, {
-      key: "_queueCallback",
-      value: function _queueCallback(callback, element) {
-        var isAnimated = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
-        index_js.executeAfterTransition(callback, element, isAnimated);
-      }
-    }, {
-      key: "_getConfig",
-      value: function _getConfig(config) {
-        config = this._mergeConfigObj(config, this._element);
-        config = this._configAfterMerge(config);
-        this._typeCheckConfig(config);
-        return config;
-      }
-
-      // Static
-    }], [{
-      key: "getInstance",
-      value: function getInstance(element) {
-        return Data.get(index_js.getElement(element), this.DATA_KEY);
-      }
-    }, {
-      key: "getOrCreateInstance",
-      value: function getOrCreateInstance(element) {
-        var config = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-        return this.getInstance(element) || new this(element, _typeof(config) === 'object' ? config : null);
-      }
-    }, {
-      key: "VERSION",
-      get: function get() {
-        return VERSION;
-      }
-    }, {
-      key: "DATA_KEY",
-      get: function get() {
-        return "bs.".concat(this.NAME);
-      }
-    }, {
-      key: "EVENT_KEY",
-      get: function get() {
-        return ".".concat(this.DATA_KEY);
-      }
-    }, {
-      key: "eventName",
-      value: function eventName(name) {
-        return "".concat(name).concat(this.EVENT_KEY);
-      }
-    }]);
-  }(Config);
-  return BaseComponent;
-});
-
-/***/ }),
-
-/***/ 888:
-/***/ (function(module, exports, __webpack_require__) {
-
-var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;function _createForOfIteratorHelper(r, e) { var t = "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (!t) { if (Array.isArray(r) || (t = _unsupportedIterableToArray(r)) || e && r && "number" == typeof r.length) { t && (r = t); var _n = 0, F = function F() {}; return { s: F, n: function n() { return _n >= r.length ? { done: !0 } : { done: !1, value: r[_n++] }; }, e: function e(r) { throw r; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var o, a = !0, u = !1; return { s: function s() { t = t.call(r); }, n: function n() { var r = t.next(); return a = r.done, r; }, e: function e(r) { u = !0, o = r; }, f: function f() { try { a || null == t["return"] || t["return"](); } finally { if (u) throw o; } } }; }
-function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
-function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
-function _classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
-function _defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, _toPropertyKey(o.key), o); } }
-function _createClass(e, r, t) { return r && _defineProperties(e.prototype, r), t && _defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
-function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
-function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-function _callSuper(t, o, e) { return o = _getPrototypeOf(o), _possibleConstructorReturn(t, _isNativeReflectConstruct() ? Reflect.construct(o, e || [], _getPrototypeOf(t).constructor) : o.apply(t, e)); }
-function _possibleConstructorReturn(t, e) { if (e && ("object" == _typeof(e) || "function" == typeof e)) return e; if (void 0 !== e) throw new TypeError("Derived constructors may only return object or undefined"); return _assertThisInitialized(t); }
-function _assertThisInitialized(e) { if (void 0 === e) throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); return e; }
-function _isNativeReflectConstruct() { try { var t = !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); } catch (t) {} return (_isNativeReflectConstruct = function _isNativeReflectConstruct() { return !!t; })(); }
-function _getPrototypeOf(t) { return _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function (t) { return t.__proto__ || Object.getPrototypeOf(t); }, _getPrototypeOf(t); }
-function _inherits(t, e) { if ("function" != typeof e && null !== e) throw new TypeError("Super expression must either be null or a function"); t.prototype = Object.create(e && e.prototype, { constructor: { value: t, writable: !0, configurable: !0 } }), Object.defineProperty(t, "prototype", { writable: !1 }), e && _setPrototypeOf(t, e); }
-function _setPrototypeOf(t, e) { return _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function (t, e) { return t.__proto__ = e, t; }, _setPrototypeOf(t, e); }
-function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
-/*!
-  * Bootstrap collapse.js v5.3.3 (https://getbootstrap.com/)
-  * Copyright 2011-2024 The Bootstrap Authors (https://github.com/twbs/bootstrap/graphs/contributors)
-  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
-  */
-(function (global, factory) {
-  ( false ? 0 : _typeof(exports)) === 'object' && "object" !== 'undefined' ? module.exports = factory(__webpack_require__(832), __webpack_require__(441), __webpack_require__(374), __webpack_require__(552)) :  true ? !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(832), __webpack_require__(441), __webpack_require__(374), __webpack_require__(552)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
-		__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
-		(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
-		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)) : (0);
-})(this, function (BaseComponent, EventHandler, SelectorEngine, index_js) {
-  'use strict';
-
-  /**
-   * --------------------------------------------------------------------------
-   * Bootstrap collapse.js
-   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
-   * --------------------------------------------------------------------------
-   */
-
-  /**
-   * Constants
-   */
-  var NAME = 'collapse';
-  var DATA_KEY = 'bs.collapse';
-  var EVENT_KEY = ".".concat(DATA_KEY);
-  var DATA_API_KEY = '.data-api';
-  var EVENT_SHOW = "show".concat(EVENT_KEY);
-  var EVENT_SHOWN = "shown".concat(EVENT_KEY);
-  var EVENT_HIDE = "hide".concat(EVENT_KEY);
-  var EVENT_HIDDEN = "hidden".concat(EVENT_KEY);
-  var EVENT_CLICK_DATA_API = "click".concat(EVENT_KEY).concat(DATA_API_KEY);
-  var CLASS_NAME_SHOW = 'show';
-  var CLASS_NAME_COLLAPSE = 'collapse';
-  var CLASS_NAME_COLLAPSING = 'collapsing';
-  var CLASS_NAME_COLLAPSED = 'collapsed';
-  var CLASS_NAME_DEEPER_CHILDREN = ":scope .".concat(CLASS_NAME_COLLAPSE, " .").concat(CLASS_NAME_COLLAPSE);
-  var CLASS_NAME_HORIZONTAL = 'collapse-horizontal';
-  var WIDTH = 'width';
-  var HEIGHT = 'height';
-  var SELECTOR_ACTIVES = '.collapse.show, .collapse.collapsing';
-  var SELECTOR_DATA_TOGGLE = '[data-bs-toggle="collapse"]';
-  var Default = {
-    parent: null,
-    toggle: true
-  };
-  var DefaultType = {
-    parent: '(null|element)',
-    toggle: 'boolean'
-  };
-
-  /**
-   * Class definition
-   */
-  var Collapse = /*#__PURE__*/function (_BaseComponent) {
-    function Collapse(element, config) {
-      var _this;
-      _classCallCheck(this, Collapse);
-      _this = _callSuper(this, Collapse, [element, config]);
-      _this._isTransitioning = false;
-      _this._triggerArray = [];
-      var toggleList = SelectorEngine.find(SELECTOR_DATA_TOGGLE);
-      var _iterator = _createForOfIteratorHelper(toggleList),
-        _step;
-      try {
-        for (_iterator.s(); !(_step = _iterator.n()).done;) {
-          var elem = _step.value;
-          var selector = SelectorEngine.getSelectorFromElement(elem);
-          var filterElement = SelectorEngine.find(selector).filter(function (foundElement) {
-            return foundElement === _this._element;
-          });
-          if (selector !== null && filterElement.length) {
-            _this._triggerArray.push(elem);
-          }
-        }
-      } catch (err) {
-        _iterator.e(err);
-      } finally {
-        _iterator.f();
-      }
-      _this._initializeChildren();
-      if (!_this._config.parent) {
-        _this._addAriaAndCollapsedClass(_this._triggerArray, _this._isShown());
-      }
-      if (_this._config.toggle) {
-        _this.toggle();
-      }
-      return _this;
-    }
-
-    // Getters
-    _inherits(Collapse, _BaseComponent);
-    return _createClass(Collapse, [{
-      key: "toggle",
-      value:
-      // Public
-      function toggle() {
-        if (this._isShown()) {
-          this.hide();
-        } else {
-          this.show();
-        }
-      }
-    }, {
-      key: "show",
-      value: function show() {
-        var _this2 = this;
-        if (this._isTransitioning || this._isShown()) {
-          return;
-        }
-        var activeChildren = [];
-
-        // find active children
-        if (this._config.parent) {
-          activeChildren = this._getFirstLevelChildren(SELECTOR_ACTIVES).filter(function (element) {
-            return element !== _this2._element;
-          }).map(function (element) {
-            return Collapse.getOrCreateInstance(element, {
-              toggle: false
-            });
-          });
-        }
-        if (activeChildren.length && activeChildren[0]._isTransitioning) {
-          return;
-        }
-        var startEvent = EventHandler.trigger(this._element, EVENT_SHOW);
-        if (startEvent.defaultPrevented) {
-          return;
-        }
-        var _iterator2 = _createForOfIteratorHelper(activeChildren),
-          _step2;
-        try {
-          for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
-            var activeInstance = _step2.value;
-            activeInstance.hide();
-          }
-        } catch (err) {
-          _iterator2.e(err);
-        } finally {
-          _iterator2.f();
-        }
-        var dimension = this._getDimension();
-        this._element.classList.remove(CLASS_NAME_COLLAPSE);
-        this._element.classList.add(CLASS_NAME_COLLAPSING);
-        this._element.style[dimension] = 0;
-        this._addAriaAndCollapsedClass(this._triggerArray, true);
-        this._isTransitioning = true;
-        var complete = function complete() {
-          _this2._isTransitioning = false;
-          _this2._element.classList.remove(CLASS_NAME_COLLAPSING);
-          _this2._element.classList.add(CLASS_NAME_COLLAPSE, CLASS_NAME_SHOW);
-          _this2._element.style[dimension] = '';
-          EventHandler.trigger(_this2._element, EVENT_SHOWN);
-        };
-        var capitalizedDimension = dimension[0].toUpperCase() + dimension.slice(1);
-        var scrollSize = "scroll".concat(capitalizedDimension);
-        this._queueCallback(complete, this._element, true);
-        this._element.style[dimension] = "".concat(this._element[scrollSize], "px");
-      }
-    }, {
-      key: "hide",
-      value: function hide() {
-        var _this3 = this;
-        if (this._isTransitioning || !this._isShown()) {
-          return;
-        }
-        var startEvent = EventHandler.trigger(this._element, EVENT_HIDE);
-        if (startEvent.defaultPrevented) {
-          return;
-        }
-        var dimension = this._getDimension();
-        this._element.style[dimension] = "".concat(this._element.getBoundingClientRect()[dimension], "px");
-        index_js.reflow(this._element);
-        this._element.classList.add(CLASS_NAME_COLLAPSING);
-        this._element.classList.remove(CLASS_NAME_COLLAPSE, CLASS_NAME_SHOW);
-        var _iterator3 = _createForOfIteratorHelper(this._triggerArray),
-          _step3;
-        try {
-          for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
-            var trigger = _step3.value;
-            var element = SelectorEngine.getElementFromSelector(trigger);
-            if (element && !this._isShown(element)) {
-              this._addAriaAndCollapsedClass([trigger], false);
-            }
-          }
-        } catch (err) {
-          _iterator3.e(err);
-        } finally {
-          _iterator3.f();
-        }
-        this._isTransitioning = true;
-        var complete = function complete() {
-          _this3._isTransitioning = false;
-          _this3._element.classList.remove(CLASS_NAME_COLLAPSING);
-          _this3._element.classList.add(CLASS_NAME_COLLAPSE);
-          EventHandler.trigger(_this3._element, EVENT_HIDDEN);
-        };
-        this._element.style[dimension] = '';
-        this._queueCallback(complete, this._element, true);
-      }
-    }, {
-      key: "_isShown",
-      value: function _isShown() {
-        var element = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this._element;
-        return element.classList.contains(CLASS_NAME_SHOW);
-      }
-
-      // Private
-    }, {
-      key: "_configAfterMerge",
-      value: function _configAfterMerge(config) {
-        config.toggle = Boolean(config.toggle); // Coerce string values
-        config.parent = index_js.getElement(config.parent);
-        return config;
-      }
-    }, {
-      key: "_getDimension",
-      value: function _getDimension() {
-        return this._element.classList.contains(CLASS_NAME_HORIZONTAL) ? WIDTH : HEIGHT;
-      }
-    }, {
-      key: "_initializeChildren",
-      value: function _initializeChildren() {
-        if (!this._config.parent) {
-          return;
-        }
-        var children = this._getFirstLevelChildren(SELECTOR_DATA_TOGGLE);
-        var _iterator4 = _createForOfIteratorHelper(children),
-          _step4;
-        try {
-          for (_iterator4.s(); !(_step4 = _iterator4.n()).done;) {
-            var element = _step4.value;
-            var selected = SelectorEngine.getElementFromSelector(element);
-            if (selected) {
-              this._addAriaAndCollapsedClass([element], this._isShown(selected));
-            }
-          }
-        } catch (err) {
-          _iterator4.e(err);
-        } finally {
-          _iterator4.f();
-        }
-      }
-    }, {
-      key: "_getFirstLevelChildren",
-      value: function _getFirstLevelChildren(selector) {
-        var children = SelectorEngine.find(CLASS_NAME_DEEPER_CHILDREN, this._config.parent);
-        // remove children if greater depth
-        return SelectorEngine.find(selector, this._config.parent).filter(function (element) {
-          return !children.includes(element);
-        });
-      }
-    }, {
-      key: "_addAriaAndCollapsedClass",
-      value: function _addAriaAndCollapsedClass(triggerArray, isOpen) {
-        if (!triggerArray.length) {
-          return;
-        }
-        var _iterator5 = _createForOfIteratorHelper(triggerArray),
-          _step5;
-        try {
-          for (_iterator5.s(); !(_step5 = _iterator5.n()).done;) {
-            var element = _step5.value;
-            element.classList.toggle(CLASS_NAME_COLLAPSED, !isOpen);
-            element.setAttribute('aria-expanded', isOpen);
-          }
-        } catch (err) {
-          _iterator5.e(err);
-        } finally {
-          _iterator5.f();
-        }
-      }
-
-      // Static
-    }], [{
-      key: "Default",
-      get: function get() {
-        return Default;
-      }
-    }, {
-      key: "DefaultType",
-      get: function get() {
-        return DefaultType;
-      }
-    }, {
-      key: "NAME",
-      get: function get() {
-        return NAME;
-      }
-    }, {
-      key: "jQueryInterface",
-      value: function jQueryInterface(config) {
-        var _config = {};
-        if (typeof config === 'string' && /show|hide/.test(config)) {
-          _config.toggle = false;
-        }
-        return this.each(function () {
-          var data = Collapse.getOrCreateInstance(this, _config);
-          if (typeof config === 'string') {
-            if (typeof data[config] === 'undefined') {
-              throw new TypeError("No method named \"".concat(config, "\""));
-            }
-            data[config]();
-          }
-        });
-      }
-    }]);
-  }(BaseComponent);
-  /**
-   * Data API implementation
-   */
-  EventHandler.on(document, EVENT_CLICK_DATA_API, SELECTOR_DATA_TOGGLE, function (event) {
-    // preventDefault only for <a> elements (which change the URL) not inside the collapsible element
-    if (event.target.tagName === 'A' || event.delegateTarget && event.delegateTarget.tagName === 'A') {
-      event.preventDefault();
-    }
-    var _iterator6 = _createForOfIteratorHelper(SelectorEngine.getMultipleElementsFromSelector(this)),
-      _step6;
-    try {
-      for (_iterator6.s(); !(_step6 = _iterator6.n()).done;) {
-        var element = _step6.value;
-        Collapse.getOrCreateInstance(element, {
-          toggle: false
-        }).toggle();
-      }
-    } catch (err) {
-      _iterator6.e(err);
-    } finally {
-      _iterator6.f();
-    }
-  });
-
-  /**
-   * jQuery
-   */
-
-  index_js.defineJQueryPlugin(Collapse);
-  return Collapse;
-});
-
-/***/ }),
-
-/***/ 814:
-/***/ (function(module, exports, __webpack_require__) {
-
-var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
-/*!
-  * Bootstrap data.js v5.3.3 (https://getbootstrap.com/)
-  * Copyright 2011-2024 The Bootstrap Authors (https://github.com/twbs/bootstrap/graphs/contributors)
-  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
-  */
-(function (global, factory) {
-  ( false ? 0 : _typeof(exports)) === 'object' && "object" !== 'undefined' ? module.exports = factory() :  true ? !(__WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
-		__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
-		(__WEBPACK_AMD_DEFINE_FACTORY__.call(exports, __webpack_require__, exports, module)) :
-		__WEBPACK_AMD_DEFINE_FACTORY__),
-		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)) : (0);
-})(this, function () {
-  'use strict';
-
-  /**
-   * --------------------------------------------------------------------------
-   * Bootstrap dom/data.js
-   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
-   * --------------------------------------------------------------------------
-   */
-
-  /**
-   * Constants
-   */
-  var elementMap = new Map();
-  var data = {
-    set: function set(element, key, instance) {
-      if (!elementMap.has(element)) {
-        elementMap.set(element, new Map());
-      }
-      var instanceMap = elementMap.get(element);
-
-      // make it clear we only want one instance per element
-      // can be removed later when multiple key/instances are fine to be used
-      if (!instanceMap.has(key) && instanceMap.size !== 0) {
-        // eslint-disable-next-line no-console
-        console.error("Bootstrap doesn't allow more than one instance per element. Bound instance: ".concat(Array.from(instanceMap.keys())[0], "."));
-        return;
-      }
-      instanceMap.set(key, instance);
-    },
-    get: function get(element, key) {
-      if (elementMap.has(element)) {
-        return elementMap.get(element).get(key) || null;
-      }
-      return null;
-    },
-    remove: function remove(element, key) {
-      if (!elementMap.has(element)) {
-        return;
-      }
-      var instanceMap = elementMap.get(element);
-      instanceMap["delete"](key);
-
-      // free up element references if there are no instances left for an element
-      if (instanceMap.size === 0) {
-        elementMap["delete"](element);
-      }
-    }
-  };
-  return data;
-});
-
-/***/ }),
-
-/***/ 441:
+/***/ 44:
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;function _slicedToArray(r, e) { return _arrayWithHoles(r) || _iterableToArrayLimit(r, e) || _unsupportedIterableToArray(r, e) || _nonIterableRest(); }
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
+function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
 function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
 function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
-function _createForOfIteratorHelper(r, e) { var t = "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (!t) { if (Array.isArray(r) || (t = _unsupportedIterableToArray(r)) || e && r && "number" == typeof r.length) { t && (r = t); var _n = 0, F = function F() {}; return { s: F, n: function n() { return _n >= r.length ? { done: !0 } : { done: !1, value: r[_n++] }; }, e: function e(r) { throw r; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var o, a = !0, u = !1; return { s: function s() { t = t.call(r); }, n: function n() { var r = t.next(); return a = r.done, r; }, e: function e(r) { u = !0, o = r; }, f: function f() { try { a || null == t["return"] || t["return"](); } finally { if (u) throw o; } } }; }
-function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
-function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
+function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
+function _classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
+function _defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, _toPropertyKey(o.key), o); } }
+function _createClass(e, r, t) { return r && _defineProperties(e.prototype, r), t && _defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
 /*!
-  * Bootstrap event-handler.js v5.3.3 (https://getbootstrap.com/)
-  * Copyright 2011-2024 The Bootstrap Authors (https://github.com/twbs/bootstrap/graphs/contributors)
+  * Bootstrap config.js v5.3.7 (https://getbootstrap.com/)
+  * Copyright 2011-2025 The Bootstrap Authors (https://github.com/twbs/bootstrap/graphs/contributors)
   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
   */
 (function (global, factory) {
-  ( false ? 0 : _typeof(exports)) === 'object' && "object" !== 'undefined' ? module.exports = factory(__webpack_require__(552)) :  true ? !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(552)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+  ( false ? 0 : _typeof(exports)) === 'object' && "object" !== 'undefined' ? module.exports = factory(__webpack_require__(532), __webpack_require__(552)) :  true ? !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(532), __webpack_require__(552)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 		__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 		(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)) : (0);
-})(this, function (index_js) {
+})(this, function (Manipulator, index_js) {
   'use strict';
 
   /**
    * --------------------------------------------------------------------------
-   * Bootstrap dom/event-handler.js
+   * Bootstrap util/config.js
    * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
    * --------------------------------------------------------------------------
    */
 
   /**
-   * Constants
+   * Class definition
    */
-  var namespaceRegex = /[^.]*(?=\..*)\.|.*/;
-  var stripNameRegex = /\..*/;
-  var stripUidRegex = /::\d+$/;
-  var eventRegistry = {}; // Events storage
-  var uidEvent = 1;
-  var customEvents = {
-    mouseenter: 'mouseover',
-    mouseleave: 'mouseout'
-  };
-  var nativeEvents = new Set(['click', 'dblclick', 'mouseup', 'mousedown', 'contextmenu', 'mousewheel', 'DOMMouseScroll', 'mouseover', 'mouseout', 'mousemove', 'selectstart', 'selectend', 'keydown', 'keypress', 'keyup', 'orientationchange', 'touchstart', 'touchmove', 'touchend', 'touchcancel', 'pointerdown', 'pointermove', 'pointerup', 'pointerleave', 'pointercancel', 'gesturestart', 'gesturechange', 'gestureend', 'focus', 'blur', 'change', 'reset', 'select', 'submit', 'focusin', 'focusout', 'load', 'unload', 'beforeunload', 'resize', 'move', 'DOMContentLoaded', 'readystatechange', 'error', 'abort', 'scroll']);
-
-  /**
-   * Private methods
-   */
-
-  function makeEventUid(element, uid) {
-    return uid && "".concat(uid, "::").concat(uidEvent++) || element.uidEvent || uidEvent++;
-  }
-  function getElementEvents(element) {
-    var uid = makeEventUid(element);
-    element.uidEvent = uid;
-    eventRegistry[uid] = eventRegistry[uid] || {};
-    return eventRegistry[uid];
-  }
-  function bootstrapHandler(element, fn) {
-    return function handler(event) {
-      hydrateObj(event, {
-        delegateTarget: element
-      });
-      if (handler.oneOff) {
-        EventHandler.off(element, event.type, fn);
+  var Config = /*#__PURE__*/function () {
+    function Config() {
+      _classCallCheck(this, Config);
+    }
+    return _createClass(Config, [{
+      key: "_getConfig",
+      value: function _getConfig(config) {
+        config = this._mergeConfigObj(config);
+        config = this._configAfterMerge(config);
+        this._typeCheckConfig(config);
+        return config;
       }
-      return fn.apply(element, [event]);
-    };
-  }
-  function bootstrapDelegationHandler(element, selector, fn) {
-    return function handler(event) {
-      var domElements = element.querySelectorAll(selector);
-      for (var target = event.target; target && target !== this; target = target.parentNode) {
-        var _iterator = _createForOfIteratorHelper(domElements),
-          _step;
-        try {
-          for (_iterator.s(); !(_step = _iterator.n()).done;) {
-            var domElement = _step.value;
-            if (domElement !== target) {
-              continue;
-            }
-            hydrateObj(event, {
-              delegateTarget: target
-            });
-            if (handler.oneOff) {
-              EventHandler.off(element, event.type, selector, fn);
-            }
-            return fn.apply(target, [event]);
+    }, {
+      key: "_configAfterMerge",
+      value: function _configAfterMerge(config) {
+        return config;
+      }
+    }, {
+      key: "_mergeConfigObj",
+      value: function _mergeConfigObj(config, element) {
+        var jsonConfig = index_js.isElement(element) ? Manipulator.getDataAttribute(element, 'config') : {}; // try to parse
+
+        return _objectSpread(_objectSpread(_objectSpread(_objectSpread({}, this.constructor.Default), _typeof(jsonConfig) === 'object' ? jsonConfig : {}), index_js.isElement(element) ? Manipulator.getDataAttributes(element) : {}), _typeof(config) === 'object' ? config : {});
+      }
+    }, {
+      key: "_typeCheckConfig",
+      value: function _typeCheckConfig(config) {
+        var configTypes = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this.constructor.DefaultType;
+        for (var _i = 0, _Object$entries = Object.entries(configTypes); _i < _Object$entries.length; _i++) {
+          var _Object$entries$_i = _slicedToArray(_Object$entries[_i], 2),
+            property = _Object$entries$_i[0],
+            expectedTypes = _Object$entries$_i[1];
+          var value = config[property];
+          var valueType = index_js.isElement(value) ? 'element' : index_js.toType(value);
+          if (!new RegExp(expectedTypes).test(valueType)) {
+            throw new TypeError("".concat(this.constructor.NAME.toUpperCase(), ": Option \"").concat(property, "\" provided type \"").concat(valueType, "\" but expected type \"").concat(expectedTypes, "\"."));
           }
-        } catch (err) {
-          _iterator.e(err);
-        } finally {
-          _iterator.f();
         }
       }
-    };
-  }
-  function findHandler(events, callable) {
-    var delegationSelector = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
-    return Object.values(events).find(function (event) {
-      return event.callable === callable && event.delegationSelector === delegationSelector;
-    });
-  }
-  function normalizeParameters(originalTypeEvent, handler, delegationFunction) {
-    var isDelegated = typeof handler === 'string';
-    // TODO: tooltip passes `false` instead of selector, so we need to check
-    var callable = isDelegated ? delegationFunction : handler || delegationFunction;
-    var typeEvent = getTypeEvent(originalTypeEvent);
-    if (!nativeEvents.has(typeEvent)) {
-      typeEvent = originalTypeEvent;
-    }
-    return [isDelegated, callable, typeEvent];
-  }
-  function addHandler(element, originalTypeEvent, handler, delegationFunction, oneOff) {
-    if (typeof originalTypeEvent !== 'string' || !element) {
-      return;
-    }
-    var _normalizeParameters = normalizeParameters(originalTypeEvent, handler, delegationFunction),
-      _normalizeParameters2 = _slicedToArray(_normalizeParameters, 3),
-      isDelegated = _normalizeParameters2[0],
-      callable = _normalizeParameters2[1],
-      typeEvent = _normalizeParameters2[2];
-
-    // in case of mouseenter or mouseleave wrap the handler within a function that checks for its DOM position
-    // this prevents the handler from being dispatched the same way as mouseover or mouseout does
-    if (originalTypeEvent in customEvents) {
-      var wrapFunction = function wrapFunction(fn) {
-        return function (event) {
-          if (!event.relatedTarget || event.relatedTarget !== event.delegateTarget && !event.delegateTarget.contains(event.relatedTarget)) {
-            return fn.call(this, event);
-          }
-        };
-      };
-      callable = wrapFunction(callable);
-    }
-    var events = getElementEvents(element);
-    var handlers = events[typeEvent] || (events[typeEvent] = {});
-    var previousFunction = findHandler(handlers, callable, isDelegated ? handler : null);
-    if (previousFunction) {
-      previousFunction.oneOff = previousFunction.oneOff && oneOff;
-      return;
-    }
-    var uid = makeEventUid(callable, originalTypeEvent.replace(namespaceRegex, ''));
-    var fn = isDelegated ? bootstrapDelegationHandler(element, handler, callable) : bootstrapHandler(element, callable);
-    fn.delegationSelector = isDelegated ? handler : null;
-    fn.callable = callable;
-    fn.oneOff = oneOff;
-    fn.uidEvent = uid;
-    handlers[uid] = fn;
-    element.addEventListener(typeEvent, fn, isDelegated);
-  }
-  function removeHandler(element, events, typeEvent, handler, delegationSelector) {
-    var fn = findHandler(events[typeEvent], handler, delegationSelector);
-    if (!fn) {
-      return;
-    }
-    element.removeEventListener(typeEvent, fn, Boolean(delegationSelector));
-    delete events[typeEvent][fn.uidEvent];
-  }
-  function removeNamespacedHandlers(element, events, typeEvent, namespace) {
-    var storeElementEvent = events[typeEvent] || {};
-    for (var _i = 0, _Object$entries = Object.entries(storeElementEvent); _i < _Object$entries.length; _i++) {
-      var _Object$entries$_i = _slicedToArray(_Object$entries[_i], 2),
-        handlerKey = _Object$entries$_i[0],
-        event = _Object$entries$_i[1];
-      if (handlerKey.includes(namespace)) {
-        removeHandler(element, events, typeEvent, event.callable, event.delegationSelector);
-      }
-    }
-  }
-  function getTypeEvent(event) {
-    // allow to get the native events from namespaced events ('click.bs.button' --> 'click')
-    event = event.replace(stripNameRegex, '');
-    return customEvents[event] || event;
-  }
-  var EventHandler = {
-    on: function on(element, event, handler, delegationFunction) {
-      addHandler(element, event, handler, delegationFunction, false);
-    },
-    one: function one(element, event, handler, delegationFunction) {
-      addHandler(element, event, handler, delegationFunction, true);
-    },
-    off: function off(element, originalTypeEvent, handler, delegationFunction) {
-      if (typeof originalTypeEvent !== 'string' || !element) {
-        return;
-      }
-      var _normalizeParameters3 = normalizeParameters(originalTypeEvent, handler, delegationFunction),
-        _normalizeParameters4 = _slicedToArray(_normalizeParameters3, 3),
-        isDelegated = _normalizeParameters4[0],
-        callable = _normalizeParameters4[1],
-        typeEvent = _normalizeParameters4[2];
-      var inNamespace = typeEvent !== originalTypeEvent;
-      var events = getElementEvents(element);
-      var storeElementEvent = events[typeEvent] || {};
-      var isNamespace = originalTypeEvent.startsWith('.');
-      if (typeof callable !== 'undefined') {
-        // Simplest case: handler is passed, remove that listener ONLY.
-        if (!Object.keys(storeElementEvent).length) {
-          return;
-        }
-        removeHandler(element, events, typeEvent, callable, isDelegated ? handler : null);
-        return;
-      }
-      if (isNamespace) {
-        for (var _i2 = 0, _Object$keys = Object.keys(events); _i2 < _Object$keys.length; _i2++) {
-          var elementEvent = _Object$keys[_i2];
-          removeNamespacedHandlers(element, events, elementEvent, originalTypeEvent.slice(1));
-        }
-      }
-      for (var _i3 = 0, _Object$entries2 = Object.entries(storeElementEvent); _i3 < _Object$entries2.length; _i3++) {
-        var _Object$entries2$_i = _slicedToArray(_Object$entries2[_i3], 2),
-          keyHandlers = _Object$entries2$_i[0],
-          event = _Object$entries2$_i[1];
-        var handlerKey = keyHandlers.replace(stripUidRegex, '');
-        if (!inNamespace || originalTypeEvent.includes(handlerKey)) {
-          removeHandler(element, events, typeEvent, event.callable, event.delegationSelector);
-        }
-      }
-    },
-    trigger: function trigger(element, event, args) {
-      if (typeof event !== 'string' || !element) {
-        return null;
-      }
-      var $ = index_js.getjQuery();
-      var typeEvent = getTypeEvent(event);
-      var inNamespace = event !== typeEvent;
-      var jQueryEvent = null;
-      var bubbles = true;
-      var nativeDispatch = true;
-      var defaultPrevented = false;
-      if (inNamespace && $) {
-        jQueryEvent = $.Event(event, args);
-        $(element).trigger(jQueryEvent);
-        bubbles = !jQueryEvent.isPropagationStopped();
-        nativeDispatch = !jQueryEvent.isImmediatePropagationStopped();
-        defaultPrevented = jQueryEvent.isDefaultPrevented();
-      }
-      var evt = hydrateObj(new Event(event, {
-        bubbles: bubbles,
-        cancelable: true
-      }), args);
-      if (defaultPrevented) {
-        evt.preventDefault();
-      }
-      if (nativeDispatch) {
-        element.dispatchEvent(evt);
-      }
-      if (evt.defaultPrevented && jQueryEvent) {
-        jQueryEvent.preventDefault();
-      }
-      return evt;
-    }
-  };
-  function hydrateObj(obj) {
-    var meta = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-    var _loop = function _loop() {
-      var _Object$entries3$_i = _slicedToArray(_Object$entries3[_i4], 2),
-        key = _Object$entries3$_i[0],
-        value = _Object$entries3$_i[1];
-      try {
-        obj[key] = value;
-      } catch (_unused) {
-        Object.defineProperty(obj, key, {
-          configurable: true,
-          get: function get() {
-            return value;
-          }
-        });
-      }
-    };
-    for (var _i4 = 0, _Object$entries3 = Object.entries(meta); _i4 < _Object$entries3.length; _i4++) {
-      _loop();
-    }
-    return obj;
-  }
-  return EventHandler;
-});
-
-/***/ }),
-
-/***/ 532:
-/***/ (function(module, exports, __webpack_require__) {
-
-var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;function _createForOfIteratorHelper(r, e) { var t = "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (!t) { if (Array.isArray(r) || (t = _unsupportedIterableToArray(r)) || e && r && "number" == typeof r.length) { t && (r = t); var _n = 0, F = function F() {}; return { s: F, n: function n() { return _n >= r.length ? { done: !0 } : { done: !1, value: r[_n++] }; }, e: function e(r) { throw r; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var o, a = !0, u = !1; return { s: function s() { t = t.call(r); }, n: function n() { var r = t.next(); return a = r.done, r; }, e: function e(r) { u = !0, o = r; }, f: function f() { try { a || null == t["return"] || t["return"](); } finally { if (u) throw o; } } }; }
-function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
-function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
-function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
-/*!
-  * Bootstrap manipulator.js v5.3.3 (https://getbootstrap.com/)
-  * Copyright 2011-2024 The Bootstrap Authors (https://github.com/twbs/bootstrap/graphs/contributors)
-  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
-  */
-(function (global, factory) {
-  ( false ? 0 : _typeof(exports)) === 'object' && "object" !== 'undefined' ? module.exports = factory() :  true ? !(__WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
-		__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
-		(__WEBPACK_AMD_DEFINE_FACTORY__.call(exports, __webpack_require__, exports, module)) :
-		__WEBPACK_AMD_DEFINE_FACTORY__),
-		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)) : (0);
-})(this, function () {
-  'use strict';
-
-  /**
-   * --------------------------------------------------------------------------
-   * Bootstrap dom/manipulator.js
-   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
-   * --------------------------------------------------------------------------
-   */
-  function normalizeData(value) {
-    if (value === 'true') {
-      return true;
-    }
-    if (value === 'false') {
-      return false;
-    }
-    if (value === Number(value).toString()) {
-      return Number(value);
-    }
-    if (value === '' || value === 'null') {
-      return null;
-    }
-    if (typeof value !== 'string') {
-      return value;
-    }
-    try {
-      return JSON.parse(decodeURIComponent(value));
-    } catch (_unused) {
-      return value;
-    }
-  }
-  function normalizeDataKey(key) {
-    return key.replace(/[A-Z]/g, function (chr) {
-      return "-".concat(chr.toLowerCase());
-    });
-  }
-  var Manipulator = {
-    setDataAttribute: function setDataAttribute(element, key, value) {
-      element.setAttribute("data-bs-".concat(normalizeDataKey(key)), value);
-    },
-    removeDataAttribute: function removeDataAttribute(element, key) {
-      element.removeAttribute("data-bs-".concat(normalizeDataKey(key)));
-    },
-    getDataAttributes: function getDataAttributes(element) {
-      if (!element) {
+    }], [{
+      key: "Default",
+      get:
+      // Getters
+      function get() {
         return {};
       }
-      var attributes = {};
-      var bsKeys = Object.keys(element.dataset).filter(function (key) {
-        return key.startsWith('bs') && !key.startsWith('bsConfig');
-      });
-      var _iterator = _createForOfIteratorHelper(bsKeys),
-        _step;
-      try {
-        for (_iterator.s(); !(_step = _iterator.n()).done;) {
-          var key = _step.value;
-          var pureKey = key.replace(/^bs/, '');
-          pureKey = pureKey.charAt(0).toLowerCase() + pureKey.slice(1, pureKey.length);
-          attributes[pureKey] = normalizeData(element.dataset[key]);
-        }
-      } catch (err) {
-        _iterator.e(err);
-      } finally {
-        _iterator.f();
+    }, {
+      key: "DefaultType",
+      get: function get() {
+        return {};
       }
-      return attributes;
-    },
-    getDataAttribute: function getDataAttribute(element, key) {
-      return normalizeData(element.getAttribute("data-bs-".concat(normalizeDataKey(key))));
-    }
-  };
-  return Manipulator;
-});
-
-/***/ }),
-
-/***/ 374:
-/***/ (function(module, exports, __webpack_require__) {
-
-var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;function _toConsumableArray(r) { return _arrayWithoutHoles(r) || _iterableToArray(r) || _unsupportedIterableToArray(r) || _nonIterableSpread(); }
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
-function _iterableToArray(r) { if ("undefined" != typeof Symbol && null != r[Symbol.iterator] || null != r["@@iterator"]) return Array.from(r); }
-function _arrayWithoutHoles(r) { if (Array.isArray(r)) return _arrayLikeToArray(r); }
-function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
-function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
-/*!
-  * Bootstrap selector-engine.js v5.3.3 (https://getbootstrap.com/)
-  * Copyright 2011-2024 The Bootstrap Authors (https://github.com/twbs/bootstrap/graphs/contributors)
-  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
-  */
-(function (global, factory) {
-  ( false ? 0 : _typeof(exports)) === 'object' && "object" !== 'undefined' ? module.exports = factory(__webpack_require__(552)) :  true ? !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(552)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
-		__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
-		(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
-		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)) : (0);
-})(this, function (index_js) {
-  'use strict';
-
-  /**
-   * --------------------------------------------------------------------------
-   * Bootstrap dom/selector-engine.js
-   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
-   * --------------------------------------------------------------------------
-   */
-  var getSelector = function getSelector(element) {
-    var selector = element.getAttribute('data-bs-target');
-    if (!selector || selector === '#') {
-      var hrefAttribute = element.getAttribute('href');
-
-      // The only valid content that could double as a selector are IDs or classes,
-      // so everything starting with `#` or `.`. If a "real" URL is used as the selector,
-      // `document.querySelector` will rightfully complain it is invalid.
-      // See https://github.com/twbs/bootstrap/issues/32273
-      if (!hrefAttribute || !hrefAttribute.includes('#') && !hrefAttribute.startsWith('.')) {
-        return null;
+    }, {
+      key: "NAME",
+      get: function get() {
+        throw new Error('You have to implement the static method "NAME", for each component!');
       }
-
-      // Just in case some CMS puts out a full URL with the anchor appended
-      if (hrefAttribute.includes('#') && !hrefAttribute.startsWith('#')) {
-        hrefAttribute = "#".concat(hrefAttribute.split('#')[1]);
-      }
-      selector = hrefAttribute && hrefAttribute !== '#' ? hrefAttribute.trim() : null;
-    }
-    return selector ? selector.split(',').map(function (sel) {
-      return index_js.parseSelector(sel);
-    }).join(',') : null;
-  };
-  var SelectorEngine = {
-    find: function find(selector) {
-      var _ref;
-      var element = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : document.documentElement;
-      return (_ref = []).concat.apply(_ref, _toConsumableArray(Element.prototype.querySelectorAll.call(element, selector)));
-    },
-    findOne: function findOne(selector) {
-      var element = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : document.documentElement;
-      return Element.prototype.querySelector.call(element, selector);
-    },
-    children: function children(element, selector) {
-      var _ref2;
-      return (_ref2 = []).concat.apply(_ref2, _toConsumableArray(element.children)).filter(function (child) {
-        return child.matches(selector);
-      });
-    },
-    parents: function parents(element, selector) {
-      var parents = [];
-      var ancestor = element.parentNode.closest(selector);
-      while (ancestor) {
-        parents.push(ancestor);
-        ancestor = ancestor.parentNode.closest(selector);
-      }
-      return parents;
-    },
-    prev: function prev(element, selector) {
-      var previous = element.previousElementSibling;
-      while (previous) {
-        if (previous.matches(selector)) {
-          return [previous];
-        }
-        previous = previous.previousElementSibling;
-      }
-      return [];
-    },
-    // TODO: this is now unused; remove later along with prev()
-    next: function next(element, selector) {
-      var next = element.nextElementSibling;
-      while (next) {
-        if (next.matches(selector)) {
-          return [next];
-        }
-        next = next.nextElementSibling;
-      }
-      return [];
-    },
-    focusableChildren: function focusableChildren(element) {
-      var focusables = ['a', 'button', 'input', 'textarea', 'select', 'details', '[tabindex]', '[contenteditable="true"]'].map(function (selector) {
-        return "".concat(selector, ":not([tabindex^=\"-\"])");
-      }).join(',');
-      return this.find(focusables, element).filter(function (el) {
-        return !index_js.isDisabled(el) && index_js.isVisible(el);
-      });
-    },
-    getSelectorFromElement: function getSelectorFromElement(element) {
-      var selector = getSelector(element);
-      if (selector) {
-        return SelectorEngine.findOne(selector) ? selector : null;
-      }
-      return null;
-    },
-    getElementFromSelector: function getElementFromSelector(element) {
-      var selector = getSelector(element);
-      return selector ? SelectorEngine.findOne(selector) : null;
-    },
-    getMultipleElementsFromSelector: function getMultipleElementsFromSelector(element) {
-      var selector = getSelector(element);
-      return selector ? SelectorEngine.find(selector) : [];
-    }
-  };
-  return SelectorEngine;
+    }]);
+  }();
+  return Config;
 });
 
 /***/ }),
@@ -1088,8 +125,8 @@ function _inherits(t, e) { if ("function" != typeof e && null !== e) throw new T
 function _setPrototypeOf(t, e) { return _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function (t, e) { return t.__proto__ = e, t; }, _setPrototypeOf(t, e); }
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
 /*!
-  * Bootstrap tab.js v5.3.3 (https://getbootstrap.com/)
-  * Copyright 2011-2024 The Bootstrap Authors (https://github.com/twbs/bootstrap/graphs/contributors)
+  * Bootstrap tab.js v5.3.7 (https://getbootstrap.com/)
+  * Copyright 2011-2025 The Bootstrap Authors (https://github.com/twbs/bootstrap/graphs/contributors)
   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
   */
 (function (global, factory) {
@@ -1433,106 +470,503 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
 
 /***/ }),
 
-/***/ 44:
+/***/ 374:
 /***/ (function(module, exports, __webpack_require__) {
 
-var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;function _slicedToArray(r, e) { return _arrayWithHoles(r) || _iterableToArrayLimit(r, e) || _unsupportedIterableToArray(r, e) || _nonIterableRest(); }
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;function _toConsumableArray(r) { return _arrayWithoutHoles(r) || _iterableToArray(r) || _unsupportedIterableToArray(r) || _nonIterableSpread(); }
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
+function _iterableToArray(r) { if ("undefined" != typeof Symbol && null != r[Symbol.iterator] || null != r["@@iterator"]) return Array.from(r); }
+function _arrayWithoutHoles(r) { if (Array.isArray(r)) return _arrayLikeToArray(r); }
 function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
-function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
-function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
-function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
-function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
-function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
-function _classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
-function _defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, _toPropertyKey(o.key), o); } }
-function _createClass(e, r, t) { return r && _defineProperties(e.prototype, r), t && _defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
-function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
-function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
 /*!
-  * Bootstrap config.js v5.3.3 (https://getbootstrap.com/)
-  * Copyright 2011-2024 The Bootstrap Authors (https://github.com/twbs/bootstrap/graphs/contributors)
+  * Bootstrap selector-engine.js v5.3.7 (https://getbootstrap.com/)
+  * Copyright 2011-2025 The Bootstrap Authors (https://github.com/twbs/bootstrap/graphs/contributors)
   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
   */
 (function (global, factory) {
-  ( false ? 0 : _typeof(exports)) === 'object' && "object" !== 'undefined' ? module.exports = factory(__webpack_require__(532), __webpack_require__(552)) :  true ? !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(532), __webpack_require__(552)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+  ( false ? 0 : _typeof(exports)) === 'object' && "object" !== 'undefined' ? module.exports = factory(__webpack_require__(552)) :  true ? !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(552)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 		__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 		(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)) : (0);
-})(this, function (Manipulator, index_js) {
+})(this, function (index_js) {
   'use strict';
 
   /**
    * --------------------------------------------------------------------------
-   * Bootstrap util/config.js
+   * Bootstrap dom/selector-engine.js
+   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
+   * --------------------------------------------------------------------------
+   */
+  var getSelector = function getSelector(element) {
+    var selector = element.getAttribute('data-bs-target');
+    if (!selector || selector === '#') {
+      var hrefAttribute = element.getAttribute('href');
+
+      // The only valid content that could double as a selector are IDs or classes,
+      // so everything starting with `#` or `.`. If a "real" URL is used as the selector,
+      // `document.querySelector` will rightfully complain it is invalid.
+      // See https://github.com/twbs/bootstrap/issues/32273
+      if (!hrefAttribute || !hrefAttribute.includes('#') && !hrefAttribute.startsWith('.')) {
+        return null;
+      }
+
+      // Just in case some CMS puts out a full URL with the anchor appended
+      if (hrefAttribute.includes('#') && !hrefAttribute.startsWith('#')) {
+        hrefAttribute = "#".concat(hrefAttribute.split('#')[1]);
+      }
+      selector = hrefAttribute && hrefAttribute !== '#' ? hrefAttribute.trim() : null;
+    }
+    return selector ? selector.split(',').map(function (sel) {
+      return index_js.parseSelector(sel);
+    }).join(',') : null;
+  };
+  var SelectorEngine = {
+    find: function find(selector) {
+      var _ref;
+      var element = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : document.documentElement;
+      return (_ref = []).concat.apply(_ref, _toConsumableArray(Element.prototype.querySelectorAll.call(element, selector)));
+    },
+    findOne: function findOne(selector) {
+      var element = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : document.documentElement;
+      return Element.prototype.querySelector.call(element, selector);
+    },
+    children: function children(element, selector) {
+      var _ref2;
+      return (_ref2 = []).concat.apply(_ref2, _toConsumableArray(element.children)).filter(function (child) {
+        return child.matches(selector);
+      });
+    },
+    parents: function parents(element, selector) {
+      var parents = [];
+      var ancestor = element.parentNode.closest(selector);
+      while (ancestor) {
+        parents.push(ancestor);
+        ancestor = ancestor.parentNode.closest(selector);
+      }
+      return parents;
+    },
+    prev: function prev(element, selector) {
+      var previous = element.previousElementSibling;
+      while (previous) {
+        if (previous.matches(selector)) {
+          return [previous];
+        }
+        previous = previous.previousElementSibling;
+      }
+      return [];
+    },
+    // TODO: this is now unused; remove later along with prev()
+    next: function next(element, selector) {
+      var next = element.nextElementSibling;
+      while (next) {
+        if (next.matches(selector)) {
+          return [next];
+        }
+        next = next.nextElementSibling;
+      }
+      return [];
+    },
+    focusableChildren: function focusableChildren(element) {
+      var focusables = ['a', 'button', 'input', 'textarea', 'select', 'details', '[tabindex]', '[contenteditable="true"]'].map(function (selector) {
+        return "".concat(selector, ":not([tabindex^=\"-\"])");
+      }).join(',');
+      return this.find(focusables, element).filter(function (el) {
+        return !index_js.isDisabled(el) && index_js.isVisible(el);
+      });
+    },
+    getSelectorFromElement: function getSelectorFromElement(element) {
+      var selector = getSelector(element);
+      if (selector) {
+        return SelectorEngine.findOne(selector) ? selector : null;
+      }
+      return null;
+    },
+    getElementFromSelector: function getElementFromSelector(element) {
+      var selector = getSelector(element);
+      return selector ? SelectorEngine.findOne(selector) : null;
+    },
+    getMultipleElementsFromSelector: function getMultipleElementsFromSelector(element) {
+      var selector = getSelector(element);
+      return selector ? SelectorEngine.find(selector) : [];
+    }
+  };
+  return SelectorEngine;
+});
+
+/***/ }),
+
+/***/ 441:
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;function _slicedToArray(r, e) { return _arrayWithHoles(r) || _iterableToArrayLimit(r, e) || _unsupportedIterableToArray(r, e) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
+function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
+function _createForOfIteratorHelper(r, e) { var t = "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (!t) { if (Array.isArray(r) || (t = _unsupportedIterableToArray(r)) || e && r && "number" == typeof r.length) { t && (r = t); var _n = 0, F = function F() {}; return { s: F, n: function n() { return _n >= r.length ? { done: !0 } : { done: !1, value: r[_n++] }; }, e: function e(r) { throw r; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var o, a = !0, u = !1; return { s: function s() { t = t.call(r); }, n: function n() { var r = t.next(); return a = r.done, r; }, e: function e(r) { u = !0, o = r; }, f: function f() { try { a || null == t["return"] || t["return"](); } finally { if (u) throw o; } } }; }
+function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
+function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+/*!
+  * Bootstrap event-handler.js v5.3.7 (https://getbootstrap.com/)
+  * Copyright 2011-2025 The Bootstrap Authors (https://github.com/twbs/bootstrap/graphs/contributors)
+  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
+  */
+(function (global, factory) {
+  ( false ? 0 : _typeof(exports)) === 'object' && "object" !== 'undefined' ? module.exports = factory(__webpack_require__(552)) :  true ? !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(552)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+		__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+		(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)) : (0);
+})(this, function (index_js) {
+  'use strict';
+
+  /**
+   * --------------------------------------------------------------------------
+   * Bootstrap dom/event-handler.js
    * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
    * --------------------------------------------------------------------------
    */
 
   /**
-   * Class definition
+   * Constants
    */
-  var Config = /*#__PURE__*/function () {
-    function Config() {
-      _classCallCheck(this, Config);
-    }
-    return _createClass(Config, [{
-      key: "_getConfig",
-      value: function _getConfig(config) {
-        config = this._mergeConfigObj(config);
-        config = this._configAfterMerge(config);
-        this._typeCheckConfig(config);
-        return config;
-      }
-    }, {
-      key: "_configAfterMerge",
-      value: function _configAfterMerge(config) {
-        return config;
-      }
-    }, {
-      key: "_mergeConfigObj",
-      value: function _mergeConfigObj(config, element) {
-        var jsonConfig = index_js.isElement(element) ? Manipulator.getDataAttribute(element, 'config') : {}; // try to parse
+  var namespaceRegex = /[^.]*(?=\..*)\.|.*/;
+  var stripNameRegex = /\..*/;
+  var stripUidRegex = /::\d+$/;
+  var eventRegistry = {}; // Events storage
+  var uidEvent = 1;
+  var customEvents = {
+    mouseenter: 'mouseover',
+    mouseleave: 'mouseout'
+  };
+  var nativeEvents = new Set(['click', 'dblclick', 'mouseup', 'mousedown', 'contextmenu', 'mousewheel', 'DOMMouseScroll', 'mouseover', 'mouseout', 'mousemove', 'selectstart', 'selectend', 'keydown', 'keypress', 'keyup', 'orientationchange', 'touchstart', 'touchmove', 'touchend', 'touchcancel', 'pointerdown', 'pointermove', 'pointerup', 'pointerleave', 'pointercancel', 'gesturestart', 'gesturechange', 'gestureend', 'focus', 'blur', 'change', 'reset', 'select', 'submit', 'focusin', 'focusout', 'load', 'unload', 'beforeunload', 'resize', 'move', 'DOMContentLoaded', 'readystatechange', 'error', 'abort', 'scroll']);
 
-        return _objectSpread(_objectSpread(_objectSpread(_objectSpread({}, this.constructor.Default), _typeof(jsonConfig) === 'object' ? jsonConfig : {}), index_js.isElement(element) ? Manipulator.getDataAttributes(element) : {}), _typeof(config) === 'object' ? config : {});
+  /**
+   * Private methods
+   */
+
+  function makeEventUid(element, uid) {
+    return uid && "".concat(uid, "::").concat(uidEvent++) || element.uidEvent || uidEvent++;
+  }
+  function getElementEvents(element) {
+    var uid = makeEventUid(element);
+    element.uidEvent = uid;
+    eventRegistry[uid] = eventRegistry[uid] || {};
+    return eventRegistry[uid];
+  }
+  function bootstrapHandler(element, fn) {
+    return function handler(event) {
+      hydrateObj(event, {
+        delegateTarget: element
+      });
+      if (handler.oneOff) {
+        EventHandler.off(element, event.type, fn);
       }
-    }, {
-      key: "_typeCheckConfig",
-      value: function _typeCheckConfig(config) {
-        var configTypes = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this.constructor.DefaultType;
-        for (var _i = 0, _Object$entries = Object.entries(configTypes); _i < _Object$entries.length; _i++) {
-          var _Object$entries$_i = _slicedToArray(_Object$entries[_i], 2),
-            property = _Object$entries$_i[0],
-            expectedTypes = _Object$entries$_i[1];
-          var value = config[property];
-          var valueType = index_js.isElement(value) ? 'element' : index_js.toType(value);
-          if (!new RegExp(expectedTypes).test(valueType)) {
-            throw new TypeError("".concat(this.constructor.NAME.toUpperCase(), ": Option \"").concat(property, "\" provided type \"").concat(valueType, "\" but expected type \"").concat(expectedTypes, "\"."));
+      return fn.apply(element, [event]);
+    };
+  }
+  function bootstrapDelegationHandler(element, selector, fn) {
+    return function handler(event) {
+      var domElements = element.querySelectorAll(selector);
+      for (var target = event.target; target && target !== this; target = target.parentNode) {
+        var _iterator = _createForOfIteratorHelper(domElements),
+          _step;
+        try {
+          for (_iterator.s(); !(_step = _iterator.n()).done;) {
+            var domElement = _step.value;
+            if (domElement !== target) {
+              continue;
+            }
+            hydrateObj(event, {
+              delegateTarget: target
+            });
+            if (handler.oneOff) {
+              EventHandler.off(element, event.type, selector, fn);
+            }
+            return fn.apply(target, [event]);
           }
+        } catch (err) {
+          _iterator.e(err);
+        } finally {
+          _iterator.f();
         }
       }
-    }], [{
-      key: "Default",
-      get:
-      // Getters
-      function get() {
+    };
+  }
+  function findHandler(events, callable) {
+    var delegationSelector = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
+    return Object.values(events).find(function (event) {
+      return event.callable === callable && event.delegationSelector === delegationSelector;
+    });
+  }
+  function normalizeParameters(originalTypeEvent, handler, delegationFunction) {
+    var isDelegated = typeof handler === 'string';
+    // TODO: tooltip passes `false` instead of selector, so we need to check
+    var callable = isDelegated ? delegationFunction : handler || delegationFunction;
+    var typeEvent = getTypeEvent(originalTypeEvent);
+    if (!nativeEvents.has(typeEvent)) {
+      typeEvent = originalTypeEvent;
+    }
+    return [isDelegated, callable, typeEvent];
+  }
+  function addHandler(element, originalTypeEvent, handler, delegationFunction, oneOff) {
+    if (typeof originalTypeEvent !== 'string' || !element) {
+      return;
+    }
+    var _normalizeParameters = normalizeParameters(originalTypeEvent, handler, delegationFunction),
+      _normalizeParameters2 = _slicedToArray(_normalizeParameters, 3),
+      isDelegated = _normalizeParameters2[0],
+      callable = _normalizeParameters2[1],
+      typeEvent = _normalizeParameters2[2];
+
+    // in case of mouseenter or mouseleave wrap the handler within a function that checks for its DOM position
+    // this prevents the handler from being dispatched the same way as mouseover or mouseout does
+    if (originalTypeEvent in customEvents) {
+      var wrapFunction = function wrapFunction(fn) {
+        return function (event) {
+          if (!event.relatedTarget || event.relatedTarget !== event.delegateTarget && !event.delegateTarget.contains(event.relatedTarget)) {
+            return fn.call(this, event);
+          }
+        };
+      };
+      callable = wrapFunction(callable);
+    }
+    var events = getElementEvents(element);
+    var handlers = events[typeEvent] || (events[typeEvent] = {});
+    var previousFunction = findHandler(handlers, callable, isDelegated ? handler : null);
+    if (previousFunction) {
+      previousFunction.oneOff = previousFunction.oneOff && oneOff;
+      return;
+    }
+    var uid = makeEventUid(callable, originalTypeEvent.replace(namespaceRegex, ''));
+    var fn = isDelegated ? bootstrapDelegationHandler(element, handler, callable) : bootstrapHandler(element, callable);
+    fn.delegationSelector = isDelegated ? handler : null;
+    fn.callable = callable;
+    fn.oneOff = oneOff;
+    fn.uidEvent = uid;
+    handlers[uid] = fn;
+    element.addEventListener(typeEvent, fn, isDelegated);
+  }
+  function removeHandler(element, events, typeEvent, handler, delegationSelector) {
+    var fn = findHandler(events[typeEvent], handler, delegationSelector);
+    if (!fn) {
+      return;
+    }
+    element.removeEventListener(typeEvent, fn, Boolean(delegationSelector));
+    delete events[typeEvent][fn.uidEvent];
+  }
+  function removeNamespacedHandlers(element, events, typeEvent, namespace) {
+    var storeElementEvent = events[typeEvent] || {};
+    for (var _i = 0, _Object$entries = Object.entries(storeElementEvent); _i < _Object$entries.length; _i++) {
+      var _Object$entries$_i = _slicedToArray(_Object$entries[_i], 2),
+        handlerKey = _Object$entries$_i[0],
+        event = _Object$entries$_i[1];
+      if (handlerKey.includes(namespace)) {
+        removeHandler(element, events, typeEvent, event.callable, event.delegationSelector);
+      }
+    }
+  }
+  function getTypeEvent(event) {
+    // allow to get the native events from namespaced events ('click.bs.button' --> 'click')
+    event = event.replace(stripNameRegex, '');
+    return customEvents[event] || event;
+  }
+  var EventHandler = {
+    on: function on(element, event, handler, delegationFunction) {
+      addHandler(element, event, handler, delegationFunction, false);
+    },
+    one: function one(element, event, handler, delegationFunction) {
+      addHandler(element, event, handler, delegationFunction, true);
+    },
+    off: function off(element, originalTypeEvent, handler, delegationFunction) {
+      if (typeof originalTypeEvent !== 'string' || !element) {
+        return;
+      }
+      var _normalizeParameters3 = normalizeParameters(originalTypeEvent, handler, delegationFunction),
+        _normalizeParameters4 = _slicedToArray(_normalizeParameters3, 3),
+        isDelegated = _normalizeParameters4[0],
+        callable = _normalizeParameters4[1],
+        typeEvent = _normalizeParameters4[2];
+      var inNamespace = typeEvent !== originalTypeEvent;
+      var events = getElementEvents(element);
+      var storeElementEvent = events[typeEvent] || {};
+      var isNamespace = originalTypeEvent.startsWith('.');
+      if (typeof callable !== 'undefined') {
+        // Simplest case: handler is passed, remove that listener ONLY.
+        if (!Object.keys(storeElementEvent).length) {
+          return;
+        }
+        removeHandler(element, events, typeEvent, callable, isDelegated ? handler : null);
+        return;
+      }
+      if (isNamespace) {
+        for (var _i2 = 0, _Object$keys = Object.keys(events); _i2 < _Object$keys.length; _i2++) {
+          var elementEvent = _Object$keys[_i2];
+          removeNamespacedHandlers(element, events, elementEvent, originalTypeEvent.slice(1));
+        }
+      }
+      for (var _i3 = 0, _Object$entries2 = Object.entries(storeElementEvent); _i3 < _Object$entries2.length; _i3++) {
+        var _Object$entries2$_i = _slicedToArray(_Object$entries2[_i3], 2),
+          keyHandlers = _Object$entries2$_i[0],
+          event = _Object$entries2$_i[1];
+        var handlerKey = keyHandlers.replace(stripUidRegex, '');
+        if (!inNamespace || originalTypeEvent.includes(handlerKey)) {
+          removeHandler(element, events, typeEvent, event.callable, event.delegationSelector);
+        }
+      }
+    },
+    trigger: function trigger(element, event, args) {
+      if (typeof event !== 'string' || !element) {
+        return null;
+      }
+      var $ = index_js.getjQuery();
+      var typeEvent = getTypeEvent(event);
+      var inNamespace = event !== typeEvent;
+      var jQueryEvent = null;
+      var bubbles = true;
+      var nativeDispatch = true;
+      var defaultPrevented = false;
+      if (inNamespace && $) {
+        jQueryEvent = $.Event(event, args);
+        $(element).trigger(jQueryEvent);
+        bubbles = !jQueryEvent.isPropagationStopped();
+        nativeDispatch = !jQueryEvent.isImmediatePropagationStopped();
+        defaultPrevented = jQueryEvent.isDefaultPrevented();
+      }
+      var evt = hydrateObj(new Event(event, {
+        bubbles: bubbles,
+        cancelable: true
+      }), args);
+      if (defaultPrevented) {
+        evt.preventDefault();
+      }
+      if (nativeDispatch) {
+        element.dispatchEvent(evt);
+      }
+      if (evt.defaultPrevented && jQueryEvent) {
+        jQueryEvent.preventDefault();
+      }
+      return evt;
+    }
+  };
+  function hydrateObj(obj) {
+    var meta = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+    var _loop = function _loop() {
+      var _Object$entries3$_i = _slicedToArray(_Object$entries3[_i4], 2),
+        key = _Object$entries3$_i[0],
+        value = _Object$entries3$_i[1];
+      try {
+        obj[key] = value;
+      } catch (_unused) {
+        Object.defineProperty(obj, key, {
+          configurable: true,
+          get: function get() {
+            return value;
+          }
+        });
+      }
+    };
+    for (var _i4 = 0, _Object$entries3 = Object.entries(meta); _i4 < _Object$entries3.length; _i4++) {
+      _loop();
+    }
+    return obj;
+  }
+  return EventHandler;
+});
+
+/***/ }),
+
+/***/ 532:
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;function _createForOfIteratorHelper(r, e) { var t = "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (!t) { if (Array.isArray(r) || (t = _unsupportedIterableToArray(r)) || e && r && "number" == typeof r.length) { t && (r = t); var _n = 0, F = function F() {}; return { s: F, n: function n() { return _n >= r.length ? { done: !0 } : { done: !1, value: r[_n++] }; }, e: function e(r) { throw r; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var o, a = !0, u = !1; return { s: function s() { t = t.call(r); }, n: function n() { var r = t.next(); return a = r.done, r; }, e: function e(r) { u = !0, o = r; }, f: function f() { try { a || null == t["return"] || t["return"](); } finally { if (u) throw o; } } }; }
+function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
+function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+/*!
+  * Bootstrap manipulator.js v5.3.7 (https://getbootstrap.com/)
+  * Copyright 2011-2025 The Bootstrap Authors (https://github.com/twbs/bootstrap/graphs/contributors)
+  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
+  */
+(function (global, factory) {
+  ( false ? 0 : _typeof(exports)) === 'object' && "object" !== 'undefined' ? module.exports = factory() :  true ? !(__WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+		__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+		(__WEBPACK_AMD_DEFINE_FACTORY__.call(exports, __webpack_require__, exports, module)) :
+		__WEBPACK_AMD_DEFINE_FACTORY__),
+		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)) : (0);
+})(this, function () {
+  'use strict';
+
+  /**
+   * --------------------------------------------------------------------------
+   * Bootstrap dom/manipulator.js
+   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
+   * --------------------------------------------------------------------------
+   */
+  function normalizeData(value) {
+    if (value === 'true') {
+      return true;
+    }
+    if (value === 'false') {
+      return false;
+    }
+    if (value === Number(value).toString()) {
+      return Number(value);
+    }
+    if (value === '' || value === 'null') {
+      return null;
+    }
+    if (typeof value !== 'string') {
+      return value;
+    }
+    try {
+      return JSON.parse(decodeURIComponent(value));
+    } catch (_unused) {
+      return value;
+    }
+  }
+  function normalizeDataKey(key) {
+    return key.replace(/[A-Z]/g, function (chr) {
+      return "-".concat(chr.toLowerCase());
+    });
+  }
+  var Manipulator = {
+    setDataAttribute: function setDataAttribute(element, key, value) {
+      element.setAttribute("data-bs-".concat(normalizeDataKey(key)), value);
+    },
+    removeDataAttribute: function removeDataAttribute(element, key) {
+      element.removeAttribute("data-bs-".concat(normalizeDataKey(key)));
+    },
+    getDataAttributes: function getDataAttributes(element) {
+      if (!element) {
         return {};
       }
-    }, {
-      key: "DefaultType",
-      get: function get() {
-        return {};
+      var attributes = {};
+      var bsKeys = Object.keys(element.dataset).filter(function (key) {
+        return key.startsWith('bs') && !key.startsWith('bsConfig');
+      });
+      var _iterator = _createForOfIteratorHelper(bsKeys),
+        _step;
+      try {
+        for (_iterator.s(); !(_step = _iterator.n()).done;) {
+          var key = _step.value;
+          var pureKey = key.replace(/^bs/, '');
+          pureKey = pureKey.charAt(0).toLowerCase() + pureKey.slice(1);
+          attributes[pureKey] = normalizeData(element.dataset[key]);
+        }
+      } catch (err) {
+        _iterator.e(err);
+      } finally {
+        _iterator.f();
       }
-    }, {
-      key: "NAME",
-      get: function get() {
-        throw new Error('You have to implement the static method "NAME", for each component!');
-      }
-    }]);
-  }();
-  return Config;
+      return attributes;
+    },
+    getDataAttribute: function getDataAttribute(element, key) {
+      return normalizeData(element.getAttribute("data-bs-".concat(normalizeDataKey(key))));
+    }
+  };
+  return Manipulator;
 });
 
 /***/ }),
@@ -1548,8 +982,8 @@ function _arrayWithoutHoles(r) { if (Array.isArray(r)) return _arrayLikeToArray(
 function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
 /*!
-  * Bootstrap index.js v5.3.3 (https://getbootstrap.com/)
-  * Copyright 2011-2024 The Bootstrap Authors (https://github.com/twbs/bootstrap/graphs/contributors)
+  * Bootstrap index.js v5.3.7 (https://getbootstrap.com/)
+  * Copyright 2011-2025 The Bootstrap Authors (https://github.com/twbs/bootstrap/graphs/contributors)
   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
   */
 (function (global, factory) {
@@ -1680,7 +1114,7 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
     }
     return element.hasAttribute('disabled') && element.getAttribute('disabled') !== 'false';
   };
-  var findShadowRoot = function findShadowRoot(element) {
+  var _findShadowRoot = function findShadowRoot(element) {
     if (!document.documentElement.attachShadow) {
       return null;
     }
@@ -1698,7 +1132,7 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
     if (!element.parentNode) {
       return null;
     }
-    return findShadowRoot(element.parentNode);
+    return _findShadowRoot(element.parentNode);
   };
   var noop = function noop() {};
 
@@ -1708,7 +1142,7 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
    * @param {HTMLElement} element
    * @return void
    *
-   * @see https://www.charistheo.io/blog/2021/02/restart-a-css-animation-with-javascript/#restarting-a-css-animation
+   * @see https://www.harrytheo.com/blog/2021/02/restart-a-css-animation-with-javascript/#restarting-a-css-animation
    */
   var reflow = function reflow(element) {
     element.offsetHeight; // eslint-disable-line no-unused-expressions
@@ -1758,7 +1192,7 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
   var execute = function execute(possibleCallback) {
     var args = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
     var defaultValue = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : possibleCallback;
-    return typeof possibleCallback === 'function' ? possibleCallback.apply(void 0, _toConsumableArray(args)) : defaultValue;
+    return typeof possibleCallback === 'function' ? possibleCallback.call.apply(possibleCallback, _toConsumableArray(args)) : defaultValue;
   };
   var executeAfterTransition = function executeAfterTransition(callback, transitionElement) {
     var waitForTransition = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
@@ -1769,16 +1203,16 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
     var durationPadding = 5;
     var emulatedDuration = getTransitionDurationFromElement(transitionElement) + durationPadding;
     var called = false;
-    var handler = function handler(_ref) {
+    var _handler = function handler(_ref) {
       var target = _ref.target;
       if (target !== transitionElement) {
         return;
       }
       called = true;
-      transitionElement.removeEventListener(TRANSITION_END, handler);
+      transitionElement.removeEventListener(TRANSITION_END, _handler);
       execute(callback);
     };
-    transitionElement.addEventListener(TRANSITION_END, handler);
+    transitionElement.addEventListener(TRANSITION_END, _handler);
     setTimeout(function () {
       if (!called) {
         triggerTransitionEnd(transitionElement);
@@ -1813,7 +1247,7 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
   exports.defineJQueryPlugin = defineJQueryPlugin;
   exports.execute = execute;
   exports.executeAfterTransition = executeAfterTransition;
-  exports.findShadowRoot = findShadowRoot;
+  exports.findShadowRoot = _findShadowRoot;
   exports.getElement = getElement;
   exports.getNextActiveElement = getNextActiveElement;
   exports.getTransitionDurationFromElement = getTransitionDurationFromElement;
@@ -1832,6 +1266,574 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
   Object.defineProperty(exports, Symbol.toStringTag, {
     value: 'Module'
   });
+});
+
+/***/ }),
+
+/***/ 814:
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+/*!
+  * Bootstrap data.js v5.3.7 (https://getbootstrap.com/)
+  * Copyright 2011-2025 The Bootstrap Authors (https://github.com/twbs/bootstrap/graphs/contributors)
+  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
+  */
+(function (global, factory) {
+  ( false ? 0 : _typeof(exports)) === 'object' && "object" !== 'undefined' ? module.exports = factory() :  true ? !(__WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+		__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+		(__WEBPACK_AMD_DEFINE_FACTORY__.call(exports, __webpack_require__, exports, module)) :
+		__WEBPACK_AMD_DEFINE_FACTORY__),
+		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)) : (0);
+})(this, function () {
+  'use strict';
+
+  /**
+   * --------------------------------------------------------------------------
+   * Bootstrap dom/data.js
+   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
+   * --------------------------------------------------------------------------
+   */
+
+  /**
+   * Constants
+   */
+  var elementMap = new Map();
+  var data = {
+    set: function set(element, key, instance) {
+      if (!elementMap.has(element)) {
+        elementMap.set(element, new Map());
+      }
+      var instanceMap = elementMap.get(element);
+
+      // make it clear we only want one instance per element
+      // can be removed later when multiple key/instances are fine to be used
+      if (!instanceMap.has(key) && instanceMap.size !== 0) {
+        // eslint-disable-next-line no-console
+        console.error("Bootstrap doesn't allow more than one instance per element. Bound instance: ".concat(Array.from(instanceMap.keys())[0], "."));
+        return;
+      }
+      instanceMap.set(key, instance);
+    },
+    get: function get(element, key) {
+      if (elementMap.has(element)) {
+        return elementMap.get(element).get(key) || null;
+      }
+      return null;
+    },
+    remove: function remove(element, key) {
+      if (!elementMap.has(element)) {
+        return;
+      }
+      var instanceMap = elementMap.get(element);
+      instanceMap["delete"](key);
+
+      // free up element references if there are no instances left for an element
+      if (instanceMap.size === 0) {
+        elementMap["delete"](element);
+      }
+    }
+  };
+  return data;
+});
+
+/***/ }),
+
+/***/ 832:
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;function _createForOfIteratorHelper(r, e) { var t = "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (!t) { if (Array.isArray(r) || (t = _unsupportedIterableToArray(r)) || e && r && "number" == typeof r.length) { t && (r = t); var _n = 0, F = function F() {}; return { s: F, n: function n() { return _n >= r.length ? { done: !0 } : { done: !1, value: r[_n++] }; }, e: function e(r) { throw r; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var o, a = !0, u = !1; return { s: function s() { t = t.call(r); }, n: function n() { var r = t.next(); return a = r.done, r; }, e: function e(r) { u = !0, o = r; }, f: function f() { try { a || null == t["return"] || t["return"](); } finally { if (u) throw o; } } }; }
+function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
+function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
+function _classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
+function _defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, _toPropertyKey(o.key), o); } }
+function _createClass(e, r, t) { return r && _defineProperties(e.prototype, r), t && _defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+function _callSuper(t, o, e) { return o = _getPrototypeOf(o), _possibleConstructorReturn(t, _isNativeReflectConstruct() ? Reflect.construct(o, e || [], _getPrototypeOf(t).constructor) : o.apply(t, e)); }
+function _possibleConstructorReturn(t, e) { if (e && ("object" == _typeof(e) || "function" == typeof e)) return e; if (void 0 !== e) throw new TypeError("Derived constructors may only return object or undefined"); return _assertThisInitialized(t); }
+function _assertThisInitialized(e) { if (void 0 === e) throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); return e; }
+function _isNativeReflectConstruct() { try { var t = !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); } catch (t) {} return (_isNativeReflectConstruct = function _isNativeReflectConstruct() { return !!t; })(); }
+function _getPrototypeOf(t) { return _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function (t) { return t.__proto__ || Object.getPrototypeOf(t); }, _getPrototypeOf(t); }
+function _inherits(t, e) { if ("function" != typeof e && null !== e) throw new TypeError("Super expression must either be null or a function"); t.prototype = Object.create(e && e.prototype, { constructor: { value: t, writable: !0, configurable: !0 } }), Object.defineProperty(t, "prototype", { writable: !1 }), e && _setPrototypeOf(t, e); }
+function _setPrototypeOf(t, e) { return _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function (t, e) { return t.__proto__ = e, t; }, _setPrototypeOf(t, e); }
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+/*!
+  * Bootstrap base-component.js v5.3.7 (https://getbootstrap.com/)
+  * Copyright 2011-2025 The Bootstrap Authors (https://github.com/twbs/bootstrap/graphs/contributors)
+  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
+  */
+(function (global, factory) {
+  ( false ? 0 : _typeof(exports)) === 'object' && "object" !== 'undefined' ? module.exports = factory(__webpack_require__(814), __webpack_require__(441), __webpack_require__(44), __webpack_require__(552)) :  true ? !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(814), __webpack_require__(441), __webpack_require__(44), __webpack_require__(552)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+		__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+		(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)) : (0);
+})(this, function (Data, EventHandler, Config, index_js) {
+  'use strict';
+
+  /**
+   * --------------------------------------------------------------------------
+   * Bootstrap base-component.js
+   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
+   * --------------------------------------------------------------------------
+   */
+
+  /**
+   * Constants
+   */
+  var VERSION = '5.3.7';
+
+  /**
+   * Class definition
+   */
+  var BaseComponent = /*#__PURE__*/function (_Config) {
+    function BaseComponent(element, config) {
+      var _this;
+      _classCallCheck(this, BaseComponent);
+      _this = _callSuper(this, BaseComponent);
+      element = index_js.getElement(element);
+      if (!element) {
+        return _possibleConstructorReturn(_this);
+      }
+      _this._element = element;
+      _this._config = _this._getConfig(config);
+      Data.set(_this._element, _this.constructor.DATA_KEY, _this);
+      return _this;
+    }
+
+    // Public
+    _inherits(BaseComponent, _Config);
+    return _createClass(BaseComponent, [{
+      key: "dispose",
+      value: function dispose() {
+        Data.remove(this._element, this.constructor.DATA_KEY);
+        EventHandler.off(this._element, this.constructor.EVENT_KEY);
+        var _iterator = _createForOfIteratorHelper(Object.getOwnPropertyNames(this)),
+          _step;
+        try {
+          for (_iterator.s(); !(_step = _iterator.n()).done;) {
+            var propertyName = _step.value;
+            this[propertyName] = null;
+          }
+        } catch (err) {
+          _iterator.e(err);
+        } finally {
+          _iterator.f();
+        }
+      }
+
+      // Private
+    }, {
+      key: "_queueCallback",
+      value: function _queueCallback(callback, element) {
+        var isAnimated = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
+        index_js.executeAfterTransition(callback, element, isAnimated);
+      }
+    }, {
+      key: "_getConfig",
+      value: function _getConfig(config) {
+        config = this._mergeConfigObj(config, this._element);
+        config = this._configAfterMerge(config);
+        this._typeCheckConfig(config);
+        return config;
+      }
+
+      // Static
+    }], [{
+      key: "getInstance",
+      value: function getInstance(element) {
+        return Data.get(index_js.getElement(element), this.DATA_KEY);
+      }
+    }, {
+      key: "getOrCreateInstance",
+      value: function getOrCreateInstance(element) {
+        var config = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+        return this.getInstance(element) || new this(element, _typeof(config) === 'object' ? config : null);
+      }
+    }, {
+      key: "VERSION",
+      get: function get() {
+        return VERSION;
+      }
+    }, {
+      key: "DATA_KEY",
+      get: function get() {
+        return "bs.".concat(this.NAME);
+      }
+    }, {
+      key: "EVENT_KEY",
+      get: function get() {
+        return ".".concat(this.DATA_KEY);
+      }
+    }, {
+      key: "eventName",
+      value: function eventName(name) {
+        return "".concat(name).concat(this.EVENT_KEY);
+      }
+    }]);
+  }(Config);
+  return BaseComponent;
+});
+
+/***/ }),
+
+/***/ 888:
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;function _createForOfIteratorHelper(r, e) { var t = "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (!t) { if (Array.isArray(r) || (t = _unsupportedIterableToArray(r)) || e && r && "number" == typeof r.length) { t && (r = t); var _n = 0, F = function F() {}; return { s: F, n: function n() { return _n >= r.length ? { done: !0 } : { done: !1, value: r[_n++] }; }, e: function e(r) { throw r; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var o, a = !0, u = !1; return { s: function s() { t = t.call(r); }, n: function n() { var r = t.next(); return a = r.done, r; }, e: function e(r) { u = !0, o = r; }, f: function f() { try { a || null == t["return"] || t["return"](); } finally { if (u) throw o; } } }; }
+function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
+function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
+function _classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
+function _defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, _toPropertyKey(o.key), o); } }
+function _createClass(e, r, t) { return r && _defineProperties(e.prototype, r), t && _defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+function _callSuper(t, o, e) { return o = _getPrototypeOf(o), _possibleConstructorReturn(t, _isNativeReflectConstruct() ? Reflect.construct(o, e || [], _getPrototypeOf(t).constructor) : o.apply(t, e)); }
+function _possibleConstructorReturn(t, e) { if (e && ("object" == _typeof(e) || "function" == typeof e)) return e; if (void 0 !== e) throw new TypeError("Derived constructors may only return object or undefined"); return _assertThisInitialized(t); }
+function _assertThisInitialized(e) { if (void 0 === e) throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); return e; }
+function _isNativeReflectConstruct() { try { var t = !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); } catch (t) {} return (_isNativeReflectConstruct = function _isNativeReflectConstruct() { return !!t; })(); }
+function _getPrototypeOf(t) { return _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function (t) { return t.__proto__ || Object.getPrototypeOf(t); }, _getPrototypeOf(t); }
+function _inherits(t, e) { if ("function" != typeof e && null !== e) throw new TypeError("Super expression must either be null or a function"); t.prototype = Object.create(e && e.prototype, { constructor: { value: t, writable: !0, configurable: !0 } }), Object.defineProperty(t, "prototype", { writable: !1 }), e && _setPrototypeOf(t, e); }
+function _setPrototypeOf(t, e) { return _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function (t, e) { return t.__proto__ = e, t; }, _setPrototypeOf(t, e); }
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+/*!
+  * Bootstrap collapse.js v5.3.7 (https://getbootstrap.com/)
+  * Copyright 2011-2025 The Bootstrap Authors (https://github.com/twbs/bootstrap/graphs/contributors)
+  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
+  */
+(function (global, factory) {
+  ( false ? 0 : _typeof(exports)) === 'object' && "object" !== 'undefined' ? module.exports = factory(__webpack_require__(832), __webpack_require__(441), __webpack_require__(374), __webpack_require__(552)) :  true ? !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(832), __webpack_require__(441), __webpack_require__(374), __webpack_require__(552)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+		__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+		(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)) : (0);
+})(this, function (BaseComponent, EventHandler, SelectorEngine, index_js) {
+  'use strict';
+
+  /**
+   * --------------------------------------------------------------------------
+   * Bootstrap collapse.js
+   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
+   * --------------------------------------------------------------------------
+   */
+
+  /**
+   * Constants
+   */
+  var NAME = 'collapse';
+  var DATA_KEY = 'bs.collapse';
+  var EVENT_KEY = ".".concat(DATA_KEY);
+  var DATA_API_KEY = '.data-api';
+  var EVENT_SHOW = "show".concat(EVENT_KEY);
+  var EVENT_SHOWN = "shown".concat(EVENT_KEY);
+  var EVENT_HIDE = "hide".concat(EVENT_KEY);
+  var EVENT_HIDDEN = "hidden".concat(EVENT_KEY);
+  var EVENT_CLICK_DATA_API = "click".concat(EVENT_KEY).concat(DATA_API_KEY);
+  var CLASS_NAME_SHOW = 'show';
+  var CLASS_NAME_COLLAPSE = 'collapse';
+  var CLASS_NAME_COLLAPSING = 'collapsing';
+  var CLASS_NAME_COLLAPSED = 'collapsed';
+  var CLASS_NAME_DEEPER_CHILDREN = ":scope .".concat(CLASS_NAME_COLLAPSE, " .").concat(CLASS_NAME_COLLAPSE);
+  var CLASS_NAME_HORIZONTAL = 'collapse-horizontal';
+  var WIDTH = 'width';
+  var HEIGHT = 'height';
+  var SELECTOR_ACTIVES = '.collapse.show, .collapse.collapsing';
+  var SELECTOR_DATA_TOGGLE = '[data-bs-toggle="collapse"]';
+  var Default = {
+    parent: null,
+    toggle: true
+  };
+  var DefaultType = {
+    parent: '(null|element)',
+    toggle: 'boolean'
+  };
+
+  /**
+   * Class definition
+   */
+  var Collapse = /*#__PURE__*/function (_BaseComponent) {
+    function Collapse(element, config) {
+      var _this;
+      _classCallCheck(this, Collapse);
+      _this = _callSuper(this, Collapse, [element, config]);
+      _this._isTransitioning = false;
+      _this._triggerArray = [];
+      var toggleList = SelectorEngine.find(SELECTOR_DATA_TOGGLE);
+      var _iterator = _createForOfIteratorHelper(toggleList),
+        _step;
+      try {
+        for (_iterator.s(); !(_step = _iterator.n()).done;) {
+          var elem = _step.value;
+          var selector = SelectorEngine.getSelectorFromElement(elem);
+          var filterElement = SelectorEngine.find(selector).filter(function (foundElement) {
+            return foundElement === _this._element;
+          });
+          if (selector !== null && filterElement.length) {
+            _this._triggerArray.push(elem);
+          }
+        }
+      } catch (err) {
+        _iterator.e(err);
+      } finally {
+        _iterator.f();
+      }
+      _this._initializeChildren();
+      if (!_this._config.parent) {
+        _this._addAriaAndCollapsedClass(_this._triggerArray, _this._isShown());
+      }
+      if (_this._config.toggle) {
+        _this.toggle();
+      }
+      return _this;
+    }
+
+    // Getters
+    _inherits(Collapse, _BaseComponent);
+    return _createClass(Collapse, [{
+      key: "toggle",
+      value:
+      // Public
+      function toggle() {
+        if (this._isShown()) {
+          this.hide();
+        } else {
+          this.show();
+        }
+      }
+    }, {
+      key: "show",
+      value: function show() {
+        var _this2 = this;
+        if (this._isTransitioning || this._isShown()) {
+          return;
+        }
+        var activeChildren = [];
+
+        // find active children
+        if (this._config.parent) {
+          activeChildren = this._getFirstLevelChildren(SELECTOR_ACTIVES).filter(function (element) {
+            return element !== _this2._element;
+          }).map(function (element) {
+            return Collapse.getOrCreateInstance(element, {
+              toggle: false
+            });
+          });
+        }
+        if (activeChildren.length && activeChildren[0]._isTransitioning) {
+          return;
+        }
+        var startEvent = EventHandler.trigger(this._element, EVENT_SHOW);
+        if (startEvent.defaultPrevented) {
+          return;
+        }
+        var _iterator2 = _createForOfIteratorHelper(activeChildren),
+          _step2;
+        try {
+          for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
+            var activeInstance = _step2.value;
+            activeInstance.hide();
+          }
+        } catch (err) {
+          _iterator2.e(err);
+        } finally {
+          _iterator2.f();
+        }
+        var dimension = this._getDimension();
+        this._element.classList.remove(CLASS_NAME_COLLAPSE);
+        this._element.classList.add(CLASS_NAME_COLLAPSING);
+        this._element.style[dimension] = 0;
+        this._addAriaAndCollapsedClass(this._triggerArray, true);
+        this._isTransitioning = true;
+        var complete = function complete() {
+          _this2._isTransitioning = false;
+          _this2._element.classList.remove(CLASS_NAME_COLLAPSING);
+          _this2._element.classList.add(CLASS_NAME_COLLAPSE, CLASS_NAME_SHOW);
+          _this2._element.style[dimension] = '';
+          EventHandler.trigger(_this2._element, EVENT_SHOWN);
+        };
+        var capitalizedDimension = dimension[0].toUpperCase() + dimension.slice(1);
+        var scrollSize = "scroll".concat(capitalizedDimension);
+        this._queueCallback(complete, this._element, true);
+        this._element.style[dimension] = "".concat(this._element[scrollSize], "px");
+      }
+    }, {
+      key: "hide",
+      value: function hide() {
+        var _this3 = this;
+        if (this._isTransitioning || !this._isShown()) {
+          return;
+        }
+        var startEvent = EventHandler.trigger(this._element, EVENT_HIDE);
+        if (startEvent.defaultPrevented) {
+          return;
+        }
+        var dimension = this._getDimension();
+        this._element.style[dimension] = "".concat(this._element.getBoundingClientRect()[dimension], "px");
+        index_js.reflow(this._element);
+        this._element.classList.add(CLASS_NAME_COLLAPSING);
+        this._element.classList.remove(CLASS_NAME_COLLAPSE, CLASS_NAME_SHOW);
+        var _iterator3 = _createForOfIteratorHelper(this._triggerArray),
+          _step3;
+        try {
+          for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
+            var trigger = _step3.value;
+            var element = SelectorEngine.getElementFromSelector(trigger);
+            if (element && !this._isShown(element)) {
+              this._addAriaAndCollapsedClass([trigger], false);
+            }
+          }
+        } catch (err) {
+          _iterator3.e(err);
+        } finally {
+          _iterator3.f();
+        }
+        this._isTransitioning = true;
+        var complete = function complete() {
+          _this3._isTransitioning = false;
+          _this3._element.classList.remove(CLASS_NAME_COLLAPSING);
+          _this3._element.classList.add(CLASS_NAME_COLLAPSE);
+          EventHandler.trigger(_this3._element, EVENT_HIDDEN);
+        };
+        this._element.style[dimension] = '';
+        this._queueCallback(complete, this._element, true);
+      }
+
+      // Private
+    }, {
+      key: "_isShown",
+      value: function _isShown() {
+        var element = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this._element;
+        return element.classList.contains(CLASS_NAME_SHOW);
+      }
+    }, {
+      key: "_configAfterMerge",
+      value: function _configAfterMerge(config) {
+        config.toggle = Boolean(config.toggle); // Coerce string values
+        config.parent = index_js.getElement(config.parent);
+        return config;
+      }
+    }, {
+      key: "_getDimension",
+      value: function _getDimension() {
+        return this._element.classList.contains(CLASS_NAME_HORIZONTAL) ? WIDTH : HEIGHT;
+      }
+    }, {
+      key: "_initializeChildren",
+      value: function _initializeChildren() {
+        if (!this._config.parent) {
+          return;
+        }
+        var children = this._getFirstLevelChildren(SELECTOR_DATA_TOGGLE);
+        var _iterator4 = _createForOfIteratorHelper(children),
+          _step4;
+        try {
+          for (_iterator4.s(); !(_step4 = _iterator4.n()).done;) {
+            var element = _step4.value;
+            var selected = SelectorEngine.getElementFromSelector(element);
+            if (selected) {
+              this._addAriaAndCollapsedClass([element], this._isShown(selected));
+            }
+          }
+        } catch (err) {
+          _iterator4.e(err);
+        } finally {
+          _iterator4.f();
+        }
+      }
+    }, {
+      key: "_getFirstLevelChildren",
+      value: function _getFirstLevelChildren(selector) {
+        var children = SelectorEngine.find(CLASS_NAME_DEEPER_CHILDREN, this._config.parent);
+        // remove children if greater depth
+        return SelectorEngine.find(selector, this._config.parent).filter(function (element) {
+          return !children.includes(element);
+        });
+      }
+    }, {
+      key: "_addAriaAndCollapsedClass",
+      value: function _addAriaAndCollapsedClass(triggerArray, isOpen) {
+        if (!triggerArray.length) {
+          return;
+        }
+        var _iterator5 = _createForOfIteratorHelper(triggerArray),
+          _step5;
+        try {
+          for (_iterator5.s(); !(_step5 = _iterator5.n()).done;) {
+            var element = _step5.value;
+            element.classList.toggle(CLASS_NAME_COLLAPSED, !isOpen);
+            element.setAttribute('aria-expanded', isOpen);
+          }
+        } catch (err) {
+          _iterator5.e(err);
+        } finally {
+          _iterator5.f();
+        }
+      }
+
+      // Static
+    }], [{
+      key: "Default",
+      get: function get() {
+        return Default;
+      }
+    }, {
+      key: "DefaultType",
+      get: function get() {
+        return DefaultType;
+      }
+    }, {
+      key: "NAME",
+      get: function get() {
+        return NAME;
+      }
+    }, {
+      key: "jQueryInterface",
+      value: function jQueryInterface(config) {
+        var _config = {};
+        if (typeof config === 'string' && /show|hide/.test(config)) {
+          _config.toggle = false;
+        }
+        return this.each(function () {
+          var data = Collapse.getOrCreateInstance(this, _config);
+          if (typeof config === 'string') {
+            if (typeof data[config] === 'undefined') {
+              throw new TypeError("No method named \"".concat(config, "\""));
+            }
+            data[config]();
+          }
+        });
+      }
+    }]);
+  }(BaseComponent);
+  /**
+   * Data API implementation
+   */
+  EventHandler.on(document, EVENT_CLICK_DATA_API, SELECTOR_DATA_TOGGLE, function (event) {
+    // preventDefault only for <a> elements (which change the URL) not inside the collapsible element
+    if (event.target.tagName === 'A' || event.delegateTarget && event.delegateTarget.tagName === 'A') {
+      event.preventDefault();
+    }
+    var _iterator6 = _createForOfIteratorHelper(SelectorEngine.getMultipleElementsFromSelector(this)),
+      _step6;
+    try {
+      for (_iterator6.s(); !(_step6 = _iterator6.n()).done;) {
+        var element = _step6.value;
+        Collapse.getOrCreateInstance(element, {
+          toggle: false
+        }).toggle();
+      }
+    } catch (err) {
+      _iterator6.e(err);
+    } finally {
+      _iterator6.f();
+    }
+  });
+
+  /**
+   * jQuery
+   */
+
+  index_js.defineJQueryPlugin(Collapse);
+  return Collapse;
 });
 
 /***/ })
@@ -1894,7 +1896,7 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
-// This entry need to be wrapped in an IIFE because it need to be in strict mode.
+// This entry needs to be wrapped in an IIFE because it needs to be in strict mode.
 (() => {
 "use strict";
 /* harmony import */ var bootstrap_js_dist_collapse__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(888);
