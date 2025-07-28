@@ -5,17 +5,14 @@ get_header(); ?>
         <div class="container-inner">
             <header>
                 <h1>
-                    Er ging iets fout!
+                    Er ging iets mis...
                 </h1>
             </header>
             <div class="content">
                 <div id="readspeaker">
                     <p class="mb-1">
-                        Het aanmaken van uw zaak is gelukt. Het toevoegen van de geüploade bestanden aan uw zaak helaas niet.
+                      Uw zaak is succesvol aangemaakt, maar het is helaas niet gelukt om de geüploade bestanden toe te voegen. Wij willen u verzoeken contact met ons op te nemen voor ondersteuning.
                     </p>
-					<?php if (! empty($vars['error'])) : ?>
-                        <p>Gebruik het volgende bericht in uw correspondentie met ons: "<?= $vars['error']; ?>"</p>
-                    <?php endif; ?>
                 </div>
             </div>
         </div>
