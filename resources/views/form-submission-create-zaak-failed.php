@@ -5,17 +5,14 @@ get_header(); ?>
         <div class="container-inner">
             <header>
                 <h1>
-                    Er ging iets fout!
+                    Er ging iets mis...
                 </h1>
             </header>
             <div class="content">
                 <div id="readspeaker">
                     <p class="mb-1">
-                        Het aanmaken van uw zaak is mislukt.
+                      Het is helaas niet gelukt om uw zaak aan te maken. Probeert u het alstublieft opnieuw. Mocht het probleem zich blijven voordoen, neem dan contact met ons op.
                     </p>
-                    <?php if (! empty($vars['error'])) : ?>
-                        <p>Gebruik het volgende bericht in uw correspondentie met ons: "<?= $vars['error']; ?>"</p>
-                    <?php endif; ?>
                 </div>
             </div>
         </div>
