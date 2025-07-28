@@ -1,5 +1,11 @@
 # Changelog
 
+## v2.5.0
+
+- Refactor: remove unused applying of ssl certs in abstract client class
+- Chore: zaak failure messages
+- Chore: update npm dependencies
+
 ## v2.4.2
 
 - Fix: gravity-pdf dependency has different folder name now
