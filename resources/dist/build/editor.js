@@ -627,7 +627,7 @@ registerBlockType("owc/gravityforms-zaaksysteem", {
 /************************************************************************/
 /******/ 	// The module cache
 /******/ 	var __webpack_module_cache__ = {};
-/******/
+/******/ 	
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
 /******/ 		// Check if module is in cache
@@ -641,14 +641,14 @@ registerBlockType("owc/gravityforms-zaaksysteem", {
 /******/ 			// no module.loaded needed
 /******/ 			exports: {}
 /******/ 		};
-/******/
+/******/ 	
 /******/ 		// Execute the module function
 /******/ 		__webpack_modules__[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-/******/
+/******/ 	
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
 /******/ 	}
-/******/
+/******/ 	
 /************************************************************************/
 /******/ 	/* webpack/runtime/compat get default export */
 /******/ 	(() => {
@@ -661,7 +661,7 @@ registerBlockType("owc/gravityforms-zaaksysteem", {
 /******/ 			return getter;
 /******/ 		};
 /******/ 	})();
-/******/
+/******/ 	
 /******/ 	/* webpack/runtime/define property getters */
 /******/ 	(() => {
 /******/ 		// define getter functions for harmony exports
@@ -673,44 +673,23 @@ registerBlockType("owc/gravityforms-zaaksysteem", {
 /******/ 			}
 /******/ 		};
 /******/ 	})();
-/******/
+/******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
 /******/ 	(() => {
 /******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
 /******/ 	})();
-<<<<<<< HEAD
-/******/
-/******/ 	/* webpack/runtime/make namespace object */
-/******/ 	(() => {
-/******/ 		// define __esModule on exports
-/******/ 		__webpack_require__.r = (exports) => {
-/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
-/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
-/******/ 			}
-/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
-/******/ 		};
-/******/ 	})();
-/******/
-/************************************************************************/
-// This entry needs to be wrapped in an IIFE because it needs to be in strict mode.
-=======
 /******/ 	
 /************************************************************************/
-var __webpack_exports__ = {};
-// This entry need to be wrapped in an IIFE because it need to be in strict mode.
->>>>>>> 4659ae1 ((refactor): set mode to 'production' in webpack config)
+// This entry needs to be wrapped in an IIFE because it needs to be in strict mode.
 (() => {
 "use strict";
 /* harmony import */ var _register_blocks__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(788);
 /* harmony import */ var _register_blocks__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_register_blocks__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _mijn_zaken__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(682);
 /* harmony import */ var _mijn_zaken__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_mijn_zaken__WEBPACK_IMPORTED_MODULE_1__);
-<<<<<<< HEAD
-=======
 /* harmony import */ var _mijn_taken__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(412);
 /* harmony import */ var _mijn_taken__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_mijn_taken__WEBPACK_IMPORTED_MODULE_2__);
 
->>>>>>> 4659ae1 ((refactor): set mode to 'production' in webpack config)
 
 
 })();
