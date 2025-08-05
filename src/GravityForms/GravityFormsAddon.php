@@ -79,11 +79,12 @@ class GravityFormsAddon extends GFAddOn
         return apply_filters('owc_gravityforms_zaaksysteem_gf_settings', [
             $this->settingsGeneral(),
             $this->settingsDescription(),
-            $this->settingsOpenZaak(),
             $this->settingsDecosJoin(),
+            $this->settingsOpenWave(),
+            $this->settingsOpenZaak(),
+            $this->settingsProcura(),
             $this->settingsRxMission(),
             $this->settingsXxllnc(),
-            $this->settingsProcura(),
         ]);
     }
 
@@ -139,6 +140,10 @@ class GravityFormsAddon extends GFAddOn
                             'name' => "{$this->prefix}-suppliers-decos-join-enabled",
                         ],
                         [
+                            'label' => 'OpenWave',
+                            'name' => "{$this->prefix}-suppliers-openwave-enabled",
+                        ],
+                        [
                             'label' => 'OpenZaak',
                             'name' => "{$this->prefix}-suppliers-openzaak-enabled",
                         ],
@@ -168,59 +173,6 @@ class GravityFormsAddon extends GFAddOn
             'fields' => [[
                 'type' => '',
             ]],
-        ];
-    }
-
-    protected function settingsOpenZaak(): array
-    {
-        return [
-            'title' => esc_html__('OpenZaak', 'owc-gravityforms-zaaksysteem'),
-            'dependency' => [
-                'live' => true,
-                'fields' => [
-                    [
-                        'field' => "{$this->prefix}-suppliers",
-                        'values' => ["{$this->prefix}-suppliers-openzaak-enabled"],
-                    ],
-                ],
-            ],
-            'fields' => [
-                [
-                    'label' => esc_html__('Catalogi URL', 'owc-gravityforms-zaaksysteem'),
-                    'type' => 'text',
-                    'required' => true,
-                    'class' => 'medium',
-                    'name' => "{$this->prefix}-openzaak-catalogi-url",
-                ],
-                [
-                    'label' => esc_html__('Documenten URL', 'owc-gravityforms-zaaksysteem'),
-                    'type' => 'text',
-                    'required' => true,
-                    'class' => 'medium',
-                    'name' => "{$this->prefix}-openzaak-documenten-url",
-                ],
-                [
-                    'label' => esc_html__('Zaken URL', 'owc-gravityforms-zaaksysteem'),
-                    'type' => 'text',
-                    'required' => true,
-                    'class' => 'medium',
-                    'name' => "{$this->prefix}-openzaak-zaken-url",
-                ],
-                [
-                    'label' => esc_html__('Client ID', 'owc-gravityforms-zaaksysteem'),
-                    'type' => 'text',
-                    'required' => true,
-                    'class' => 'medium',
-                    'name' => "{$this->prefix}-openzaak-client-id",
-                ],
-                [
-                    'label' => esc_html__('Client Secret', 'owc-gravityforms-zaaksysteem'),
-                    'type' => 'text',
-                    'required' => true,
-                    'class' => 'medium',
-                    'name' => "{$this->prefix}-openzaak-client-secret",
-                ],
-            ],
         ];
     }
 
@@ -284,6 +236,119 @@ class GravityFormsAddon extends GFAddOn
         ];
     }
 
+    protected function settingsOpenWave(): array
+    {
+        return [
+            'title' => esc_html__('OpenWave', 'owc-gravityforms-zaaksysteem'),
+            'dependency' => [
+                'live' => true,
+                'fields' => [
+                    [
+                        'field' => "{$this->prefix}-suppliers",
+                        'values' => ["{$this->prefix}-suppliers-openwave-enabled"],
+                    ],
+                ],
+            ],
+            'fields' => [
+                [
+                    'label' => esc_html__('Catalogi URL', 'owc-gravityforms-zaaksysteem'),
+                    'type' => 'text',
+                    'required' => true,
+                    'class' => 'medium',
+                    'name' => "{$this->prefix}-openwave-catalogi-url",
+                ],
+                [
+                    'label' => esc_html__('Documenten URL', 'owc-gravityforms-zaaksysteem'),
+                    'type' => 'text',
+                    'required' => true,
+                    'class' => 'medium',
+                    'name' => "{$this->prefix}-openwave-documenten-url",
+                ],
+                [
+                    'label' => esc_html__('Zaken URL', 'owc-gravityforms-zaaksysteem'),
+                    'type' => 'text',
+                    'required' => true,
+                    'class' => 'medium',
+                    'name' => "{$this->prefix}-openwave-zaken-url",
+                ],
+                [
+                    'label' => esc_html__('Token URL', 'owc-gravityforms-zaaksysteem'),
+                    'type' => 'text',
+                    'required' => true,
+                    'class' => 'medium',
+                    'name' => "{$this->prefix}-openwave-token-url",
+                ],
+                [
+                    'label' => esc_html__('Client ID', 'owc-gravityforms-zaaksysteem'),
+                    'type' => 'text',
+                    'required' => true,
+                    'class' => 'medium',
+                    'name' => "{$this->prefix}-openwave-client-id",
+                ],
+                [
+                    'label' => esc_html__('Client Secret', 'owc-gravityforms-zaaksysteem'),
+                    'type' => 'text',
+                    'required' => true,
+                    'class' => 'medium',
+                    'name' => "{$this->prefix}-openwave-client-secret",
+                ],
+            ],
+        ];
+    }
+
+    protected function settingsOpenZaak(): array
+    {
+        return [
+            'title' => esc_html__('OpenZaak', 'owc-gravityforms-zaaksysteem'),
+            'dependency' => [
+                'live' => true,
+                'fields' => [
+                    [
+                        'field' => "{$this->prefix}-suppliers",
+                        'values' => ["{$this->prefix}-suppliers-openzaak-enabled"],
+                    ],
+                ],
+            ],
+            'fields' => [
+                [
+                    'label' => esc_html__('Catalogi URL', 'owc-gravityforms-zaaksysteem'),
+                    'type' => 'text',
+                    'required' => true,
+                    'class' => 'medium',
+                    'name' => "{$this->prefix}-openzaak-catalogi-url",
+                ],
+                [
+                    'label' => esc_html__('Documenten URL', 'owc-gravityforms-zaaksysteem'),
+                    'type' => 'text',
+                    'required' => true,
+                    'class' => 'medium',
+                    'name' => "{$this->prefix}-openzaak-documenten-url",
+                ],
+                [
+                    'label' => esc_html__('Zaken URL', 'owc-gravityforms-zaaksysteem'),
+                    'type' => 'text',
+                    'required' => true,
+                    'class' => 'medium',
+                    'name' => "{$this->prefix}-openzaak-zaken-url",
+                ],
+                [
+                    'label' => esc_html__('Client ID', 'owc-gravityforms-zaaksysteem'),
+                    'type' => 'text',
+                    'required' => true,
+                    'class' => 'medium',
+                    'name' => "{$this->prefix}-openzaak-client-id",
+                ],
+                [
+                    'label' => esc_html__('Client Secret', 'owc-gravityforms-zaaksysteem'),
+                    'type' => 'text',
+                    'required' => true,
+                    'class' => 'medium',
+                    'name' => "{$this->prefix}-openzaak-client-secret",
+                ],
+            ],
+        ];
+    }
+
     protected function settingsRxMission(): array
     {
         return [
@@ -337,59 +402,6 @@ class GravityFormsAddon extends GFAddOn
         ];
     }
 
-    protected function settingsXxllnc(): array
-    {
-        return [
-            'title' => esc_html__('Xxllnc', 'owc-gravityforms-zaaksysteem'),
-            'dependency' => [
-                'live' => true,
-                'fields' => [
-                    [
-                        'field' => "{$this->prefix}-suppliers",
-                        'values' => ["{$this->prefix}-suppliers-xxllnc-enabled"],
-                    ],
-                ],
-            ],
-            'fields' => [
-                [
-                    'label' => esc_html__('Catalogi URL', 'owc-gravityforms-zaaksysteem'),
-                    'type' => 'text',
-                    'required' => true,
-                    'class' => 'medium',
-                    'name' => "{$this->prefix}-xxllnc-catalogi-url",
-                ],
-                [
-                    'label' => esc_html__('Documenten URL', 'owc-gravityforms-zaaksysteem'),
-                    'type' => 'text',
-                    'required' => true,
-                    'class' => 'medium',
-                    'name' => "{$this->prefix}-xxllnc-documenten-url",
-                ],
-                [
-                    'label' => esc_html__('Zaken URL', 'owc-gravityforms-zaaksysteem'),
-                    'type' => 'text',
-                    'required' => true,
-                    'class' => 'medium',
-                    'name' => "{$this->prefix}-xxllnc-zaken-url",
-                ],
-                [
-                    'label' => esc_html__('Client ID', 'owc-gravityforms-zaaksysteem'),
-                    'type' => 'text',
-                    'required' => true,
-                    'class' => 'medium',
-                    'name' => "{$this->prefix}-xxllnc-client-id",
-                ],
-                [
-                    'label' => esc_html__('Client Secret', 'owc-gravityforms-zaaksysteem'),
-                    'type' => 'text',
-                    'required' => true,
-                    'class' => 'medium',
-                    'name' => "{$this->prefix}-xxllnc-client-secret",
-                ],
-            ],
-        ];
-    }
-
     protected function settingsProcura(): array
     {
         return [
@@ -438,6 +450,59 @@ class GravityFormsAddon extends GFAddOn
                     'required' => true,
                     'class' => 'medium',
                     'name' => "{$this->prefix}-procura-client-secret",
+                ],
+            ],
+        ];
+    }
+
+    protected function settingsXxllnc(): array
+    {
+        return [
+            'title' => esc_html__('Xxllnc', 'owc-gravityforms-zaaksysteem'),
+            'dependency' => [
+                'live' => true,
+                'fields' => [
+                    [
+                        'field' => "{$this->prefix}-suppliers",
+                        'values' => ["{$this->prefix}-suppliers-xxllnc-enabled"],
+                    ],
+                ],
+            ],
+            'fields' => [
+                [
+                    'label' => esc_html__('Catalogi URL', 'owc-gravityforms-zaaksysteem'),
+                    'type' => 'text',
+                    'required' => true,
+                    'class' => 'medium',
+                    'name' => "{$this->prefix}-xxllnc-catalogi-url",
+                ],
+                [
+                    'label' => esc_html__('Documenten URL', 'owc-gravityforms-zaaksysteem'),
+                    'type' => 'text',
+                    'required' => true,
+                    'class' => 'medium',
+                    'name' => "{$this->prefix}-xxllnc-documenten-url",
+                ],
+                [
+                    'label' => esc_html__('Zaken URL', 'owc-gravityforms-zaaksysteem'),
+                    'type' => 'text',
+                    'required' => true,
+                    'class' => 'medium',
+                    'name' => "{$this->prefix}-xxllnc-zaken-url",
+                ],
+                [
+                    'label' => esc_html__('Client ID', 'owc-gravityforms-zaaksysteem'),
+                    'type' => 'text',
+                    'required' => true,
+                    'class' => 'medium',
+                    'name' => "{$this->prefix}-xxllnc-client-id",
+                ],
+                [
+                    'label' => esc_html__('Client Secret', 'owc-gravityforms-zaaksysteem'),
+                    'type' => 'text',
+                    'required' => true,
+                    'class' => 'medium',
+                    'name' => "{$this->prefix}-xxllnc-client-secret",
                 ],
             ],
         ];

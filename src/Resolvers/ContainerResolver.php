@@ -40,12 +40,14 @@ class ContainerResolver
             case 'decos':
             case 'decos-join':
                 return $this->container->get('dj.client');
+            case 'openwave':
+                return $this->container->get('ow.client');
+            case 'procura':
+                return $this->container->get('procura.client');
             case 'rx-mission':
                 return $this->container->get('rx.client');
             case 'xxllnc':
                 return $this->container->get('xxllnc.client');
-            case 'procura':
-                return $this->container->get('procura.client');
             case 'openzaak': // fallthrough.
             default:
                 return $this->container->get('oz.client');
