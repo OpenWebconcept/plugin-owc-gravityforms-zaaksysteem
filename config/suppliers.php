@@ -1,9 +1,10 @@
 <?php
 
 return [
-    'openzaak' => 'OpenZaak',
     'decos-join' => 'DecosJoin',
+    'openwave' => 'OpenWave',
+    'openzaak' => 'OpenZaak',
+    'procura' => 'Procura',
     'rx-mission' => 'RxMission',
     'xxllnc' => 'Xxllnc',
-    'procura' => 'Procura',
 ];

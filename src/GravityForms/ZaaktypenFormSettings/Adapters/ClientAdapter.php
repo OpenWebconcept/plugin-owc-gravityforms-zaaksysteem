@@ -133,7 +133,7 @@ class ClientAdapter implements ClientInterface
     {
         return [
             [
-                'label' => __('Kan de "' . $endpoint . '" die horen bij de geselecteerde leverancier niet ophalen.', 'owc-gravityforms-zaaksysteem'),
+                'label' => sprintf(__('Kan de "%s" die horen bij de geselecteerde leverancier niet ophalen.', 'owc-gravityforms-zaaksysteem'), $endpoint),
             ],
         ];
     }

@@ -3,6 +3,7 @@
 namespace OWC\Zaaksysteem\GravityForms;
 
 use OWC\Zaaksysteem\GravityForms\ZaaktypenFormSettings\Clients\DecosClient;
+use OWC\Zaaksysteem\GravityForms\ZaaktypenFormSettings\Clients\OpenWaveClient;
 use OWC\Zaaksysteem\GravityForms\ZaaktypenFormSettings\Clients\OpenZaakClient;
 use OWC\Zaaksysteem\GravityForms\ZaaktypenFormSettings\Clients\ProcuraClient;
 use OWC\Zaaksysteem\GravityForms\ZaaktypenFormSettings\Clients\RxMissionClient;
@@ -25,6 +26,20 @@ class GravityFormsFormSettings
                 'value' => 'none',
             ],
         ];
+        if (ContainerResolver::make()->get('dj.enabled')) {
+            $supplierChoices[] = [
+                'name' => "{$this->prefix}-form-setting-supplier-decos-join",
+                'label' => __('Decos Join', 'owc-gravityforms-zaaksysteem'),
+                'value' => 'decos-join',
+            ];
+        }
+        if (ContainerResolver::make()->get('ow.enabled')) {
+            $supplierChoices[] = [
+                'name' => "{$this->prefix}-form-setting-supplier-openwave",
+                'label' => __('OpenWave', 'owc-gravityforms-zaaksysteem'),
+                'value' => 'openwave',
+            ];
+        }
         if (ContainerResolver::make()->get('oz.enabled')) {
             $supplierChoices[] = [
                 'name' => "{$this->prefix}-form-setting-supplier-openzaak",
@@ -32,11 +47,11 @@ class GravityFormsFormSettings
                 'value' => 'openzaak',
             ];
         }
-        if (ContainerResolver::make()->get('dj.enabled')) {
+        if (ContainerResolver::make()->get('procura.enabled')) {
             $supplierChoices[] = [
-                'name' => "{$this->prefix}-form-setting-supplier-decos-join",
-                'label' => __('Decos Join', 'owc-gravityforms-zaaksysteem'),
-                'value' => 'decos-join',
+                'name' => "{$this->prefix}-form-setting-supplier-procura",
+                'label' => __('Procura', 'owc-gravityforms-zaaksysteem'),
+                'value' => 'procura',
             ];
         }
         if (ContainerResolver::make()->get('rx.enabled')) {
@@ -51,14 +66,6 @@ class GravityFormsFormSettings
                 'name' => "{$this->prefix}-form-setting-supplier-xxllnc",
                 'label' => __('Xxllnc', 'owc-gravityforms-zaaksysteem'),
                 'value' => 'xxllnc',
-            ];
-        }
-
-        if (ContainerResolver::make()->get('procura.enabled')) {
-            $supplierChoices[] = [
-                'name' => "{$this->prefix}-form-setting-supplier-procura",
-                'label' => __('Procura', 'owc-gravityforms-zaaksysteem'),
-                'value' => 'procura',
             ];
         }
 
@@ -108,7 +115,7 @@ class GravityFormsFormSettings
     {
         $supplierSetting = $form["{$this->prefix}-form-setting-supplier"] ?? '';
         $manual = $form["{$this->prefix}-form-setting-supplier-manually"] ?? '0';
-        $suppliersFields = $this->fieldsBySupplier();
+        $suppliersFields = $this->fieldsBySupplier($form);
 
         if (empty($supplierSetting) || empty($suppliersFields[$supplierSetting][$manual ? 'manual_setting' : 'select_setting'])) {
             return $fields;
@@ -121,10 +128,94 @@ class GravityFormsFormSettings
      * Fields associated with suppliers, used for matching the fields of the selected supplier in form settings.
      * This approach minimizes unnecessary requests to multiple sources that are not needed. Because only one supplier can be selected.
      */
-    protected function fieldsBySupplier(): array
+    protected function fieldsBySupplier($form): array
     {
         $fields = [];
-        if (ContainerResolver::make()->get('oz.enabled')) {
+
+        if (ContainerResolver::make()->get('dj.enabled') && $this->supplierIsSelectedInFormSettings($form, 'decos-join')) {
+            $fields['decos-join'] = [
+                'select_setting' => [
+                    [
+                        'name' => "{$this->prefix}-form-setting-decos-join-identifier",
+                        'type' => 'select',
+                        'label' => esc_html__('Zaaktype', 'owc-gravityforms-zaaksysteem'),
+                        'dependency' => [
+                            'live' => true,
+                            'fields' => [
+                                [
+                                    'field' => "{$this->prefix}-form-setting-supplier",
+                                    'values' => ['decos-join'],
+                                ],
+                                [
+                                    'field' => "{$this->prefix}-form-setting-supplier-manually",
+                                    'values' => ['0'],
+                                ],
+                            ],
+                        ],
+                        'choices' => (new DecosClient(ContainerResolver::make()->getApiClient('decos')))->zaaktypen(),
+                    ],
+                    [
+                        'name' => "{$this->prefix}-form-setting-decos-join-information-object-type",
+                        'type' => 'select',
+                        'label' => esc_html__('Informatie object type', 'owc-gravityforms-zaaksysteem'),
+                        'dependency' => [
+                            'live' => true,
+                            'fields' => [
+                                [
+                                    'field' => "{$this->prefix}-form-setting-supplier",
+                                    'values' => ['decos-join'],
+                                ],
+                                [
+                                    'field' => "{$this->prefix}-form-setting-supplier-manually",
+                                    'values' => ['0'],
+                                ],
+                            ],
+                        ],
+                        'choices' => (new DecosClient(ContainerResolver::make()->getApiClient('decos')))->informatieobjecttypen(),
+                    ],
+                ],
+                'manual_setting' => [
+                    [
+                        'name' => "{$this->prefix}-form-setting-decos-join-identifier-manual",
+                        'type' => 'text',
+                        'label' => esc_html__('Zaaktype', 'owc-gravityforms-zaaksysteem'),
+                        'dependency' => [
+                            'live' => true,
+                            'fields' => [
+                                [
+                                    'field' => "{$this->prefix}-form-setting-supplier",
+                                    'values' => ['decos-join'],
+                                ],
+                                [
+                                    'field' => "{$this->prefix}-form-setting-supplier-manually",
+                                    'values' => ['1'],
+                                ],
+                            ],
+                        ],
+                    ],
+                    [
+                        'name' => "{$this->prefix}-form-setting-decos-join-information-object-type-manual",
+                        'type' => 'text',
+                        'label' => esc_html__('Informatie object type', 'owc-gravityforms-zaaksysteem'),
+                        'dependency' => [
+                            'live' => true,
+                            'fields' => [
+                                [
+                                    'field' => "{$this->prefix}-form-setting-supplier",
+                                    'values' => ['decos-join'],
+                                ],
+                                [
+                                    'field' => "{$this->prefix}-form-setting-supplier-manually",
+                                    'values' => ['1'],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ];
+        }
+
+        if (ContainerResolver::make()->get('oz.enabled') && $this->supplierIsSelectedInFormSettings($form, 'openzaak')) {
             $fields['openzaak'] = [
                 'select_setting' => [
                     [
@@ -207,11 +298,11 @@ class GravityFormsFormSettings
             ];
         }
 
-        if (ContainerResolver::make()->get('rx.enabled')) {
-            $fields['rx-mission'] = [
+        if (ContainerResolver::make()->get('ow.enabled') && $this->supplierIsSelectedInFormSettings($form, 'openwave')) {
+            $fields['openwave'] = [
                 'select_setting' => [
                     [
-                        'name' => "{$this->prefix}-form-setting-rx-mission-identifier",
+                        'name' => "{$this->prefix}-form-setting-openwave-identifier",
                         'type' => 'select',
                         'label' => esc_html__('Zaaktype', 'owc-gravityforms-zaaksysteem'),
                         'dependency' => [
@@ -219,7 +310,7 @@ class GravityFormsFormSettings
                             'fields' => [
                                 [
                                     'field' => "{$this->prefix}-form-setting-supplier",
-                                    'values' => ['rx-mission'],
+                                    'values' => ['openwave'],
                                 ],
                                 [
                                     'field' => "{$this->prefix}-form-setting-supplier-manually",
@@ -227,10 +318,10 @@ class GravityFormsFormSettings
                                 ],
                             ],
                         ],
-                        'choices' => (new RxMissionClient(ContainerResolver::make()->getApiClient('rx-mission')))->zaaktypen(),
+                        'choices' => (new OpenWaveClient(ContainerResolver::make()->getApiClient('openwave')))->zaaktypen(),
                     ],
                     [
-                        'name' => "{$this->prefix}-form-setting-rx-mission-information-object-type",
+                        'name' => "{$this->prefix}-form-setting-openwave-information-object-type",
                         'type' => 'select',
                         'label' => esc_html__('Informatie object type', 'owc-gravityforms-zaaksysteem'),
                         'dependency' => [
@@ -238,7 +329,7 @@ class GravityFormsFormSettings
                             'fields' => [
                                 [
                                     'field' => "{$this->prefix}-form-setting-supplier",
-                                    'values' => ['rx-mission'],
+                                    'values' => ['openwave'],
                                 ],
                                 [
                                     'field' => "{$this->prefix}-form-setting-supplier-manually",
@@ -246,12 +337,12 @@ class GravityFormsFormSettings
                                 ],
                             ],
                         ],
-                        'choices' => (new RxMissionClient(ContainerResolver::make()->getApiClient('rx-mission')))->informatieobjecttypen(),
+                        'choices' => (new OpenWaveClient(ContainerResolver::make()->getApiClient('openwave')))->informatieobjecttypen(),
                     ],
                 ],
                 'manual_setting' => [
                     [
-                        'name' => "{$this->prefix}-form-setting-rx-mission-identifier-manual",
+                        'name' => "{$this->prefix}-form-setting-openwave-identifier-manual",
                         'type' => 'text',
                         'label' => esc_html__('Zaaktype', 'owc-gravityforms-zaaksysteem'),
                         'dependency' => [
@@ -259,7 +350,7 @@ class GravityFormsFormSettings
                             'fields' => [
                                 [
                                     'field' => "{$this->prefix}-form-setting-supplier",
-                                    'values' => ['rx-mission'],
+                                    'values' => ['openwave'],
                                 ],
                                 [
                                     'field' => "{$this->prefix}-form-setting-supplier-manually",
@@ -269,7 +360,7 @@ class GravityFormsFormSettings
                         ],
                     ],
                     [
-                        'name' => "{$this->prefix}-form-setting-rx-mission-information-object-type-manual",
+                        'name' => "{$this->prefix}-form-setting-openwave-information-object-type-manual",
                         'type' => 'text',
                         'label' => esc_html__('Informatie object type', 'owc-gravityforms-zaaksysteem'),
                         'dependency' => [
@@ -277,7 +368,7 @@ class GravityFormsFormSettings
                             'fields' => [
                                 [
                                     'field' => "{$this->prefix}-form-setting-supplier",
-                                    'values' => ['rx-mission'],
+                                    'values' => ['openwave'],
                                 ],
                                 [
                                     'field' => "{$this->prefix}-form-setting-supplier-manually",
@@ -290,90 +381,7 @@ class GravityFormsFormSettings
             ];
         }
 
-        if (ContainerResolver::make()->get('xxllnc.enabled')) {
-            $fields['xxllnc'] = [
-                'select_setting' => [
-                    [
-                        'name' => "{$this->prefix}-form-setting-xxllnc-identifier",
-                        'type' => 'select',
-                        'label' => esc_html__('Zaaktype', 'owc-gravityforms-zaaksysteem'),
-                        'dependency' => [
-                            'live' => true,
-                            'fields' => [
-                                [
-                                    'field' => "{$this->prefix}-form-setting-supplier",
-                                    'values' => ['xxllnc'],
-                                ],
-                                [
-                                    'field' => "{$this->prefix}-form-setting-supplier-manually",
-                                    'values' => ['0'],
-                                ],
-                            ],
-                        ],
-                        'choices' => (new XxllncClient(ContainerResolver::make()->getApiClient('xxllnc')))->zaaktypen(),
-                    ],
-                    [
-                        'name' => "{$this->prefix}-form-setting-xxllnc-information-object-type",
-                        'type' => 'select',
-                        'label' => esc_html__('Informatie object type', 'owc-gravityforms-zaaksysteem'),
-                        'dependency' => [
-                            'live' => true,
-                            'fields' => [
-                                [
-                                    'field' => "{$this->prefix}-form-setting-supplier",
-                                    'values' => ['xxllnc'],
-                                ],
-                                [
-                                    'field' => "{$this->prefix}-form-setting-supplier-manually",
-                                    'values' => ['0'],
-                                ],
-                            ],
-                        ],
-                        'choices' => (new XxllncClient(ContainerResolver::make()->getApiClient('xxllnc')))->informatieobjecttypen(),
-                    ],
-                ],
-                'manual_setting' => [
-                    [
-                        'name' => "{$this->prefix}-form-setting-xxllnc-identifier-manual",
-                        'type' => 'text',
-                        'label' => esc_html__('Zaaktype', 'owc-gravityforms-zaaksysteem'),
-                        'dependency' => [
-                            'live' => true,
-                            'fields' => [
-                                [
-                                    'field' => "{$this->prefix}-form-setting-supplier",
-                                    'values' => ['xxllnc'],
-                                ],
-                                [
-                                    'field' => "{$this->prefix}-form-setting-supplier-manually",
-                                    'values' => ['1'],
-                                ],
-                            ],
-                        ],
-                    ],
-                    [
-                        'name' => "{$this->prefix}-form-setting-xxllnc-information-object-type-manual",
-                        'type' => 'text',
-                        'label' => esc_html__('Informatie object type', 'owc-gravityforms-zaaksysteem'),
-                        'dependency' => [
-                            'live' => true,
-                            'fields' => [
-                                [
-                                    'field' => "{$this->prefix}-form-setting-supplier",
-                                    'values' => ['xxllnc'],
-                                ],
-                                [
-                                    'field' => "{$this->prefix}-form-setting-supplier-manually",
-                                    'values' => ['1'],
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-            ];
-        }
-
-        if (ContainerResolver::make()->get('procura.enabled')) {
+        if (ContainerResolver::make()->get('procura.enabled') && $this->supplierIsSelectedInFormSettings($form, 'procura')) {
             $fields['procura'] = [
                 'select_setting' => [
                     [
@@ -456,11 +464,11 @@ class GravityFormsFormSettings
             ];
         }
 
-        if (ContainerResolver::make()->get('dj.enabled')) {
-            $fields['decos-join'] = [
+        if (ContainerResolver::make()->get('rx.enabled') && $this->supplierIsSelectedInFormSettings($form, 'rx-mission')) {
+            $fields['rx-mission'] = [
                 'select_setting' => [
                     [
-                        'name' => "{$this->prefix}-form-setting-decos-join-identifier",
+                        'name' => "{$this->prefix}-form-setting-rx-mission-identifier",
                         'type' => 'select',
                         'label' => esc_html__('Zaaktype', 'owc-gravityforms-zaaksysteem'),
                         'dependency' => [
@@ -468,7 +476,7 @@ class GravityFormsFormSettings
                             'fields' => [
                                 [
                                     'field' => "{$this->prefix}-form-setting-supplier",
-                                    'values' => ['decos-join'],
+                                    'values' => ['rx-mission'],
                                 ],
                                 [
                                     'field' => "{$this->prefix}-form-setting-supplier-manually",
@@ -476,10 +484,10 @@ class GravityFormsFormSettings
                                 ],
                             ],
                         ],
-                        'choices' => (new DecosClient(ContainerResolver::make()->getApiClient('decos')))->zaaktypen(),
+                        'choices' => (new RxMissionClient(ContainerResolver::make()->getApiClient('rx-mission')))->zaaktypen(),
                     ],
                     [
-                        'name' => "{$this->prefix}-form-setting-decos-join-information-object-type",
+                        'name' => "{$this->prefix}-form-setting-rx-mission-information-object-type",
                         'type' => 'select',
                         'label' => esc_html__('Informatie object type', 'owc-gravityforms-zaaksysteem'),
                         'dependency' => [
@@ -487,7 +495,7 @@ class GravityFormsFormSettings
                             'fields' => [
                                 [
                                     'field' => "{$this->prefix}-form-setting-supplier",
-                                    'values' => ['decos-join'],
+                                    'values' => ['rx-mission'],
                                 ],
                                 [
                                     'field' => "{$this->prefix}-form-setting-supplier-manually",
@@ -495,12 +503,12 @@ class GravityFormsFormSettings
                                 ],
                             ],
                         ],
-                        'choices' => (new DecosClient(ContainerResolver::make()->getApiClient('decos')))->informatieobjecttypen(),
+                        'choices' => (new RxMissionClient(ContainerResolver::make()->getApiClient('rx-mission')))->informatieobjecttypen(),
                     ],
                 ],
                 'manual_setting' => [
                     [
-                        'name' => "{$this->prefix}-form-setting-decos-join-identifier-manual",
+                        'name' => "{$this->prefix}-form-setting-rx-mission-identifier-manual",
                         'type' => 'text',
                         'label' => esc_html__('Zaaktype', 'owc-gravityforms-zaaksysteem'),
                         'dependency' => [
@@ -508,7 +516,7 @@ class GravityFormsFormSettings
                             'fields' => [
                                 [
                                     'field' => "{$this->prefix}-form-setting-supplier",
-                                    'values' => ['decos-join'],
+                                    'values' => ['rx-mission'],
                                 ],
                                 [
                                     'field' => "{$this->prefix}-form-setting-supplier-manually",
@@ -518,7 +526,7 @@ class GravityFormsFormSettings
                         ],
                     ],
                     [
-                        'name' => "{$this->prefix}-form-setting-decos-join-information-object-type-manual",
+                        'name' => "{$this->prefix}-form-setting-rx-mission-information-object-type-manual",
                         'type' => 'text',
                         'label' => esc_html__('Informatie object type', 'owc-gravityforms-zaaksysteem'),
                         'dependency' => [
@@ -526,7 +534,7 @@ class GravityFormsFormSettings
                             'fields' => [
                                 [
                                     'field' => "{$this->prefix}-form-setting-supplier",
-                                    'values' => ['decos-join'],
+                                    'values' => ['rx-mission'],
                                 ],
                                 [
                                     'field' => "{$this->prefix}-form-setting-supplier-manually",
@@ -537,9 +545,98 @@ class GravityFormsFormSettings
                     ],
                 ],
             ];
+        }
 
+        if (ContainerResolver::make()->get('xxllnc.enabled') && $this->supplierIsSelectedInFormSettings($form, 'xxllnc')) {
+            $fields['xxllnc'] = [
+                'select_setting' => [
+                    [
+                        'name' => "{$this->prefix}-form-setting-xxllnc-identifier",
+                        'type' => 'select',
+                        'label' => esc_html__('Zaaktype', 'owc-gravityforms-zaaksysteem'),
+                        'dependency' => [
+                            'live' => true,
+                            'fields' => [
+                                [
+                                    'field' => "{$this->prefix}-form-setting-supplier",
+                                    'values' => ['xxllnc'],
+                                ],
+                                [
+                                    'field' => "{$this->prefix}-form-setting-supplier-manually",
+                                    'values' => ['0'],
+                                ],
+                            ],
+                        ],
+                        'choices' => (new XxllncClient(ContainerResolver::make()->getApiClient('xxllnc')))->zaaktypen(),
+                    ],
+                    [
+                        'name' => "{$this->prefix}-form-setting-xxllnc-information-object-type",
+                        'type' => 'select',
+                        'label' => esc_html__('Informatie object type', 'owc-gravityforms-zaaksysteem'),
+                        'dependency' => [
+                            'live' => true,
+                            'fields' => [
+                                [
+                                    'field' => "{$this->prefix}-form-setting-supplier",
+                                    'values' => ['xxllnc'],
+                                ],
+                                [
+                                    'field' => "{$this->prefix}-form-setting-supplier-manually",
+                                    'values' => ['0'],
+                                ],
+                            ],
+                        ],
+                        'choices' => (new XxllncClient(ContainerResolver::make()->getApiClient('xxllnc')))->informatieobjecttypen(),
+                    ],
+                ],
+                'manual_setting' => [
+                    [
+                        'name' => "{$this->prefix}-form-setting-xxllnc-identifier-manual",
+                        'type' => 'text',
+                        'label' => esc_html__('Zaaktype', 'owc-gravityforms-zaaksysteem'),
+                        'dependency' => [
+                            'live' => true,
+                            'fields' => [
+                                [
+                                    'field' => "{$this->prefix}-form-setting-supplier",
+                                    'values' => ['xxllnc'],
+                                ],
+                                [
+                                    'field' => "{$this->prefix}-form-setting-supplier-manually",
+                                    'values' => ['1'],
+                                ],
+                            ],
+                        ],
+                    ],
+                    [
+                        'name' => "{$this->prefix}-form-setting-xxllnc-information-object-type-manual",
+                        'type' => 'text',
+                        'label' => esc_html__('Informatie object type', 'owc-gravityforms-zaaksysteem'),
+                        'dependency' => [
+                            'live' => true,
+                            'fields' => [
+                                [
+                                    'field' => "{$this->prefix}-form-setting-supplier",
+                                    'values' => ['xxllnc'],
+                                ],
+                                [
+                                    'field' => "{$this->prefix}-form-setting-supplier-manually",
+                                    'values' => ['1'],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ];
         }
 
         return $fields;
+    }
+
+    private function supplierIsSelectedInFormSettings(array $form, string $supplier): bool
+    {
+        $supplierSetting = (string) ($form["{$this->prefix}-form-setting-supplier"] ?? '');
+
+        return $supplierSetting === $supplier ? true : false;
     }
 }

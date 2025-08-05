@@ -14,33 +14,6 @@ use OWC\Zaaksysteem\Resolvers\eHerkenningResolver;
 
 return [
     /**
-     * OpenZaak configuration.
-     */
-    'openzaak.abbr' => 'oz',
-    'oz.enabled' => function (Container $container) {
-        return (bool) $container->make('gf.setting', ['-suppliers-openzaak-enabled']);
-    },
-    'oz.client' => fn (Container $container) => $container->get(Clients\OpenZaak\Client::class),
-    'oz.catalogi_uri' => function (Container $container) {
-        return $container->make('gf.setting', ['-openzaak-catalogi-url']);
-    },
-    'oz.documenten_uri' => function (Container $container) {
-        return $container->make('gf.setting', ['-openzaak-documenten-url']);
-    },
-    'oz.zaken_uri' => function (Container $container) {
-        return $container->make('gf.setting', ['-openzaak-zaken-url']);
-    },
-    'oz.client_id' => function (Container $container) {
-        return $container->make('gf.setting', ['-openzaak-client-id']);
-    },
-    'oz.client_secret' => function (Container $container) {
-        return $container->make('gf.setting', ['-openzaak-client-secret']);
-    },
-    'oz.authenticator' => function (Container $container) {
-        return $container->get(Clients\OpenZaak\Authenticator::class);
-    },
-
-    /**
      * Decos JOIN configuration.
      */
     'decosjoin.abbr' => 'dj',
@@ -71,6 +44,92 @@ return [
     },
     'dj.authenticator' => function (Container $container) {
         return $container->get(Clients\DecosJoin\Authenticator::class);
+    },
+
+
+    /**
+     * OpenWave configuration.
+     */
+    'openwave.abbr' => 'ow',
+    'ow.enabled' => function (Container $container) {
+        return (bool) $container->make('gf.setting', ['-suppliers-openwave-enabled']);
+    },
+    'ow.client' => fn (Container $container) => $container->get(Clients\OpenWave\Client::class),
+    'ow.catalogi_uri' => function (Container $container) {
+        return $container->make('gf.setting', ['-openwave-catalogi-url']);
+    },
+    'ow.documenten_uri' => function (Container $container) {
+        return $container->make('gf.setting', ['-openwave-documenten-url']);
+    },
+    'ow.zaken_uri' => function (Container $container) {
+        return $container->make('gf.setting', ['-openwave-zaken-url']);
+    },
+    'ow.token_url' => function (Container $container) {
+        return $container->make('gf.setting', ['-openwave-token-url']);
+    },
+    'ow.client_id' => function (Container $container) {
+        return $container->make('gf.setting', ['-openwave-client-id']);
+    },
+    'ow.client_secret' => function (Container $container) {
+        return $container->make('gf.setting', ['-openwave-client-secret']);
+    },
+    'ow.authenticator' => function (Container $container) {
+        return $container->get(Clients\OpenWave\Authenticator::class);
+    },
+
+
+    /**
+     * OpenZaak configuration.
+     */
+    'openzaak.abbr' => 'oz',
+    'oz.enabled' => function (Container $container) {
+        return (bool) $container->make('gf.setting', ['-suppliers-openzaak-enabled']);
+    },
+    'oz.client' => fn (Container $container) => $container->get(Clients\OpenZaak\Client::class),
+    'oz.catalogi_uri' => function (Container $container) {
+        return $container->make('gf.setting', ['-openzaak-catalogi-url']);
+    },
+    'oz.documenten_uri' => function (Container $container) {
+        return $container->make('gf.setting', ['-openzaak-documenten-url']);
+    },
+    'oz.zaken_uri' => function (Container $container) {
+        return $container->make('gf.setting', ['-openzaak-zaken-url']);
+    },
+    'oz.client_id' => function (Container $container) {
+        return $container->make('gf.setting', ['-openzaak-client-id']);
+    },
+    'oz.client_secret' => function (Container $container) {
+        return $container->make('gf.setting', ['-openzaak-client-secret']);
+    },
+    'oz.authenticator' => function (Container $container) {
+        return $container->get(Clients\OpenZaak\Authenticator::class);
+    },
+
+    /**
+     * Procura configuration.
+     */
+    'procura.abbr' => 'procura',
+    'procura.enabled' => function (Container $container) {
+        return (bool) $container->make('gf.setting', ['-suppliers-procura-enabled']);
+    },
+    'procura.client' => fn (Container $container) => $container->get(Clients\Procura\Client::class),
+    'procura.catalogi_uri' => function (Container $container) {
+        return $container->make('gf.setting', ['-procura-catalogi-url']);
+    },
+    'procura.documenten_uri' => function (Container $container) {
+        return $container->make('gf.setting', ['-procura-documenten-url']);
+    },
+    'procura.zaken_uri' => function (Container $container) {
+        return $container->make('gf.setting', ['-procura-zaken-url']);
+    },
+    'procura.client_id' => function (Container $container) {
+        return $container->make('gf.setting', ['-procura-client-id']);
+    },
+    'procura.client_secret' => function (Container $container) {
+        return $container->make('gf.setting', ['-procura-client-secret']);
+    },
+    'procura.authenticator' => function (Container $container) {
+        return $container->get(Clients\Procura\Authenticator::class);
     },
 
     /**
@@ -128,33 +187,6 @@ return [
     },
 
     /**
-     * Procura configuration.
-     */
-    'procura.abbr' => 'procura',
-    'procura.enabled' => function (Container $container) {
-        return (bool) $container->make('gf.setting', ['-suppliers-procura-enabled']);
-    },
-    'procura.client' => fn (Container $container) => $container->get(Clients\Procura\Client::class),
-    'procura.catalogi_uri' => function (Container $container) {
-        return $container->make('gf.setting', ['-procura-catalogi-url']);
-    },
-    'procura.documenten_uri' => function (Container $container) {
-        return $container->make('gf.setting', ['-procura-documenten-url']);
-    },
-    'procura.zaken_uri' => function (Container $container) {
-        return $container->make('gf.setting', ['-procura-zaken-url']);
-    },
-    'procura.client_id' => function (Container $container) {
-        return $container->make('gf.setting', ['-procura-client-id']);
-    },
-    'procura.client_secret' => function (Container $container) {
-        return $container->make('gf.setting', ['-procura-client-secret']);
-    },
-    'procura.authenticator' => function (Container $container) {
-        return $container->get(Clients\Procura\Authenticator::class);
-    },
-
-    /**
      * General configuration
      */
     'rsin' => function (Container $container) {
@@ -197,6 +229,30 @@ return [
     /**
      * Configure API Clients
      */
+    Clients\DecosJoin\Client::class => function (Container $container) {
+        return new Clients\DecosJoin\Client(
+            $container->make(
+                Http\WordPress\WordPressRequestClient::class
+            ),
+            $container->get('dj.authenticator'),
+            $container->get('dj.zaken_uri'),
+            $container->get('dj.catalogi_uri'),
+            $container->get('dj.documenten_uri'),
+        );
+    },
+
+    Clients\OpenWave\Client::class => function (Container $container) {
+        return new Clients\OpenWave\Client(
+            $container->make(
+                Http\WordPress\WordPressRequestClient::class
+            ),
+            $container->get('ow.authenticator'),
+            $container->get('ow.zaken_uri'),
+            $container->get('ow.catalogi_uri'),
+            $container->get('ow.documenten_uri'),
+        );
+    },
+
     Clients\OpenZaak\Client::class => function (Container $container) {
         return new Clients\OpenZaak\Client(
             $container->make(
@@ -209,15 +265,15 @@ return [
         );
     },
 
-    Clients\DecosJoin\Client::class => function (Container $container) {
-        return new Clients\DecosJoin\Client(
+    Clients\Procura\Client::class => function (Container $container) {
+        return new Clients\Procura\Client(
             $container->make(
-                Http\WordPress\WordPressRequestClient::class
-            ),
-            $container->get('dj.authenticator'),
-            $container->get('dj.zaken_uri'),
-            $container->get('dj.catalogi_uri'),
-            $container->get('dj.documenten_uri'),
+                Http\WordPress\WordPressRequestClient::class,
+            )->applyCurlSslCertificates(),
+            $container->get('procura.authenticator'),
+            $container->get('procura.zaken_uri'),
+            $container->get('procura.catalogi_uri'),
+            $container->get('procura.documenten_uri'),
         );
     },
 
@@ -245,21 +301,24 @@ return [
         );
     },
 
-    Clients\Procura\Client::class => function (Container $container) {
-        return new Clients\Procura\Client(
-            $container->make(
-                Http\WordPress\WordPressRequestClient::class,
-            )->applyCurlSslCertificates(),
-            $container->get('procura.authenticator'),
-            $container->get('procura.zaken_uri'),
-            $container->get('procura.catalogi_uri'),
-            $container->get('procura.documenten_uri'),
-        );
-    },
-
     /**
      * Authenticators
      */
+    Clients\DecosJoin\Authenticator::class => function (Container $container) {
+        return new Clients\DecosJoin\Authenticator(
+            $container->get('dj.client_id'),
+            $container->get('dj.client_secret')
+        );
+    },
+
+    Clients\OpenWave\Authenticator::class => function (Container $container) {
+        return new Clients\OpenWave\Authenticator(
+            $container->get('ow.client_id'),
+            $container->get('ow.client_secret'),
+            $container->get('ow.token_url')
+        );
+    },
+
     Clients\OpenZaak\Authenticator::class => function (Container $container) {
         return new Clients\OpenZaak\Authenticator(
             $container->get('oz.client_id'),
@@ -267,10 +326,10 @@ return [
         );
     },
 
-    Clients\DecosJoin\Authenticator::class => function (Container $container) {
-        return new Clients\DecosJoin\Authenticator(
-            $container->get('dj.client_id'),
-            $container->get('dj.client_secret')
+    Clients\Procura\Authenticator::class => function (Container $container) {
+        return new Clients\Procura\Authenticator(
+            $container->get('procura.client_id'),
+            $container->get('procura.client_secret')
         );
     },
 
@@ -285,13 +344,6 @@ return [
         return new Clients\Xxllnc\Authenticator(
             $container->get('xxllnc.client_id'),
             $container->get('xxllnc.client_secret')
-        );
-    },
-
-    Clients\Procura\Authenticator::class => function (Container $container) {
-        return new Clients\Procura\Authenticator(
-            $container->get('procura.client_id'),
-            $container->get('procura.client_secret')
         );
     },
 
