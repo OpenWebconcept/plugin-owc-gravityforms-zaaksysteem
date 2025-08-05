@@ -11,6 +11,7 @@ class Authenticator extends AbstractTokenAuthenticator
 {
     protected const tokenTransientKey = 'owc_gravityforms_zaaksysteem_jwt_token';
     protected const tokenExpirationFallback = 1800; // 30 minutes
+
     protected string $clientId;
     protected string $clientSecret;
     protected string $requestTokenUrl;

@@ -36,6 +36,7 @@
 !.php_cs
 !.babelrc
 !.php-cs-fixer.php
+!.nvmrc
 
 # track this file .gitignore (i.e. do NOT ignore it)
 !.gitignore
