@@ -137,25 +137,28 @@ msgstr ""
 
 #: src/GravityForms/GravityFormsAddon.php:314
 #: src/GravityForms/GravityFormsAddon.php:194
+#: src/GravityForms/GravityFormsAddon.php:254
 #: src/GravityForms/GravityFormsAddon.php:367
 #: src/GravityForms/GravityFormsAddon.php:420
-#: src/GravityForms/GravityFormsAddon.php:408
+#: src/GravityForms/GravityFormsAddon.php:473
 msgid "Catalogi URL"
 msgstr ""
 
-#: src/GravityForms/GravityFormsAddon.php:321
 #: src/GravityForms/GravityFormsAddon.php:201
+#: src/GravityForms/GravityFormsAddon.php:261
+#: src/GravityForms/GravityFormsAddon.php:321
 #: src/GravityForms/GravityFormsAddon.php:374
 #: src/GravityForms/GravityFormsAddon.php:427
-#: src/GravityForms/GravityFormsAddon.php:415
+#: src/GravityForms/GravityFormsAddon.php:480
 msgid "Documenten URL"
 msgstr ""
 
-#: src/GravityForms/GravityFormsAddon.php:328
 #: src/GravityForms/GravityFormsAddon.php:208
+#: src/GravityForms/GravityFormsAddon.php:268
+#: src/GravityForms/GravityFormsAddon.php:328
 #: src/GravityForms/GravityFormsAddon.php:381
 #: src/GravityForms/GravityFormsAddon.php:434
-#: src/GravityForms/GravityFormsAddon.php:422
+#: src/GravityForms/GravityFormsAddon.php:487
 msgid "Zaken URL"
 msgstr ""
 
