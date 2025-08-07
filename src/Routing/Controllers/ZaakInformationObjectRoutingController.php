@@ -8,9 +8,9 @@ use Exception;
 use OWC\Zaaksysteem\Contracts\Client;
 use OWC\Zaaksysteem\Endpoints\Filter\ZakenFilter;
 use OWC\Zaaksysteem\Entities\Zaak;
-use function OWC\Zaaksysteem\Foundation\Helpers\resolve;
 use OWC\Zaaksysteem\Traits\ZaakIdentification;
 use WP_Rewrite;
+use function OWC\Zaaksysteem\Foundation\Helpers\resolve;
 
 class ZaakInformationObjectRoutingController extends AbstractRoutingController
 {
@@ -91,9 +91,15 @@ class ZaakInformationObjectRoutingController extends AbstractRoutingController
             return;
         }
 
-        file_put_contents($downloadIdentification, $response->getBody());
+        $fileWriteResult = @file_put_contents($downloadIdentification, $response->getBody());
 
-        if (! file_exists($downloadIdentification)) {
+        // Check if the file was written unsuccessfully.
+        if (false === $fileWriteResult || ! is_int($fileWriteResult) || 0 >= $fileWriteResult) {
+            return;
+        }
+
+        // Check if the file does not exist or is not readable.
+        if (! file_exists($downloadIdentification) || ! is_readable($downloadIdentification)) {
             return;
         }
 
