@@ -11,11 +11,13 @@ use OWC\Zaaksysteem\Entities\Zaakinformatieobject;
 use OWC\Zaaksysteem\Resolvers\ContainerResolver;
 use OWC\Zaaksysteem\Traits\CheckURL;
 use OWC\Zaaksysteem\Traits\InformationObject;
+use OWC\Zaaksysteem\Traits\MergeTags;
 
 abstract class AbstractCreateUploadedDocumentsAction
 {
     use CheckURL;
     use InformationObject;
+    use MergeTags;
 
     public const CLIENT_NAME = '';
 
@@ -77,7 +79,7 @@ abstract class AbstractCreateUploadedDocumentsAction
 
         if (is_string($fieldValue)) {
             $fieldValue = [
-                ['type' => $field->linkedFieldValueDocumentType, 'url' => $fieldValue],
+                ['type' => $field->linkedFieldValueDocumentType, 'url' => $fieldValue, 'description' => $field->linkedUploadFieldDescriptionValueZGW ?? ''],
             ];
         }
 
@@ -107,7 +109,7 @@ abstract class AbstractCreateUploadedDocumentsAction
         }
 
         return array_map(function ($fieldValue) use ($field) {
-            return ['type' => $field->linkedFieldValueDocumentType, 'url' => $fieldValue];
+            return ['type' => $field->linkedFieldValueDocumentType, 'url' => $fieldValue, 'description' => $field->linkedUploadFieldDescriptionValueZGW ?? ''];
         }, $fieldValues);
     }
 
@@ -132,7 +134,7 @@ abstract class AbstractCreateUploadedDocumentsAction
         return $this->client->zaakinformatieobjecten()->create(new Zaakinformatieobject($object->toArray(), $this->client->getClientName(), $this->client->getClientNamePretty())); // What to do when this one fails?
     }
 
-    protected function prepareInformationObjectArgs(string $objectURL, string $informationObjectType): array
+    protected function prepareInformationObjectArgs(string $objectURL, string $informationObjectType, string $objectDescription): array
     {
         if (empty($informationObjectType)) {
             return [];
@@ -147,6 +149,7 @@ abstract class AbstractCreateUploadedDocumentsAction
         $args['formaat'] = $this->getContentType($objectURL);
         $args['bestandsnaam'] = sprintf('%s.%s', \sanitize_title($fileName), $this->getExtension($objectURL));
         $args['bestandsomvang'] = $bestandsomvang ? (int) $bestandsomvang : strlen($inhoud);
+        $args['beschrijving'] = 0 < strlen($objectDescription) ? $this->handleMergeTags($this->entry, $this->form, $objectDescription) : $fileName;
         $args['inhoud'] = $inhoud;
         $args['vertrouwelijkheidaanduiding'] = 'vertrouwelijk';
         $args['auteur'] = 'OWC';

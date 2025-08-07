@@ -203,5 +203,6 @@ class GravityFormsFieldSettings
             'properties' => $properties instanceof Collection ? $this->preparePropertiesOptions($properties) : [],
             'objecttypes' => $this->prepareObjectTypesOptions($this->getInformatieObjectTypen($zaaktype, $zaaktypeIdentification), $zaaktypeIdentification),
         ]);
+        echo view('partials/gf-upload-field-options.php');
     }
 }
