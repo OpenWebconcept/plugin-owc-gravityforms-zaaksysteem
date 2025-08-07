@@ -6,6 +6,7 @@ namespace OWC\Zaaksysteem\Entities;
 
 use DateTime;
 use Exception;
+use function OWC\Zaaksysteem\Foundation\Helpers\resolve;
 use OWC\Zaaksysteem\Traits\ZaakIdentification;
 
 class Enkelvoudiginformatieobject extends Entity
@@ -89,15 +90,15 @@ class Enkelvoudiginformatieobject extends Entity
 
     public function formatType(): string
     {
-        $type = $this->getValue('formaat', '');
+        $mimeType = $this->getValue('formaat', '');
 
-        if (empty($type)) {
+        if (! is_string($mimeType) || 1 > strlen($mimeType)) {
             return '';
         }
 
-        $parts = explode('/', $type);
+        $mimeMap = resolve('mime.mapping');
 
-        return end($parts) ?: '';
+        return is_array($mimeMap) ? ($mimeMap[$mimeType] ?? '') : '';
     }
 
     public function formattedMetaData(): string

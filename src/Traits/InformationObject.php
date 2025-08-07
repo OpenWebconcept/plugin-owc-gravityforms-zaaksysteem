@@ -3,6 +3,7 @@
 namespace OWC\Zaaksysteem\Traits;
 
 use Exception;
+use function OWC\Zaaksysteem\Foundation\Helpers\resolve;
 
 trait InformationObject
 {
@@ -10,7 +11,7 @@ trait InformationObject
     {
         try {
             $file = file_get_contents($url, false, $this->streamContext());
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             $file = '';
         }
 
@@ -31,10 +32,15 @@ trait InformationObject
 
     public function getExtension(string $url): string
     {
-        $type = $this->getContentType($url);
-        $parts = explode('/', $type);
+        $mimeType = $this->getContentType($url);
 
-        return end($parts);
+        if (! is_string($mimeType) || 1 > strlen($mimeType)) {
+            return '';
+        }
+
+        $mimeMap = resolve('mime.mapping');
+
+        return $mimeMap[$mimeType] ?? '';
     }
 
     public function getContentType(string $url): string
@@ -57,7 +63,7 @@ trait InformationObject
 
         try {
             $response = get_headers($url, 1, $this->streamContext());
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             return [];
         }
 
