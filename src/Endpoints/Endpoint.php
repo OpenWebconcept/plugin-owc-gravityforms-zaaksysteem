@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace OWC\Zaaksysteem\Endpoints;
 
-use OWC\Zaaksysteem\Http\PageMeta;
-use OWC\Zaaksysteem\Http\Response;
-use OWC\Zaaksysteem\Entities\Entity;
 use OWC\Zaaksysteem\Contracts\Client;
-use OWC\Zaaksysteem\Support\Collection;
-use OWC\Zaaksysteem\Http\Handlers\Stack;
-use OWC\Zaaksysteem\Http\RequestOptions;
-use OWC\Zaaksysteem\Support\PagedCollection;
-use OWC\Zaaksysteem\Http\RequestClientInterface;
 use OWC\Zaaksysteem\Contracts\TokenAuthenticator;
 use OWC\Zaaksysteem\Endpoints\Traits\SupportsExpand;
+use OWC\Zaaksysteem\Entities\Entity;
+use OWC\Zaaksysteem\Http\Handlers\Stack;
+use OWC\Zaaksysteem\Http\PageMeta;
+use OWC\Zaaksysteem\Http\RequestClientInterface;
+use OWC\Zaaksysteem\Http\RequestOptions;
+use OWC\Zaaksysteem\Http\Response;
+use OWC\Zaaksysteem\Support\Collection;
+use OWC\Zaaksysteem\Support\PagedCollection;
 
 abstract class Endpoint
 {
@@ -72,7 +72,7 @@ abstract class Endpoint
 
         if ($this->endpointSupportsExpand() && $this->expandIsEnabled()) {
             $uri = add_query_arg([
-                'expand' => implode(',', $this->getExpandableResources())
+                'expand' => implode(',', $this->getExpandableResources()),
             ], $uri);
         }
 
@@ -104,9 +104,11 @@ abstract class Endpoint
 
     protected function mapEntities(array $data): array
     {
-        return array_map(function ($item) {
-            return $this->buildEntity($item);
+        $entities = array_map(function ($item) {
+            return is_array($item) ? $this->buildEntity($item) : null;
         }, $data);
+
+        return array_filter($entities);
     }
 
     protected function buildEntity($data): Entity
