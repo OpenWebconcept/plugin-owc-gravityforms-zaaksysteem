@@ -1,5 +1,13 @@
 # Changelog
 
+## v2.6.0
+
+- Feat: implement supplier OpenWave + optimalizations in form settings
+- Change: mime mapping array from DI container
+- Change: improve validation when downloading a 'zaak' informationobject
+- Change: rewrite rule zaak information-object download supports '.' in zaak identification
+- Feat: add 'zaak' document/information-object descriptions
+
 ## v2.5.0
 
 - Refactor: remove unused applying of ssl certs in abstract client class
