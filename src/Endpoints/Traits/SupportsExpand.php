@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace OWC\Zaaksysteem\Endpoints\Traits;
 
-use OWC\Zaaksysteem\Foundation\Plugin;
 use OWC\Zaaksysteem\Endpoints\ZakenEndpoint;
 use OWC\Zaaksysteem\Resolvers\ContainerResolver;
 

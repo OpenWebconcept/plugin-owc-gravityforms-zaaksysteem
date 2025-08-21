@@ -2,8 +2,8 @@
 
 namespace OWC\Zaaksysteem\Endpoints\Filter;
 
-use OWC\Zaaksysteem\Entities\Zaak;
 use OWC\Zaaksysteem\Entities\Attributes\SubjectType;
+use OWC\Zaaksysteem\Entities\Zaak;
 
 class RollenFilter extends AbstractFilter
 {

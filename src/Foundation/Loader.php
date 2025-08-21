@@ -87,10 +87,10 @@ class Loader
     protected function add($hooks, $hook, $component, $callback, $priority, $acceptedArgs)
     {
         $hooks[] = [
-            'hook'          => $hook,
-            'component'     => $component,
-            'callback'      => $callback,
-            'priority'      => $priority,
+            'hook' => $hook,
+            'component' => $component,
+            'callback' => $callback,
+            'priority' => $priority,
             'accepted_args' => $acceptedArgs
         ];
 

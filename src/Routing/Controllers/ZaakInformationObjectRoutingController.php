@@ -8,9 +8,9 @@ use Exception;
 use OWC\Zaaksysteem\Contracts\Client;
 use OWC\Zaaksysteem\Endpoints\Filter\ZakenFilter;
 use OWC\Zaaksysteem\Entities\Zaak;
+use function OWC\Zaaksysteem\Foundation\Helpers\resolve;
 use OWC\Zaaksysteem\Traits\ZaakIdentification;
 use WP_Rewrite;
-use function OWC\Zaaksysteem\Foundation\Helpers\resolve;
 
 class ZaakInformationObjectRoutingController extends AbstractRoutingController
 {

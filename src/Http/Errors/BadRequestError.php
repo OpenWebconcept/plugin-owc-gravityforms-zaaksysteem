@@ -15,7 +15,7 @@ class BadRequestError extends RequestError
     {
         $error = parent::fromResponse($response);
 
-        if ($error->code === 0) {
+        if (0 === $error->code) {
             // Unhandable error.
             return $error;
         }

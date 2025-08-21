@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace OWC\Zaaksysteem\Entities\Casts\Related;
 
+use OWC\Zaaksysteem\Entities\Casts\AbstractCast;
 use OWC\Zaaksysteem\Entities\Entity;
 use OWC\Zaaksysteem\Support\Collection;
-use OWC\Zaaksysteem\Entities\Casts\AbstractCast;
 
 abstract class ResourceCollection extends AbstractCast
 {

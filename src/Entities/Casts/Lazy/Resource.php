@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace OWC\Zaaksysteem\Entities\Casts\Lazy;
 
 use InvalidArgumentException;
-use OWC\Zaaksysteem\Entities\Entity;
 use OWC\Zaaksysteem\Entities\Casts\AbstractCast;
+use OWC\Zaaksysteem\Entities\Entity;
 
 abstract class Resource extends AbstractCast
 {

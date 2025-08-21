@@ -65,12 +65,12 @@ class PageMeta
 
     public function hasNextPage(): bool
     {
-        return $this->nextUri !== null;
+        return null !== $this->nextUri;
     }
 
     public function hasPreviousPage(): bool
     {
-        return $this->previousUri !== null;
+        return null !== $this->previousUri;
     }
 
     protected function getPageArgument(string $url): ?int

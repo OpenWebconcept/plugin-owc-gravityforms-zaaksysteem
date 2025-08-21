@@ -7,9 +7,9 @@ namespace OWC\Zaaksysteem\Http;
 class RequestOptions
 {
     protected array $options = [
-        'headers'   => [],
-        'body'      => [],
-        'cookies'   => [],
+        'headers' => [],
+        'body' => [],
+        'cookies' => [],
     ];
 
     public function __construct(?array $options = [])

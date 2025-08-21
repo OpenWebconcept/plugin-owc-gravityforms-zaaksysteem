@@ -64,7 +64,7 @@ class GravityFormsPaymentController
 
         try {
             $this->deleteZaak($zaakURL, $form, $entry);
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             return;
         }
 

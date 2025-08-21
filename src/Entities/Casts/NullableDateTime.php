@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace OWC\Zaaksysteem\Entities\Casts;
 
-use DateTimeInterface;
 use DateTimeImmutable;
+use DateTimeInterface;
 use InvalidArgumentException;
 use OWC\Zaaksysteem\Entities\Entity;
 

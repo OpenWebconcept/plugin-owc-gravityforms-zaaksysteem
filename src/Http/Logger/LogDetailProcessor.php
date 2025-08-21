@@ -35,7 +35,7 @@ class LogDetailProcessor implements ProcessorInterface
     /**
      * Returns the URL and body text
      */
-    protected function blackBoxRecord (array $record): array
+    protected function blackBoxRecord(array $record): array
     {
         unset($record['context']['arguments']);
         $record['context']['response'] = $record['context']['response']['body'];
@@ -46,7 +46,7 @@ class LogDetailProcessor implements ProcessorInterface
     /**
      * Returns the URL, request parameters and body text
      */
-    protected function grayBoxRecord (array $record): array
+    protected function grayBoxRecord(array $record): array
     {
         $record['context']['response'] = $record['context']['response']['body'];
 
@@ -56,7 +56,7 @@ class LogDetailProcessor implements ProcessorInterface
     /**
      * Returns the full unaltered record and adds a stacktrace
      */
-    protected function whiteBoxRecord (array $record): array
+    protected function whiteBoxRecord(array $record): array
     {
         $exception = new \Exception();
         $record['context']['trace'] = $exception->getTraceAsString();

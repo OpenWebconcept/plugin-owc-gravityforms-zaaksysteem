@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace OWC\Zaaksysteem\Http\Handlers;
 
-use OWC\Zaaksysteem\Http\Response;
 use OWC\Zaaksysteem\Http\Errors\ServerError;
+use OWC\Zaaksysteem\Http\Response;
 
 class ServerErrorHandler implements HandlerInterface
 {

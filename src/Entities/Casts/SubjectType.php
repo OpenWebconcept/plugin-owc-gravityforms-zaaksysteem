@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace OWC\Zaaksysteem\Entities\Casts;
 
 use InvalidArgumentException;
-use OWC\Zaaksysteem\Entities\Entity;
 use OWC\Zaaksysteem\Entities\Attributes\EnumAttribute;
 use OWC\Zaaksysteem\Entities\Attributes\SubjectType as SubjectTypeAttribute;
+use OWC\Zaaksysteem\Entities\Entity;
 
 class SubjectType extends AbstractCast
 {

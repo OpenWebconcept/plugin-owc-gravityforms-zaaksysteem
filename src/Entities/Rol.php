@@ -27,6 +27,6 @@ class Rol extends Entity
 
     public function isInitiator(): bool
     {
-        return $this->omschrijvingGeneriek === 'initiator';
+        return 'initiator' === $this->omschrijvingGeneriek;
     }
 }

@@ -10,12 +10,12 @@ use OWC\Zaaksysteem\Endpoints\Filter\RoltypenFilter;
 use OWC\Zaaksysteem\Entities\Rol;
 use OWC\Zaaksysteem\Entities\Zaak;
 use OWC\Zaaksysteem\Entities\Zaakeigenschap;
+use function OWC\Zaaksysteem\Foundation\Helpers\resolve;
 use OWC\Zaaksysteem\Http\Errors\BadRequestError;
 use OWC\Zaaksysteem\Resolvers\ContainerResolver;
 use OWC\Zaaksysteem\Support\PagedCollection;
 use OWC\Zaaksysteem\Traits\FormSetting;
 use OWC\Zaaksysteem\Traits\MergeTags;
-use function OWC\Zaaksysteem\Foundation\Helpers\resolve;
 
 abstract class AbstractCreateZaakAction
 {

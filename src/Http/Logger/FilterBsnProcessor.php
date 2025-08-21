@@ -16,7 +16,7 @@ class FilterBsnProcessor implements ProcessorInterface
         foreach ($record as $key => $value) {
             if (is_string($value)) {
                 $record[$key] = $this->filterBsn($value);
-            } else if (is_array($value)) {
+            } elseif (is_array($value)) {
                 $record[$key] = $this->removeBsnFromRecord($value);
             }
         }
@@ -54,10 +54,10 @@ class FilterBsnProcessor implements ProcessorInterface
         // Elfproef
         $total = 0;
         foreach ($input as $i => $number) {
-            $value = $number * (9 - $i) * ((9 - $i) === 1 ? -1 : 1);
+            $value = $number * (9 - $i) * (1 === (9 - $i) ? -1 : 1);
             $total += $value;
         }
 
-        return ($total % 11) === 0;
+        return 0 === ($total % 11);
     }
 }

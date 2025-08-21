@@ -20,9 +20,9 @@ class Zaken extends AbstractBlock
                     'default' => 'openzaak',
                 ],
                 'zaaktypeFilter' => [
-                    'type'    => 'string',
+                    'type' => 'string',
                     'default' => [],
-                    'items'   => [
+                    'items' => [
                         'type' => 'object',
                     ],
                 ],

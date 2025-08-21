@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace OWC\Zaaksysteem\Entities\Casts;
 
-use Throwable;
 use DateInterval;
 use InvalidArgumentException;
 use OWC\Zaaksysteem\Entities\Entity;
+use Throwable;
 
 class NullableDateInterval extends AbstractCast
 {

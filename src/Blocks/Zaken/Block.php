@@ -105,7 +105,7 @@ class Block
 
             try {
                 $zaken[] = $client->zaken()->filter($filter)->all();
-            } catch(Exception $e) {
+            } catch (Exception $e) {
                 continue;
             }
         }

@@ -40,7 +40,7 @@ class GravityForms
             if (! $zaak instanceof Zaak) { // Fallback.
                 throw new Exception('Het verwachte resultaat na het aanmaken van een Zaak voldoet niet.');
             }
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             echo view('form-submission-create-zaak-failed.php', [
                 'error' => $e->getMessage(),
             ]);
@@ -57,7 +57,7 @@ class GravityForms
             if (false === $uploadsResult) { // Fallback.
                 throw new Exception('Één of meerdere bestanden konden niet toegevoegd worden aan uw zaak.');
             }
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             echo view('form-submission-uploads-failed.php', [
                 'error' => $e->getMessage(),
             ]);
@@ -71,7 +71,7 @@ class GravityForms
             if (! $pdfResult instanceof Zaakinformatieobject) { // Fallback.
                 throw new Exception('Het verwachte resultaat na het toevoegen van het document met de originele aanvraag voldoet niet.');
             }
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             echo view('form-submission-pdf-failed.php', [
                 'error' => $e->getMessage(),
             ]);

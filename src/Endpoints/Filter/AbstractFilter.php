@@ -23,7 +23,7 @@ abstract class AbstractFilter
     public function getParameters(): array
     {
         return array_filter($this->parameters, function ($param) {
-            return $param !== null;
+            return null !== $param;
         });
     }
 
@@ -64,7 +64,7 @@ abstract class AbstractFilter
             throw new \InvalidArgumentException(sprintf('Invalid operator "%s" given', $operator));
         }
 
-        if ($operator !== self::OPERATOR_EQUALS) {
+        if (self::OPERATOR_EQUALS !== $operator) {
             $fieldName = $fieldName .= '__' . $this->getOperatorAppendix($operator);
         }
 
@@ -83,7 +83,7 @@ abstract class AbstractFilter
 
     protected function getOperatorAppendix(string $operator): string
     {
-        if ($operator === self::OPERATOR_EQUALS) {
+        if (self::OPERATOR_EQUALS === $operator) {
             return '';
         }
 
