@@ -1,5 +1,9 @@
 # Changelog
 
+## v2.6.1
+
+- Fix: Implement validation logic during entity mapping and attribute hydration.
+
 ## v2.6.0
 
 - Feat: implement supplier OpenWave + optimalizations in form settings
