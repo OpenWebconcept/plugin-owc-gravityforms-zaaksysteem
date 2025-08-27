@@ -108,6 +108,7 @@ registerBlockType( 'owc/mijn-zaken', {
 								label="Zaaksysteem"
 								value={ zaakClient }
 								options={ [
+									{ label: 'Mozart', value: 'mozart' },
 									{ label: 'OpenWave', value: 'openwave' },
 									{ label: 'OpenZaak', value: 'openzaak' },
 									{
