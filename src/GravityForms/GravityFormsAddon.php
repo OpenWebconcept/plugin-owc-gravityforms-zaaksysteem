@@ -153,7 +153,7 @@ class GravityFormsAddon extends GFAddOn
                             'name' => "{$this->prefix}-suppliers-openzaak-enabled",
                         ],
                         [
-                            'label' => 'Procura',
+                            'label' => 'Shift2',
                             'name' => "{$this->prefix}-suppliers-procura-enabled",
                         ],
                         [
@@ -470,7 +470,7 @@ class GravityFormsAddon extends GFAddOn
     protected function settingsProcura(): array
     {
         return [
-            'title' => esc_html__('Procura', 'owc-gravityforms-zaaksysteem'),
+            'title' => esc_html__('Shift2', 'owc-gravityforms-zaaksysteem'),
             'dependency' => [
                 'live' => true,
                 'fields' => [
