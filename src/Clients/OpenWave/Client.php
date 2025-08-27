@@ -25,7 +25,7 @@ use OWC\Zaaksysteem\Endpoints\ZakenEndpoint;
 class Client extends AbstractClient
 {
     public const CLIENT_NAME = 'openwave';
-    public const CALLABLE_NAME = 'openwave.client';
+    public const CALLABLE_NAME = 'ow.client';
 
     public const AVAILABLE_ENDPOINTS = [
         // Zaken API

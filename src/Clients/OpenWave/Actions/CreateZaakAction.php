@@ -11,9 +11,9 @@ use OWC\Zaaksysteem\Entities\Zaak;
 class CreateZaakAction extends AbstractCreateZaakAction
 {
     public const CLIENT_NAME = 'openwave';
-    public const CALLABLE_NAME = 'openwave.client';
-    public const CLIENT_CATALOGI_URL = 'openwave.catalogi_uri';
-    public const CLIENT_ZAKEN_URL = 'openwave.zaken_uri';
+    public const CALLABLE_NAME = 'ow.client';
+    public const CLIENT_CATALOGI_URL = 'ow.catalogi_uri';
+    public const CLIENT_ZAKEN_URL = 'ow.zaken_uri';
     public const FORM_SETTING_SUPPLIER_KEY = 'openwave';
 
     /**
