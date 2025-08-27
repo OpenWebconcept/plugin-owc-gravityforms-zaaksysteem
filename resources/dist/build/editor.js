@@ -142,7 +142,7 @@ registerBlockType('owc/mijn-zaken', {
         label: 'xxllnc',
         value: 'xxllnc'
       }, {
-        label: 'Procura',
+        label: 'Shift2',
         value: 'procura'
       }],
       onChange: function onChange(newzaakClient) {

@@ -58,7 +58,7 @@ class GravityFormsFormSettings
         if (ContainerResolver::make()->get('procura.enabled')) {
             $supplierChoices[] = [
                 'name' => "{$this->prefix}-form-setting-supplier-procura",
-                'label' => __('Procura', 'owc-gravityforms-zaaksysteem'),
+                'label' => __('Shift2', 'owc-gravityforms-zaaksysteem'),
                 'value' => 'procura',
             ];
         }
