@@ -101,8 +101,16 @@ class GravityFormsFieldSettings
             }
         }
 
-        // Returns collected results if pagination is successful; if an error occurred during pagination, retrieves non-paginated results as a fallback.
-        return count($types) ? Collection::collect($types) : $client->eigenschappen()->filter($filter);
+        if (0 < count($types)) {
+            return Collection::collect($types);
+        }
+
+        try {
+            // If an error occurred during paginated retrieval, retrieve non-paginated results as a fallback.
+            return $client->eigenschappen()->filter($filter);
+        } catch (Exception $e) {
+            return Collection::collect([]);
+        }
     }
 
     protected function preparePropertiesOptions(Collection $properties): array
@@ -120,6 +128,7 @@ class GravityFormsFieldSettings
 
         return array_filter((array) $options);
     }
+
     public function getInformatieObjectTypen(Zaaktype $zaaktype, $zaaktypeIdentification)
     {
         $transientKey = sprintf('zaaktype-%s-mapping-information-object-types', sanitize_title($zaaktypeIdentification));
@@ -129,11 +138,13 @@ class GravityFormsFieldSettings
             return $types;
         }
 
-        $types = $zaaktype->informatieobjecttypen ? $zaaktype->informatieobjecttypen->all() : [];
+        $types = $zaaktype->informatieobjecttypen;
 
-        if (empty($types)) {
+        if (! $types instanceof Collection || $types->isEmpty()) {
             return [];
         }
+
+        $types = $types->all();
 
         set_transient($transientKey, $types, self::TRANSIENT_LIFETIME_IN_SECONDS);
 
