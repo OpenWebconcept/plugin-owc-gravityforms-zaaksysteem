@@ -2,16 +2,16 @@
 # This file is distributed under the GPL-3.0.
 msgid ""
 msgstr ""
-"Project-Id-Version: OWC GravityForms Zaaksysteem 2.3.1\n"
+"Project-Id-Version: OWC GravityForms Zaaksysteem 2.6.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/owc-gravityforms-zaaksysteem\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-03-11T09:38:13+00:00\n"
+"POT-Creation-Date: 2025-08-27T10:44:33+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.10.0\n"
+"X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: owc-gravityforms-zaaksysteem\n"
 
 #. Plugin Name of the plugin
@@ -48,10 +48,12 @@ msgid "Er zijn op dit moment geen zaken beschikbaar."
 msgstr ""
 
 #: src/Foundation/DependencyChecker.php:75
+#, php-format
 msgid "De volgende plug-ins zijn vereist voor het gebruik van de %1$s plugin:"
 msgstr ""
 
 #: src/Foundation/DependencyChecker.php:91
+#, php-format
 msgid "De volgende plug-ins zijn niet vereist voor het gebruik van de %1$s plugin maar worden wel aangeraden om te gebruiken:"
 msgstr ""
 
@@ -79,204 +81,223 @@ msgstr ""
 msgid "Zaak definitief, betaling succesvol."
 msgstr ""
 
-#: src/GravityForms/GravityFormsAddon.php:94
+#: src/GravityForms/GravityFormsAddon.php:95
 msgid "Algemene instellingen"
 msgstr ""
 
-#: src/GravityForms/GravityFormsAddon.php:97
+#: src/GravityForms/GravityFormsAddon.php:98
 msgid "RSIN-nummer"
 msgstr ""
 
-#: src/GravityForms/GravityFormsAddon.php:104
+#: src/GravityForms/GravityFormsAddon.php:105
 msgid "Zaak afbeelding"
 msgstr ""
 
-#: src/GravityForms/GravityFormsAddon.php:112
-#: src/GravityForms/GravityFormsAddon.php:114
+#: src/GravityForms/GravityFormsAddon.php:113
+#: src/GravityForms/GravityFormsAddon.php:115
 msgid "Expand functionaliteit"
 msgstr ""
 
-#: src/GravityForms/GravityFormsAddon.php:112
+#: src/GravityForms/GravityFormsAddon.php:113
 msgid "Verhoog de laadsnelheid door de expand functionaliteit te activeren. Dit vereist dat de gekoppelde zaaksystemen ZGW 1.5.0 of later ondersteunen."
 msgstr ""
 
-#: src/GravityForms/GravityFormsAddon.php:118
+#: src/GravityForms/GravityFormsAddon.php:119
 msgid "Uitgeschakeld"
 msgstr ""
 
-#: src/GravityForms/GravityFormsAddon.php:123
+#: src/GravityForms/GravityFormsAddon.php:124
 msgid "Volgens ZGW 1.5.0"
 msgstr ""
 
-#: src/GravityForms/GravityFormsAddon.php:128
+#: src/GravityForms/GravityFormsAddon.php:129
 msgid "Volgens ZGW 1.5.1"
 msgstr ""
 
-#: src/GravityForms/GravityFormsAddon.php:135
+#: src/GravityForms/GravityFormsAddon.php:136
 msgid "Leveranciers"
 msgstr ""
 
-#: src/GravityForms/GravityFormsAddon.php:171
+#: src/GravityForms/GravityFormsAddon.php:176
 msgid "Toelichting"
 msgstr ""
 
-#: src/GravityForms/GravityFormsAddon.php:172
+#: src/GravityForms/GravityFormsAddon.php:177
 msgid "Voer de gegevens in van de leveranciers die je wilt gebruiken. Voeg geen endpoint-type toe, dus \"https://supplier.com/api/v1/\" in plaats van \"https://supplier.com/api/v1/eigenschappen\"."
 msgstr ""
 
-#: src/GravityForms/GravityFormsAddon.php:302
-#: src/GravityForms/GravityFormsFormSettings.php:46
+#: src/GravityForms/GravityFormsAddon.php:187
+#: src/GravityForms/GravityFormsFormSettings.php:33
+msgid "Decos Join"
+msgstr ""
+
+#: src/GravityForms/GravityFormsAddon.php:199
+#: src/GravityForms/GravityFormsAddon.php:259
+#: src/GravityForms/GravityFormsAddon.php:319
+#: src/GravityForms/GravityFormsAddon.php:379
+#: src/GravityForms/GravityFormsAddon.php:432
+#: src/GravityForms/GravityFormsAddon.php:485
+#: src/GravityForms/GravityFormsAddon.php:538
+msgid "Catalogi URL"
+msgstr ""
+
+#: src/GravityForms/GravityFormsAddon.php:206
+#: src/GravityForms/GravityFormsAddon.php:266
+#: src/GravityForms/GravityFormsAddon.php:326
+#: src/GravityForms/GravityFormsAddon.php:386
+#: src/GravityForms/GravityFormsAddon.php:439
+#: src/GravityForms/GravityFormsAddon.php:492
+#: src/GravityForms/GravityFormsAddon.php:545
+msgid "Documenten URL"
+msgstr ""
+
+#: src/GravityForms/GravityFormsAddon.php:213
+#: src/GravityForms/GravityFormsAddon.php:273
+#: src/GravityForms/GravityFormsAddon.php:333
+#: src/GravityForms/GravityFormsAddon.php:393
+#: src/GravityForms/GravityFormsAddon.php:446
+#: src/GravityForms/GravityFormsAddon.php:499
+#: src/GravityForms/GravityFormsAddon.php:552
+msgid "Zaken URL"
+msgstr ""
+
+#: src/GravityForms/GravityFormsAddon.php:220
+#: src/GravityForms/GravityFormsAddon.php:287
+#: src/GravityForms/GravityFormsAddon.php:347
+#: src/GravityForms/GravityFormsAddon.php:400
+#: src/GravityForms/GravityFormsAddon.php:453
+#: src/GravityForms/GravityFormsAddon.php:506
+#: src/GravityForms/GravityFormsAddon.php:559
+msgid "Client ID"
+msgstr ""
+
+#: src/GravityForms/GravityFormsAddon.php:227
+msgid "Client Secret (ZTC)"
+msgstr ""
+
+#: src/GravityForms/GravityFormsAddon.php:234
+msgid "Client Secret (ZRC)"
+msgstr ""
+
+#: src/GravityForms/GravityFormsAddon.php:247
+#: src/GravityForms/GravityFormsFormSettings.php:40
+msgid "Mozart"
+msgstr ""
+
+#: src/GravityForms/GravityFormsAddon.php:280
+#: src/GravityForms/GravityFormsAddon.php:340
+msgid "Token URL"
+msgstr ""
+
+#: src/GravityForms/GravityFormsAddon.php:294
+#: src/GravityForms/GravityFormsAddon.php:354
+#: src/GravityForms/GravityFormsAddon.php:407
+#: src/GravityForms/GravityFormsAddon.php:460
+#: src/GravityForms/GravityFormsAddon.php:513
+#: src/GravityForms/GravityFormsAddon.php:566
+msgid "Client Secret"
+msgstr ""
+
+#: src/GravityForms/GravityFormsAddon.php:307
+#: src/GravityForms/GravityFormsFormSettings.php:47
+msgid "OpenWave"
+msgstr ""
+
+#: src/GravityForms/GravityFormsAddon.php:367
+#: src/GravityForms/GravityFormsFormSettings.php:54
 #: src/Templating/TemplatingServiceProvider.php:22
 msgid "OpenZaak"
 msgstr ""
 
-#: src/GravityForms/GravityFormsAddon.php:242
-#: src/GravityForms/GravityFormsFormSettings.php:39
-msgid "OpenWave"
-msgstr ""
-
-#: src/GravityForms/GravityFormsAddon.php:314
-#: src/GravityForms/GravityFormsAddon.php:194
-#: src/GravityForms/GravityFormsAddon.php:254
-#: src/GravityForms/GravityFormsAddon.php:367
 #: src/GravityForms/GravityFormsAddon.php:420
-#: src/GravityForms/GravityFormsAddon.php:473
-msgid "Catalogi URL"
-msgstr ""
-
-#: src/GravityForms/GravityFormsAddon.php:201
-#: src/GravityForms/GravityFormsAddon.php:261
-#: src/GravityForms/GravityFormsAddon.php:321
-#: src/GravityForms/GravityFormsAddon.php:374
-#: src/GravityForms/GravityFormsAddon.php:427
-#: src/GravityForms/GravityFormsAddon.php:480
-msgid "Documenten URL"
-msgstr ""
-
-#: src/GravityForms/GravityFormsAddon.php:208
-#: src/GravityForms/GravityFormsAddon.php:268
-#: src/GravityForms/GravityFormsAddon.php:328
-#: src/GravityForms/GravityFormsAddon.php:381
-#: src/GravityForms/GravityFormsAddon.php:434
-#: src/GravityForms/GravityFormsAddon.php:487
-msgid "Zaken URL"
-msgstr ""
-
-#: src/GravityForms/GravityFormsAddon.php:215
-#: src/GravityForms/GravityFormsAddon.php:282
-#: src/GravityForms/GravityFormsAddon.php:355
-#: src/GravityForms/GravityFormsAddon.php:388
-#: src/GravityForms/GravityFormsAddon.php:441
-#: src/GravityForms/GravityFormsAddon.php:494
-msgid "Client ID"
-msgstr ""
-
-#: src/GravityForms/GravityFormsAddon.php:289
-#: src/GravityForms/GravityFormsAddon.php:342
-#: src/GravityForms/GravityFormsAddon.php:330
-#: src/GravityForms/GravityFormsAddon.php:395
-#: src/GravityForms/GravityFormsAddon.php:448
-#: src/GravityForms/GravityFormsAddon.php:501
-msgid "Client Secret"
-msgstr ""
-
-#: src/GravityForms/GravityFormsAddon.php:182
-#: src/GravityForms/GravityFormsFormSettings.php:32
-msgid "Decos Join"
-msgstr ""
-
-#: src/GravityForms/GravityFormsAddon.php:222
-msgid "Client Secret (ZTC)"
-msgstr ""
-
-#: src/GravityForms/GravityFormsAddon.php:229
-msgid "Client Secret (ZRC)"
-msgstr ""
-
-#: src/GravityForms/GravityFormsAddon.php:355
-#: src/GravityForms/GravityFormsFormSettings.php:60
+#: src/GravityForms/GravityFormsFormSettings.php:68
 msgid "Rx.Mission"
 msgstr ""
 
-#: src/GravityForms/GravityFormsAddon.php:461
-#: src/GravityForms/GravityFormsFormSettings.php:67
-msgid "Xxllnc"
-msgstr ""
-
-#: src/GravityForms/GravityFormsAddon.php:408
-#: src/GravityForms/GravityFormsFormSettings.php:53
+#: src/GravityForms/GravityFormsAddon.php:473
+#: src/GravityForms/GravityFormsFormSettings.php:61
 msgid "Procura"
 msgstr ""
 
-#: src/GravityForms/GravityFormsFormSettings.php:25
+#: src/GravityForms/GravityFormsAddon.php:526
+#: src/GravityForms/GravityFormsFormSettings.php:75
+msgid "Xxllnc"
+msgstr ""
+
+#: src/GravityForms/GravityFormsFormSettings.php:26
 msgid "Selecteer leverancier"
 msgstr ""
 
-#: src/GravityForms/GravityFormsFormSettings.php:73
+#: src/GravityForms/GravityFormsFormSettings.php:81
 msgid "Zaaksysteem"
 msgstr ""
 
-#: src/GravityForms/GravityFormsFormSettings.php:74
+#: src/GravityForms/GravityFormsFormSettings.php:82
 msgid "Om de snelheid te verhogen worden de instellingen van leveranciers pas opgehaald na het kiezen van een leverancier. Dit betekent dat de pagina herladen moet worden na het selecteren van een leverancier."
-msgstr ""
-
-#: src/GravityForms/GravityFormsFormSettings.php:79
-#: src/GravityForms/GravityFormsFormSettings.php:81
-msgid "Selecteer een leverancier"
-msgstr ""
-
-#: src/GravityForms/GravityFormsFormSettings.php:79
-msgid "Kies een Zaaksysteem leverancier. Let op dat je ook de instellingen van de leverancier moet configureren in de hoofdinstellingen van Gravity Forms."
 msgstr ""
 
 #: src/GravityForms/GravityFormsFormSettings.php:87
 #: src/GravityForms/GravityFormsFormSettings.php:89
-msgid "Leverancier instellingen"
+msgid "Selecteer een leverancier"
 msgstr ""
 
 #: src/GravityForms/GravityFormsFormSettings.php:87
+msgid "Kies een Zaaksysteem leverancier. Let op dat je ook de instellingen van de leverancier moet configureren in de hoofdinstellingen van Gravity Forms."
+msgstr ""
+
+#: src/GravityForms/GravityFormsFormSettings.php:95
+#: src/GravityForms/GravityFormsFormSettings.php:97
+msgid "Leverancier instellingen"
+msgstr ""
+
+#: src/GravityForms/GravityFormsFormSettings.php:95
 msgid "Kies hoe de leverancier instellingen geconfigureerd moeten worden."
 msgstr ""
 
-#: src/GravityForms/GravityFormsFormSettings.php:93
+#: src/GravityForms/GravityFormsFormSettings.php:101
 msgid "Selecteer instellingen (opgehaald vanuit zaaksysteem)"
 msgstr ""
 
-#: src/GravityForms/GravityFormsFormSettings.php:98
+#: src/GravityForms/GravityFormsFormSettings.php:106
 msgid "Configureer instellingen handmatig (invoeren van URL's)"
 msgstr ""
 
-#: src/GravityForms/GravityFormsFormSettings.php:141
-#: src/GravityForms/GravityFormsFormSettings.php:181
-#: src/GravityForms/GravityFormsFormSettings.php:224
-#: src/GravityForms/GravityFormsFormSettings.php:264
-#: src/GravityForms/GravityFormsFormSettings.php:307
-#: src/GravityForms/GravityFormsFormSettings.php:347
-#: src/GravityForms/GravityFormsFormSettings.php:390
-#: src/GravityForms/GravityFormsFormSettings.php:430
-#: src/GravityForms/GravityFormsFormSettings.php:473
-#: src/GravityForms/GravityFormsFormSettings.php:513
-#: src/GravityForms/GravityFormsFormSettings.php:556
-#: src/GravityForms/GravityFormsFormSettings.php:596
+#: src/GravityForms/GravityFormsFormSettings.php:149
+#: src/GravityForms/GravityFormsFormSettings.php:189
+#: src/GravityForms/GravityFormsFormSettings.php:232
+#: src/GravityForms/GravityFormsFormSettings.php:272
+#: src/GravityForms/GravityFormsFormSettings.php:315
+#: src/GravityForms/GravityFormsFormSettings.php:355
+#: src/GravityForms/GravityFormsFormSettings.php:398
+#: src/GravityForms/GravityFormsFormSettings.php:438
+#: src/GravityForms/GravityFormsFormSettings.php:481
+#: src/GravityForms/GravityFormsFormSettings.php:521
+#: src/GravityForms/GravityFormsFormSettings.php:564
+#: src/GravityForms/GravityFormsFormSettings.php:604
+#: src/GravityForms/GravityFormsFormSettings.php:647
+#: src/GravityForms/GravityFormsFormSettings.php:687
 msgid "Zaaktype"
 msgstr ""
 
-#: src/GravityForms/GravityFormsFormSettings.php:160
-#: src/GravityForms/GravityFormsFormSettings.php:199
-#: src/GravityForms/GravityFormsFormSettings.php:243
-#: src/GravityForms/GravityFormsFormSettings.php:282
-#: src/GravityForms/GravityFormsFormSettings.php:326
-#: src/GravityForms/GravityFormsFormSettings.php:365
-#: src/GravityForms/GravityFormsFormSettings.php:409
-#: src/GravityForms/GravityFormsFormSettings.php:448
-#: src/GravityForms/GravityFormsFormSettings.php:492
-#: src/GravityForms/GravityFormsFormSettings.php:531
-#: src/GravityForms/GravityFormsFormSettings.php:575
-#: src/GravityForms/GravityFormsFormSettings.php:614
+#: src/GravityForms/GravityFormsFormSettings.php:168
+#: src/GravityForms/GravityFormsFormSettings.php:207
+#: src/GravityForms/GravityFormsFormSettings.php:251
+#: src/GravityForms/GravityFormsFormSettings.php:290
+#: src/GravityForms/GravityFormsFormSettings.php:334
+#: src/GravityForms/GravityFormsFormSettings.php:373
+#: src/GravityForms/GravityFormsFormSettings.php:417
+#: src/GravityForms/GravityFormsFormSettings.php:456
+#: src/GravityForms/GravityFormsFormSettings.php:500
+#: src/GravityForms/GravityFormsFormSettings.php:539
+#: src/GravityForms/GravityFormsFormSettings.php:583
+#: src/GravityForms/GravityFormsFormSettings.php:622
+#: src/GravityForms/GravityFormsFormSettings.php:666
+#: src/GravityForms/GravityFormsFormSettings.php:705
 msgid "Informatie object type"
 msgstr ""
 
 #: src/GravityForms/ZaaktypenFormSettings/Adapters/ClientAdapter.php:136
+#, php-format
 msgid "Kan de \"%s\" die horen bij de geselecteerde leverancier niet ophalen."
 msgstr ""
 

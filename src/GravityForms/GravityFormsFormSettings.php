@@ -3,6 +3,7 @@
 namespace OWC\Zaaksysteem\GravityForms;
 
 use OWC\Zaaksysteem\GravityForms\ZaaktypenFormSettings\Clients\DecosClient;
+use OWC\Zaaksysteem\GravityForms\ZaaktypenFormSettings\Clients\MozartClient;
 use OWC\Zaaksysteem\GravityForms\ZaaktypenFormSettings\Clients\OpenWaveClient;
 use OWC\Zaaksysteem\GravityForms\ZaaktypenFormSettings\Clients\OpenZaakClient;
 use OWC\Zaaksysteem\GravityForms\ZaaktypenFormSettings\Clients\ProcuraClient;
@@ -31,6 +32,13 @@ class GravityFormsFormSettings
                 'name' => "{$this->prefix}-form-setting-supplier-decos-join",
                 'label' => __('Decos Join', 'owc-gravityforms-zaaksysteem'),
                 'value' => 'decos-join',
+            ];
+        }
+        if (ContainerResolver::make()->get('mz.enabled')) {
+            $supplierChoices[] = [
+                'name' => "{$this->prefix}-form-setting-supplier-mozart",
+                'label' => __('Mozart', 'owc-gravityforms-zaaksysteem'),
+                'value' => 'mozart',
             ];
         }
         if (ContainerResolver::make()->get('ow.enabled')) {
@@ -215,11 +223,11 @@ class GravityFormsFormSettings
             ];
         }
 
-        if (ContainerResolver::make()->get('oz.enabled') && $this->supplierIsSelectedInFormSettings($form, 'openzaak')) {
-            $fields['openzaak'] = [
+        if (ContainerResolver::make()->get('mz.enabled') && $this->supplierIsSelectedInFormSettings($form, 'mozart')) {
+            $fields['mozart'] = [
                 'select_setting' => [
                     [
-                        'name' => "{$this->prefix}-form-setting-openzaak-identifier",
+                        'name' => "{$this->prefix}-form-setting-mozart-identifier",
                         'type' => 'select',
                         'label' => esc_html__('Zaaktype', 'owc-gravityforms-zaaksysteem'),
                         'dependency' => [
@@ -227,7 +235,7 @@ class GravityFormsFormSettings
                             'fields' => [
                                 [
                                     'field' => "{$this->prefix}-form-setting-supplier",
-                                    'values' => ['openzaak'],
+                                    'values' => ['mozart'],
                                 ],
                                 [
                                     'field' => "{$this->prefix}-form-setting-supplier-manually",
@@ -235,10 +243,10 @@ class GravityFormsFormSettings
                                 ],
                             ],
                         ],
-                        'choices' => (new OpenZaakClient(ContainerResolver::make()->getApiClient('openzaak')))->zaaktypen(),
+                        'choices' => (new MozartClient(ContainerResolver::make()->getApiClient('mozart')))->zaaktypen(),
                     ],
                     [
-                        'name' => "{$this->prefix}-form-setting-openzaak-information-object-type",
+                        'name' => "{$this->prefix}-form-setting-mozart-information-object-type",
                         'type' => 'select',
                         'label' => esc_html__('Informatie object type', 'owc-gravityforms-zaaksysteem'),
                         'dependency' => [
@@ -246,7 +254,7 @@ class GravityFormsFormSettings
                             'fields' => [
                                 [
                                     'field' => "{$this->prefix}-form-setting-supplier",
-                                    'values' => ['openzaak'],
+                                    'values' => ['mozart'],
                                 ],
                                 [
                                     'field' => "{$this->prefix}-form-setting-supplier-manually",
@@ -254,12 +262,12 @@ class GravityFormsFormSettings
                                 ],
                             ],
                         ],
-                        'choices' => (new OpenZaakClient(ContainerResolver::make()->getApiClient('openzaak')))->informatieobjecttypen(),
+                        'choices' => (new MozartClient(ContainerResolver::make()->getApiClient('mozart')))->informatieobjecttypen(),
                     ],
                 ],
                 'manual_setting' => [
                     [
-                        'name' => "{$this->prefix}-form-setting-openzaak-identifier-manual",
+                        'name' => "{$this->prefix}-form-setting-mozart-identifier-manual",
                         'type' => 'text',
                         'label' => esc_html__('Zaaktype', 'owc-gravityforms-zaaksysteem'),
                         'dependency' => [
@@ -267,7 +275,7 @@ class GravityFormsFormSettings
                             'fields' => [
                                 [
                                     'field' => "{$this->prefix}-form-setting-supplier",
-                                    'values' => ['openzaak'],
+                                    'values' => ['mozart'],
                                 ],
                                 [
                                     'field' => "{$this->prefix}-form-setting-supplier-manually",
@@ -277,7 +285,7 @@ class GravityFormsFormSettings
                         ],
                     ],
                     [
-                        'name' => "{$this->prefix}-form-setting-openzaak-information-object-type-manual",
+                        'name' => "{$this->prefix}-form-setting-mozart-information-object-type-manual",
                         'type' => 'text',
                         'label' => esc_html__('Informatie object type', 'owc-gravityforms-zaaksysteem'),
                         'dependency' => [
@@ -285,7 +293,7 @@ class GravityFormsFormSettings
                             'fields' => [
                                 [
                                     'field' => "{$this->prefix}-form-setting-supplier",
-                                    'values' => ['openzaak'],
+                                    'values' => ['mozart'],
                                 ],
                                 [
                                     'field' => "{$this->prefix}-form-setting-supplier-manually",
@@ -369,6 +377,89 @@ class GravityFormsFormSettings
                                 [
                                     'field' => "{$this->prefix}-form-setting-supplier",
                                     'values' => ['openwave'],
+                                ],
+                                [
+                                    'field' => "{$this->prefix}-form-setting-supplier-manually",
+                                    'values' => ['1'],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ];
+        }
+
+        if (ContainerResolver::make()->get('oz.enabled') && $this->supplierIsSelectedInFormSettings($form, 'openzaak')) {
+            $fields['openzaak'] = [
+                'select_setting' => [
+                    [
+                        'name' => "{$this->prefix}-form-setting-openzaak-identifier",
+                        'type' => 'select',
+                        'label' => esc_html__('Zaaktype', 'owc-gravityforms-zaaksysteem'),
+                        'dependency' => [
+                            'live' => true,
+                            'fields' => [
+                                [
+                                    'field' => "{$this->prefix}-form-setting-supplier",
+                                    'values' => ['openzaak'],
+                                ],
+                                [
+                                    'field' => "{$this->prefix}-form-setting-supplier-manually",
+                                    'values' => ['0'],
+                                ],
+                            ],
+                        ],
+                        'choices' => (new OpenZaakClient(ContainerResolver::make()->getApiClient('openzaak')))->zaaktypen(),
+                    ],
+                    [
+                        'name' => "{$this->prefix}-form-setting-openzaak-information-object-type",
+                        'type' => 'select',
+                        'label' => esc_html__('Informatie object type', 'owc-gravityforms-zaaksysteem'),
+                        'dependency' => [
+                            'live' => true,
+                            'fields' => [
+                                [
+                                    'field' => "{$this->prefix}-form-setting-supplier",
+                                    'values' => ['openzaak'],
+                                ],
+                                [
+                                    'field' => "{$this->prefix}-form-setting-supplier-manually",
+                                    'values' => ['0'],
+                                ],
+                            ],
+                        ],
+                        'choices' => (new OpenZaakClient(ContainerResolver::make()->getApiClient('openzaak')))->informatieobjecttypen(),
+                    ],
+                ],
+                'manual_setting' => [
+                    [
+                        'name' => "{$this->prefix}-form-setting-openzaak-identifier-manual",
+                        'type' => 'text',
+                        'label' => esc_html__('Zaaktype', 'owc-gravityforms-zaaksysteem'),
+                        'dependency' => [
+                            'live' => true,
+                            'fields' => [
+                                [
+                                    'field' => "{$this->prefix}-form-setting-supplier",
+                                    'values' => ['openzaak'],
+                                ],
+                                [
+                                    'field' => "{$this->prefix}-form-setting-supplier-manually",
+                                    'values' => ['1'],
+                                ],
+                            ],
+                        ],
+                    ],
+                    [
+                        'name' => "{$this->prefix}-form-setting-openzaak-information-object-type-manual",
+                        'type' => 'text',
+                        'label' => esc_html__('Informatie object type', 'owc-gravityforms-zaaksysteem'),
+                        'dependency' => [
+                            'live' => true,
+                            'fields' => [
+                                [
+                                    'field' => "{$this->prefix}-form-setting-supplier",
+                                    'values' => ['openzaak'],
                                 ],
                                 [
                                     'field' => "{$this->prefix}-form-setting-supplier-manually",

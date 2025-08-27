@@ -80,6 +80,7 @@ class GravityFormsAddon extends GFAddOn
             $this->settingsGeneral(),
             $this->settingsDescription(),
             $this->settingsDecosJoin(),
+            $this->settingsMozart(),
             $this->settingsOpenWave(),
             $this->settingsOpenZaak(),
             $this->settingsProcura(),
@@ -138,6 +139,10 @@ class GravityFormsAddon extends GFAddOn
                         [
                             'label' => 'Decos Join',
                             'name' => "{$this->prefix}-suppliers-decos-join-enabled",
+                        ],
+                        [
+                            'label' => 'Mozart',
+                            'name' => "{$this->prefix}-suppliers-mozart-enabled",
                         ],
                         [
                             'label' => 'OpenWave',
@@ -231,6 +236,66 @@ class GravityFormsAddon extends GFAddOn
                     'required' => true,
                     'class' => 'medium',
                     'name' => "{$this->prefix}-decos-join-client-secret-zrc",
+                ],
+            ],
+        ];
+    }
+
+    protected function settingsMozart(): array
+    {
+        return [
+            'title' => esc_html__('Mozart', 'owc-gravityforms-zaaksysteem'),
+            'dependency' => [
+                'live' => true,
+                'fields' => [
+                    [
+                        'field' => "{$this->prefix}-suppliers",
+                        'values' => ["{$this->prefix}-suppliers-mozart-enabled"],
+                    ],
+                ],
+            ],
+            'fields' => [
+                [
+                    'label' => esc_html__('Catalogi URL', 'owc-gravityforms-zaaksysteem'),
+                    'type' => 'text',
+                    'required' => true,
+                    'class' => 'medium',
+                    'name' => "{$this->prefix}-mozart-catalogi-url",
+                ],
+                [
+                    'label' => esc_html__('Documenten URL', 'owc-gravityforms-zaaksysteem'),
+                    'type' => 'text',
+                    'required' => true,
+                    'class' => 'medium',
+                    'name' => "{$this->prefix}-mozart-documenten-url",
+                ],
+                [
+                    'label' => esc_html__('Zaken URL', 'owc-gravityforms-zaaksysteem'),
+                    'type' => 'text',
+                    'required' => true,
+                    'class' => 'medium',
+                    'name' => "{$this->prefix}-mozart-zaken-url",
+                ],
+                [
+                    'label' => esc_html__('Token URL', 'owc-gravityforms-zaaksysteem'),
+                    'type' => 'text',
+                    'required' => true,
+                    'class' => 'medium',
+                    'name' => "{$this->prefix}-mozart-token-url",
+                ],
+                [
+                    'label' => esc_html__('Client ID', 'owc-gravityforms-zaaksysteem'),
+                    'type' => 'text',
+                    'required' => true,
+                    'class' => 'medium',
+                    'name' => "{$this->prefix}-mozart-client-id",
+                ],
+                [
+                    'label' => esc_html__('Client Secret', 'owc-gravityforms-zaaksysteem'),
+                    'type' => 'text',
+                    'required' => true,
+                    'class' => 'medium',
+                    'name' => "{$this->prefix}-mozart-client-secret",
                 ],
             ],
         ];

@@ -13,6 +13,7 @@ use OWC\Zaaksysteem\Resolvers\eHerkenningResolver;
  */
 
 return [
+
     /**
      * Decos JOIN configuration.
      */
@@ -46,6 +47,35 @@ return [
         return $container->get(Clients\DecosJoin\Authenticator::class);
     },
 
+    /**
+     * Mozart configuration.
+     */
+    'mozart.abbr' => 'mz',
+    'mz.enabled' => function (Container $container) {
+        return (bool) $container->make('gf.setting', ['-suppliers-mozart-enabled']);
+    },
+    'mz.client' => fn (Container $container) => $container->get(Clients\Mozart\Client::class),
+    'mz.catalogi_uri' => function (Container $container) {
+        return $container->make('gf.setting', ['-mozart-catalogi-url']);
+    },
+    'mz.documenten_uri' => function (Container $container) {
+        return $container->make('gf.setting', ['-mozart-documenten-url']);
+    },
+    'mz.zaken_uri' => function (Container $container) {
+        return $container->make('gf.setting', ['-mozart-zaken-url']);
+    },
+    'mz.token_url' => function (Container $container) {
+        return $container->make('gf.setting', ['-mozart-token-url']);
+    },
+    'mz.client_id' => function (Container $container) {
+        return $container->make('gf.setting', ['-mozart-client-id']);
+    },
+    'mz.client_secret' => function (Container $container) {
+        return $container->make('gf.setting', ['-mozart-client-secret']);
+    },
+    'mz.authenticator' => function (Container $container) {
+        return $container->get(Clients\Mozart\Authenticator::class);
+    },
 
     /**
      * OpenWave configuration.
@@ -76,7 +106,6 @@ return [
     'ow.authenticator' => function (Container $container) {
         return $container->get(Clients\OpenWave\Authenticator::class);
     },
-
 
     /**
      * OpenZaak configuration.
@@ -241,6 +270,18 @@ return [
         );
     },
 
+    Clients\Mozart\Client::class => function (Container $container) {
+        return new Clients\Mozart\Client(
+            $container->make(
+                Http\WordPress\WordPressRequestClient::class
+            ),
+            $container->get('mz.authenticator'),
+            $container->get('mz.zaken_uri'),
+            $container->get('mz.catalogi_uri'),
+            $container->get('mz.documenten_uri'),
+        );
+    },
+
     Clients\OpenWave\Client::class => function (Container $container) {
         return new Clients\OpenWave\Client(
             $container->make(
@@ -308,6 +349,14 @@ return [
         return new Clients\DecosJoin\Authenticator(
             $container->get('dj.client_id'),
             $container->get('dj.client_secret')
+        );
+    },
+
+    Clients\Mozart\Authenticator::class => function (Container $container) {
+        return new Clients\Mozart\Authenticator(
+            $container->get('mz.client_id'),
+            $container->get('mz.client_secret'),
+            $container->get('mz.token_url')
         );
     },
 

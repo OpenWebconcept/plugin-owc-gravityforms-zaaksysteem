@@ -40,6 +40,8 @@ class ContainerResolver
             case 'decos':
             case 'decos-join':
                 return $this->container->get('dj.client');
+            case 'mozart':
+                return $this->container->get('mz.client');
             case 'openwave':
                 return $this->container->get('ow.client');
             case 'procura':
