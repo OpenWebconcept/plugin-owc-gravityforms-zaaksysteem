@@ -1,5 +1,12 @@
 # Changelog
 
+## v2.7.0
+
+- Change: update 'Procura' labels to 'Shift2'
+- Fix: missing validations while retrieving 'zaak' properties and objecttypes
+- Add: implement supplier Mozart
+- Fix: OpenWave container definition keys
+
 ## v2.6.1
 
 - Fix: Implement validation logic during entity mapping and attribute hydration.
