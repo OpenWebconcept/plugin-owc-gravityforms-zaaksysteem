@@ -30,7 +30,16 @@ class ZakenFilter extends AbstractFilter
         return $this->add('zaaktype', $zaaktype->url);
     }
 
-    public function orderBy(string $orderBy)
+    public function orderBy(string $orderBy, string $orderByDirection = '-')
+    {
+        if (! $this->orderByParamIsValid($orderBy)) {
+            return $this;
+        }
+
+        return $this->add('ordering', sprintf('%s%s', $this->sanitizeOrderByDirectionParam($orderByDirection), $orderBy));
+    }
+
+    private function orderByParamIsValid(string $orderBy): bool
     {
         /**
          * Might be used in other places, in that case
@@ -45,11 +54,19 @@ class ZakenFilter extends AbstractFilter
             'identificatie',
         ];
 
-        if (! in_array($orderBy, $orderByParams)) {
-            return $this;
-        }
+        return in_array($orderBy, $orderByParams);
+    }
 
-        return $this->add('ordering', $orderBy);
+    /**
+     * Sanitizes the order direction parameter for the "order by" filter.
+     *
+     * Accepts only the characters '-' or '+':
+     * - '+' indicates ascending order
+     * - '-' indicates descending order
+     */
+    private function sanitizeOrderByDirectionParam(string $orderByDirection): string
+    {
+        return '+' === $orderByDirection ? '+' : '-';
     }
 
     public function byZaaktypeIdentification(Zaaktype $zaaktype)

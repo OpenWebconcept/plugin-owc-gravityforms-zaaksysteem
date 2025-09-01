@@ -50,6 +50,10 @@ class Zaken extends AbstractBlock
                     'type' => 'string',
                     'default' => 'startdatum',
                 ],
+                'orderByDirection' => [
+                    'type' => 'string',
+                    'default' => '-',
+                ],
                 'title' => 'Mijn Zaken',
                 'style' => 'swf-extended-blocks-style',
                 'editor_script' => 'swf-extended-blocks-script',

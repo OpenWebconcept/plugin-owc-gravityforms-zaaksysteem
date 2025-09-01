@@ -64,6 +64,10 @@ registerBlockType('owc/mijn-zaken', {
     orderBy: {
       type: 'string',
       "default": 'startdatum'
+    },
+    orderByDirection: {
+      type: 'string',
+      "default": '-'
     }
   },
   edit: function edit(_ref) {
@@ -75,7 +79,8 @@ registerBlockType('owc/mijn-zaken', {
       updateMePlease = attributes.updateMePlease,
       combinedClients = attributes.combinedClients,
       byBSN = attributes.byBSN,
-      orderBy = attributes.orderBy;
+      orderBy = attributes.orderBy,
+      orderByDirection = attributes.orderByDirection;
     var zaaktypeFilterArr = JSON.parse(zaaktypeFilter);
     var addZTFilter = function addZTFilter() {
       zaaktypeFilterArr.push('');
@@ -193,6 +198,21 @@ registerBlockType('owc/mijn-zaken', {
       onChange: function onChange(neworderBy) {
         return setAttributes({
           orderBy: neworderBy
+        });
+      }
+    }), /*#__PURE__*/React.createElement(SelectControl, {
+      label: "Sorteer volgorde",
+      value: orderByDirection,
+      options: [{
+        label: 'Oplopend',
+        value: '+'
+      }, {
+        label: 'Aflopend',
+        value: '-'
+      }],
+      onChange: function onChange(neworderByDirection) {
+        return setAttributes({
+          orderByDirection: neworderByDirection
         });
       }
     })), /*#__PURE__*/React.createElement(PanelBody, {
