@@ -123,18 +123,22 @@ class Block
 
     protected function handleFilterOrdering(ZakenFilter $filter, array $attributes): ZakenFilter
     {
-        if (empty($attributes['orderBy'])) {
+        if (! is_string($attributes['orderBy'] ?? null)) {
             return $filter;
         }
 
-        $filter->orderBy($attributes['orderBy']);
+        if (! is_string($attributes['orderByDirection'] ?? null)) {
+            $attributes['orderByDirection'] = '-';
+        }
+
+        $filter->orderBy($attributes['orderBy'], $attributes['orderByDirection']);
 
         return $filter;
     }
 
     protected function handleFilterBSN(ZakenFilter $filter, array $attributes): ZakenFilter
     {
-        if (! $attributes['byBSN']) {
+        if (true !== ($attributes['byBSN'] ?? false)) {
             return $filter;
         }
 
@@ -145,7 +149,7 @@ class Block
 
     protected function handleFilterZaaktype(ZakenFilter $filter, array $attributes, ?Client $client = null): ZakenFilter
     {
-        if (! is_string($attributes['zaaktypeFilter'])) {
+        if (! is_string($attributes['zaaktypeFilter'] ?? null)) {
             return $filter;
         }
 

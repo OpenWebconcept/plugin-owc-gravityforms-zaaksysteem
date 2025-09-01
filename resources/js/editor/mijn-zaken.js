@@ -39,6 +39,7 @@ registerBlockType( 'owc/mijn-zaken', {
 		view: { type: 'string', default: 'default' },
 		numberOfItems: { type: 'number', default: 2 },
 		orderBy: { type: 'string', default: 'startdatum' },
+		orderByDirection: { type: 'string', default: '-' },
 	},
 	edit: ( { attributes, setAttributes } ) => {
 		const blockProps = useBlockProps();
@@ -49,6 +50,7 @@ registerBlockType( 'owc/mijn-zaken', {
 			combinedClients,
 			byBSN,
 			orderBy,
+			orderByDirection,
 		} = attributes;
 		const zaaktypeFilterArr = JSON.parse( zaaktypeFilter );
 
@@ -173,6 +175,19 @@ registerBlockType( 'owc/mijn-zaken', {
 								onChange={ ( neworderBy ) =>
 									setAttributes( {
 										orderBy: neworderBy,
+									} )
+								}
+							/>
+							<SelectControl
+								label="Sorteer volgorde"
+								value={ orderByDirection }
+								options={ [
+									{ label: 'Oplopend', value: '+' },
+									{ label: 'Aflopend', value: '-' },
+								] }
+								onChange={ ( neworderByDirection ) =>
+									setAttributes( {
+										orderByDirection: neworderByDirection,
 									} )
 								}
 							/>
