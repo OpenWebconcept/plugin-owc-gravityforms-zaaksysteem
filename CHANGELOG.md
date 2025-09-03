@@ -1,5 +1,9 @@
 # Changelog
 
+## v2.7.1
+
+- Fix: order-by filter by using the order direction param
+
 ## v2.7.0
 
 - Change: update 'Procura' labels to 'Shift2'
