@@ -445,9 +445,14 @@ return [
             'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' => 'xlsx',
             'text/plain' => 'txt',
             'text/csv' => 'csv',
-            'text/html' => 'html',
-            'application/json' => 'json',
-            'application/xml' => 'xml',
+            'image/jpeg' => 'jpg', // Includes .jpg and .jpeg.
+            'image/png' => 'png',
+            'image/tiff' => 'tif', // Includes .tif and .tiff.
+            'application/vnd.oasis.opendocument.text' => 'odt',
+            'application/vnd.oasis.opendocument.spreadsheet' => 'ods',
+            'application/vnd.oasis.opendocument.presentation' => 'odp',
+            'application/vnd.ms-powerpoint' => 'ppt',
+            'application/vnd.openxmlformats-officedocument.presentationml.presentation' => 'pptx',
         ];
     },
 ];
