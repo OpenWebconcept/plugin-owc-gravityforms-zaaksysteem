@@ -1,5 +1,9 @@
 # Changelog
 
+## v2.7.2
+
+- Chore: expand mime mapping config
+
 ## v2.7.1
 
 - Fix: order-by filter by using the order direction param
