@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace OWC\Zaaksysteem\Endpoints;
 
+use OWC\Zaaksysteem\Clients\OpenWave\Helpers\ZaakTypeHelper;
 use OWC\Zaaksysteem\Entities\Entity;
 use OWC\Zaaksysteem\Entities\StatusType;
 use OWC\Zaaksysteem\Entities\Zaak;
+use OWC\Zaaksysteem\Entities\Zaaktype;
 use OWC\Zaaksysteem\Http\Response;
 use OWC\Zaaksysteem\Resolvers\ContainerResolver;
 use OWC\Zaaksysteem\Support\Collection;
@@ -53,22 +55,40 @@ class ZakenEndpoint extends Endpoint
         $class = $this->entityClass;
         $zaak = new $class($data, $this->client::CALLABLE_NAME, $this->client::CLIENT_NAME);
 
+        // Temp: OpenWave is not fully supported yet, so we need to handle some things differently.
+        if ('openwave' === $this->client->getClientNamePretty()) {
+            $zaakTypeURL = $zaak->toArray()['zaaktype'] ?? '';
+            $zaaktypeIdentifier = explode('/', $zaakTypeURL);
+            $zaaktypeIdentifier = $zaaktypeIdentifier ? end($zaaktypeIdentifier) : '';
+            $zaakType = ZaakTypeHelper::handleOpenWaveZaaktypeByIdentifier($this->client, $zaaktypeIdentifier);
+        }
+
         $statusToelichting = is_object($zaak->status) && $zaak->status->statustype instanceof StatusType ? $zaak->status->statustype->statusExplanation() : '';
         $zaak->setValue('leverancier', $zaak->getClientNamePretty());
-        $zaak->setValue('steps', $this->handleProcessStatusses($this->getStatussenSorted($zaak), $statusToelichting));
+        $zaak->setValue('steps', $this->handleProcessStatusses($this->getStatussenSorted($zaak, $zaakType ?? null), $statusToelichting));
         $zaak->setValue('status_history', $zaak->statussen);
         $zaak->setValue('information_objects', $zaak->zaakinformatieobjecten);
         $zaak->setValue('status_explanation', $statusToelichting);
         $zaak->setValue('result', $zaak->resultaat);
         $zaak->setValue('image', ContainerResolver::make()->get('zaak_image'));
-        $zaak->setValue('zaaktype_description', $zaak->zaaktype->omschrijvingGeneriek ?? '');
+
+        if ('openwave' !== $this->client->getClientNamePretty()) {
+            $zaak->setValue('zaaktype_description', $zaak->zaaktype->omschrijvingGeneriek ?? '');
+        } else {
+            $zaak->setValue('zaaktype_description', $zaakType instanceof ZaakType ? ($zaakType->omschrijvingGeneriek ?? '') : '');
+        }
 
         return $zaak;
     }
 
-    protected function getStatussenSorted(Entity $zaak): Collection
+    protected function getStatussenSorted(Entity $zaak, ?ZaakType $zaakType = null): Collection
     {
-        $zaakType = $zaak->zaaktype;
+        if ('openwave' !== $this->client->getClientNamePretty()) {
+            $zaakType = $zaak->zaaktype;
+        } elseif ($zaakType instanceof ZaakType) {
+            $zaakType = $zaakType;
+        }
+
         $statusTypen = is_object($zaakType) ? $zaakType->statustypen : null;
 
         if (! $statusTypen instanceof Collection) {

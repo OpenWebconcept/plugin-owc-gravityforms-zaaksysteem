@@ -6,6 +6,7 @@ namespace OWC\Zaaksysteem\GravityForms;
 
 use Exception;
 use GFAPI;
+use OWC\Zaaksysteem\Clients\OpenWave\Helpers\ZaakTypeHelper;
 use OWC\Zaaksysteem\Endpoints\Filter\EigenschappenFilter;
 use OWC\Zaaksysteem\Entities\Informatieobjecttype;
 use OWC\Zaaksysteem\Entities\Zaaktype;
@@ -69,7 +70,11 @@ class GravityFormsFieldSettings
             $zaaktypeIdentifier = end($explode);
         }
 
-        $zaaktype = $client->zaaktypen()->get($zaaktypeIdentifier);
+        if ('openwave' !== $client->getClientNamePretty()) {
+            $zaaktype = $client->zaaktypen()->get($zaaktypeIdentifier);
+        } else {
+            $zaaktype = ZaakTypeHelper::handleOpenWaveZaaktypeByIdentifier($client, $zaaktypeIdentifier);
+        }
 
         /**
          * When the API supports filtering on zaaktype identification this line should be used.
