@@ -15,11 +15,51 @@ use OWC\Zaaksysteem\Support\Collection;
 
 class ClientAdapter implements ClientInterface
 {
-    private $client;
+    private Client $client;
+    protected bool $isCron = false;
+    protected int $timeout = 15;
 
     public function __construct(Client $client)
     {
         $this->client = $client;
+    }
+
+    /**
+     * Marks the request as being executed from a cron job.
+     *
+     * When enabled, cached values stored in transients will be bypassed,
+     * but the cache will still be refreshed. This ensures that users
+     * see up-to-date values the next time they open the form settings.
+     */
+    public function setIsCron(bool $isCron): self
+    {
+        $this->isCron = $isCron;
+
+        return $this;
+    }
+
+    /**
+     * Overrides the default request timeout.
+     *
+     * A longer timeout can be useful when running background tasks
+     * such as cron jobs, where responses may take more time.
+     */
+    public function setTimeout(int $timeout): self
+    {
+        $this->timeout = $timeout;
+
+        return $this;
+    }
+
+    /**
+     * Applies the configured timeout to the underlying client's request options.
+     */
+    public function applyTimeout(): void
+    {
+        $this->client
+             ->getRequestClient()
+             ->getRequestOptions()
+             ->set('timeout', $this->timeout);
     }
 
     public function informatieobjecttypen(): array
@@ -58,7 +98,7 @@ class ClientAdapter implements ClientInterface
                 'No zaaktypen found.'
             );
         } catch (Exception $e) {
-            return $this->handleNoChoices('zaaktypen');
+            return $this->isCron ? [] : $this->handleNoChoices('zaaktypen');
         }
     }
 
@@ -71,7 +111,7 @@ class ClientAdapter implements ClientInterface
     {
         $types = get_transient($transientKey);
 
-        if (is_array($types) && $types) {
+        if (is_array($types ?: false) && false === $this->isCron) {
             return $types;
         }
 
@@ -92,6 +132,8 @@ class ClientAdapter implements ClientInterface
         $page = 1;
         $types = [];
         $requestException = '';
+
+        $this->applyTimeout();
 
         while ($page) {
             try {
