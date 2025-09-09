@@ -4,12 +4,24 @@ declare(strict_types=1);
 
 namespace OWC\Zaaksysteem\Http\Logger;
 
+use OWC\Zaaksysteem\Foundation\Plugin;
 use OWC\Zaaksysteem\Foundation\ServiceProvider;
 use OWC\Zaaksysteem\GravityForms\GravityFormsSettings;
+use OWC\Zaaksysteem\Resolvers\ContainerResolver;
 
 class LoggerServiceProvider extends ServiceProvider
 {
     protected string $settingsPrefix = OWC_GZ_PLUGIN_SLUG;
+
+    protected Plugin $plugin;
+    protected ContainerResolver $container;
+
+    public function __construct(Plugin $plugin)
+    {
+        parent::__construct($plugin);
+
+        $this->container = ContainerResolver::make();
+    }
 
     public function boot(): void
     {
@@ -24,9 +36,7 @@ class LoggerServiceProvider extends ServiceProvider
 
     public function isEnabled(): bool
     {
-        $container = $this->plugin->getContainer();
-
-        return (bool) $container->get('message.logger.active');
+        return (bool) $this->container->get('message.logger.active');
     }
 
     public function logHttpMessage($response, $context, $class, $arguments, $url)
@@ -35,7 +45,7 @@ class LoggerServiceProvider extends ServiceProvider
             return;
         }
 
-        $this->plugin->getContainer()->get('message.logger')->debug($url, compact('arguments', 'response'));
+        $this->container->get('message.logger')->debug($url, compact('arguments', 'response'));
     }
 
     public function addLoggingOptions(array $fields): array
@@ -57,8 +67,15 @@ class LoggerServiceProvider extends ServiceProvider
             'title' => esc_html__('Berichtenverkeer logboek', 'owc-gravityforms-zaaksysteem'),
             'fields' => [
                 [
+                    'name' => "{$this->settingsPrefix}-form-setting-logging-enabled",
+                    'label' => __('Logging inschakelen', 'owc-gravityforms-zaaksysteem'),
+                    'type' => 'toggle',
+                    'required' => false,
+                    'default_value' => false,
+                    'description' => __('Schakel deze optie in om het loggen van systeemactiviteiten en foutmeldingen te activeren. Dit kan nuttig zijn voor het opsporen en oplossen van problemen binnen de plug-in.', 'owc-gravityforms-zaaksysteem'),
+                ],
+                [
                     'name' => "{$this->settingsPrefix}-form-setting-logging",
-                    'default_value' => "0",
                     'tooltip' => sprintf(
                         '<h6>%s</h6>%s',
                         __('Berichtenverkeer logboek', 'owc-gravityforms-zaaksysteem'),
@@ -66,12 +83,16 @@ class LoggerServiceProvider extends ServiceProvider
                     ),
                     'type' => 'select',
                     'label' => esc_html__('Selecteer logboek granulariteit', 'owc-gravityforms-zaaksysteem'),
-                    'choices' => [
-                        [
-                            'name' => "{$this->settingsPrefix}-form-setting-logging-none",
-                            'label' => __('Deactiveer logboek', 'owc-gravityforms-zaaksysteem'),
-                            'value' => '0',
+                    'dependency' => [
+                        'live' => true,
+                        'fields' => [
+                            [
+                                'field' => "{$this->settingsPrefix}-form-setting-logging-enabled",
+                                'values' => [ true, '1', 1 ], // Front-end uses boolean, back-end uses int/string.
+                            ]
                         ],
+                    ],
+                    'choices' => [
                         [
                             'name' => "{$this->settingsPrefix}-form-setting-logging-" . MessageDetail::WHITE_BOX,
                             'label' => __('Hoog (White box)', 'owc-gravityforms-zaaksysteem'),
@@ -109,7 +130,6 @@ class LoggerServiceProvider extends ServiceProvider
             case MessageDetail::WHITE_BOX:
             case MessageDetail::URL_LOGGING:
                 $container->set('message.logger.detail', $configured);
-                $container->set('message.logger.active', true);
                 break;
             case '0':
             default:
