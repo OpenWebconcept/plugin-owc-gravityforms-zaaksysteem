@@ -20,8 +20,12 @@ class WPCronServiceProvider extends ServiceProvider
 
     protected function registerHooks(): void
     {
-        add_action('owc_gz_form_settings_cron', [new GravityFormsFormSettings, 'init']);
-        add_action('owc_gz_pending_payment_entries_cron', [new PendingPaymentEntries, 'init']);
+        add_action('owc_gz_form_settings_cron', function () {
+            (new GravityFormsFormSettings())->init();
+        });
+        add_action('owc_gz_pending_payment_entries_cron', function () {
+            (new PendingPaymentEntries())->init();
+        });
     }
 
     protected function registerEvents(): void
@@ -31,7 +35,7 @@ class WPCronServiceProvider extends ServiceProvider
         }
 
         if (! wp_next_scheduled('owc_gz_pending_payment_entries_cron')) {
-            wp_schedule_event($this->timeToExecute('now'), 'hourly', 'owc_gz_pending_payment_entries_cron');
+            wp_schedule_event($this->timeToExecute(), 'hourly', 'owc_gz_pending_payment_entries_cron');
         }
     }
 

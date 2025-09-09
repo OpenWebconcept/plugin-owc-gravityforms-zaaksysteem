@@ -9,6 +9,8 @@ use OWC\Zaaksysteem\GravityForms\ZaaktypenFormSettings\Clients\OpenZaakClient;
 use OWC\Zaaksysteem\GravityForms\ZaaktypenFormSettings\Clients\ProcuraClient;
 use OWC\Zaaksysteem\GravityForms\ZaaktypenFormSettings\Clients\RxMissionClient;
 use OWC\Zaaksysteem\GravityForms\ZaaktypenFormSettings\Clients\XxllncClient;
+use OWC\Zaaksysteem\GravityForms\ZaaktypenFormSettings\Services\TypeRetrievalService;
+use OWC\Zaaksysteem\GravityForms\ZaaktypenFormSettings\Support\TypeCache;
 use OWC\Zaaksysteem\Resolvers\ContainerResolver;
 
 class GravityFormsFormSettings
@@ -140,7 +142,16 @@ class GravityFormsFormSettings
     {
         $fields = [];
 
+        $decosClient = ContainerResolver::make()->getApiClient('decos-join');
+        $mozartClient = ContainerResolver::make()->getApiClient('mozart');
+        $openWaveClient = ContainerResolver::make()->getApiClient('openwave');
+        $openZaakClient = ContainerResolver::make()->getApiClient('openzaak');
+        $procuraClient = ContainerResolver::make()->getApiClient('procura');
+        $rxMissionClient = ContainerResolver::make()->getApiClient('rx-mission');
+
         if (ContainerResolver::make()->get('dj.enabled') && $this->supplierIsSelectedInFormSettings($form, 'decos-join')) {
+            $decosAdapterClient = new DecosClient($decosClient->getClientNamePretty(), new TypeRetrievalService($decosClient), new TypeCache());
+
             $fields['decos-join'] = [
                 'select_setting' => [
                     [
@@ -160,7 +171,7 @@ class GravityFormsFormSettings
                                 ],
                             ],
                         ],
-                        'choices' => (new DecosClient(ContainerResolver::make()->getApiClient('decos')))->zaaktypen(),
+                        'choices' => $decosAdapterClient->zaaktypen(),
                     ],
                     [
                         'name' => "{$this->prefix}-form-setting-decos-join-information-object-type",
@@ -179,7 +190,7 @@ class GravityFormsFormSettings
                                 ],
                             ],
                         ],
-                        'choices' => (new DecosClient(ContainerResolver::make()->getApiClient('decos')))->informatieobjecttypen(),
+                        'choices' => $decosAdapterClient->informatieobjecttypen(),
                     ],
                 ],
                 'manual_setting' => [
@@ -224,6 +235,8 @@ class GravityFormsFormSettings
         }
 
         if (ContainerResolver::make()->get('mz.enabled') && $this->supplierIsSelectedInFormSettings($form, 'mozart')) {
+            $mozartAdapterClient = new MozartClient($mozartClient->getClientNamePretty(), new TypeRetrievalService($mozartClient), new TypeCache());
+
             $fields['mozart'] = [
                 'select_setting' => [
                     [
@@ -243,7 +256,7 @@ class GravityFormsFormSettings
                                 ],
                             ],
                         ],
-                        'choices' => (new MozartClient(ContainerResolver::make()->getApiClient('mozart')))->zaaktypen(),
+                        'choices' => $mozartAdapterClient->zaaktypen(),
                     ],
                     [
                         'name' => "{$this->prefix}-form-setting-mozart-information-object-type",
@@ -262,7 +275,7 @@ class GravityFormsFormSettings
                                 ],
                             ],
                         ],
-                        'choices' => (new MozartClient(ContainerResolver::make()->getApiClient('mozart')))->informatieobjecttypen(),
+                        'choices' => $mozartAdapterClient->informatieobjecttypen(),
                     ],
                 ],
                 'manual_setting' => [
@@ -307,6 +320,7 @@ class GravityFormsFormSettings
         }
 
         if (ContainerResolver::make()->get('ow.enabled') && $this->supplierIsSelectedInFormSettings($form, 'openwave')) {
+            $openWaveAdapterClient = new OpenWaveClient($openWaveClient->getClientNamePretty(), new TypeRetrievalService($openWaveClient), new TypeCache());
             $fields['openwave'] = [
                 'select_setting' => [
                     [
@@ -326,7 +340,7 @@ class GravityFormsFormSettings
                                 ],
                             ],
                         ],
-                        'choices' => (new OpenWaveClient(ContainerResolver::make()->getApiClient('openwave')))->zaaktypen(),
+                        'choices' => $openWaveAdapterClient->zaaktypen(),
                     ],
                     [
                         'name' => "{$this->prefix}-form-setting-openwave-information-object-type",
@@ -345,7 +359,7 @@ class GravityFormsFormSettings
                                 ],
                             ],
                         ],
-                        'choices' => (new OpenWaveClient(ContainerResolver::make()->getApiClient('openwave')))->informatieobjecttypen(),
+                        'choices' => $openWaveAdapterClient->informatieobjecttypen(),
                     ],
                 ],
                 'manual_setting' => [
@@ -390,6 +404,8 @@ class GravityFormsFormSettings
         }
 
         if (ContainerResolver::make()->get('oz.enabled') && $this->supplierIsSelectedInFormSettings($form, 'openzaak')) {
+            $openZaakAdapterClient = new OpenZaakClient($openZaakClient->getClientNamePretty(), new TypeRetrievalService($openZaakClient), new TypeCache());
+
             $fields['openzaak'] = [
                 'select_setting' => [
                     [
@@ -409,7 +425,7 @@ class GravityFormsFormSettings
                                 ],
                             ],
                         ],
-                        'choices' => (new OpenZaakClient(ContainerResolver::make()->getApiClient('openzaak')))->zaaktypen(),
+                        'choices' => $openZaakAdapterClient->zaaktypen(),
                     ],
                     [
                         'name' => "{$this->prefix}-form-setting-openzaak-information-object-type",
@@ -428,7 +444,7 @@ class GravityFormsFormSettings
                                 ],
                             ],
                         ],
-                        'choices' => (new OpenZaakClient(ContainerResolver::make()->getApiClient('openzaak')))->informatieobjecttypen(),
+                        'choices' => $openZaakAdapterClient->informatieobjecttypen(),
                     ],
                 ],
                 'manual_setting' => [
@@ -473,6 +489,8 @@ class GravityFormsFormSettings
         }
 
         if (ContainerResolver::make()->get('procura.enabled') && $this->supplierIsSelectedInFormSettings($form, 'procura')) {
+            $procuraAdapterClient = new ProcuraClient($procuraClient->getClientNamePretty(), new TypeRetrievalService($procuraClient), new TypeCache());
+
             $fields['procura'] = [
                 'select_setting' => [
                     [
@@ -492,7 +510,7 @@ class GravityFormsFormSettings
                                 ],
                             ],
                         ],
-                        'choices' => (new ProcuraClient(ContainerResolver::make()->getApiClient('procura')))->zaaktypen(),
+                        'choices' => $procuraAdapterClient->zaaktypen(),
                     ],
                     [
                         'name' => "{$this->prefix}-form-setting-procura-information-object-type",
@@ -511,7 +529,7 @@ class GravityFormsFormSettings
                                 ],
                             ],
                         ],
-                        'choices' => (new ProcuraClient(ContainerResolver::make()->getApiClient('procura')))->informatieobjecttypen(),
+                        'choices' => $procuraAdapterClient->informatieobjecttypen(),
                     ],
                 ],
                 'manual_setting' => [
@@ -556,6 +574,7 @@ class GravityFormsFormSettings
         }
 
         if (ContainerResolver::make()->get('rx.enabled') && $this->supplierIsSelectedInFormSettings($form, 'rx-mission')) {
+            $rxMissionAdapterClient = new RxMissionClient($rxMissionClient->getClientNamePretty(), new TypeRetrievalService($form), new TypeCache());
             $fields['rx-mission'] = [
                 'select_setting' => [
                     [
@@ -575,7 +594,7 @@ class GravityFormsFormSettings
                                 ],
                             ],
                         ],
-                        'choices' => (new RxMissionClient(ContainerResolver::make()->getApiClient('rx-mission')))->zaaktypen(),
+                        'choices' => $rxMissionAdapterClient->zaaktypen(),
                     ],
                     [
                         'name' => "{$this->prefix}-form-setting-rx-mission-information-object-type",
@@ -594,7 +613,7 @@ class GravityFormsFormSettings
                                 ],
                             ],
                         ],
-                        'choices' => (new RxMissionClient(ContainerResolver::make()->getApiClient('rx-mission')))->informatieobjecttypen(),
+                        'choices' => $rxMissionAdapterClient->informatieobjecttypen(),
                     ],
                 ],
                 'manual_setting' => [
@@ -658,7 +677,7 @@ class GravityFormsFormSettings
                                 ],
                             ],
                         ],
-                        'choices' => (new XxllncClient(ContainerResolver::make()->getApiClient('xxllnc')))->zaaktypen(),
+                        'choices' => (new XxllncClient(ContainerResolver::make()->getApiClient('xxllnc')->getClientNamePretty(), new TypeRetrievalService(ContainerResolver::make()->getApiClient('xxllnc')), new TypeCache()))->zaaktypen(),
                     ],
                     [
                         'name' => "{$this->prefix}-form-setting-xxllnc-information-object-type",
@@ -677,7 +696,7 @@ class GravityFormsFormSettings
                                 ],
                             ],
                         ],
-                        'choices' => (new XxllncClient(ContainerResolver::make()->getApiClient('xxllnc')))->informatieobjecttypen(),
+                        'choices' => (new XxllncClient(ContainerResolver::make()->getApiClient('xxllnc')->getClientNamePretty(), new TypeRetrievalService(ContainerResolver::make()->getApiClient('xxllnc')), new TypeCache()))->informatieobjecttypen(),
                     ],
                 ],
                 'manual_setting' => [
