@@ -29,6 +29,12 @@ class GravityFormsSettings
     public function get(string $key): string
     {
         $key = $this->prefix . $key;
+
         return $this->options[$key] ?? '';
+    }
+
+    public function all(): array
+    {
+        return $this->options;
     }
 }
