@@ -5,14 +5,15 @@ declare(strict_types=1);
 namespace OWC\Zaaksysteem\WPCron\Events;
 
 use Exception;
+use OWC\Zaaksysteem\Contracts\Client;
 use OWC\Zaaksysteem\GravityForms\GravityFormsSettings;
 use OWC\Zaaksysteem\GravityForms\ZaaktypenFormSettings\Adapters\ClientAdapter;
+use OWC\Zaaksysteem\GravityForms\ZaaktypenFormSettings\Services\TypeRetrievalService;
+use OWC\Zaaksysteem\GravityForms\ZaaktypenFormSettings\Support\TypeCache;
 use OWC\Zaaksysteem\Resolvers\ContainerResolver;
 
 class GravityFormsFormSettings
 {
-    private const SUPPLIER_KEY_REGEX = '#^owc-gravityforms-zaaksysteem-suppliers-([a-z0-9_-]+)-enabled$#i';
-
     protected ContainerResolver $container;
 
     public function __construct()
@@ -42,36 +43,30 @@ class GravityFormsFormSettings
     {
         $suppliers = $this->container->get('config')->get('suppliers', []);
 
-        if (! is_array($suppliers) || [] === $suppliers) {
+        if ([] === $suppliers) {
             return [];
         }
 
+        $gfSettings = GravityFormsSettings::make();
         $enabled = [];
-        $isEnabledSetting = '1';
 
-        foreach (GravityFormsSettings::make()->all() as $key => $value) {
-            if ($isEnabledSetting !== $value) {
+        foreach ($suppliers as $name => $label) {
+            $enabledSupplier = $gfSettings->get(sprintf('-suppliers-%s-enabled', $name));
+
+            if ('1' !== $enabledSupplier) {
                 continue;
             }
 
-            // Match keys like 'owc-gravityforms-zaaksysteem-suppliers-<supplier>-enabled' and extract the supplier identifier.
-            if (! preg_match(self::SUPPLIER_KEY_REGEX, $key, $match)) {
-                continue;
-            }
-
-            $supplierIdentifier = $match[1] ?? '';
-
-            if (! array_key_exists($supplierIdentifier, $suppliers)) {
-                continue;
-            }
-
-            $supplierClientClass = sprintf('OWC\Zaaksysteem\GravityForms\ZaaktypenFormSettings\Clients\%sClient', $suppliers[$supplierIdentifier]);
+            $supplierClientClass = sprintf(
+                'OWC\Zaaksysteem\GravityForms\ZaaktypenFormSettings\Clients\%sClient',
+                $label
+            );
 
             if (! class_exists($supplierClientClass)) {
                 continue;
             }
 
-            $enabled[] = ['client' => $supplierIdentifier, 'class' => $supplierClientClass];
+            $enabled[] = ['client' => $label, 'class' => $supplierClientClass];
         }
 
         return $enabled;
@@ -84,15 +79,20 @@ class GravityFormsFormSettings
      */
     protected function fetchTypes(array $supplier): void
     {
+        /** @var Client $client */
+        $client = $this->container->getApiClient($supplier['client']);
+
         try {
-            /** @var ClientAdapter $client */
-            $client = new $supplier['class']($this->container->getApiClient($supplier['client']));
+            /** @var ClientAdapter $clientAdapter */
+            $clientAdapter = new $supplier['class']($client->getClientNamePretty(), new TypeRetrievalService($client), new TypeCache());
         } catch (Exception $e) {
+            $this->container->get('message.logger')->error('Error initializing client adapter', ['exception' => $e]);
+
             return;
         }
 
-        $client->setIsCron(true)->setTimeout(30);
-        $client->zaaktypen();
-        $client->informatieobjecttypen();
+        $clientAdapter->setIsCron(true)->setTimeout(30);
+        $clientAdapter->zaaktypen();
+        $clientAdapter->informatieobjecttypen();
     }
 }
