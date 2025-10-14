@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace OWC\Zaaksysteem;
 
 use DI\Container;
+use OWC\Zaaksysteem\GravityForms\GravityFormsSettings;
 use OWC\Zaaksysteem\Resolvers\DigiDBsnResolver;
 use OWC\Zaaksysteem\Resolvers\eHerkenningResolver;
 
@@ -242,7 +243,7 @@ return [
      * Utilize with $container->make('gf.setting', ['setting-name-here']);
      */
     'gf.setting' => function (Container $container, string $type, string $name) {
-        return GravityForms\GravityFormsSettings::make()->get($name);
+        return GravityFormsSettings::make()->get($name);
     },
 
     /**
@@ -415,12 +416,15 @@ return [
     /**
      * HTTP Message logging
      */
-    'message.logger.active' => false,
-    'message.logger.detail' => Http\Logger\MessageDetail::BLACK_BOX,
+    'message.logger.active' => function (Container $container) {
+        return (bool) $container->make('gf.setting', ['-form-setting-logging-enabled']);
+    },
+    'message.logger.detail' => function (Container $container) {
+        return $container->make('gf.setting', ['-form-setting-logging']) ?: Http\Logger\MessageDetail::BLACK_BOX;
+    },
     'message.logger.path' => dirname(ABSPATH) . '/owc-http-messages.json',
     'message.logger' => function (Container $container) {
         $logger = new \Monolog\Logger('owc_http_log');
-
         $handler = new \Monolog\Handler\StreamHandler(
             $container->get('message.logger.path'),
             \Monolog\Logger::DEBUG
