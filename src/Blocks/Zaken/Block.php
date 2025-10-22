@@ -26,13 +26,13 @@ class Block
         }
 
         if (! $this->getCurrentUserBsn()) {
-            return 'Er is geen geldig BSN gevonden waardoor er geen zaken opgehaald kunnen worden.';
+            return view('blocks/mijn-zaken/zaak-error.php', ['message' => 'Er is geen geldig BSN gevonden waardoor er geen zaken opgehaald kunnen worden.']);
         }
 
         $this->client = ContainerResolver::make()->getApiClient($attributes['zaakClient'] ?? 'openzaak');
 
         if (! $this->client->supports('zaken')) {
-            return __('Het Mijn Zaken overzicht is niet beschikbaar.', 'owc-gravityforms-zaaksysteem');
+            return view('blocks/mijn-zaken/zaak-error.php', ['message' => 'Het Mijn Zaken overzicht is niet beschikbaar.']);
         }
 
         $zaken = get_transient($this->uniqueTransientKey($attributes));
@@ -48,7 +48,7 @@ class Block
         }
 
         if ($zaken->isEmpty()) {
-            return __('Er zijn op dit moment geen zaken beschikbaar.', 'owc-gravityforms-zaaksysteem');
+            return view('blocks/mijn-zaken/zaak-info.php', ['message' => 'Er zijn op dit moment geen zaken beschikbaar.']);
         }
 
         set_transient($this->uniqueTransientKey($attributes), $zaken, 500);
