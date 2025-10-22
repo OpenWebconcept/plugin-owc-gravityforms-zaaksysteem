@@ -1,5 +1,9 @@
 # Changelog
 
+## v2.8.0
+
+- Feat:  Improve styling of informational and error messages
+
 ## v2.7.2
 
 - Chore: expand mime mapping config
