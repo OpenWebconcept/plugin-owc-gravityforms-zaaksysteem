@@ -66,7 +66,7 @@ class GravityFormsFormSettings
                 continue;
             }
 
-            $enabled[] = ['client' => $label, 'class' => $supplierClientClass];
+            $enabled[] = ['client' => $name, 'class' => $supplierClientClass];
         }
 
         return $enabled;
