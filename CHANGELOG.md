@@ -1,8 +1,14 @@
 # Changelog
 
+## v2.9.0
+
+- add: cron-job for retrieval of form settings ZGW types
+- Change: logging configuration populated by GF addon settings
+-
+
 ## v2.8.0
 
-- Feat:  Improve styling of informational and error messages
+- add: improve styling of informational and error messages
 
 ## v2.7.2
 
@@ -21,7 +27,7 @@
 
 ## v2.6.1
 
-- Fix: Implement validation logic during entity mapping and attribute hydration.
+- Fix: implement validation logic during entity mapping and attribute hydration.
 
 ## v2.6.0
 
