@@ -6,7 +6,7 @@ namespace OWC\Zaaksysteem\GravityForms\ZaaktypenFormSettings\Support;
 
 class TypeCache
 {
-    private const CACHE_TTL_DEFAULT = 64800; // 18 hours.
+    private const CACHE_TTL_DEFAULT = 86400; // 24 hours.
 
     public function get(string $key): ?array
     {
