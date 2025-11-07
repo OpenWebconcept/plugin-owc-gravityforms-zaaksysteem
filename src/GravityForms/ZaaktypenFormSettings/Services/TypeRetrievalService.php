@@ -24,15 +24,20 @@ class TypeRetrievalService
         $exceptionMessage = '';
 
         $this->client
-             ->getRequestClient()
-             ->getRequestOptions()
-             ->set('timeout', $timeout);
+            ->getRequestClient()
+            ->getRequestOptions()
+            ->set('timeout', $timeout);
 
         while ($page) {
             try {
-                $result = $this->client->$endpoint()->all((new ResultaattypenFilter())->page($page));
+                if ('openwave' !== $this->client->getClientNamePretty()) {
+                    $result = $this->client->$endpoint()->all((new ResultaattypenFilter())->page($page));
+                } else {
+                    $result = $this->client->$endpoint()->all();
+                }
             } catch (Exception $e) {
                 $exceptionMessage = $e->getMessage();
+
                 break;
             }
 

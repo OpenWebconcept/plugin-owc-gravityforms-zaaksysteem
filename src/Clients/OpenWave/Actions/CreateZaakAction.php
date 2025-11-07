@@ -39,7 +39,7 @@ class CreateZaakAction extends AbstractCreateZaakAction
         $zaak = $client->zaken()->create(new Zaak($args, $client->getClientName(), $client->getClientNamePretty()));
 
         // Complement Zaak.
-        // $this->addRolToZaak($zaak, $zaaktypeURL); -> disabled for OpenWave, currently not supported.
+        $this->addRolToZaak($zaak, $zaaktypeURL);
         $this->addZaakEigenschappen($zaak, $form['fields'], $entry);
 
         return $zaak;

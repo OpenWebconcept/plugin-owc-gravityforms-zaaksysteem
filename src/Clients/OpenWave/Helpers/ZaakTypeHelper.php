@@ -17,7 +17,8 @@ class ZaakTypeHelper
 
         while ($page) {
             try {
-                $result = $client->zaaktypen()->all((new \OWC\Zaaksysteem\Endpoints\Filter\ResultaattypenFilter())->page($page));
+                // $result = $client->zaaktypen()->all((new \OWC\Zaaksysteem\Endpoints\Filter\ResultaattypenFilter())->page($page));
+                $result = $client->zaaktypen()->all();
             } catch (\Exception $e) {
                 break;
             }
