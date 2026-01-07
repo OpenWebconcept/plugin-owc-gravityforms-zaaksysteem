@@ -287,7 +287,7 @@ return [
         return new Clients\OpenWave\Client(
             $container->make(
                 Http\WordPress\WordPressRequestClient::class
-            ),
+            )->applyCurlSslCertificates(),
             $container->get('ow.authenticator'),
             $container->get('ow.zaken_uri'),
             $container->get('ow.catalogi_uri'),
