@@ -1,10 +1,13 @@
 # Changelog
 
+## v2.9.1
+
+- Add: apply ssl certificates to all requests for OpenWave client
+
 ## v2.9.0
 
-- add: cron-job for retrieval of form settings ZGW types
+- Add: cron-job for retrieval of form settings ZGW types
 - Change: logging configuration populated by GF addon settings
--
 
 ## v2.8.0
 
