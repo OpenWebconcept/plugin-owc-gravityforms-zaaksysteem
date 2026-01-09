@@ -1,5 +1,9 @@
 # Changelog
 
+## v2.10.0
+
+- Add: implement usage of KVK number
+
 ## v2.9.1
 
 - Add: apply ssl certificates to all requests for OpenWave client
@@ -11,7 +15,7 @@
 
 ## v2.8.0
 
-- add: improve styling of informational and error messages
+- Add: improve styling of informational and error messages
 
 ## v2.7.2
 
