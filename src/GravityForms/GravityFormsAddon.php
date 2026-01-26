@@ -78,6 +78,7 @@ class GravityFormsAddon extends GFAddOn
     {
         return apply_filters('owc_gravityforms_zaaksysteem_gf_settings', [
             $this->settingsGeneral(),
+            $this->settingsCertificates(),
             $this->settingsDescription(),
             $this->settingsDecosJoin(),
             $this->settingsMozart(),
@@ -165,6 +166,37 @@ class GravityFormsAddon extends GFAddOn
                             'name' => "{$this->prefix}-suppliers-xxllnc-enabled",
                         ],
                     ],
+                ],
+            ],
+        ];
+    }
+
+    protected function settingsCertificates(): array
+    {
+        return [
+            'title' => __('Certificaten', 'owc-gravityforms-zaaksysteem'),
+            'fields' => [
+                [
+                    'label' => esc_html__('Certificaten hoofd locatie', 'owc-gravityforms-zaaksysteem'),
+                    'type' => 'text',
+                    'class' => 'medium',
+                    'name' => "{$this->prefix}-location-root-path-certificates",
+                    'default_value' => $this->getRootPathToCertificates(),
+                    'required' => false,
+                ],
+                [
+                    'label' => esc_html__('Publieke locatie certificaten', 'owc-gravityforms-zaaksysteem'),
+                    'type' => 'select',
+                    'name' => "{$this->prefix}-public-ssl-certificate",
+                    'choices' => $this->getPublicCertificates(),
+                    'required' => false,
+                ],
+                [
+                    'label' => esc_html__('Privé locatie certificaten', 'owc-gravityforms-zaaksysteem'),
+                    'type' => 'select',
+                    'name' => "{$this->prefix}-private-ssl-certificate",
+                    'choices' => $this->getPrivateCertificates(),
+                    'required' => false,
                 ],
             ],
         ];
@@ -571,5 +603,63 @@ class GravityFormsAddon extends GFAddOn
                 ],
             ],
         ];
+    }
+
+    /**
+     * Format the list of certificates for the selectbox.
+     */
+    private function formatListOfCertificates(array $certificates): array
+    {
+        $noCertificate = [
+            [
+                'label' => esc_html__('Geen certificaat geselecteerd', 'owc-gravityforms-zaaksysteem'),
+                'value' => 'no-certificate',
+            ],
+        ];
+
+        $certificates = array_values(array_map(function ($certificate) {
+            return [
+                'label' => basename($certificate),
+                'value' => $certificate,
+            ];
+        }, $certificates));
+
+        return array_merge($noCertificate, $certificates);
+    }
+
+    /**
+     * Get all the public certificates from the storage map.
+     */
+    private function getPublicCertificates(): array
+    {
+        return $this->formatListOfCertificates(glob($this->getCertificateLocation() . '/*.{crt,cer}', GLOB_BRACE));
+    }
+
+    /**
+     * Get all the private certificates from the storage map.
+     */
+    private function getPrivateCertificates(): array
+    {
+        return $this->formatListOfCertificates(glob($this->getCertificateLocation() . '/*.{key}', GLOB_BRACE));
+    }
+
+    /**
+     * Get the correct path for the certificates of the current site.
+     */
+    private function getCertificateLocation(): string
+    {
+        if (is_multisite()) {
+            return sprintf('%s/%s', $this->getRootPathToCertificates(), get_current_blog_id() ?? '1');
+        }
+
+        return sprintf('%s', $this->getRootPathToCertificates());
+    }
+
+    /**
+     * Get root path to certificates.
+     */
+    private function getRootPathToCertificates(): string
+    {
+        return GravityFormsSettings::make()->get('-location-root-path-certificates') ?: '';
     }
 }

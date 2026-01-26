@@ -238,6 +238,12 @@ return [
 
         return false;
     },
+    'public_ssl_certificate' => function (Container $container) {
+        return $container->make('gf.setting', ['-public-ssl-certificate']);
+    },
+    'private_ssl_certificate' => function (Container $container) {
+        return $container->make('gf.setting', ['-private-ssl-certificate']);
+    },
 
     /**
      * Utilize with $container->make('gf.setting', ['setting-name-here']);

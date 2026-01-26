@@ -7,24 +7,37 @@ namespace OWC\Zaaksysteem\Http\WordPress;
 use OWC\Zaaksysteem\Http\RequestClientInterface;
 use OWC\Zaaksysteem\Http\RequestOptions;
 use OWC\Zaaksysteem\Http\Response;
+use OWC\Zaaksysteem\Resolvers\ContainerResolver;
 
 class WordPressRequestClient implements RequestClientInterface
 {
     protected RequestOptions $options;
+    protected ContainerResolver $container;
 
     public function __construct(?RequestOptions $options = null)
     {
         $this->options = $options ?: new RequestOptions([]);
+        $this->container = ContainerResolver::make();
     }
 
+    /**
+     * Applies SSL client certificates (public + private) on outbound cURL requests.
+     *
+     * Supports two configuration modes:
+     *  1. New configuration where certificates are stored directly in the container
+     *     (public_ssl_certificate / private_ssl_certificate)
+     *  2. Legacy DigiD plugin configuration where certificates are read via:
+     *        config('digid.certificate.public') / config('digid.certificate.private')
+     */
     public function applyCurlSslCertificates(): self
     {
-        if (! function_exists('\\Yard\\DigiD\\Foundation\\Helpers\\config')) {
-            return $this;
-        }
+        $sslPublicCert = (string) ($this->container->get('public_ssl_certificate') ?: '');
+        $sslPrivateCert = (string) ($this->container->get('private_ssl_certificate') ?: '');
 
-        $sslPublicCert = \Yard\DigiD\Foundation\Helpers\config('digid.certificate.public');
-        $sslPrivateCert = \Yard\DigiD\Foundation\Helpers\config('digid.certificate.private');
+        if ($this->shouldUseDigiDCertificates($sslPublicCert, $sslPrivateCert)) {
+            $sslPublicCert = (string) (\Yard\DigiD\Foundation\Helpers\config('digid.certificate.public') ?: '');
+            $sslPrivateCert = (string) (\Yard\DigiD\Foundation\Helpers\config('digid.certificate.private') ?: '');
+        }
 
         if (! file_exists($sslPublicCert) || ! file_exists($sslPrivateCert)) {
             return $this;
@@ -36,6 +49,11 @@ class WordPressRequestClient implements RequestClientInterface
         });
 
         return $this;
+    }
+
+    private function shouldUseDigiDCertificates(string $sslPublicCert, string $sslPrivateCert): bool
+    {
+        return (! file_exists($sslPublicCert) || ! file_exists($sslPrivateCert)) && function_exists('\\Yard\\DigiD\\Foundation\\Helpers\\config');
     }
 
     public function setRequestOptions(RequestOptions $options): self

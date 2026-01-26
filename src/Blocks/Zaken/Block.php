@@ -9,10 +9,10 @@ use OWC\Zaaksysteem\Contracts\Client;
 use OWC\Zaaksysteem\Endpoints\Filter\ResultaattypenFilter;
 use OWC\Zaaksysteem\Endpoints\Filter\ZakenFilter;
 use OWC\Zaaksysteem\Entities\Zaaktype;
-use OWC\Zaaksysteem\Resolvers\ContainerResolver;
-use OWC\Zaaksysteem\Support\Collection;
 use function OWC\Zaaksysteem\Foundation\Helpers\resolve;
 use function OWC\Zaaksysteem\Foundation\Helpers\view;
+use OWC\Zaaksysteem\Resolvers\ContainerResolver;
+use OWC\Zaaksysteem\Support\Collection;
 
 class Block
 {
@@ -97,7 +97,7 @@ class Block
         $filter = new ZakenFilter();
         $filter = $this->handleFilterOrdering($filter, $attributes);
         $filter = $this->handleFilterBSN($filter, $attributes);
-		$filter = $this->handleFilterKVK($filter, $attributes);
+        $filter = $this->handleFilterKVK($filter, $attributes);
         $filter = $this->handleFilterZaaktype($filter, $attributes);
 
         return $this->client->zaken()->filter($filter);
@@ -114,7 +114,7 @@ class Block
             $filter = new ZakenFilter();
             $filter = $this->handleFilterOrdering($filter, $attributes);
             $filter = $this->handleFilterBSN($filter, $attributes);
-			$filter = $this->handleFilterKVK($filter, $attributes);
+            $filter = $this->handleFilterKVK($filter, $attributes);
             $filter = $this->handleFilterZaaktype($filter, $attributes, $client);
 
             try {
