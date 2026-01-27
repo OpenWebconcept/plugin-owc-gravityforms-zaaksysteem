@@ -1,5 +1,9 @@
 # Changelog
 
+## v2.11.0
+
+- Feat: configure SSL certs by this plugin instead of DigiD plugin
+
 ## v2.10.0
 
 - Add: implement usage of KVK number
