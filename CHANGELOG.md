@@ -1,5 +1,9 @@
 # Changelog
 
+## v2.11.1
+
+- Fix: eHerkenning resolver
+
 ## v2.11.0
 
 - Feat: configure SSL certs by this plugin instead of DigiD plugin
