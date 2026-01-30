@@ -1,5 +1,9 @@
 # Changelog
 
+## v2.11.2
+
+- Feat: add branch number kvk to role
+
 ## v2.11.1
 
 - Fix: eHerkenning resolver
