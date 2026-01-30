@@ -118,6 +118,23 @@ abstract class AbstractCreateZaakAction
         return $args;
     }
 
+	protected function getPossibleBranchNumberKVK(array $form, array $entry): string
+	{
+		foreach ($form['fields'] as $field) {
+            if (! isset($field->linkedFieldValueBranchNumberKVK) || '1' !== $field->linkedFieldValueBranchNumberKVK) {
+                continue;
+            }
+
+            $fieldValue = rgar($entry, (string) $field->id);
+
+			if (is_string($fieldValue) || '' !== $fieldValue) {
+				return $fieldValue;
+			}
+		}
+
+		return '';
+	}
+
     abstract public function addZaak($entry, $form): Zaak;
 
     /**
@@ -191,7 +208,7 @@ abstract class AbstractCreateZaakAction
     /**
      * Assign a submitter to the "zaak".
      */
-    public function addRolToZaak(Zaak $zaak, string $zaaktypeURL): ?Rol
+    public function addRolToZaak(Zaak $zaak, string $zaaktypeURL, string $branchNumberKVK = ''): ?Rol
     {
         $rolTypen = $this->getRolTypen($zaaktypeURL);
 
@@ -225,6 +242,7 @@ abstract class AbstractCreateZaakAction
             } elseif (is_string($currentKVK) && '' !== $currentKVK) {
                 $args['betrokkeneIdentificatie']['kvkNummer'] = $currentKVK;
                 $args['betrokkeneType'] = 'vestiging';
+				$args['betrokkeneIdentificatie']['vestigingsNummer'] = $branchNumberKVK;
             }
 
             try {

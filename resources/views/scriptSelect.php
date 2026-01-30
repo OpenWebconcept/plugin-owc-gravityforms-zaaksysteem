@@ -16,5 +16,6 @@
         jQuery('#linkedFieldZGW').val(field['linkedFieldValueZGW']);
 		jQuery('#linkedFieldDocumentType').val(field['linkedFieldValueDocumentType']);
 		jQuery('#linkedUploadFieldDescriptionZGW').val(field['linkedUploadFieldDescriptionValueZGW']);
+		jQuery('#linkedFieldBranchNumberKVK').prop('checked', !!field['linkedFieldValueBranchNumberKVK']);
     });
 </script>
