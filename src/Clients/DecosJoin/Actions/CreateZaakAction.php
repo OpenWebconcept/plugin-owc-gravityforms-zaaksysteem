@@ -38,7 +38,8 @@ class CreateZaakAction extends AbstractCreateZaakAction
         $zaak = $client->zaken()->create(new Zaak($args, $client->getClientName(), $client->getClientNamePretty()));
 
         // Complement Zaak.
-        $this->addRolToZaak($zaak, $zaaktypeURL);
+        $branchNumberKVK = $this->getPossibleBranchNumberKVK($form, $entry);
+        $this->addRolToZaak($zaak, $zaaktypeURL, $branchNumberKVK);
         $this->addZaakEigenschappen($zaak, $form['fields'], $entry);
 
         return $zaak;

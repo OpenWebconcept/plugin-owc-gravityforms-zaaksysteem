@@ -40,3 +40,11 @@ use function OWC\Zaaksysteem\Foundation\Helpers\config;
 		<?php endforeach; ?>
 	</select>
 </li>
+<li class="label_setting field_setting">
+	<input type="checkbox" id="linkedFieldBranchNumberKVK" name="linkedFieldBranchNumberKVK" onchange="SetFieldProperty('linkedFieldValueBranchNumberKVK', this.checked ? '1' : '0');">
+    <label for="linkedFieldBranchNumberKVK" class="section_label">
+        <?php esc_html_e('KVK vestigingsnummer', config('core.text_domain')) ?>
+    </label>
+	<small><?php esc_html_e('Kies dit veld om het KVK vestigingsnummer te koppelen aan de rol van de indiener.', config('core.text_domain')) ?></small>
+</li>
+
